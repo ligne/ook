@@ -4,7 +4,6 @@ import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
 import json
-import pickle
 import hashlib
 
 sys.path.insert(0, '/usr/lib64/calibre')
