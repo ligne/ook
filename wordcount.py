@@ -28,6 +28,7 @@ wcs = shelve.open(os.environ['HOME'] + '/.wordcounts.pickle')
 
 ### Functions and stuff
 
+# returns the wordcount, author and title for a document.
 def file_infos(path, ext):
     if path not in wcs:
         wcs[path] = wordcount(path)
@@ -42,6 +43,7 @@ def file_infos(path, ext):
     }
 
 
+# returns the wordcount for a document.
 def wordcount(path):
     if subprocess.call(['ebook-convert', path, '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
         return
@@ -54,8 +56,8 @@ def wordcount(path):
     return words
 
 
+# returns sanitised versions of the author and title metadata fields.
 def metadata(path, ext):
-    # metatdata
     stream = open(path, 'r+b')
 
     try:
@@ -69,6 +71,8 @@ def metadata(path, ext):
     return (author, title)
 
 
+# formats and prints information about a document (if they exist) to
+# $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
     if fi and fi['words'] is not None:
         fh.write('{words}\t{title}'.format(**fi))
@@ -77,6 +81,8 @@ def print_entry(fi, filehandle=sys.stdout):
         fh.write('\n')
 
 
+# searches for the document in the collections file, and returns the
+# appropriate one (if any).  warns if it appears in more than one collection.
 def collection_lookup(key, f):
     ret = None
     for n, c in coll.items():
@@ -88,6 +94,8 @@ def collection_lookup(key, f):
     return ret
 
 
+# attempt to get the collection this file is in (if any), through various
+# means.
 def get_collection(f):
     # hash of the filename
     HASH_PREFIX = "/mnt/us/documents/"
