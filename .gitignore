@@ -1,9 +1,9 @@
-.wordcounts.pickle
-My Clippings.txt
-count.png
-articles/
-books/
-short-stories/
-excludes/
-wordcounts/
+/.wordcounts.pickle
+/My Clippings.txt
+/count.png
+/articles/
+/books/
+/short-stories/
+/excludes/
+/wordcounts/
 .*.sw?
