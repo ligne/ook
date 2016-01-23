@@ -6,3 +6,4 @@ books/
 short-stories/
 excludes/
 wordcounts/
+.*.sw?
