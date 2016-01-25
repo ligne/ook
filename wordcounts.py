@@ -23,12 +23,12 @@ wcs = shelve.open('.wordcounts.pickle')
 ### Functions and stuff
 
 # returns the wordcount, author and title for a document.
-def file_infos(path, ext):
+def file_infos(path):
     if path not in wcs:
         wcs[path] = wordcount(path)
     words = wcs[path]
 
-    author, title = metadata(path, ext)
+    author, title = metadata(path)
 
     return {
         'title':  title,
@@ -52,8 +52,10 @@ def wordcount(path):
 
 
 # returns sanitised versions of the author and title metadata fields.
-def metadata(path, ext):
+def metadata(path):
     stream = open(path, 'r+b')
+
+    ext = get_calibre_extension(path)
 
     try:
         mi = get_metadata(stream, ext, force_read_metadata=True)
@@ -83,6 +85,17 @@ def show_update(source, dest):
     subprocess.call(['rsync', '-ha', '--delete', '--remove-source-files', source, dest])
 
 
+# returns the filetype for calibre's metadata identification
+def get_calibre_extension(path):
+    ext = os.path.splitext(path)[1]
+    if ext == '.txt':
+        return 'txt'
+    elif ext == '.pdf':
+        return 'pdf'
+    else:
+        return 'mobi'
+
+
 # main
 
 tmpdir = tempfile.mkdtemp() + '/'
@@ -99,14 +112,7 @@ for d in 'articles', 'short-stories', 'books':
             for f in files:
                 path = d + '/' + f
 
-                ext = 'mobi'
-                _ext = os.path.splitext(path)[1]
-                if _ext == '.txt':
-                    ext = 'txt'
-                elif _ext == '.pdf':
-                    ext = 'pdf'
-
-                fi = file_infos(path, ext)
+                fi = file_infos(path)
                 print_entry(fi, fh)
                 excludes.write('# {} ({})\n/{}\n'.format(fi['title'], fi['author'], f))
 
