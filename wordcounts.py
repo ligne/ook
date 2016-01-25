@@ -29,11 +29,13 @@ def file_infos(path):
     words = wcs[path]
 
     author, title = metadata(path)
+    display = display_title(author, title)
 
     return {
         'title':  title,
         'author': author,
         'words':  words,
+        'display': display,
         'file':   os.path.basename(path),
     }
 
@@ -68,15 +70,20 @@ def metadata(path):
     return (author, title)
 
 
+# formats a title/author string for display
+def display_title(author, title):
+    fmt = '{}'
+    if author != 'Unknown':
+        fmt = '{} ({})'
+    return fmt.format(title, author)
+
+
 # formats and prints information about a document (if they exist) to
 # $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
     if fi and fi['words'] is not None:
         print '\033[32m' + fi['title'] + '\033[00m'
-        fh.write('{words}\t{file}\t{title}'.format(**fi))
-        if fi['author'] != 'Unknown':
-            fh.write(' ({author})'.format(**fi))
-        fh.write('\n')
+        fh.write('{words}\t{file}\t{display}\n'.format(**fi))
 
 
 # show the differences then move the new files into place
@@ -114,7 +121,7 @@ for d in 'articles', 'short-stories', 'books':
 
                 fi = file_infos(path)
                 print_entry(fi, fh)
-                excludes.write('# {} ({})\n/{}\n'.format(fi['title'], fi['author'], f))
+                excludes.write('# {}\n/{}\n'.format(fi['display'], f))
 
 
 # reset the colours, because ffs calibre.
