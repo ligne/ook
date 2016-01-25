@@ -3,8 +3,6 @@
 import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
-import json
-import hashlib
 
 sys.path.insert(0, '/usr/lib64/calibre')
 sys.resources_location = os.environ.get('CALIBRE_RESOURCES_PATH', '/usr/share/calibre')
