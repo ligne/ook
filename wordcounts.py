@@ -79,13 +79,24 @@ def print_entry(fi, filehandle=sys.stdout):
         fh.write('\n')
 
 
+# show the differences then move the new files into place
+def show_update(source, dest):
+    subprocess.call(['diff', '-uwr', dest, source])
+    subprocess.call(['rsync', '-ha', '--delete', '--remove-source-files', source, dest])
+
+
 # main
 
 tmpdir = tempfile.mkdtemp() + '/'
+wordcounts_tmpdir = tmpdir + 'wordcounts/'
+excludes_tmpdir   = tmpdir + 'excludes/'
+
+os.mkdir(wordcounts_tmpdir)
+os.mkdir(excludes_tmpdir)
 
 for d in 'articles', 'short-stories', 'books':
-    with open('{}/{}-lengths.txt'.format(tmpdir, d), 'w') as fh:
-        with open('excludes/rsync-excludes-{}'.format(d), 'w') as excludes:
+    with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
+        with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
             files = os.walk(d).next()[2]
             for f in files:
                 path = d + '/' + f
@@ -99,18 +110,13 @@ for d in 'articles', 'short-stories', 'books':
 
                 fi = file_infos(path, ext)
                 print_entry(fi, fh)
-                excludes.write('# {:7d}\t{}\n/{}\n'.format(fi['words'], fi['title'], f))
+                excludes.write('# {} ({})\n/{}\n'.format(fi['title'], fi['author'], f))
 
 
 # reset the colours, because ffs calibre.
 sys.stderr.write('\033[0m')
 
-dest = 'wordcounts/'
-
-# show the diff
-subprocess.call(['diff', '-uwr', dest, tmpdir])
-
-# move the new files into place
-subprocess.call(['rsync', '-ha', '--delete', '--remove-source-files', tmpdir, dest])
+show_update(wordcounts_tmpdir, 'wordcounts/')
+show_update(excludes_tmpdir, 'excludes/')
 
 # vim: ts=4 : sw=4 : et
