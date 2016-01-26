@@ -3,6 +3,7 @@
 import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
+import pandas as pd
 
 sys.path.insert(0, '/usr/lib64/calibre')
 sys.resources_location = os.environ.get('CALIBRE_RESOURCES_PATH', '/usr/share/calibre')
@@ -92,6 +93,14 @@ def show_update(source, dest):
     subprocess.call(['rsync', '-ha', '--delete', '--remove-source-files', source, dest])
 
 
+# prints some entries in the viscinity of $index
+def show_nearby(df, desc, index):
+    print "around {}:".format(desc)
+    print
+    print df.iloc[(index-5):(index+5)]
+    print
+
+
 # returns the filetype for calibre's metadata identification
 def get_calibre_extension(path):
     ext = os.path.splitext(path)[1]
@@ -112,6 +121,9 @@ excludes_tmpdir   = tmpdir + 'excludes/'
 os.mkdir(wordcounts_tmpdir)
 os.mkdir(excludes_tmpdir)
 
+# take a copy of the wordcounts before it gets overwritten.
+df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'filename', 'title']).sort(['words']).reset_index(drop=True)
+
 for d in 'articles', 'short-stories', 'books':
     with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
         with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
@@ -129,5 +141,27 @@ sys.stderr.write('\033[0m')
 
 show_update(wordcounts_tmpdir, 'wordcounts/')
 show_update(excludes_tmpdir, 'excludes/')
+
+
+# now display some information about how the wordcount has changed, and some
+# possibly interesting books to read next.
+
+df_new = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'filename', 'title']).sort(['words']).reset_index(drop=True)
+
+pd.set_option('display.width', 1000)
+pd.set_option('display.max_colwidth', 1000)
+print
+print 'change in mean:   {:7.0f}'.format((df_new.mean() - df_old.mean())['words'])
+print 'change in median: {:7.0f}'.format((df_new.median() - df_old.median())['words'])
+print
+
+mean = int(df_new.mean()['words'])
+mean_ix = df_new[df_new.words > mean]['words'].index[0]
+show_nearby(df_new, 'mean', mean_ix)
+
+# ignoring the really big ones
+mean = int(df_new[df_new < 5e5].mean()['words'])
+mean_ix = df_new[df_new.words > mean]['words'].index[0]
+show_nearby(df_new, 'limited mean', mean_ix)
 
 # vim: ts=4 : sw=4 : et
