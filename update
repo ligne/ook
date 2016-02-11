@@ -1,6 +1,6 @@
 #!/bin/sh
 
-kindle_dir=/run/media/mlb/Kindle/documents/
+kindle_dir=/run/media/mlb/Kindle
 [ -d "$kindle_dir" ] || {
   echo Kindle not mounted.
   exit 1
@@ -15,17 +15,17 @@ cd ~/ebooks/
 # FIXME nothing to do here yet
 
 # rsync
-rsync -hav --delete /run/media/mlb/Kindle/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
+rsync -hav --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
 
 # recalculate wordcounts
 ~/wordcount/wordcount.py
 ./wordcounts.py
 
 # update wordcounts and suggestions
-sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > /run/media/mlb/Kindle/documents/wordcounts/wordcounts.txt
+sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wordcounts/wordcounts.txt
 (
   ./suggestions.py wordcounts/books-lengths.txt
   echo ----
   ./suggestions.py wordcounts/short-stories-lengths.txt
-) | cut -c-50 > /run/media/mlb/Kindle/documents/wordcounts/suggestions.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/suggestions.txt
 
