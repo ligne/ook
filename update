@@ -30,5 +30,7 @@ sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wo
   ./suggestions.py wordcounts/books-lengths.txt
   echo ----
   ./suggestions.py wordcounts/short-stories-lengths.txt
+  echo ----
+  ./suggestions.py wordcounts/french-lengths.txt
 ) | cut -c-50 > $kindle_dir/documents/wordcounts/suggestions.txt
 
