@@ -16,10 +16,13 @@ cd ~/ebooks/
 
 # rsync
 rsync -hav --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
+echo
 
 # recalculate wordcounts
 ~/wordcount/wordcount.py
+echo
 ./wordcounts.py
+echo
 
 # update wordcounts and suggestions
 sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wordcounts/wordcounts.txt
