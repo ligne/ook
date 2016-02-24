@@ -29,7 +29,7 @@ def file_infos(path):
         wcs[path] = wordcount(path)
     words = wcs[path]
 
-    author, title = metadata(path)
+    author, title, language = metadata(path)
     display = display_title(author, title)
 
     return {
@@ -37,6 +37,7 @@ def file_infos(path):
         'author': author,
         'words':  words,
         'display': display,
+        'language': language,
         'file':   os.path.basename(path),
     }
 
@@ -68,7 +69,12 @@ def metadata(path):
     title  = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', mi.get('title'), flags=re.I).expandtabs())
     author = re.sub(r'\n', ' ', mi.get('authors')[0])
 
-    return (author, title)
+    l = mi.get('languages')
+    language = 'en'
+    if l:
+        language = l[0][:2]
+
+    return (author, title, language)
 
 
 # formats a title/author string for display
