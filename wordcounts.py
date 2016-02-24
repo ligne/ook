@@ -90,7 +90,7 @@ def display_title(author, title):
 def print_entry(fi, filehandle=sys.stdout):
     if fi and fi['words'] is not None:
 #        print '\033[32m' + fi['title'] + '\033[00m'
-        fh.write('{words}\t{file}\t{display}\n'.format(**fi))
+        filehandle.write('{words}\t{file}\t{display}\n'.format(**fi))
 
 
 # show the differences then move the new files into place
