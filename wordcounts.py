@@ -122,6 +122,8 @@ os.mkdir(excludes_tmpdir)
 # take a copy of the wordcounts before it gets overwritten.
 df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'filename', 'title']).sort(['words']).reset_index(drop=True)
 
+fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
+
 for d in 'articles', 'short-stories', 'books':
     with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
         with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
@@ -130,9 +132,14 @@ for d in 'articles', 'short-stories', 'books':
                 path = d + '/' + f
 
                 fi = file_infos(path)
+
+                if fi['language'] != 'en':
+                    print_entry(fi, fh_fr)
+
                 print_entry(fi, fh)
                 excludes.write('# {}\n/{}\n'.format(fi['display'], f))
 
+fh_fr.close()
 
 # reset the colours, because ffs calibre.
 sys.stderr.write('\033[0m')
