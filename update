@@ -22,7 +22,6 @@ echo
 ~/wordcount/wordcount.py
 echo
 ./wordcounts.py
-echo
 
 # update wordcounts and suggestions
 sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wordcounts/wordcounts.txt
@@ -32,5 +31,7 @@ sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wo
   ./suggestions.py wordcounts/short-stories-lengths.txt
   echo ----
   ./suggestions.py wordcounts/french-lengths.txt
+  echo ----
+  ./suggestions.py wordcounts/non-fiction-lengths.txt
 ) | cut -c-50 > $kindle_dir/documents/wordcounts/suggestions.txt
 

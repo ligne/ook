@@ -124,7 +124,7 @@ df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', '
 
 fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
 
-for d in 'articles', 'short-stories', 'books':
+for d in 'articles', 'short-stories', 'books', 'non-fiction':
     with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
         with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
             files = os.walk(d).next()[2]
