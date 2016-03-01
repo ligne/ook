@@ -114,10 +114,8 @@ def get_calibre_extension(path):
 
 tmpdir = tempfile.mkdtemp() + '/'
 wordcounts_tmpdir = tmpdir + 'wordcounts/'
-excludes_tmpdir   = tmpdir + 'excludes/'
 
 os.mkdir(wordcounts_tmpdir)
-os.mkdir(excludes_tmpdir)
 
 # take a copy of the wordcounts before it gets overwritten.
 df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'filename', 'title']).sort(['words']).reset_index(drop=True)
@@ -126,19 +124,17 @@ fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
 
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
     with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
-        with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
-            d = os.environ['HOME'] + '/.kindle/documents/' + d
-            files = os.walk(d).next()[2]
-            for f in files:
-                path = d + '/' + f
+        d = os.environ['HOME'] + '/.kindle/documents/' + d
+        files = os.walk(d).next()[2]
+        for f in files:
+            path = d + '/' + f
 
-                fi = file_infos(path)
+            fi = file_infos(path)
 
-                if fi['language'] != 'en':
-                    print_entry(fi, fh_fr)
+            if fi['language'] != 'en':
+                print_entry(fi, fh_fr)
 
-                print_entry(fi, fh)
-                excludes.write('# {}\n/{}\n'.format(fi['display'], f))
+            print_entry(fi, fh)
 
 fh_fr.close()
 
@@ -146,7 +142,6 @@ fh_fr.close()
 sys.stderr.write('\033[0m')
 
 show_update(wordcounts_tmpdir, 'wordcounts/')
-show_update(excludes_tmpdir, 'excludes/')
 
 
 # display some information about how the wordcount has changed
