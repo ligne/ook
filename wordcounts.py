@@ -127,6 +127,7 @@ fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
     with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
         with open('{}/{}'.format(excludes_tmpdir, d), 'w') as excludes:
+            d = os.environ['HOME'] + '/.kindle/documents/' + d
             files = os.walk(d).next()[2]
             for f in files:
                 path = d + '/' + f
