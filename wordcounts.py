@@ -110,6 +110,20 @@ def get_calibre_extension(path):
         return 'mobi'
 
 
+# processes all the files in directory d
+def process_dir(name, d):
+    with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, name), 'w') as fh:
+        files = os.walk(d).next()[2]
+        for f in files:
+            path = d + '/' + f
+
+            fi = file_infos(path)
+
+            if fi['language'] != 'en':
+                print_entry(fi, fh_fr)
+
+            print_entry(fi, fh)
+
 # main
 
 tmpdir = tempfile.mkdtemp() + '/'
@@ -123,18 +137,10 @@ df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', '
 fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
 
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
-    with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, d), 'w') as fh:
-        d = os.environ['HOME'] + '/.kindle/documents/' + d
-        files = os.walk(d).next()[2]
-        for f in files:
-            path = d + '/' + f
+    path = os.environ['HOME'] + '/.kindle/documents/' + d
+    process_dir(d, path)
 
-            fi = file_infos(path)
-
-            if fi['language'] != 'en':
-                print_entry(fi, fh_fr)
-
-            print_entry(fi, fh)
+process_dir('articles', os.environ['HOME'] + '/.kindle/documents/')
 
 fh_fr.close()
 
