@@ -134,7 +134,7 @@ os.mkdir(wordcounts_tmpdir)
 # take a copy of the wordcounts before it gets overwritten.
 df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
 
-fh_fr = open('{}/french-lengths.txt'.format(wordcounts_tmpdir), 'w')
+fh_fr = open('{}/french-books-lengths.txt'.format(wordcounts_tmpdir), 'w')
 
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
     path = os.environ['HOME'] + '/.kindle/documents/' + d
