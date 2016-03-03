@@ -14,24 +14,74 @@ cd ~/ebooks/
 # copy any new files over
 # FIXME nothing to do here yet
 
-# rsync
+# take a backup
 rsync -hav --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
 echo
 
 # recalculate wordcounts
-~/wordcount/wordcount.py
-echo
 ./wordcounts.py
 
-# update wordcounts and suggestions
-sort -nr ~/wordcounts/article-lengths.txt | cut -c-50 > $kindle_dir/documents/wordcounts/wordcounts.txt
+# update suggestions
 (
+  echo Books
+  echo
   ./suggestions.py wordcounts/books-lengths.txt
   echo ----
+  echo Short stories
+  echo
   ./suggestions.py wordcounts/short-stories-lengths.txt
   echo ----
-  ./suggestions.py wordcounts/french-lengths.txt
+  echo French books
+  echo
+  ./suggestions.py wordcounts/french-books-lengths.txt
   echo ----
+  echo Non-fiction
+  echo
   ./suggestions.py wordcounts/non-fiction-lengths.txt
 ) | cut -c-50 > $kindle_dir/documents/wordcounts/suggestions.txt
+
+# add alphabetically and numerically sorted versions of all wordcount lists.
+(
+  echo Articles
+  echo
+  sort -nr wordcounts/articles-lengths.txt
+  echo ----
+  echo Books
+  echo
+  sort -nr wordcounts/books-lengths.txt
+  echo ----
+  echo Short stories
+  echo
+  sort -nr wordcounts/short-stories-lengths.txt
+  echo ----
+  echo French books
+  echo
+  sort -nr wordcounts/french-books-lengths.txt
+  echo ----
+  echo Non-fiction
+  echo
+  sort -nr wordcounts/non-fiction-lengths.txt
+  echo
+  echo ====
+  echo
+  echo Articles
+  echo
+  sort -k2 wordcounts/articles-lengths.txt
+  echo ----
+  echo Books
+  echo
+  sort -k2 wordcounts/books-lengths.txt
+  echo ----
+  echo Short stories
+  echo
+  sort -k2 wordcounts/short-stories-lengths.txt
+  echo ----
+  echo French books
+  echo
+  sort -k2 wordcounts/french-books-lengths.txt
+  echo ----
+  echo Non-fiction
+  echo
+  sort -k2 wordcounts/non-fiction-lengths.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/all-wordcounts.txt
 
