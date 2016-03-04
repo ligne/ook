@@ -19,8 +19,12 @@ from calibre.ebooks.metadata.meta import get_metadata
 DEVNULL = open(os.devnull, 'w')
 
 # open the collections
-with open(os.environ['HOME'] + '/.kindle/system/collections.json') as c:
-    coll = json.load(c)
+coll = {}
+try:
+    with open(os.environ['HOME'] + '/.kindle/system/collections.json') as c:
+        coll = json.load(c)
+except:
+    pass
 
 # cache word-counts
 wcs = shelve.open(os.environ['HOME'] + '/.wordcounts.pickle')
@@ -75,6 +79,7 @@ def metadata(path, ext):
 # $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
     if fi and fi['words'] is not None:
+#        print '\033[32m' + fi['title'] + '\033[00m'
         fh.write('{words}\t{title}'.format(**fi))
         if fi['author'] != 'Unknown':
             fh.write(' ({author})'.format(**fi))
@@ -130,32 +135,19 @@ def get_collection(f):
 
 d = tempfile.mkdtemp() + '/'
 
-fhs = {
-    'later':          open(d + '/article-lengths-later.txt', 'w'),
-    'books':          open(d + '/book-lengths-later.txt', 'w'),
-    'short stories':  open(d + '/book-lengths-shortstories.txt', 'w'),
-}
-
 # books
-fh_no = open(d + '/book-lengths.txt', 'w')
-for ext in 'prc', 'mobi', 'txt':
-    for f in glob.glob(os.environ['HOME'] + '/.kindle/documents/*.' + ext):
-        c = get_collection(f)
-        fh = fhs.get(c, fh_no)
-        print_entry(file_infos(f, 'mobi'), fh)
-fh_no.close()
+with open(d + '/book-lengths.txt', 'w') as fh:
+    for ext in 'prc', 'mobi', 'txt', 'azw', 'azw3':
+        for f in glob.glob(os.environ['HOME'] + '/.kindle/documents/books/*.' + ext):
+            c = get_collection(f)
+            print_entry(file_infos(f, 'mobi'), fh)
 
 # articles
-fh_no = open(d + '/article-lengths.txt', 'w')
-for ext in 'azw', 'azw3':
-    for f in glob.glob(os.environ['HOME'] + '/.kindle/documents/*.' + ext):
-        c = get_collection(f)
-        fh = fhs.get(c, fh_no)
-        print_entry(file_infos(f, 'mobi'), fh)
-fh_no.close()
-
-for fh in fhs.values():
-    fh.close()
+with open(d + '/article-lengths.txt', 'w') as fh:
+    for ext in 'azw', 'azw3':
+        for f in glob.glob(os.environ['HOME'] + '/.kindle/documents/*.' + ext):
+            c = get_collection(f)
+            print_entry(file_infos(f, 'mobi'), fh)
 
 # reset the colours, because ffs calibre.
 sys.stderr.write('\033[0m')
