@@ -9,7 +9,8 @@ kindle_dir=/run/media/mlb/Kindle
 cd ~/ebooks/
 
 # clean up cruft
-~/clean.py
+./clean.py
+echo
 
 # copy any new files over
 # FIXME nothing to do here yet
