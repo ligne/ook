@@ -38,7 +38,7 @@ echo
   echo Non-fiction
   echo
   ./suggestions.py wordcounts/non-fiction-lengths.txt
-) | cut -c-50 > $kindle_dir/documents/wordcounts/suggestions.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Suggestions.txt
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
 (
@@ -83,5 +83,5 @@ echo
   echo Non-fiction
   echo
   sort -k2 wordcounts/non-fiction-lengths.txt
-) | cut -c-50 > $kindle_dir/documents/wordcounts/all-wordcounts.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ All\ wordcounts.txt
 
