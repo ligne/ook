@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import sys, os, glob, pipes
+import glob
+import pipes  # used for shell escapes
 
 kindle_dir = '/run/media/mlb/Kindle/documents/'
 
