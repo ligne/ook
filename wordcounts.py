@@ -110,19 +110,29 @@ def get_calibre_extension(path):
         return 'mobi'
 
 
+# select the right filehandle for a particular file
+fhs = {}
+
+def get_filehandle(tmpdir, category, language='en'):
+    if (category, language) not in fhs:
+        fhs[(category, language)] = open('{}/{}-{}-lengths.txt'.format(tmpdir, category, language), 'w')
+    return fhs[(category, language)]
+
+def close_filehandles():
+    for fh in fhs.values():
+        fh.close()
+
+
 # processes all the files in directory d
 def process_dir(name, d):
-    with open('{}/{}-lengths.txt'.format(wordcounts_tmpdir, name), 'w') as fh:
-        files = os.walk(d).next()[2]
-        for f in files:
-            path = d + '/' + f
+    files = os.walk(d).next()[2]
+    for f in files:
+        path = d + '/' + f
 
-            fi = file_infos(path)
+        fi = file_infos(path)
+        fh = get_filehandle(wordcounts_tmpdir, name, fi['language'])
 
-            if fi['language'] != 'en':
-                print_entry(fi, fh_fr)
-
-            print_entry(fi, fh)
+        print_entry(fi, fh)
 
 # main
 
@@ -132,9 +142,7 @@ wordcounts_tmpdir = tmpdir + 'wordcounts/'
 os.mkdir(wordcounts_tmpdir)
 
 # take a copy of the wordcounts before it gets overwritten.
-df_old = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
-
-fh_fr = open('{}/french-books-lengths.txt'.format(wordcounts_tmpdir), 'w')
+df_old = pd.read_csv('wordcounts/books-en-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
 
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
     path = os.environ['HOME'] + '/.kindle/documents/' + d
@@ -142,7 +150,7 @@ for d in 'articles', 'short-stories', 'books', 'non-fiction':
 
 process_dir('articles', os.environ['HOME'] + '/.kindle/documents/')
 
-fh_fr.close()
+close_filehandles()
 
 # reset the colours, because ffs calibre.
 sys.stderr.write('\033[0m')
@@ -151,7 +159,7 @@ show_update(wordcounts_tmpdir, 'wordcounts/')
 
 
 # display some information about how the wordcount has changed
-df_new = pd.read_csv('wordcounts/books-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
+df_new = pd.read_csv('wordcounts/books-en-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
 print
 print 'change in mean:   {:7.0f}'.format((df_new.mean() - df_old.mean())['words'])
 print 'change in median: {:7.0f}'.format((df_new.median() - df_old.median())['words'])
