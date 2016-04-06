@@ -24,21 +24,21 @@ echo
 
 # update suggestions
 (
-  echo Books
+  echo All Books
   echo
-  ./suggestions.py wordcounts/books-lengths.txt 15
+  ./suggestions.py wordcounts/books-*-lengths.txt 15
   echo ----
-  echo Short stories
+  echo All short stories
   echo
-  ./suggestions.py wordcounts/short-stories-lengths.txt 15
+  ./suggestions.py wordcounts/short-stories-*-lengths.txt 15
   echo ----
   echo French books
   echo
-  ./suggestions.py wordcounts/french-books-lengths.txt 15
+  ./suggestions.py wordcounts/*-fr-lengths.txt 15
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py wordcounts/non-fiction-lengths.txt 15
+  ./suggestions.py wordcounts/non-fiction-*-lengths.txt 15
 ) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Suggestions.txt
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
@@ -46,44 +46,43 @@ echo
 (
   echo Articles
   echo
-  sort -nr wordcounts/articles-lengths.txt
+  sort -nr wordcounts/articles-*-lengths.txt
   echo ----
   echo Books
   echo
-  sort -nr wordcounts/books-lengths.txt
+  sort -nr wordcounts/books-*-lengths.txt
   echo ----
   echo Short stories
   echo
-  sort -nr wordcounts/short-stories-lengths.txt
+  sort -nr wordcounts/short-stories-*-lengths.txt
   echo ----
   echo French books
   echo
-  sort -nr wordcounts/french-books-lengths.txt
+  sort -nr wordcounts/*-fr-lengths.txt
   echo ----
   echo Non-fiction
   echo
-  sort -nr wordcounts/non-fiction-lengths.txt
-  echo
-  echo ====
-  echo
+  sort -nr wordcounts/non-fiction-*-lengths.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Numeric.txt
+(
   echo Articles
   echo
-  sort -k2 wordcounts/articles-lengths.txt
+  sort -k2 wordcounts/articles-*-lengths.txt
   echo ----
   echo Books
   echo
-  sort -k2 wordcounts/books-lengths.txt
+  sort -k2 wordcounts/books-*-lengths.txt
   echo ----
   echo Short stories
   echo
-  sort -k2 wordcounts/short-stories-lengths.txt
+  sort -k2 wordcounts/short-stories-*-lengths.txt
   echo ----
   echo French books
   echo
-  sort -k2 wordcounts/french-books-lengths.txt
+  sort -k2 wordcounts/*-fr-lengths.txt
   echo ----
   echo Non-fiction
   echo
-  sort -k2 wordcounts/non-fiction-lengths.txt
-) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ All\ wordcounts.txt
+  sort -k2 wordcounts/non-fiction-*-lengths.txt
+) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Alphabetical.txt
 
