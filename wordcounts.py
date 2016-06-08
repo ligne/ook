@@ -45,6 +45,7 @@ def file_infos(path):
 # returns the wordcount for a document.
 def wordcount(path):
     if subprocess.call(['ebook-convert', path, '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
+        print "something wrong counting words in", path
         return
 
     words = 0
@@ -64,6 +65,7 @@ def metadata(path):
     try:
         mi = get_metadata(stream, ext, force_read_metadata=True)
     except:
+        print "something wrong with", path
         return
 
     title  = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', mi.get('title'), flags=re.I).expandtabs())
