@@ -10,13 +10,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+import wordcounts
+
 
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
 
-# load the data, and patch it up
+### load the data and patch it up ##############################################
+
 df = pd.read_csv(GR_HISTORY)
 
 start_dates = [
@@ -67,40 +70,37 @@ def added_ebook_pages():
     current_words = get_ebook_words()
 
     # read from local data cache
-    df = pd.read_csv(EBOOK_WORDCOUNTS, index_col=0, parse_dates=True)
-
-    last_words = df.ix[-1].values[0].__int__()
+    df = pd.read_csv(EBOOK_WORDCOUNTS, index_col=0, header=None, parse_dates=True, squeeze=True)
 
     # update if it's changed
-    if last_words != current_words:
+    if df.ix[-1] != current_words:
         df.ix[pd.to_datetime('today')] = current_words
 
     # save new data
     df.to_csv(EBOOK_WORDCOUNTS)
 
     # fill out the missing values
-    s = df.reindex(index=ix).fillna(method='ffill')['words']
+    s = df.reindex(index=ix).fillna(method='ffill')
 
     # return, converted to pages
     return s / 390
 
 
 # returns the current wordcount for all books
-# FIXME eventually get this from the actual files (wordcounts.py)
 def get_ebook_words():
-    return get_all_ebook_words().ix[-1].__int__()
+    import os
+    total = 0
+    for d in 'short-stories', 'books', 'non-fiction':
+        d = os.environ['HOME'] + '/.kindle/documents/' + d
+        files = os.walk(d).next()[2]
+        for f in files:
+            if f == 'My Clippings.txt':
+                continue
+            path = d + '/' + f
+            fi = wordcounts.file_infos(path)
+            total += fi['words']
 
-def get_all_ebook_words():
-    import shelve
-    import datetime
-    stats = shelve.open('../ebooks/.stats.pickle')
-    s = [ item for x in ['books', 'non-fiction', 'short-stories'] for item in stats[x+'|']  ]
-    data = [int(x['total'])                               for x in s if 'total' in x]
-    ts   = [datetime.datetime.utcfromtimestamp(x['time']) for x in s if 'total' in x]
-    d = pd.Series(data=data, index=ts).resample('s', how='sum').resample('D', how='last')
-    d = d.dropna().astype(int)
-    d.to_csv(EBOOK_WORDCOUNTS, header=['words'], index_label='date')
-    return d
+    return total
 
 
 def reading_rate():
