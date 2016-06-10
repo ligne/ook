@@ -24,6 +24,7 @@ start_dates = [
 ]
 page_counts = [
     (20618571, 316),  # Tulipe noire
+    (601684,  1317),  # Quarante ans de suspense
 ]
 
 for (ii, val) in start_dates:
