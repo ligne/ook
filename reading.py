@@ -113,27 +113,28 @@ def reading_rate():
 
 #################################################################################
 
-rate = reading_rate()
+if __name__ == "__main__":
+    rate = reading_rate()
 
-p = pd.DataFrame({
-    'elsewhere': added_pages('elsewhere'),
-    'ebooks'   : added_ebook_pages(),
-    'pending'  : added_pages('currently-reading') + added_pages('pending') + added_pages('read') - completed_pages('read'),
-}, index=ix)
+    p = pd.DataFrame({
+        'elsewhere': added_pages('elsewhere'),
+        'ebooks'   : added_ebook_pages(),
+        'pending'  : added_pages('currently-reading') + added_pages('pending') + added_pages('read') - completed_pages('read'),
+    }, index=ix)
 
-# scale by the reading rate at that time
-p = p.divide(rate, axis=0)
+    # scale by the reading rate at that time
+    p = p.divide(rate, axis=0)
 
-# truncate to the interesting bit (after i'd added my books and those from home)
-p = p.ix['2016-05-13':]
+    # truncate to the interesting bit (after i'd added my books and those from home)
+    p = p.ix['2016-05-13':]
 
-# sort so the largest is on top, and stack
-p[p.max().order().index].cumsum(axis=1).plot()
+    # sort so the largest is on top, and stack
+    p[p.max().order().index].cumsum(axis=1).plot()
 
-# prettify and save
-plt.grid(True)
-#plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+    # prettify and save
+    plt.grid(True)
+    #plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
 
-plt.savefig('images/backlog.png')
-plt.close()
+    plt.savefig('images/backlog.png')
+    plt.close()
 
