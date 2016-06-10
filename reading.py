@@ -153,3 +153,9 @@ if __name__ == "__main__":
     p = p.divide(annual_reading_rate(), axis=0)
     save_image(p, 'backlog')
 
+
+    ### histogram of ratings ###################################################
+    ax = df['Average Rating'].plot(kind='hist', bins=100)
+    ax.set_xlim(1,5)
+    plt.savefig('images/average_scores.png')
+
