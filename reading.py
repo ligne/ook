@@ -103,14 +103,20 @@ def get_ebook_words():
     return total
 
 
-def reading_rate():
+# in pages per day...
+def daily_reading_rate():
     completed = df.dropna(subset=['Date Read'])
     completed = completed.set_index(pd.to_datetime(completed['Date Read']))  \
                          .resample('D', how='sum')  \
                          .reindex(index=ix)  \
                          .fillna(0)
 
-    return pd.expanding_mean(completed['Number of Pages']) * 365.2425
+    return pd.expanding_mean(completed['Number of Pages'])
+
+
+# ...or pages per year
+def annual_reading_rate():
+    return daily_reading_rate() * 365.2425
 
 
 def save_image(df, name):
@@ -134,8 +140,6 @@ def save_image(df, name):
 #################################################################################
 
 if __name__ == "__main__":
-    rate = reading_rate()
-
     p = pd.DataFrame({
         'elsewhere': added_pages('elsewhere'),
         'ebooks'   : added_ebook_pages(),
@@ -146,6 +150,6 @@ if __name__ == "__main__":
     save_image(p, 'pages')
 
     # scale by the reading rate at that time
-    p = p.divide(rate, axis=0)
+    p = p.divide(annual_reading_rate(), axis=0)
     save_image(p, 'backlog')
 
