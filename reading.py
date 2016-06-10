@@ -16,9 +16,9 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
 
+# load the data, and patch it up
 df = pd.read_csv(GR_HISTORY)
 
-# patch up the data
 start_dates = [
     (35220, '2016/01/01'),  # Red Badge of Courage
 ]
@@ -34,6 +34,8 @@ for (ii, val) in page_counts:
         print "already got a page count for", ii
     df.loc[df['Book Id'] == ii,'Number of Pages'] = val
 
+
+################################################################################
 
 def added_pages(shelf):
     pending = df[df['Exclusive Shelf'] == shelf]
