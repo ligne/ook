@@ -113,6 +113,24 @@ def reading_rate():
     return pd.expanding_mean(completed['Number of Pages']) * 365.2425
 
 
+def save_image(df, name):
+    # truncate to the interesting bit (after i'd added my books and those from home)
+    df = df.ix['2016-05-13':]
+
+    # stack and plot
+    df.cumsum(axis=1).plot()
+
+    # force the bottom of the graph to zero
+    ylim = plt.ylim()
+    plt.ylim([ min(ylim[0], 0), ylim[1] ])
+
+    # prettify and save
+    plt.grid(True)
+    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 #################################################################################
 
 if __name__ == "__main__":
@@ -122,21 +140,12 @@ if __name__ == "__main__":
         'elsewhere': added_pages('elsewhere'),
         'ebooks'   : added_ebook_pages(),
         'pending'  : added_pages('currently-reading') + added_pages('pending') + added_pages('read') - completed_pages('read'),
-    }, index=ix)
+    }, index=ix, columns=['pending', 'ebooks', 'elsewhere'])
+
+    # number of pages
+    save_image(p, 'pages')
 
     # scale by the reading rate at that time
     p = p.divide(rate, axis=0)
-
-    # truncate to the interesting bit (after i'd added my books and those from home)
-    p = p.ix['2016-05-13':]
-
-    # sort so the largest is on top, and stack
-    p[p.max().order().index].cumsum(axis=1).plot()
-
-    # prettify and save
-    plt.grid(True)
-    #plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
-
-    plt.savefig('images/backlog.png')
-    plt.close()
+    save_image(p, 'backlog')
 
