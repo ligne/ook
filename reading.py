@@ -97,7 +97,8 @@ def get_all_ebook_words():
     data = [int(x['total'])                               for x in s if 'total' in x]
     ts   = [datetime.datetime.utcfromtimestamp(x['time']) for x in s if 'total' in x]
     d = pd.Series(data=data, index=ts).resample('s', how='sum').resample('D', how='last')
-    d.dropna().to_csv(EBOOK_WORDCOUNTS, header=['words'], index_label='date')
+    d = d.dropna().astype(int)
+    d.to_csv(EBOOK_WORDCOUNTS, header=['words'], index_label='date')
     return d
 
 
