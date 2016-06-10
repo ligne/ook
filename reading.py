@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 
 
-EBOOK_WORDCOUNTS = 'data/test.csv'
+EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
