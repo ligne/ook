@@ -61,6 +61,7 @@ def changed_pages(df, shelf, direction):
                   .fillna(0)
 
 
+# number of pages added by day
 def added_pages(shelf):
     pending = df
     # ignore read books where no end date is set
@@ -69,10 +70,12 @@ def added_pages(shelf):
     return changed_pages(pending, shelf, 'Date Added').cumsum()
 
 
+# number of pages removed by day
 def completed_pages(shelf):
     return changed_pages(df, shelf, 'Date Read').cumsum()
 
 
+# total number of pages of ebooks by day
 def ebook_pages():
     # get current value from actual files
     current_words = get_ebook_words()
