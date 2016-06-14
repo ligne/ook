@@ -146,9 +146,6 @@ wordcounts_tmpdir = tmpdir + 'wordcounts/'
 
 os.mkdir(wordcounts_tmpdir)
 
-# take a copy of the wordcounts before it gets overwritten.
-df_old = pd.read_csv('wordcounts/books-en-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
-
 for d in 'articles', 'short-stories', 'books', 'non-fiction':
     path = os.environ['HOME'] + '/.kindle/documents/' + d
     process_dir(d, path)
@@ -161,13 +158,5 @@ close_filehandles()
 sys.stderr.write('\033[0m')
 
 show_update(wordcounts_tmpdir, 'wordcounts/')
-
-
-# display some information about how the wordcount has changed
-df_new = pd.read_csv('wordcounts/books-en-lengths.txt', sep='\t', names=['words', 'title']).sort(['words']).reset_index(drop=True)
-print
-print 'change in mean:   {:7.0f}'.format((df_new.mean() - df_old.mean())['words'])
-print 'change in median: {:7.0f}'.format((df_new.median() - df_old.median())['words'])
-print
 
 # vim: ts=4 : sw=4 : et
