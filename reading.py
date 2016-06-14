@@ -17,6 +17,8 @@ EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
+tomorrow = pd.to_datetime('today') + pd.Timedelta('1 day')
+
 
 ### load the data and patch it up ##############################################
 
