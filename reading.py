@@ -210,6 +210,39 @@ def reading_rate():
     plt.close()
 
 
+################################################################################
+
+def _make_rating_scatterplot(data, name, **args):
+    import seaborn as sns
+
+    g = sns.JointGrid(x="My Rating", y="Average Rating", data=data)
+    g = g.plot_joint(sns.regplot, **args)
+    g = g.plot_marginals(sns.distplot, kde=False, bins=np.arange(1,6, 0.05))
+
+    g.ax_marg_x.set_xticks(np.arange(1,6))
+    g.ax_marg_y.set_yticks(np.arange(1,6))
+
+    g.ax_marg_x.set_xlim(1,5.1)
+    g.ax_marg_y.set_ylim(1,5)
+
+    plt.savefig('images/' + name)
+    plt.close()
+
+
+def rating_scatter():
+    # select only books i've read where all of these columns are set
+    scoring = df[df['Exclusive Shelf'] == 'read']  \
+                .dropna(subset=['My Rating'])       \
+                .dropna(subset=['Average Rating'])
+
+    scoring['year'] = pd.to_datetime(scoring['Date Read']).dt.year
+    scoring = scoring[(scoring['year'].isnull()) | (scoring['year'] > 2014)]
+
+    _make_rating_scatterplot(scoring, 'scatter_2.png', x_jitter=.1)
+    _make_rating_scatterplot(scoring, 'scatter.png',   x_estimator=np.mean)
+
+
+
 #################################################################################
 
 if __name__ == "__main__":
@@ -217,4 +250,5 @@ if __name__ == "__main__":
     new_authors(df)
     draw_rating_histogram(df)
     reading_rate()
+    rating_scatter()
 
