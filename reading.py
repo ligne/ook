@@ -121,11 +121,7 @@ def annual_reading_rate():
 
 
 def save_image(df, name):
-    # truncate to the interesting bit (after i'd added my books and those from home)
-    df = df.ix['2016-05-13':]
-
-    # stack and plot
-    df.cumsum(axis=1).plot()
+    df.plot()
 
     # force the bottom of the graph to zero
     ylim = plt.ylim()
@@ -147,11 +143,16 @@ def backlog():
         'pending'  : added_pages('currently-reading') + added_pages('pending') + added_pages('read') - completed_pages('read'),
     }, index=ix, columns=['pending', 'ebooks', 'elsewhere'])
 
+    # truncate to the interesting bit (after i'd added my books and those from home)
+    p = p.ix['2016-05-13':].cumsum(axis=1)
+
+    rate = annual_reading_rate().reindex(p.index)
+
     # number of pages
     save_image(p, 'pages')
 
     # scale by the reading rate at that time
-    p = p.divide(annual_reading_rate(), axis=0)
+    p = p.divide(rate, axis=0)
     save_image(p, 'backlog')
 
 
