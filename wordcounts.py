@@ -139,24 +139,24 @@ def process_dir(category, d):
         fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
 
-# main
 
-tmpdir = tempfile.mkdtemp() + '/'
-wordcounts_tmpdir = tmpdir + 'wordcounts/'
+if __name__ == "__main__":
+    tmpdir = tempfile.mkdtemp() + '/'
+    wordcounts_tmpdir = tmpdir + 'wordcounts/'
 
-os.mkdir(wordcounts_tmpdir)
+    os.mkdir(wordcounts_tmpdir)
 
-for d in 'articles', 'short-stories', 'books', 'non-fiction':
-    path = os.environ['HOME'] + '/.kindle/documents/' + d
-    process_dir(d, path)
+    for d in 'articles', 'short-stories', 'books', 'non-fiction':
+        path = os.environ['HOME'] + '/.kindle/documents/' + d
+        process_dir(d, path)
 
-process_dir('articles', os.environ['HOME'] + '/.kindle/documents/')
+    process_dir('articles', os.environ['HOME'] + '/.kindle/documents/')
 
-close_filehandles()
+    close_filehandles()
 
-# reset the colours, because ffs calibre.
-sys.stderr.write('\033[0m')
+    # reset the colours, because ffs calibre.
+    sys.stderr.write('\033[0m')
 
-show_update(wordcounts_tmpdir, 'wordcounts/')
+    show_update(wordcounts_tmpdir, 'wordcounts/')
 
 # vim: ts=4 : sw=4 : et
