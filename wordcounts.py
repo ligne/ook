@@ -126,14 +126,17 @@ def close_filehandles():
 
 
 # processes all the files in directory d
-def process_dir(name, d):
+def process_dir(category, d):
     files = os.walk(d).next()[2]
     for f in files:
+        if f == 'My Clippings.txt':
+            continue
+
         path = d + '/' + f
 
         fi = file_infos(path)
-        fh = get_filehandle(wordcounts_tmpdir, name, fi['language'])
 
+        fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
 
 # main
