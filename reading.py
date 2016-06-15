@@ -3,6 +3,7 @@
 
 import sys
 import glob
+import yaml
 
 import matplotlib
 matplotlib.use('Agg')
@@ -26,28 +27,19 @@ tomorrow = pd.to_datetime('today') + pd.Timedelta('1 day')
 
 ### load the data and patch it up ##############################################
 
-df = pd.read_csv(GR_HISTORY)
+def get_books():
+    df = pd.read_csv(GR_HISTORY, index_col=0)
 
-start_dates = [
-    (35220, '2016/01/01'),  # Red Badge of Courage
-]
-page_counts = [
-    (20618571, 316),  # Tulipe noire
-    (601684,  1317),  # Quarante ans de suspense
-]
+    with open('data/fixes.yml') as fh:
+        df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
 
-for (ii, val) in start_dates:
-    df.loc[df['Book Id'] == ii,'Date Added'] = val
+    for column in ['Date Read', 'Date Added']:
+        df[column] = pd.to_datetime(df[column])
 
-for (ii, val) in page_counts:
-    if df.loc[df['Book Id'] == ii,'Number of Pages'].any():
-        print "already got a page count for", ii
-    df.loc[df['Book Id'] == ii,'Number of Pages'] = val
+    return df
 
 
-df = df.set_index(pd.to_datetime(df['Date Added']))
-df['Date Read'] = pd.to_datetime(df['Date Read'])
-
+df = get_books()
 
 ################################################################################
 
