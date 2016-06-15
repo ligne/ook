@@ -243,13 +243,12 @@ def rating_scatter():
     _make_rating_scatterplot(scoring, 'scatter.png',   x_estimator=np.mean)
 
 
-
 #################################################################################
 
 if __name__ == "__main__":
     backlog()
-    new_authors(df)
-    draw_rating_histogram(df)
+    #new_authors(df)
+    #draw_rating_histogram(df)
     reading_rate()
     rating_scatter()
 
