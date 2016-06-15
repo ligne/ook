@@ -45,9 +45,9 @@ df = get_books()
 
 # from shelf, in direction = date added/read.
 def changed_pages(df, shelf, direction):
-    books = df[df['Exclusive Shelf'] == shelf]
-    return books.set_index(pd.to_datetime(books[direction]))  \
-                  ['Number of Pages']  \
+    return df[df['Exclusive Shelf'] == shelf] \
+                  .set_index([direction])  \
+                   ['Number of Pages']  \
                   .resample('D', how='sum')  \
                   .reindex(index=ix)  \
                   .fillna(0)
