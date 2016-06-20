@@ -127,7 +127,7 @@ def close_filehandles():
 
 # processes all the files in directory d
 def process_dir(category, d):
-    files = os.walk(d).next()[2]
+    files = sorted(os.walk(d).next()[2], key=lambda x: os.path.getmtime(d + '/' + x))
     for f in files:
         if f == 'My Clippings.txt':
             continue
