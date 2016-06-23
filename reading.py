@@ -4,6 +4,7 @@
 import sys
 import glob
 import yaml
+import datetime
 
 import matplotlib
 matplotlib.use('Agg')
@@ -22,7 +23,8 @@ EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
-tomorrow = pd.to_datetime('today') + pd.Timedelta('1 day')
+today = pd.to_datetime('today')
+tomorrow = today + pd.Timedelta('1 day')
 
 
 ### load the data and patch it up ##############################################
@@ -205,6 +207,31 @@ def reading_rate():
 
 ################################################################################
 
+# books i've pencilled in to read this year
+def scheduled():
+    pending = df[df['Exclusive Shelf'] != 'read']
+    pending = pending[pending['Bookshelves'].str.contains(r'\b2016\b', na=False)]
+
+    pages_remaining = pending['Number of Pages'].sum()  \
+                    + added_pages('currently-reading').ix[-1]
+
+    rate = daily_reading_rate().ix[-1]
+
+    days_remaining = (datetime.datetime(today.year, 12, 31) - today).days
+    days_required = pages_remaining / rate
+
+    s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
+    s = pd.Series([days_required], index=['Days required'])
+    s = pd.Series({ 'Days required': days_required })
+
+    s.plot(kind='bar', title='Scheduled books')
+    plt.axhline(days_remaining)
+    plt.savefig('images/scheduled.png', bbox_inches='tight')
+    plt.close()
+
+
+################################################################################
+
 def _make_rating_scatterplot(data, name, **args):
     import seaborn as sns
 
@@ -238,6 +265,7 @@ def rating_scatter():
 #################################################################################
 
 if __name__ == "__main__":
+    scheduled()
     backlog()
     #new_authors(df)
     #draw_rating_histogram(df)
