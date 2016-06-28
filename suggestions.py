@@ -25,7 +25,7 @@ if __name__ == "__main__":
     except:
         size = 10
 
-    df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title']) for f in files])  \
+    df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title', 'author']) for f in files])  \
            .sort(['words'])         \
            .reset_index(drop=True)
 
