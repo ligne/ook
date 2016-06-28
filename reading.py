@@ -223,8 +223,8 @@ def scheduled():
 
     if days_required > days_remaining:
         print "Too many book for this year!"
-        print "{:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_required)
-        print "{:.0f} days at current rate".format(pages_remaining/rate)
+        print "{:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
+        print "{:.0f} days at current rate".format(days_required)
         print "{:.1f}pp/day to read them all".format(pages_remaining/days_remaining)
 
     s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
