@@ -70,6 +70,7 @@ def metadata(path):
 
     title  = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', mi.get('title'), flags=re.I).expandtabs())
     author = re.sub(r'\n', ' ', mi.get('authors')[0])
+    author = format_author(author)
 
     l = mi.get('languages')
     language = 'en'
@@ -83,8 +84,25 @@ def metadata(path):
 def display_title(author, title):
     fmt = '{}'
     if author != 'Unknown':
-        fmt = '{} ({})'
+        fmt = '{}\t{}'
     return fmt.format(title, author)
+
+
+def format_author(author):
+    # strip any obvious dates out
+    author = re.sub(r'\d+\??-\d+\??', '', author)
+
+    # strip stuff in brackets out.  FIXME too aggressive.
+    author = re.sub(r' \(.+?\)', '', author)
+
+    # reorder
+    author = ' '.join([ x for x in reversed(author.split(', ')) if re.search(r'\w', x)])
+
+    # strip/squash unwanted whitespace
+    author = re.sub(r'\s+', ' ', author)
+    author = author.strip()
+
+    return author
 
 
 # formats and prints information about a document (if they exist) to
