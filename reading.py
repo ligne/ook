@@ -222,10 +222,15 @@ def scheduled():
     days_required = pages_remaining / rate
 
     if days_required > days_remaining:
+        days_over = days_required - days_remaining
+        pages_over = pages_remaining - (days_remaining * rate)
+        needed_rate = pages_remaining/days_remaining
+
         print "Too many book for this year!"
-        print "{:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
-        print "{:.0f} days at current rate".format(days_required)
-        print "{:.1f}pp/day to read them all".format(pages_remaining/days_remaining)
+        print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
+        print "    {:.0f} days at current rate".format(days_required)
+        print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
+        print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
 
     s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
     s = pd.Series([days_required], index=['Days required'])
