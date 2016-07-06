@@ -4,5 +4,6 @@
 /articles/
 /wordcounts/
 .*.sw?
+*.pyc
 /images/
 /data/
