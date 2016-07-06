@@ -40,16 +40,23 @@ if __name__ == "__main__":
     files = args.args
 
     try:
+        # only pop if it was numeric
         size = int(files[-1])
         files.pop()
     except:
         size = 10
 
-    df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title', 'author']) for f in files])  \
-           .sort(['words'])         \
-           .reset_index(drop=True)
-
-    # read in the CSVs, sort them, and set the index to match the new order.
+    if len(files):
+        # read in the CSVs, sort them, and set the index to match the new order.
+        df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title', 'author']) for f in files])  \
+               .sort(['words'])         \
+               .reset_index(drop=True)
+    else:
+        # use the goodreads list
+        df = df[df['Exclusive Shelf'] == 'pending']
+        df = df[['Author', 'Number of Pages', 'Title']]
+        df.columns = ['author', 'words', 'title']
+        df = df.sort(['words']).reset_index(drop=True)
 
     median_ix = int(math.floor(len(df.index)/2))
     mean_ix = df[df.words > df.mean().words].index[0]
@@ -62,6 +69,6 @@ if __name__ == "__main__":
     suggestion_median = int(math.floor(len(suggestions.index)/2))
 
     for row in show_nearby(suggestions, suggestion_median, size).iterrows():
-        print '{words:7d}  {title}'.format(**row[1])
+        print '{words:7.0f}  {title}'.format(**row[1])
 
 # vim: ts=4 : sw=4 : et
