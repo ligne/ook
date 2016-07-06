@@ -4,7 +4,6 @@
 import math
 import sys
 import yaml
-import argparse
 import pandas as pd
 
 
@@ -33,11 +32,7 @@ if __name__ == "__main__":
     df = get_books()
 
     # read in the options.
-    parser = argparse.ArgumentParser()
-    parser.add_argument('args', nargs='+')
-    args = parser.parse_args()
-
-    files = args.args
+    files = sys.argv[1:]
 
     try:
         # only pop if it was numeric
