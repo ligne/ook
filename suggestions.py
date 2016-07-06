@@ -8,6 +8,8 @@ import datetime
 
 import pandas as pd
 
+# FIXME warn if any scheduled books are by authors i've already read this
+# year
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
 today = datetime.date.today()
@@ -81,6 +83,6 @@ if __name__ == "__main__":
     suggestion_median = int(math.floor(len(suggestions.index)/2))
 
     for row in show_nearby(suggestions, suggestion_median, size).iterrows():
-        print '{words:7.0f}  {title}'.format(**row[1])
+        print '{words:7.0f}  {title} ({author})'.format(**row[1])
 
 # vim: ts=4 : sw=4 : et
