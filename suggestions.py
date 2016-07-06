@@ -3,15 +3,35 @@
 
 import math
 import sys
+import yaml
 import argparse
 import pandas as pd
+
+
+GR_HISTORY = 'data/goodreads_library_export.csv'
+
 
 def show_nearby(df, index, size):
     s = size - 3
     return df.iloc[(index-s):(index+size)]
 
 
+# load the data and patch it up
+def get_books():
+    df = pd.read_csv(GR_HISTORY, index_col=0)
+
+    with open('data/fixes.yml') as fh:
+        df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
+
+    for column in ['Date Read', 'Date Added']:
+        df[column] = pd.to_datetime(df[column])
+
+    return df
+
+
 if __name__ == "__main__":
+    df = get_books()
+
     # read in the options.
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='+')
