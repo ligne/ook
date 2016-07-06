@@ -208,8 +208,15 @@ def reading_rate():
 ################################################################################
 
 # books i've pencilled in to read this year
-# FIXME check for $year/currently-reading double-counting
 def scheduled():
+    # check for $year/currently-reading double-counting
+    f = df[df['Bookshelves'].str.contains(r'\b2016\b', na=False)]
+    f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks'])]['Title']
+    if len(f):
+        print "Scheduled books on the wrong shelf:"
+        print f
+        print
+
     pending = df[df['Exclusive Shelf'] != 'read']
     pending = pending[pending['Bookshelves'].str.contains(r'\b2016\b', na=False)]
 
