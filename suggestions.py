@@ -4,10 +4,13 @@
 import math
 import sys
 import yaml
+import datetime
+
 import pandas as pd
 
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
+today = datetime.date.today()
 
 
 def show_nearby(df, index, size):
@@ -28,8 +31,20 @@ def get_books():
     return df
 
 
+# return a list of the authors i've read recently (this year, or within the
+# last 6 months).
+#
+# FIXME also books that are read but don't have a date?
+def already_read(df):
+    read = df[df['Exclusive Shelf'] == 'read'].copy()
+    read['age'] = today - read['Date Read']
+    old = read[(read['Date Read'].dt.year == today.year) | (read['age'] < '180 days')]
+    return old['Author'].values
+
+
 if __name__ == "__main__":
     df = get_books()
+    authors = already_read(df)
 
     # read in the options.
     files = sys.argv[1:]
@@ -52,6 +67,8 @@ if __name__ == "__main__":
         df = df[['Author', 'Number of Pages', 'Title']]
         df.columns = ['author', 'words', 'title']
         df = df.sort(['words']).reset_index(drop=True)
+
+    df = df[~df['author'].isin(authors)]
 
     median_ix = int(math.floor(len(df.index)/2))
     mean_ix = df[df.words > df.mean().words].index[0]
