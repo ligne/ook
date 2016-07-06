@@ -42,7 +42,6 @@ echo
 ) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Suggestions.txt
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
-# FIXME log mean/median for each folder?
 (
   echo Articles
   echo
