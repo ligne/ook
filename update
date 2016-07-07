@@ -16,7 +16,7 @@ echo
 # FIXME nothing to do here yet
 
 # take a backup
-rsync -hav --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
+rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
 echo
 
 # recalculate wordcounts
