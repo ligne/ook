@@ -1,16 +1,14 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
-import pandas as pd
 
 sys.path.insert(0, '/usr/lib64/calibre')
 sys.resources_location = os.environ.get('CALIBRE_RESOURCES_PATH', '/usr/share/calibre')
 sys.extensions_location = os.environ.get('CALIBRE_EXTENSIONS_PATH', '/usr/lib64/calibre/calibre/plugins')
 sys.executables_location = os.environ.get('CALIBRE_EXECUTABLES_PATH', '/usr/bin')
-
-from calibre.ebooks.metadata.meta import get_metadata
 
 
 ### some basic initialisation
@@ -18,7 +16,7 @@ from calibre.ebooks.metadata.meta import get_metadata
 DEVNULL = open(os.devnull, 'w')
 
 # cache word-counts
-wcs = shelve.open('.wordcounts.pickle')
+wcs = shelve.open('.wordcounts.shelve', writeback=True)
 
 
 ### Functions and stuff
@@ -26,10 +24,11 @@ wcs = shelve.open('.wordcounts.pickle')
 # returns the wordcount, author and title for a document.
 def file_infos(path):
     if path not in wcs:
-        wcs[path] = wordcount(path)
-    words = wcs[path]
+        wcs[path] = [ wordcount(path), metadata(path) ]
 
-    author, title, language = metadata(path)
+    words = wcs[path][0]
+    (author, title, language) = [ s.encode('utf-8') for s in wcs[path][1:] ]
+
     display = display_title(author, title)
 
     return {
@@ -58,6 +57,8 @@ def wordcount(path):
 
 # returns sanitised versions of the author and title metadata fields.
 def metadata(path):
+    from calibre.ebooks.metadata.meta import get_metadata
+
     stream = open(path, 'r+b')
 
     ext = get_calibre_extension(path)
