@@ -69,6 +69,7 @@ if __name__ == "__main__":
         df = df[['Author', 'Number of Pages', 'Title']]
         df.columns = ['author', 'words', 'title']
         df = df.sort(['words']).reset_index(drop=True)
+        # FIXME remove books if there's already an earlier one in the series
 
     df = df[~df['author'].isin(authors)]
 
