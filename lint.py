@@ -24,17 +24,29 @@ print
 
 
 # check for $year/currently-reading double-counting
-f = df[df['Bookshelves'].str.contains(r'\b2016\b', na=False)]
-f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks'])][['Title', 'Author']]
+f = df[df['Bookshelves'].str.contains(r'\b\d+\b', na=False)]
+f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
 if len(f):
     print "=== Scheduled books on the wrong shelf ==="
     print f
     print
 
 
+# check for books in multiple years
 duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')]
 if len(duplicate_years):
     print '=== Books in multiple years ==='
     print duplicate_years[['Title', 'Author', 'Bookshelves']]
+    print
+
+
+# scheduled books by authors i've already read this year
+
+# duplicate books
+# FIXME may need to fudge the series names?
+duplicate_books = df[df.duplicated(subset=['Title', 'Author'])]
+if len(duplicate_books):
+    print '=== Duplicate books ==='
+    print duplicate_books[['Title', 'Author', 'Bookshelves']]
     print
 
