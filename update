@@ -22,6 +22,8 @@ echo
 # recalculate wordcounts
 ./wordcounts.py
 
+tmpdir=`mktemp -d`
+
 # update suggestions
 (
   echo All Books
@@ -39,7 +41,7 @@ echo
   echo Non-fiction
   echo
   ./suggestions.py wordcounts/non-fiction-*-lengths.txt 15
-) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Suggestions.txt
+) | cut -c-50 > $tmpdir/00\ Suggestions.txt
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
 (
@@ -62,7 +64,7 @@ echo
   echo Non-fiction
   echo
   sort -nr wordcounts/non-fiction-*-lengths.txt
-) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Numeric.txt
+) | cut -c-50 > $tmpdir/00\ Numeric.txt
 (
   echo Articles
   echo
@@ -83,5 +85,8 @@ echo
   echo Non-fiction
   echo
   sort -k2 wordcounts/non-fiction-*-lengths.txt
-) | cut -c-50 > $kindle_dir/documents/wordcounts/00\ Alphabetical.txt
+) | cut -c-50 > $tmpdir/00\ Alphabetical.txt
+
+diff -uwr -x \*.sdr $kindle_dir/documents/wordcounts/ $tmpdir/
+rsync -ha --delete $tmpdir/ $kindle_dir/documents/wordcounts/
 
