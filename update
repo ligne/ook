@@ -87,6 +87,6 @@ tmpdir=`mktemp -d`
   sort -k2 wordcounts/non-fiction-*-lengths.txt
 ) | cut -c-50 > $tmpdir/00\ Alphabetical.txt
 
-diff -uwr -x \*.sdr $kindle_dir/documents/wordcounts/ $tmpdir/
+diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
 rsync -ha --delete $tmpdir/ $kindle_dir/documents/wordcounts/
 
