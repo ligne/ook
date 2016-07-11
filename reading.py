@@ -5,6 +5,7 @@ import sys
 import glob
 import yaml
 import datetime
+import re
 
 import matplotlib
 matplotlib.use('Agg')
@@ -210,38 +211,57 @@ def reading_rate():
 
 ################################################################################
 
+def is_current_year(year):
+    return int(today.year) == int(year)
+
+
+def _days_remaining(year):
+    if is_current_year(year):
+        return (datetime.datetime(int(year), 12, 31) - today).days
+    else:
+        return 365  # FIXME
+
+
 # books i've pencilled in to read this year
 def scheduled():
     pending = df[df['Exclusive Shelf'] != 'read']
-    pending = pending[pending['Bookshelves'].str.contains(r'\b2016\b', na=False)]
 
-    pages_remaining = pending['Number of Pages'].sum()  \
-                    + added_pages('currently-reading').ix[-1]
+    years = df['Bookshelves'].str.split(', ').values
+    years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
-    rate = daily_reading_rate().ix[-1]
+    for year in years:
+        pattern = r'\b{}\b'.format(year)
+        p = pending[pending['Bookshelves'].str.contains(pattern)]
 
-    days_remaining = (datetime.datetime(today.year, 12, 31) - today).days
-    days_required = pages_remaining / rate
+        pages_remaining = p['Number of Pages'].sum()
+        if is_current_year(year):
+            pages_remaining += added_pages('currently-reading').ix[-1]
 
-    if days_required > days_remaining:
-        days_over = days_required - days_remaining
-        pages_over = pages_remaining - (days_remaining * rate)
-        needed_rate = pages_remaining/days_remaining
+        rate = daily_reading_rate().ix[-1]
 
-        print "Too many book for this year!"
-        print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
-        print "    {:.0f} days at current rate".format(days_required)
-        print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
-        print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
+        days_remaining = _days_remaining(year)
+        days_required = pages_remaining / rate
 
-    s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
-    s = pd.Series([days_required], index=['Days required'])
-    s = pd.Series({ 'Days required': days_required })
+        if days_required > days_remaining:
+            days_over = days_required - days_remaining
+            pages_over = pages_remaining - (days_remaining * rate)
+            needed_rate = pages_remaining/days_remaining
 
-    s.plot(kind='bar', title='Scheduled books')
-    plt.axhline(days_remaining)
-    plt.savefig('images/scheduled.png', bbox_inches='tight')
-    plt.close()
+            print "Too many book for this year!"
+            print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
+            print "    {:.0f} days at current rate".format(days_required)
+            print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
+            print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
+
+        s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
+        s = pd.Series([days_required], index=['Days required'])
+        s = pd.Series({ 'Days required': days_required })
+
+        s.plot(kind='bar', title='Scheduled books ({})'.format(year))
+        plt.axhline(days_remaining)
+        filename = 'images/scheduled-{}.png'.format(year)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
 
 
 ################################################################################
