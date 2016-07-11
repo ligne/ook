@@ -38,6 +38,9 @@ def get_books():
     for column in ['Date Read', 'Date Added']:
         df[column] = pd.to_datetime(df[column])
 
+    # this doesn't seem to be set for some reason
+    df['Bookshelves'].fillna('read', inplace=True)
+
     return df
 
 
