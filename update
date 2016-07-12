@@ -17,7 +17,6 @@ echo
 
 # take a backup
 rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
-echo
 
 # recalculate wordcounts
 ./wordcounts.py
