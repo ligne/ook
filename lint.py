@@ -2,29 +2,37 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import datetime
+
+import suggestions
 
 import pandas as pd
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
-df = pd.read_csv(GR_HISTORY).sort('Date Added')
-df = df.set_index(pd.to_datetime(df['Date Added']))
 
-
+df = pd.read_csv(GR_HISTORY, index_col=0)
+for column in ['Date Read', 'Date Added']:
+    df[column] = pd.to_datetime(df[column])
 # this doesn't seem to be set for some reason
 df['Bookshelves'].fillna('read', inplace=True)
+
+
+today = datetime.date.today()
+
 
 pd.set_option('display.max_rows', 999, 'display.width', 1000)
 
 # missing page count
-print '=== Missing page count ==='
-pending = df.ix['2016':][['Title', 'Author', 'Number of Pages']]
-print pending[pending.isnull().any(axis=1)][['Title', 'Author']]
-print
+pending = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
+if len(pending):
+    print '=== Missing page count ==='
+    print pending[pending.isnull().any(axis=1)][['Title', 'Author']]
+    print
 
 
 # check for $year/currently-reading double-counting
-f = df[df['Bookshelves'].str.contains(r'\b\d+\b', na=False)]
+f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
 f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
 if len(f):
     print "=== Scheduled books on the wrong shelf ==="
@@ -41,10 +49,11 @@ if len(duplicate_years):
 
 
 # scheduled books by authors i've already read this year
-import suggestions
+pattern = r'\b{}\b'.format(today.year)
 authors = suggestions.already_read(suggestions.get_books())
-f = df[df['Bookshelves'].str.contains(r'\b2016\b', na=False)]
-duplicate_authors = f[f['Author'].isin(authors)][['Title', 'Author']]
+ignore_authors = [ 'Terry Pratchett' ]
+f = df[df['Bookshelves'].str.contains(pattern)]
+duplicate_authors = f[(f['Author'].isin(authors))&(~f['Author'].isin(ignore_authors))][['Title', 'Author']]
 if len(duplicate_authors):
     print '=== Multiple scheduled books by the same author ==='
     print duplicate_authors[['Title', 'Author']]
