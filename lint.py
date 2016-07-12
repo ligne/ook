@@ -51,3 +51,18 @@ if len(duplicate_books):
     print duplicate_books[['Clean Title', 'Author']]
     print
 
+
+# books with silly formats
+good_bindings = [
+    'Paperback',
+    'Hardcover',
+    'Mass Market Paperback',
+]
+# ignore old books, along with those that i've not properly entered.
+binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
+bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())][['Title', 'Author', 'Binding']]
+if len(bad_binding):
+    print '=== Bad format ==='
+    print bad_binding[['Title', 'Author', 'Binding']]
+    print
+
