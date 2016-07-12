@@ -41,6 +41,15 @@ if len(duplicate_years):
 
 
 # scheduled books by authors i've already read this year
+import suggestions
+authors = suggestions.already_read(suggestions.get_books())
+f = df[df['Bookshelves'].str.contains(r'\b2016\b', na=False)]
+duplicate_authors = f[f['Author'].isin(authors)][['Title', 'Author']]
+if len(duplicate_authors):
+    print '=== Multiple scheduled books by the same author ==='
+    print duplicate_authors[['Title', 'Author']]
+    print
+
 
 # duplicate books
 duplicate_books = df.copy()
