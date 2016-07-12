@@ -43,10 +43,11 @@ if len(duplicate_years):
 # scheduled books by authors i've already read this year
 
 # duplicate books
-# FIXME may need to fudge the series names?
-duplicate_books = df[df.duplicated(subset=['Title', 'Author'])]
+duplicate_books = df.copy()
+duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
+duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
 if len(duplicate_books):
     print '=== Duplicate books ==='
-    print duplicate_books[['Title', 'Author', 'Bookshelves']]
+    print duplicate_books[['Clean Title', 'Author']]
     print
 
