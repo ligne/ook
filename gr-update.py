@@ -4,8 +4,6 @@
 import sys
 import datetime
 
-import suggestions
-
 import pandas as pd
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
@@ -18,8 +16,6 @@ def get_books(filename):
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
 
-    #print df.columns
-
     columns = [
         'Title',
         'Author',
@@ -31,30 +27,30 @@ def get_books(filename):
     return df[columns].sort_index()
 
 
-df1 = get_books(GR_HISTORY)
-df2 = get_books(sys.argv[1])
+df_old = get_books(GR_HISTORY)
+df_new = get_books(sys.argv[1])
 
 # force both to use the same index
-ix = df1.index|df2.index
-df1 = df1.reindex(ix)
-df2 = df2.reindex(ix)
+ix = df_old.index|df_new.index
+df_old = df_old.reindex(ix)
+df_new = df_new.reindex(ix)
 
-ne_stacked = (df1 != df2).stack()
+ne_stacked = (df_old != df_new).stack()
 changed = ne_stacked[ne_stacked]
 
 for (index, _df) in changed.groupby(level=0):
-    if df1.ix[index].isnull().any():
-        print "Removed", df2.ix[index].to_dict()['Title']
-    elif df2.ix[index].isnull().any():
-        print "Added", df1.ix[index].to_dict()['Title']
+    if df_old.ix[index].isnull().any():
+        print "Removed", df_new.ix[index].to_dict()['Title']
+    elif df_new.ix[index].isnull().any():
+        print "Added", df_old.ix[index].to_dict()['Title']
     else:
-        row = df1.ix[index].to_dict()
+        row = df_old.ix[index].to_dict()
         print '{Author}, {Title}'.format(**row)
 
         for col in _df.index.get_level_values(1).values:
             if col == 'Bookshelves':
-                old = set(df2.ix[index][col].split(', '))
-                new = set(df1.ix[index][col].split(', '))
+                old = set(df_new.ix[index][col].split(', '))
+                new = set(df_old.ix[index][col].split(', '))
                 added = new - old
                 removed = old - new
                 print '{}:'.format(col)
@@ -64,7 +60,7 @@ for (index, _df) in changed.groupby(level=0):
                     print '\t+{}'.format(', -'.join(added)),
                 print
             else:
-                print '{}:\n\t{} -> {}'.format(col, df2.ix[index][col], df1.ix[index][col])
+                print '{}:\n\t{} -> {}'.format(col, df_new.ix[index][col], df_old.ix[index][col])
 
     print '----'
 
