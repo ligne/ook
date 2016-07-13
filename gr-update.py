@@ -38,32 +38,31 @@ df_new = df_new.reindex(ix)
 ne_stacked = (df_old != df_new).stack()
 changed = ne_stacked[ne_stacked]
 
-for (index, _df) in changed.groupby(level=0):
-    if df_old.ix[index].isnull().any():
-        print "Removed", df_new.ix[index].to_dict()['Title']
-    elif df_new.ix[index].isnull().any():
-        print "Added", df_old.ix[index].to_dict()['Title']
-    else:
-        row = df_old.ix[index].to_dict()
-        print '{Author}, {Title}'.format(**row)
+for (index, changes) in changed.groupby(level=0):
+    old_row = df_old.ix[index]
+    new_row = df_new.ix[index]
 
-        for col in _df.index.get_level_values(1).values:
+    if new_row.isnull().any():
+        print "Removed", old_row['Title']
+    elif old_row.isnull().any():
+        print "Added", new_row['Title']
+    else:
+        print '{Author}, {Title}'.format(**old_row)
+
+        for col in changes.index.get_level_values(1).values:
             if col == 'Bookshelves':
-                old = set(df_new.ix[index][col].split(', '))
-                new = set(df_old.ix[index][col].split(', '))
+                old = set(old_row[col].split(', '))
+                new = set(new_row[col].split(', '))
                 added = new - old
                 removed = old - new
                 print '{}:'.format(col)
                 if removed:
                     print '\t-{}'.format(', -'.join(removed)),
                 if added:
-                    print '\t+{}'.format(', -'.join(added)),
+                    print '\t+{}'.format(', +'.join(added)),
                 print
             else:
-                print '{}:\n\t{} -> {}'.format(col, df_new.ix[index][col], df_old.ix[index][col])
+                print '{}:\n\t{} -> {}'.format(col, old_row[col], new_row[col])
 
-    print '----'
-
-
-    # FIXME handle books where the title has changed?
+    print
 
