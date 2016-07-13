@@ -242,7 +242,8 @@ def scheduled():
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
 
-        if days_required > days_remaining:
+        # give a 10% margin before the warnings start.
+        if days_required > 1.1 * days_remaining:
             days_over = days_required - days_remaining
             pages_over = pages_remaining - (days_remaining * rate)
             needed_rate = pages_remaining/days_remaining
