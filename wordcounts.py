@@ -24,10 +24,14 @@ wcs = shelve.open('.wordcounts.shelve', writeback=True)
 # returns the wordcount, author and title for a document.
 def file_infos(path):
     if path not in wcs:
-        wcs[path] = [ wordcount(path), metadata(path) ]
-
-    words = wcs[path][0]
-    (author, title, language) = [ s.encode('utf-8') for s in wcs[path][1:] ]
+        (author, title, language) = metadata(path)
+        words = wordcount(path)
+        # only cache if there's a wordcount
+        if words:
+            wcs[path] = [ words, author, title, language ]
+    else:
+        words = wcs[path][0]
+        (author, title, language) = [ s.encode('utf-8') for s in wcs[path][1:] ]
 
     display = display_title(author, title)
 
@@ -43,9 +47,13 @@ def file_infos(path):
 
 # returns the wordcount for a document.
 def wordcount(path):
-    if subprocess.call(['ebook-convert', path, '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
-        print "something wrong counting words in", path
-        return
+    try:
+        if subprocess.call(['ebook-convert', path, '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
+            print "something wrong counting words in", path
+            return
+    except OSError:
+        # ebook-convert probably doesn't exist
+        return 0
 
     words = 0
     with open('/tmp/test.txt', 'r') as book:
@@ -57,7 +65,11 @@ def wordcount(path):
 
 # returns sanitised versions of the author and title metadata fields.
 def metadata(path):
-    from calibre.ebooks.metadata.meta import get_metadata
+    try:
+        from calibre.ebooks.metadata.meta import get_metadata
+    except ImportError:
+        name = re.sub('_.{32}.azw3$', '', os.path.basename(path))
+        return ('', name, 'en')
 
     stream = open(path, 'r+b')
 
@@ -109,7 +121,7 @@ def format_author(author):
 # formats and prints information about a document (if they exist) to
 # $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
-    if fi and fi['words'] is not None:
+    if fi:
 #        print '\033[32m' + fi['title'] + '\033[00m'
         filehandle.write('{words}\t{display}\n'.format(**fi))
 
