@@ -58,8 +58,13 @@ for (index, changes) in changed.groupby(level=0):
             if col == 'Bookshelves':
                 old = set(old_row[col].split(', '))
                 new = set(new_row[col].split(', '))
-                added = new - old
-                removed = old - new
+
+                added   = new - old - set([new_row['Exclusive Shelf']])
+                removed = old - new - set([old_row['Exclusive Shelf']])
+
+                if not (added or removed):
+                    continue
+
                 print '{}:'.format(col)
                 if removed:
                     print '\t-{}'.format(', -'.join(removed)),
