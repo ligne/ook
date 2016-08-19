@@ -10,7 +10,12 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 
 
 def get_books(filename):
-    df = pd.read_csv(filename, index_col=0)
+    try:
+        df = pd.read_csv(filename, index_col=0)
+    except IOError:
+        print "Missing file: '{}'".format(filename)
+        sys.exit()
+
     for column in ['Date Read', 'Date Added']:
         df[column] = pd.to_datetime(df[column])
     # this doesn't seem to be set for some reason
