@@ -69,5 +69,5 @@ for (index, changes) in changed.groupby(level=0):
             else:
                 print '{}:\n\t{} -> {}'.format(col, old_row[col], new_row[col])
 
-    print
+    print '----'
 
