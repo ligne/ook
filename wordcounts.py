@@ -81,7 +81,7 @@ def metadata(path):
         print "something wrong with", path
         return
 
-    title  = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', mi.get('title'), flags=re.I).expandtabs())
+    title = format_title(mi.get('title'))
     author = re.sub(r'\n', ' ', mi.get('authors')[0])
     author = format_author(author)
 
@@ -116,6 +116,17 @@ def format_author(author):
     author = author.strip()
 
     return author
+
+
+def format_title(title):
+    title = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', title, flags=re.I).expandtabs())
+    title = re.sub(r'Tome [IV]+', '', title)
+    title = re.sub(r'Vol(ume|\.) [IV\d]+ \(of \d+\)', '', title)
+    title = re.sub(r'tome .*', '', title)
+
+    title = re.sub(r'[/ .,]+$', '', title)
+
+    return title
 
 
 # formats and prints information about a document (if they exist) to
@@ -158,15 +169,29 @@ def close_filehandles():
 
 # processes all the files in directory d
 def process_dir(category, d):
-    files = sorted(os.walk(d).next()[2], key=lambda x: os.path.getmtime(d + '/' + x))
-    for f in files:
+    entries = {}
+    for f in os.walk(d).next()[2]:
         if f == 'My Clippings.txt':
             continue
 
         path = d + '/' + f
 
         fi = file_infos(path)
+        mtime = os.path.getmtime(path)
 
+        # don't merge articles
+        if category == 'articles':
+            entry = path
+        else:
+            entry = (fi['author'], fi['title'])
+
+        # add together multiple volumes of the same work
+        if entry in entries:
+            entries[entry][1]['words'] += fi['words']
+        else:
+            entries[entry] = (mtime, fi)
+
+    for (entry, (mtime, fi)) in sorted(entries.items(), key=lambda x: x[1][0]):
         fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
 
