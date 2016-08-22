@@ -296,7 +296,7 @@ def rating_scatter():
                 .dropna(subset=['My Rating'])       \
                 .dropna(subset=['Average Rating'])
 
-    scoring['year'] = pd.to_datetime(scoring['Date Read']).dt.year
+    scoring['year'] = scoring['Date Read'].dt.year
     scoring = scoring[(scoring['year'].isnull()) | (scoring['year'] > 2014)]
 
     _make_rating_scatterplot(scoring, 'scatter_2.png', x_jitter=.1)
