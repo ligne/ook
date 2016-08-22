@@ -254,9 +254,7 @@ def scheduled():
             print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
             print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
 
-        s = pd.Series([days_remaining, days_required], index=['Days remaining', 'Days required'])
-        s = pd.Series([days_required], index=['Days required'])
-        s = pd.Series({ 'Days required': days_required })
+        s = pd.Series({ 'Days': days_required })
 
         s.plot(kind='bar', title='Scheduled books ({})'.format(year))
         plt.axhline(days_remaining)
