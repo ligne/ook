@@ -262,6 +262,14 @@ def scheduled():
         plt.savefig(filename, bbox_inches='tight')
         plt.close()
 
+        s = pd.Series({ 'Pages': pages_remaining })
+
+        s.plot(kind='bar', title='Scheduled books ({})'.format(year))
+        plt.axhline(days_remaining * rate)
+        filename = 'images/scheduled-pages-{}.png'.format(year)
+        plt.savefig(filename, bbox_inches='tight')
+        plt.close()
+
 
 ################################################################################
 
