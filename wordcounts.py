@@ -191,7 +191,7 @@ def process_dir(category, d):
         else:
             entries[entry] = (mtime, fi)
 
-    for (entry, (mtime, fi)) in sorted(entries.items(), key=lambda x: x[1][0]):
+    for (mtime, fi) in sorted(entries.values(), key=lambda x: x[0]):
         fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
 
