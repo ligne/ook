@@ -166,20 +166,24 @@ def draw_rating_histogram(df):
 def new_authors(df):
     authors = df.dropna(subset=['Date Read']).sort('Date Read')
 
-    authors = authors.groupby('Author')
-
     # how many new authors a year
-    first = authors.first()
-    first['year'] = first['Date Read'].dt.year
-    print first['year']
-    first.groupby('year').size().plot()
+    first = authors.drop_duplicates(['Author'])  \
+                 .set_index('Date Read')  \
+                 ['Author']  \
+                 .resample('D', how='count')  \
+                 .reindex(pd.DatetimeIndex(start='2015-01-01', end='today', freq='D'))
 
-    # force the bottom of the graph to zero
+#    print first[['Author', 'Date Read']]
+    pd.rolling_sum(first, window=365).ffill().ix['2016':].plot()
+
+    # force the bottom of the graph to zero and make sure the top doesn't clip.
     ylim = plt.ylim()
-    plt.ylim([ min(ylim[0], 0), ylim[1] ])
+    plt.ylim([ min(ylim[0], 0), ylim[1]+1 ])
 
     # prettify and save
     name = 'new_authors'
+    plt.grid(True)
+    plt.title('New authors')
     plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
     plt.close()
 
@@ -308,7 +312,7 @@ def rating_scatter():
 if __name__ == "__main__":
     scheduled()
     backlog()
-    #new_authors(df)
+    new_authors(df)
     #draw_rating_histogram(df)
     reading_rate()
     rating_scatter()
