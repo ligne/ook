@@ -166,14 +166,16 @@ def draw_rating_histogram(df):
 def new_authors(df):
     authors = df.dropna(subset=['Date Read']).sort('Date Read')
 
+    next_year = today + pd.Timedelta('365 days')
+
     # how many new authors a year
     first = authors.drop_duplicates(['Author'])  \
                  .set_index('Date Read')  \
                  ['Author']  \
                  .resample('D', how='count')  \
-                 .reindex(pd.DatetimeIndex(start='2015-01-01', end='today', freq='D'))
+                 .reindex(pd.DatetimeIndex(start='2015-01-01', end=next_year, freq='D'))  \
+                 .fillna(0)
 
-#    print first[['Author', 'Date Read']]
     pd.rolling_sum(first, window=365).ffill().ix['2016':].plot()
 
     # force the bottom of the graph to zero and make sure the top doesn't clip.
