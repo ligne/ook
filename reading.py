@@ -185,6 +185,7 @@ def new_authors(df):
     # prettify and save
     name = 'new_authors'
     plt.grid(True)
+    plt.axvspan(today, first.index[-1], color='k', alpha=0.1)
     plt.title('New authors')
     plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
     plt.close()
