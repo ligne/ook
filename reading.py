@@ -236,7 +236,7 @@ def scheduled():
     years = df['Bookshelves'].str.split(', ').values
     years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
-    for year in years:
+    for year in sorted(years):
         pattern = r'\b{}\b'.format(year)
         p = pending[pending['Bookshelves'].str.contains(pattern)]
 
@@ -255,11 +255,12 @@ def scheduled():
             pages_over = pages_remaining - (days_remaining * rate)
             needed_rate = pages_remaining/days_remaining
 
-            print "Too many book for this year!"
+            print "Too many books for {}:".format(year)
             print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
             print "    {:.0f} days at current rate".format(days_required)
             print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
             print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
+            print
 
         s = pd.Series({ 'Days': days_required })
 
