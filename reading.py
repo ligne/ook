@@ -208,9 +208,9 @@ def reading_rate():
     }, index=reading.index)
 
     p.plot(title='Pages read per day')
-    name = 'rate'
 
     # prettify and save
+    name = 'rate'
     plt.grid(True)
     #plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
     plt.savefig('images/{}.png'.format(name))
