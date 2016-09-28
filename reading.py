@@ -138,8 +138,9 @@ def backlog():
     p = pd.DataFrame({
         'elsewhere': added_pages('elsewhere'),
         'ebooks'   : ebook_pages(),
-        'pending'  : added_pages('currently-reading') + added_pages('pending') + added_pages('read') - completed_pages('read'),
-    }, index=ix, columns=['pending', 'ebooks', 'elsewhere'])
+        'pending'  : added_pages('currently-reading') + added_pages('pending'),
+        'read'     : added_pages('read') - completed_pages('read'),
+    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere'])
 
     # truncate to the interesting bit (after i'd added my books and those from home)
     p = p.ix['2016-05-13':].cumsum(axis=1)
