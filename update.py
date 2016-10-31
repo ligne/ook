@@ -1,14 +1,16 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# kindle_dir=/run/media/mlb/Kindle
-# [ -d "$kindle_dir" ] || {
-#   echo Kindle not mounted.
-#   exit 1
-# }
-#
-# cd ~/ebooks/
-#
+import sys, os
+
+kindle_dir = '/run/media/mlb/Kindle'
+
+if not os.path.isdir(kindle_dir):
+    print "Kindle not mounted"
+    sys.exit(1)
+
+os.chdir(os.environ['HOME'] + '/ebooks')
+
 # # clean up cruft
 # ./clean.py
 # echo
