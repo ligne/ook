@@ -183,6 +183,8 @@ def new_authors(df):
     ylim = plt.ylim()
     plt.ylim([ min(ylim[0], 0), ylim[1]+1 ])
 
+    plt.axhline(12, color='k', alpha=0.5)
+
     # prettify and save
     name = 'new_authors'
     plt.grid(True)
