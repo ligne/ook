@@ -2,8 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import sys, os
+import tempfile
+import subprocess
 
-kindle_dir = '/run/media/mlb/Kindle'
+
+kindle_dir = '/run/media/mlb/Kindle/'
+backup_dir = '/home/local/mlb/.kindle/'
+exclude_file = os.environ['HOME'] + '/.kindle-excludes'
+
 
 if not os.path.isdir(kindle_dir):
     print "Kindle not mounted"
@@ -11,24 +17,26 @@ if not os.path.isdir(kindle_dir):
 
 os.chdir(os.environ['HOME'] + '/ebooks')
 
-# # clean up cruft
-# ./clean.py
+# clean up cruft
+subprocess.call(['./clean.py'])
 # echo
-#
-# # copy any new files over
-# # FIXME nothing to do here yet
-#
-# # take a backup
-# rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
-#
-# # recalculate wordcounts
-# ./wordcounts.py
-#
-# # regenerate the graphs and update the total ebook wordcount
-# ./reading.py
-#
-# tmpdir=`mktemp -d`
-#
+
+# copy any new files over
+# FIXME nothing to do here yet
+
+# take a backup
+subprocess.call(['rsync', '-ha', '--delete', '--exclude-from', exclude_file, kindle_dir, backup_dir])
+
+# recalculate wordcounts
+subprocess.call(['./wordcounts.py'])
+
+# regenerate the graphs and update the total ebook wordcount
+subprocess.call(['./reading.py'])
+
+
+tmpdir = tempfile.mkdtemp()
+print tmpdir
+
 # # update suggestions
 # (
 #   echo All Books
