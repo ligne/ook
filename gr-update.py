@@ -48,9 +48,9 @@ for (index, changes) in changed.groupby(level=0):
     new_row = df_new.ix[index]
 
     if new_row.isnull().any():
-        print "Removed {Title} by {Author}".format(**old_row)
+        print "Removed '{Title}' by {Author}".format(**old_row)
     elif old_row.isnull().any():
-        print "Added {Title} by {Author}".format(**new_row)
+        print "Added '{Title}' by {Author}".format(**new_row)
         # also show any bookshelves it's been added to
         print 'Bookshelves:'
         print '\t', new_row['Bookshelves']
