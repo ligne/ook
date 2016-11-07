@@ -25,9 +25,10 @@ pd.set_option('display.max_rows', 999, 'display.width', 1000)
 
 # missing page count
 pending = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
-if len(pending):
+missing = pending[pending.isnull().any(axis=1)][['Title', 'Author']]
+if len(missing):
     print '=== Missing page count ==='
-    print pending[pending.isnull().any(axis=1)][['Title', 'Author']]
+    print missing
     print
 
 
