@@ -23,6 +23,9 @@ import wordcounts
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
 
+# the cutoff year before which books are considered "old".
+thresh = 1940
+
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
 today = pd.to_datetime('today')
 tomorrow = today + pd.Timedelta('1 day')
@@ -194,6 +197,64 @@ def new_authors(df):
     plt.close()
 
 
+def median_date(df):
+    read = df[df['Exclusive Shelf'] == 'read'].dropna(subset=['Date Read'])
+
+    read.loc[:,'Original Publication Year'].fillna(read['Year Published'], inplace=True)
+
+    read = read.set_index('Date Read')  \
+                ['Original Publication Year']  \
+                .resample('D')
+
+    read = pd.rolling_median(read, 365, min_periods=0)
+    read = pd.rolling_mean(read, 30)
+
+    read.reindex(ix).ffill().ix['2016':].plot()
+
+    # set the top of the graph to the current year
+    plt.ylim([ plt.ylim()[0], today.year ])
+
+    plt.axhline(thresh, color='k', alpha=0.5)
+
+    # prettify and save
+    name = 'median_date'
+    plt.grid(True)
+    plt.title('Median publication year')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
+# ratio of old/new books
+def oldness(df):
+    read = df[df['Exclusive Shelf'] == 'read'].dropna(subset=['Date Read'])
+
+    # use the edition year if the original publication year was missing
+    read.loc[:,'Original Publication Year'].fillna(read['Year Published'], inplace=True)
+
+    df['thresh'] = df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0))
+    df['total'] = df['Original Publication Year'].apply(lambda x: 1)
+
+    df = df.set_index('Date Read')  \
+           .resample('D', how='sum')  \
+           .fillna(0)
+
+    df['rate'] = (pd.rolling_sum(df.thresh, 365) / pd.rolling_sum(df.total, 365))
+
+    pd.rolling_mean(df['rate'], 10, min_periods=0).reindex(ix).ffill().plot()
+
+    # set to the full range
+    plt.ylim([ 0, 1 ])
+
+    plt.axhline(0.5, color='k', alpha=0.5)
+
+    # prettify and save
+    name = 'old_books'
+    plt.grid(True)
+    plt.title('Old books')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 # plot reading rate so far.
 def reading_rate():
     pending = df.dropna(subset=['Date Read'])
@@ -317,6 +378,8 @@ def rating_scatter():
 #################################################################################
 
 if __name__ == "__main__":
+    oldness(df)
+    median_date(df)
     scheduled()
     backlog()
     new_authors(df)
