@@ -45,6 +45,14 @@ def already_read(df):
     return old['Author'].values
 
 
+ignored_authors = already_read(get_books())
+
+
+# filter out authors from the list
+def ignore_authors(df):
+    return df[~df['author'].isin(ignored_authors)]
+
+
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
@@ -98,10 +106,8 @@ if __name__ == "__main__":
         df = df.sort(['words']).reset_index(drop=True)
         # FIXME remove books if there's already an earlier one in the series
 
-    df = df[~df['author'].isin(authors)]
-
+    df = ignore_authors(df)
     df = limit_rows(df, size)
-
     print_rows(df)
 
 # vim: ts=4 : sw=4 : et
