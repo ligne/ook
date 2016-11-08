@@ -5,6 +5,7 @@ import math
 import sys
 import yaml
 import datetime
+import argparse
 
 import pandas as pd
 
@@ -49,7 +50,11 @@ if __name__ == "__main__":
     authors = already_read(df)
 
     # read in the options.
-    files = sys.argv[1:]
+    parser = argparse.ArgumentParser()
+    parser.add_argument('args', nargs='*')
+    args = parser.parse_args()
+
+    files = args.args
 
     try:
         # only pop if it was numeric
