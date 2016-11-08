@@ -45,6 +45,28 @@ def already_read(df):
     return old['Author'].values
 
 
+# pick (FIXME approximately) $size rows from around the median and mean of the
+# list.
+def limit_rows(df, size):
+    median_ix = int(math.floor(len(df.index)/2))
+    mean_ix = df[df.words > df.mean().words].index[0]
+
+    suggestions = pd.concat([
+        show_nearby(df, median_ix, size),
+        show_nearby(df, mean_ix, size)
+    ], ignore_index=True).drop_duplicates()
+
+    suggestion_median = int(math.floor(len(suggestions.index)/2))
+
+    return show_nearby(suggestions, suggestion_median, size)
+
+
+# prints it out.  FIXME hande missing author better.  FIXME allow sorting/grouping by author?
+def print_rows(df):
+    for row in df.iterrows():
+        print '{words:7.0f}  {title} ({author})'.format(**row[1])
+
+
 if __name__ == "__main__":
     df = get_books()
     authors = already_read(df)
@@ -78,17 +100,8 @@ if __name__ == "__main__":
 
     df = df[~df['author'].isin(authors)]
 
-    median_ix = int(math.floor(len(df.index)/2))
-    mean_ix = df[df.words > df.mean().words].index[0]
+    df = limit_rows(df, size)
 
-    suggestions = pd.concat([
-        show_nearby(df, median_ix, size),
-        show_nearby(df, mean_ix, size)
-    ], ignore_index=True).drop_duplicates()
-
-    suggestion_median = int(math.floor(len(suggestions.index)/2))
-
-    for row in show_nearby(suggestions, suggestion_median, size).iterrows():
-        print '{words:7.0f}  {title} ({author})'.format(**row[1])
+    print_rows(df)
 
 # vim: ts=4 : sw=4 : et
