@@ -15,10 +15,6 @@ import numpy as np
 
 import wordcounts
 
-# TODO
-#   + gantt-style chart of started/ended/pages:  http://stackoverflow.com/questions/18066781/create-gantt-plot-with-python-matplotlib
-#   + number of books over time
-
 
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 GR_HISTORY = 'data/goodreads_library_export.csv'
