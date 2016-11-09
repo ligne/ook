@@ -65,6 +65,13 @@ def scheduled(df):
     return _scheduled_for_year(df, datetime.date.today().year)
 
 
+# Scheduled for next year but not by already read author
+# FIXME remove any by scheduled authors
+def bump(df):
+    df = _scheduled_for_year(df, today.year + 1)
+    return ignore_authors(df)
+
+
 # books by authors that i've read before
 # FIXME: ignore books by authors who are already scheduled
 def old_authors(df):
@@ -123,6 +130,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='*')
     parser.add_argument('--scheduled', action="store_true")
+    parser.add_argument('--bump', action="store_true")
     parser.add_argument('--new-authors', action="store_true")
     parser.add_argument('--old-authors', action="store_true")
     args = parser.parse_args()
@@ -145,6 +153,8 @@ if __name__ == "__main__":
         df = limit_rows(df, size)
     elif args.scheduled:
         df = scheduled(df)
+    elif args.bump:
+        df = bump(df)
     elif args.old_authors:
         df = old_authors(df)
     elif args.new_authors:
