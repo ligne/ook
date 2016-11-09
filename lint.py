@@ -3,6 +3,7 @@
 
 import sys
 import datetime
+import yaml
 
 import suggestions
 
@@ -12,8 +13,13 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 
 
 df = pd.read_csv(GR_HISTORY, index_col=0)
-for column in ['Date Read', 'Date Added']:
+
+with open('data/started.yml') as fh:
+    df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
+
+for column in ['Date Read', 'Date Added', 'Date Started']:
     df[column] = pd.to_datetime(df[column])
+
 # this doesn't seem to be set for some reason
 df['Bookshelves'].fillna('read', inplace=True)
 
@@ -29,6 +35,15 @@ missing = pending[pending.isnull().any(axis=1)][['Title', 'Author']]
 if len(missing):
     print '=== Missing page count ==='
     print missing
+    print
+
+
+# i've not manually added the start date
+df = df[df['Date Read'].dt.year >= 2016]
+missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
+if len(missing_start):
+    print '=== Missing a start date ==='
+    print missing_start
     print
 
 
