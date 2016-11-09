@@ -53,6 +53,18 @@ def ignore_authors(df):
     return df[~df['author'].isin(ignored_authors)]
 
 
+def _scheduled_for_year(df, year):
+    df = df[df['Bookshelves'].fillna('').str.contains(str(year))]
+    df = df[['Author', 'Number of Pages', 'Title']]
+    df.columns = ['author', 'words', 'title']
+    return df.sort(['words']).reset_index(drop=True)
+
+
+# books scheduled for the current year
+def scheduled(df):
+    return _scheduled_for_year(df, datetime.date.today().year)
+
+
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
@@ -82,6 +94,7 @@ if __name__ == "__main__":
     # read in the options.
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='*')
+    parser.add_argument('--scheduled', action="store_true")
     args = parser.parse_args()
 
     files = args.args
@@ -100,6 +113,8 @@ if __name__ == "__main__":
                .reset_index(drop=True)
         df = ignore_authors(df)
         df = limit_rows(df, size)
+    elif args.scheduled:
+        df = scheduled(df)
     else:
         # use the goodreads list
         df = df[df['Exclusive Shelf'] == 'pending']
