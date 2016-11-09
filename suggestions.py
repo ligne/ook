@@ -98,6 +98,8 @@ if __name__ == "__main__":
         df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title', 'author']) for f in files])  \
                .sort(['words'])         \
                .reset_index(drop=True)
+        df = ignore_authors(df)
+        df = limit_rows(df, size)
     else:
         # use the goodreads list
         df = df[df['Exclusive Shelf'] == 'pending']
@@ -106,8 +108,9 @@ if __name__ == "__main__":
         df = df.sort(['words']).reset_index(drop=True)
         # FIXME remove books if there's already an earlier one in the series
 
-    df = ignore_authors(df)
-    df = limit_rows(df, size)
+        df = ignore_authors(df)
+        df = limit_rows(df, size)
+
     print_rows(df)
 
 # vim: ts=4 : sw=4 : et
