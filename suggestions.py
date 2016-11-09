@@ -62,7 +62,7 @@ def _scheduled_for_year(df, year):
 
 # books scheduled for the current year
 def scheduled(df):
-    return _scheduled_for_year(df, datetime.date.today().year)
+    return ignore_authors(_scheduled_for_year(df, today.year))
 
 
 # Scheduled for next year but not by already read author
