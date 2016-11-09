@@ -39,7 +39,10 @@ def get_books():
     with open('data/fixes.yml') as fh:
         df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
 
-    for column in ['Date Read', 'Date Added']:
+    with open('data/started.yml') as fh:
+        df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
+
+    for column in ['Date Read', 'Date Added', 'Date Started']:
         df[column] = pd.to_datetime(df[column])
 
     # this doesn't seem to be set for some reason
