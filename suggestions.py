@@ -65,6 +65,34 @@ def scheduled(df):
     return _scheduled_for_year(df, datetime.date.today().year)
 
 
+# books by authors that i've read before
+# FIXME: ignore books by authors who are already scheduled
+def old_authors(df):
+    # list of all authors i've previously read
+    authors = df[df['Exclusive Shelf'] == 'read']['Author'].values
+    df = df[df['Exclusive Shelf'].isin(['pending', 'elsewhere'])]
+    df = df[['Author', 'Number of Pages', 'Title']]
+    df.columns = ['author', 'words', 'title']
+    df = df[df['author'].isin(authors)]
+
+    # remove ones i've already read this year
+    return ignore_authors(df).sort(['words'])
+
+
+# books by authors i've not read before
+# FIXME only unscheduled?
+def new_authors(df):
+    # list of all authors i've previously read
+    authors = df[df['Exclusive Shelf'] == 'read']['Author'].values
+
+    df = df[df['Exclusive Shelf'].isin(['pending', 'elsewhere'])]
+
+    df = df[['Author', 'Number of Pages', 'Title']]
+    df.columns = ['author', 'words', 'title']
+
+    return df[~df['author'].isin(authors)].sort(['words'])
+
+
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
@@ -95,6 +123,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='*')
     parser.add_argument('--scheduled', action="store_true")
+    parser.add_argument('--new-authors', action="store_true")
+    parser.add_argument('--old-authors', action="store_true")
     args = parser.parse_args()
 
     files = args.args
@@ -115,6 +145,10 @@ if __name__ == "__main__":
         df = limit_rows(df, size)
     elif args.scheduled:
         df = scheduled(df)
+    elif args.old_authors:
+        df = old_authors(df)
+    elif args.new_authors:
+        df = new_authors(df)
     else:
         # use the goodreads list
         df = df[df['Exclusive Shelf'] == 'pending']
