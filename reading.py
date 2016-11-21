@@ -332,6 +332,9 @@ def scheduled():
     years = df['Bookshelves'].str.split(', ').values
     years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
+    fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
+    sp = 0
+
     for year in sorted(years):
         p = _scheduled_for_year(pending, year)
 
@@ -355,21 +358,21 @@ def scheduled():
             print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
             print
 
-        s = pd.Series({ 'Days': days_required })
+        ax = axes[sp]
+        pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax)
+        ax.axhline(_days_remaining(year) * rate)
 
-        s.plot(kind='bar', title='Scheduled books ({})'.format(year))
-        plt.axhline(days_remaining)
-        filename = 'images/scheduled-{}.png'.format(year)
-        plt.savefig(filename, bbox_inches='tight')
-        plt.close()
+        # set the right-hand ticks.  no label except on final column
+        axr = ax.twinx()
+        axr.set_ylim([ x / rate for x in ax.get_ylim() ])
+        if ax != axes[-1]:
+            axr.set_yticklabels([])
 
-        s = pd.Series({ 'Pages': pages_remaining })
+        sp += 1
 
-        s.plot(kind='bar', title='Scheduled books ({})'.format(year))
-        plt.axhline(days_remaining * rate)
-        filename = 'images/scheduled-pages-{}.png'.format(year)
-        plt.savefig(filename, bbox_inches='tight')
-        plt.close()
+    filename = 'images/scheduled.png'
+    plt.savefig(filename, bbox_inches='tight')
+    plt.close()
 
 
 ################################################################################
