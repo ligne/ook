@@ -318,6 +318,11 @@ def _days_remaining(year):
         return 365  # FIXME
 
 
+def _scheduled_for_year(df, year):
+    pattern = r'\b{}\b'.format(str(year))
+    return df[df['Bookshelves'].str.contains(pattern)]
+
+
 # books i've pencilled in to read this year
 def scheduled():
     pending = df[df['Exclusive Shelf'] != 'read']
@@ -326,8 +331,7 @@ def scheduled():
     years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
     for year in sorted(years):
-        pattern = r'\b{}\b'.format(year)
-        p = pending[pending['Bookshelves'].str.contains(pattern)]
+        p = _scheduled_for_year(pending, year)
 
         pages_remaining = p['Number of Pages'].sum()
         if is_current_year(year):
