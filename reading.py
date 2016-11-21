@@ -327,6 +327,8 @@ def _scheduled_for_year(df, year):
 def scheduled():
     pending = df[df['Exclusive Shelf'] != 'read']
 
+    rate = daily_reading_rate().ix[-1]
+
     years = df['Bookshelves'].str.split(', ').values
     years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
@@ -336,8 +338,6 @@ def scheduled():
         pages_remaining = p['Number of Pages'].sum()
         if is_current_year(year):
             pages_remaining += added_pages('currently-reading').ix[-1]
-
-        rate = daily_reading_rate().ix[-1]
 
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
