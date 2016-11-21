@@ -279,6 +279,32 @@ def reading_rate():
     plt.close()
 
 
+def rate_area(df):
+    df = df[df['Date Read'].dt.year >= 2016].copy()
+
+    df['ppd'] = df['Number of Pages'] / ((df['Date Read'] - df['Date Started']).dt.days + 1)
+
+    print df.sort(['Date Started'])[['Title', 'ppd']]
+
+    g = pd.DataFrame(index=ix)
+
+    for ii, row in df.sort(['Date Started']).iterrows():
+        g[ii] = pd.Series({
+            row['Date Started']: row['ppd'],
+            row['Date Read']: 0,
+        }, index=ix).ffill()
+
+    g = g.plot(title='Reading rate', kind='area')
+
+    # prettify and save
+    name = 'rate_area'
+    plt.grid(True)
+    # the legend doesn't help
+    plt.legend().set_visible(False)
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 ################################################################################
 
 def is_current_year(year):
@@ -377,6 +403,7 @@ def rating_scatter():
 #################################################################################
 
 if __name__ == "__main__":
+    rate_area(df)
     oldness(df)
     median_date(df)
     scheduled()
