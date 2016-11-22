@@ -55,29 +55,37 @@ def _scheduled_for_year(df, year):
     return df.sort(['words']).reset_index(drop=True)
 
 
+# authors whose books are still scheduled for this year
+def _scheduled_authors(df):
+    return _scheduled_for_year(df, today.year)['author'].values
+
+
 # books scheduled for the current year
 def scheduled(df):
     return ignore_authors(_scheduled_for_year(df, today.year))
 
 
 # Scheduled for next year but not by already read author
-# FIXME remove any by scheduled authors
 def bump(df):
+    df = df[~df['Author'].isin(_scheduled_authors(df))]
     df = _scheduled_for_year(df, today.year + 1)
     return ignore_authors(df)
 
 
 # books by authors that i've read before
-# FIXME: ignore books by authors who are already scheduled
 def old_authors(df):
     # list of all authors i've previously read
     authors = df[df['Exclusive Shelf'] == 'read']['Author'].values
+    scheduled_authors = _scheduled_authors(df)
     df = df[df['Exclusive Shelf'].isin(['pending', 'elsewhere'])]
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
     df = df[df['author'].isin(authors)]
 
     # remove ones i've already read this year
+    # removed scheduled authors
+    df = df[~df['author'].isin(scheduled_authors)]
+
     return ignore_authors(df).sort(['words'])
 
 
