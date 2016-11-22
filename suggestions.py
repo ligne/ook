@@ -9,22 +9,10 @@ import argparse
 
 import pandas as pd
 
+import reading
 
-GR_HISTORY = 'data/goodreads_library_export.csv'
+
 today = datetime.date.today()
-
-
-# load the data and patch it up
-def get_books():
-    df = pd.read_csv(GR_HISTORY, index_col=0)
-
-    with open('data/fixes.yml') as fh:
-        df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
-
-    for column in ['Date Read', 'Date Added']:
-        df[column] = pd.to_datetime(df[column])
-
-    return df
 
 
 # return a list of the authors i've read recently (this year, or within the
@@ -38,7 +26,7 @@ def already_read(df):
     return old['Author'].values
 
 
-ignored_authors = already_read(get_books())
+ignored_authors = already_read(reading.get_books())
 
 # filter out authors from the list
 def ignore_authors(df):
@@ -132,7 +120,7 @@ def print_rows(df):
 ################################################################################
 
 if __name__ == "__main__":
-    df = get_books()
+    df = reading.get_books()
     authors = already_read(df)
 
     # read in the options.
