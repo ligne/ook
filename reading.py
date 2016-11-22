@@ -359,16 +359,18 @@ def scheduled():
             print
 
         ax = axes[sp]
-        pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax)
+        pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
         ax.axhline(_days_remaining(year) * rate)
 
-        # set the right-hand ticks.  no label except on final column
+        sp += 1
+
+    # set the right-hand ticks.  no labels except on final column.  do this
+    # after all the graphs are drawn, so the y-axis scaling is correct.
+    for ax in axes:
         axr = ax.twinx()
         axr.set_ylim([ x / rate for x in ax.get_ylim() ])
         if ax != axes[-1]:
             axr.set_yticklabels([])
-
-        sp += 1
 
     filename = 'images/scheduled.png'
     plt.savefig(filename, bbox_inches='tight')
