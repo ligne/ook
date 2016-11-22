@@ -16,11 +16,6 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 today = datetime.date.today()
 
 
-def show_nearby(df, index, size):
-    s = size - 3
-    return df.iloc[(index-s):(index+size)]
-
-
 # load the data and patch it up
 def get_books():
     df = pd.read_csv(GR_HISTORY, index_col=0)
@@ -114,6 +109,13 @@ def limit_rows(df, size):
     suggestion_median = int(math.floor(len(suggestions.index)/2))
 
     return show_nearby(suggestions, suggestion_median, size)
+
+
+# selects $size rows from $df, centred around $index
+# FIXME wtf even is this code?
+def show_nearby(df, index, size):
+    s = size - 3
+    return df.iloc[(index-s):(index+size)]
 
 
 # prints it out.  FIXME hande missing author better.  FIXME allow sorting/grouping by author?
