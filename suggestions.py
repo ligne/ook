@@ -9,8 +9,6 @@ import argparse
 
 import pandas as pd
 
-# FIXME warn if any scheduled books are by authors i've already read this
-# year
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
 today = datetime.date.today()
@@ -42,7 +40,6 @@ def already_read(df):
 
 ignored_authors = already_read(get_books())
 
-
 # filter out authors from the list
 def ignore_authors(df):
     return df[~df['author'].isin(ignored_authors)]
@@ -60,7 +57,7 @@ def _scheduled_authors(df):
     return _scheduled_for_year(df, today.year)['author'].values
 
 
-# books scheduled for the current year
+# books scheduled for the current year, ignoring those i read recently.
 def scheduled(df):
     return ignore_authors(_scheduled_for_year(df, today.year))
 
