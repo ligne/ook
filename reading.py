@@ -3,7 +3,6 @@
 
 import sys
 import glob
-import yaml
 import datetime
 import re
 
@@ -14,10 +13,10 @@ import pandas as pd
 import numpy as np
 
 import wordcounts
+import reading
 
 
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
-GR_HISTORY = 'data/goodreads_library_export.csv'
 
 # the cutoff year before which books are considered "old".
 thresh = 1940
@@ -27,27 +26,7 @@ today = pd.to_datetime('today')
 tomorrow = today + pd.Timedelta('1 day')
 
 
-### load the data and patch it up ##############################################
-
-def get_books():
-    df = pd.read_csv(GR_HISTORY, index_col=0)
-
-    with open('data/fixes.yml') as fh:
-        df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
-
-    with open('data/started.yml') as fh:
-        df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
-
-    for column in ['Date Read', 'Date Added', 'Date Started']:
-        df[column] = pd.to_datetime(df[column])
-
-    # this doesn't seem to be set for some reason
-    df['Bookshelves'].fillna('read', inplace=True)
-
-    return df
-
-
-df = get_books()
+df = reading.get_books()
 
 ################################################################################
 
