@@ -120,9 +120,11 @@ def show_nearby(df, index, size):
 
 # prints it out.  FIXME hande missing author better.  FIXME allow sorting/grouping by author?
 def print_rows(df):
-    for row in df.iterrows():
-        print '{words:7.0f}  {title} ({author})'.format(**row[1])
+    for ix, row in df.iterrows():
+        print '{words:7.0f}  {title} ({author})'.format(**row)
 
+
+################################################################################
 
 if __name__ == "__main__":
     df = get_books()
