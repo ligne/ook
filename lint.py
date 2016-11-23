@@ -6,6 +6,7 @@ import datetime
 import yaml
 
 import suggestions
+import reading
 
 import pandas as pd
 
@@ -66,7 +67,7 @@ if len(duplicate_years):
 
 # scheduled books by authors i've already read this year
 pattern = r'\b{}\b'.format(today.year)
-authors = suggestions.already_read(suggestions.get_books())
+authors = suggestions.already_read(reading.get_books())
 ignore_authors = [ 'Terry Pratchett' ]
 f = df[df['Bookshelves'].str.contains(pattern)]
 duplicate_authors = f[(f['Author'].isin(authors))&(~f['Author'].isin(ignore_authors))][['Title', 'Author']]
