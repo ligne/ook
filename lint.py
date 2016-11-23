@@ -32,9 +32,6 @@ def missing_page_count():
     print_entries(missing, 'Missing page count')
 missing_page_count()
 
-
-df = reading.get_books()
-
 # i've not manually added the start date
 def missing_start_date():
     df = reading.get_books()
@@ -78,27 +75,26 @@ scheduled_but_already_read()
 
 # duplicate books
 # FIXME should be clearer...
-duplicate_books = df.copy()
-duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
-duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
-if len(duplicate_books):
-    print '=== Duplicate books ==='
-    print duplicate_books[['Clean Title', 'Author']]
-    print
+def duplicate_books():
+    duplicate_books = reading.get_books()
+    duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
+    duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
+    print_entries(duplicate_books, 'Duplicate books')
+duplicate_books()
 
 
 # books with silly formats
-good_bindings = [
-    'Paperback',
-    'Hardcover',
-    'Mass Market Paperback',
-    'Kindle Edition',
-]
-# ignore old books, along with those that i've not properly entered.
-binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
-bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())][['Title', 'Author', 'Binding']]
-if len(bad_binding):
-    print '=== Bad format ==='
-    print bad_binding[['Title', 'Author', 'Binding']]
-    print
+def bad_binding():
+    df = reading.get_books()
+    good_bindings = [
+        'Paperback',
+        'Hardcover',
+        'Mass Market Paperback',
+        'Kindle Edition',
+    ]
+    # ignore old books, along with those that i've not properly entered.
+    binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
+    bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())][['Title', 'Author', 'Binding']]
+    print_entries(bad_binding, 'Bad binding')
+bad_binding()
 
