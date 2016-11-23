@@ -10,27 +10,13 @@ import reading
 
 import pandas as pd
 
-GR_HISTORY = 'data/goodreads_library_export.csv'
-
-
-df = pd.read_csv(GR_HISTORY, index_col=0)
-
-with open('data/started.yml') as fh:
-    df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
-
-for column in ['Date Read', 'Date Added', 'Date Started']:
-    df[column] = pd.to_datetime(df[column])
-
-# this doesn't seem to be set for some reason
-df['Bookshelves'].fillna('read', inplace=True)
-
 
 today = datetime.date.today()
-
 
 pd.set_option('display.max_rows', 999, 'display.width', 1000)
 
 # missing page count
+df = reading.get_books(no_fixes=True)
 pending = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
 missing = pending[pending.isnull().any(axis=1)][['Title', 'Author']]
 if len(missing):
@@ -38,6 +24,8 @@ if len(missing):
     print missing
     print
 
+
+df = reading.get_books()
 
 # i've not manually added the start date
 df = df[df['Date Read'].dt.year >= 2016]
