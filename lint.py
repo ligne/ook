@@ -25,47 +25,59 @@ def print_entries(df, desc):
 ################################################################################
 
 # missing page count
-df = reading.get_books(no_fixes=True)
-pending = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
-missing = pending[pending.isnull().any(axis=1)][['Title', 'Author']]
-print_entries(missing, 'Missing page count')
+def missing_page_count():
+    df = reading.get_books(no_fixes=True)
+    df = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
+    missing = df[df.isnull().any(axis=1)][['Title', 'Author']]
+    print_entries(missing, 'Missing page count')
+missing_page_count()
 
 
 df = reading.get_books()
 
 # i've not manually added the start date
-df = df[df['Date Read'].dt.year >= 2016]
-missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
-print_entries(missing_start, 'Missing a start date')
+def missing_start_date():
+    df = reading.get_books()
+    df = df[df['Date Read'].dt.year >= 2016]
+    missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
+    print_entries(missing_start, 'Missing a start date')
+missing_start_date()
 
 
 # check for $year/currently-reading double-counting
-f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
-f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
-print_entries(f, 'Scheduled books on the wrong shelf')
+def scheduled_book_on_wrong_shelf():
+    df = reading.get_books()
+    f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
+    f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
+    print_entries(f, 'Scheduled books on the wrong shelf')
+scheduled_book_on_wrong_shelf()
 
 
 # check for books in multiple years
-duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')]
-if len(duplicate_years):
-    print '=== Books in multiple years ==='
-    print duplicate_years[['Title', 'Author', 'Bookshelves']]
-    print
+def duplicate_years():
+    df = reading.get_books()
+    duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')][['Title', 'Author', 'Bookshelves']]
+    print_entries(duplicate_years, 'Books in multiple years')
+duplicate_years()
 
 
 # scheduled books by authors i've already read this year
-pattern = r'\b{}\b'.format(today.year)
-authors = suggestions.already_read(reading.get_books())
-ignore_authors = [ 'Terry Pratchett' ]
-f = df[df['Bookshelves'].str.contains(pattern)]
-duplicate_authors = f[(f['Author'].isin(authors))&(~f['Author'].isin(ignore_authors))][['Title', 'Author']]
-if len(duplicate_authors):
-    print '=== Multiple scheduled books by the same author ==='
-    print duplicate_authors[['Title', 'Author']]
-    print
+# FIXME should be clearer...
+def scheduled_but_already_read():
+    df = reading.get_books()
+    ignore_authors = [
+        'Terry Pratchett',
+    ]
+    authors = suggestions.already_read(df)
+    pattern = r'\b{}\b'.format(today.year)
+    df = df[df['Bookshelves'].str.contains(pattern)]
+    df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))][['Title', 'Author']]
+    print_entries(df, 'Multiple scheduled books by the same author')
+scheduled_but_already_read()
 
 
 # duplicate books
+# FIXME should be clearer...
 duplicate_books = df.copy()
 duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
 duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
