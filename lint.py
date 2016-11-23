@@ -15,14 +15,20 @@ today = datetime.date.today()
 
 pd.set_option('display.max_rows', 999, 'display.width', 1000)
 
+
+def print_entries(df, desc):
+    if len(df):
+        print '=== {} ==='.format(desc)
+        print df
+        print
+
+################################################################################
+
 # missing page count
 df = reading.get_books(no_fixes=True)
 pending = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
 missing = pending[pending.isnull().any(axis=1)][['Title', 'Author']]
-if len(missing):
-    print '=== Missing page count ==='
-    print missing
-    print
+print_entries(missing, 'Missing page count')
 
 
 df = reading.get_books()
@@ -30,19 +36,13 @@ df = reading.get_books()
 # i've not manually added the start date
 df = df[df['Date Read'].dt.year >= 2016]
 missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
-if len(missing_start):
-    print '=== Missing a start date ==='
-    print missing_start
-    print
+print_entries(missing_start, 'Missing a start date')
 
 
 # check for $year/currently-reading double-counting
 f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
 f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
-if len(f):
-    print "=== Scheduled books on the wrong shelf ==="
-    print f
-    print
+print_entries(f, 'Scheduled books on the wrong shelf')
 
 
 # check for books in multiple years
