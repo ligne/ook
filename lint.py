@@ -25,42 +25,39 @@ def print_entries(df, desc):
 ################################################################################
 
 # missing page count
-def missing_page_count():
+def check_missing_page_count():
     df = reading.get_books(no_fixes=True)
     df = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
     missing = df[df.isnull().any(axis=1)][['Title', 'Author']]
     print_entries(missing, 'Missing page count')
-missing_page_count()
+
 
 # i've not manually added the start date
-def missing_start_date():
+def check_missing_start_date():
     df = reading.get_books()
     df = df[df['Date Read'].dt.year >= 2016]
     missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
     print_entries(missing_start, 'Missing a start date')
-missing_start_date()
 
 
 # check for $year/currently-reading double-counting
-def scheduled_book_on_wrong_shelf():
+def check_scheduled_book_on_wrong_shelf():
     df = reading.get_books()
     f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
     f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
     print_entries(f, 'Scheduled books on the wrong shelf')
-scheduled_book_on_wrong_shelf()
 
 
 # check for books in multiple years
-def duplicate_years():
+def check_duplicate_years():
     df = reading.get_books()
     duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')][['Title', 'Author', 'Bookshelves']]
     print_entries(duplicate_years, 'Books in multiple years')
-duplicate_years()
 
 
 # scheduled books by authors i've already read this year
 # FIXME should be clearer...
-def scheduled_but_already_read():
+def check_scheduled_but_already_read():
     df = reading.get_books()
     ignore_authors = [
         'Terry Pratchett',
@@ -70,21 +67,19 @@ def scheduled_but_already_read():
     df = df[df['Bookshelves'].str.contains(pattern)]
     df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))][['Title', 'Author']]
     print_entries(df, 'Multiple scheduled books by the same author')
-scheduled_but_already_read()
 
 
 # duplicate books
 # FIXME should be clearer...
-def duplicate_books():
+def check_duplicate_books():
     duplicate_books = reading.get_books()
     duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
     duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
     print_entries(duplicate_books, 'Duplicate books')
-duplicate_books()
 
 
 # books with silly formats
-def bad_binding():
+def check_bad_binding():
     df = reading.get_books()
     good_bindings = [
         'Paperback',
@@ -96,5 +91,10 @@ def bad_binding():
     binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
     bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())][['Title', 'Author', 'Binding']]
     print_entries(bad_binding, 'Bad binding')
-bad_binding()
+
+
+# run them all
+n = __import__(__name__)
+for f in [ x for x in dir(n) if x.startswith('check_') ]:
+    getattr(n, f)()
 
