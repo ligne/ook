@@ -12,11 +12,13 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 ################################################################################
 
 # load the data and patch it up
-def get_books():
+def get_books(no_fixes=False):
     df = pd.read_csv(GR_HISTORY, index_col=0)
 
-    with open('data/fixes.yml') as fh:
-        df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
+    # lint doesn't want the fixes applying.
+    if not no_fixes:
+        with open('data/fixes.yml') as fh:
+            df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
 
     with open('data/started.yml') as fh:
         df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
