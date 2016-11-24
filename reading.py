@@ -99,6 +99,11 @@ def annual_reading_rate():
     return daily_reading_rate() * 365.2425
 
 
+# daily reading rate right now.
+def current_reading_rate():
+    return changed_pages(df, 'read', 'Date Read').mean()
+
+
 def save_image(df, name):
     df.plot()
 
@@ -306,7 +311,7 @@ def _scheduled_for_year(df, year):
 def scheduled():
     pending = df[df['Exclusive Shelf'] != 'read']
 
-    rate = daily_reading_rate().ix[-1]
+    rate = current_reading_rate()
 
     years = df['Bookshelves'].str.split(', ').values
     years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
