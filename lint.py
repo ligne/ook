@@ -36,8 +36,8 @@ def print_entries(df, desc, additional=None):
 # missing page count
 def check_missing_page_count():
     df = reading.get_books(no_fixes=True)
-    df = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
-    missing = df[df.isnull().any(axis=1)]
+    df = df[df['Date Added'].dt.year >= 2016]
+    missing = df[df.isnull()['Number of Pages']]
     print_entries(missing, 'Missing page count')
 
 
