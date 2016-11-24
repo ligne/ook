@@ -105,10 +105,9 @@ def limit_rows(df, size):
 
 
 # selects $size rows from $df, centred around $index
-# FIXME wtf even is this code?
 def show_nearby(df, index, size):
-    s = size - 3
-    return df.iloc[(index-s):(index+size)]
+    s = size / 2
+    return df.iloc[max(0, index-s):(index+s)]
 
 
 # prints it out.  FIXME hande missing author better.  FIXME allow sorting/grouping by author?
