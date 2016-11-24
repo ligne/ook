@@ -16,11 +16,20 @@ today = datetime.date.today()
 pd.set_option('display.max_rows', 999, 'display.width', 1000)
 
 
-def print_entries(df, desc):
-    if len(df):
-        print '=== {} ==='.format(desc)
-        print df
-        print
+def print_entries(df, desc, additional=None):
+    if not len(df):
+        return
+
+    fmt = "{Author}, '{Title}'"
+    if additional:
+        fmt += ':\n'
+        fmt += '\t{' + additional[0] + '}\n'
+
+    print '=== {} ==='.format(desc)
+    print
+    for ix, row in df.iterrows():
+        print fmt.format(**row)
+
 
 ################################################################################
 
