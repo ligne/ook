@@ -37,7 +37,7 @@ def print_entries(df, desc, additional=None):
 def check_missing_page_count():
     df = reading.get_books(no_fixes=True)
     df = df[df['Date Added'].dt.year >= 2016][['Title', 'Author', 'Number of Pages']]
-    missing = df[df.isnull().any(axis=1)][['Title', 'Author']]
+    missing = df[df.isnull().any(axis=1)]
     print_entries(missing, 'Missing page count')
 
 
@@ -45,7 +45,7 @@ def check_missing_page_count():
 def check_missing_start_date():
     df = reading.get_books()
     df = df[df['Date Read'].dt.year >= 2016]
-    missing_start = df[df['Date Started'].isnull()][['Title', 'Author']]
+    missing_start = df[df['Date Started'].isnull()]
     print_entries(missing_start, 'Missing a start date')
 
 
@@ -53,15 +53,15 @@ def check_missing_start_date():
 def check_scheduled_book_on_wrong_shelf():
     df = reading.get_books()
     f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
-    f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])][['Title', 'Author']]
-    print_entries(f, 'Scheduled books on the wrong shelf')
+    f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
+    print_entries(f, 'Scheduled books on the wrong shelf', ['Bookshelves'])
 
 
 # check for books in multiple years
 def check_duplicate_years():
     df = reading.get_books()
-    duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')][['Title', 'Author', 'Bookshelves']]
-    print_entries(duplicate_years, 'Books in multiple years')
+    duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')]
+    print_entries(duplicate_years, 'Books in multiple years', ['Bookshelves'])
 
 
 # scheduled books by authors i've already read this year
@@ -74,7 +74,7 @@ def check_scheduled_but_already_read():
     authors = suggestions.already_read(df)
     pattern = r'\b{}\b'.format(today.year)
     df = df[df['Bookshelves'].str.contains(pattern)]
-    df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))][['Title', 'Author']]
+    df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))]
     print_entries(df, 'Multiple scheduled books by the same author')
 
 
@@ -98,8 +98,8 @@ def check_bad_binding():
     ]
     # ignore old books, along with those that i've not properly entered.
     binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
-    bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())][['Title', 'Author', 'Binding']]
-    print_entries(bad_binding, 'Bad binding')
+    bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())]
+    print_entries(bad_binding, 'Bad binding', ['Binding'])
 
 
 # run them all
