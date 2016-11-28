@@ -21,12 +21,20 @@ def get_books(filename):
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
 
+    # split the series name/number out from the title
+    s = df['Title'].str.extract('(?P<Title>.+?)(?: \((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
+    df = df.rename(columns={
+        'Title': 'Original Title',
+    }).join(s)
+
     columns = [
         'Title',
         'Author',
         'Date Added',
         'Bookshelves',
         'Exclusive Shelf',
+        'Series',
+        'Entry',
     ]
 
     return df[columns].sort_index()
@@ -37,8 +45,8 @@ df_new = get_books(sys.argv[1])
 
 # force both to use the same index
 ix = df_old.index|df_new.index
-df_old = df_old.reindex(ix)
-df_new = df_new.reindex(ix)
+df_old = df_old.reindex(ix).fillna('')
+df_new = df_new.reindex(ix).fillna('')
 
 ne_stacked = (df_old != df_new).stack()
 changed = ne_stacked[ne_stacked]
@@ -47,10 +55,13 @@ for (index, changes) in changed.groupby(level=0):
     old_row = df_old.ix[index]
     new_row = df_new.ix[index]
 
-    if new_row.isnull().any():
+    if not new_row['Author']:
         print "Removed '{Title}' by {Author}".format(**old_row)
-    elif old_row.isnull().any():
-        print "Added '{Title}' by {Author}".format(**new_row)
+    elif not old_row['Author']:
+        fmt = "Added '{Title}' by {Author}"
+        if new_row['Series']:
+            fmt += ' ({Series}, {Entry})'
+        print fmt.format(**new_row)
         # also show any bookshelves it's been added to
         print 'Bookshelves:'
         print '\t', new_row['Bookshelves']
