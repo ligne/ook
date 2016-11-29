@@ -306,7 +306,7 @@ def _scheduled_for_year(df, year):
     return df[df['Bookshelves'].str.contains(pattern)]
 
 
-# books i've pencilled in to read this year
+# plot reading schedule against time left, with warnings.
 def scheduled():
     rate = current_reading_rate()
 
