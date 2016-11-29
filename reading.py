@@ -308,8 +308,6 @@ def _scheduled_for_year(df, year):
 
 # books i've pencilled in to read this year
 def scheduled():
-    pending = df[df['Exclusive Shelf'] != 'read']
-
     rate = current_reading_rate()
 
     years = df['Bookshelves'].str.split(', ').values
@@ -319,7 +317,7 @@ def scheduled():
     sp = 0
 
     for year in sorted(years):
-        p = _scheduled_for_year(pending, year)
+        p = _scheduled_for_year(df, year)
 
         pages_remaining = p['Number of Pages'].sum()
         if is_current_year(year):
