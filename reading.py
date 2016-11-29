@@ -268,8 +268,6 @@ def rate_area(df):
 
     df['ppd'] = df['Number of Pages'] / ((df['Date Read'] - df['Date Started']).dt.days + 1)
 
-    print df.sort(['Date Started'])[['Title', 'ppd']]
-
     g = pd.DataFrame(index=ix)
 
     for ii, row in df.sort(['Date Started']).iterrows():
