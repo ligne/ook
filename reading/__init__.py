@@ -41,3 +41,15 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
 
     return df
 
+
+### filtering ##################################################################
+
+# returns books on all of the shelves
+def on_shelves(df, shelves=[], others=[]):
+    if shelves:
+        df = df[df['Exclusive Shelf'].isin(shelves)]
+    for shelf in others:
+        df = df[df['Bookshelves'].str.contains(r'\b{}\b'.format(shelf))]
+
+    return df
+
