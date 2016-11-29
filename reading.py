@@ -28,6 +28,7 @@ tomorrow = today + pd.Timedelta('1 day')
 
 df = reading.get_books()
 
+
 ################################################################################
 
 # from shelf, in direction = date added/read.
@@ -109,7 +110,7 @@ def save_image(df, name):
 
     # force the bottom of the graph to zero
     ylim = plt.ylim()
-    plt.ylim([ min(ylim[0], 0), ylim[1] ])
+    plt.ylim([min(ylim[0], 0), ylim[1]])
 
     # prettify and save
     plt.grid(True)
@@ -144,7 +145,7 @@ def backlog():
 # plot average scores as a histogram
 def draw_rating_histogram(df):
     ax = df['Average Rating'].plot(kind='hist', bins=100, title='Average Ratings')
-    ax.set_xlim(1,5)
+    ax.set_xlim(1, 5)
     plt.savefig('images/average_scores.png')
     plt.close()
 
@@ -167,7 +168,7 @@ def new_authors(df):
 
     # force the bottom of the graph to zero and make sure the top doesn't clip.
     ylim = plt.ylim()
-    plt.ylim([ min(ylim[0], 0), ylim[1]+1 ])
+    plt.ylim([min(ylim[0], 0), ylim[1] + 1])
 
     plt.axhline(12, color='k', alpha=0.5)
 
@@ -195,7 +196,7 @@ def median_date(df):
     read.reindex(ix).ffill().ix['2016':].plot()
 
     # set the top of the graph to the current year
-    plt.ylim([ plt.ylim()[0], today.year ])
+    plt.ylim([plt.ylim()[0], today.year])
 
     plt.axhline(thresh, color='k', alpha=0.5)
 
@@ -226,7 +227,7 @@ def oldness(df):
     pd.rolling_mean(df['rate'], 10, min_periods=0).reindex(ix).ffill().plot()
 
     # set to the full range
-    plt.ylim([ 0, 1 ])
+    plt.ylim([0, 1])
 
     plt.axhline(0.5, color='k', alpha=0.5)
 
@@ -331,7 +332,7 @@ def scheduled():
         if days_required > 1.1 * days_remaining:
             days_over = days_required - days_remaining
             pages_over = pages_remaining - (days_remaining * rate)
-            needed_rate = pages_remaining/days_remaining
+            needed_rate = pages_remaining / days_remaining
 
             print "Too many books for {}:".format(year)
             print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
@@ -350,7 +351,7 @@ def scheduled():
     # after all the graphs are drawn, so the y-axis scaling is correct.
     for ax in axes:
         axr = ax.twinx()
-        axr.set_ylim([ x / rate for x in ax.get_ylim() ])
+        axr.set_ylim([x / rate for x in ax.get_ylim()])
         if ax != axes[-1]:
             axr.set_yticklabels([])
 
@@ -366,13 +367,13 @@ def _make_rating_scatterplot(data, name, **args):
 
     g = sns.JointGrid(x="My Rating", y="Average Rating", data=data)
     g = g.plot_joint(sns.regplot, **args)
-    g = g.plot_marginals(sns.distplot, kde=False, bins=np.arange(1,6, 0.05))
+    g = g.plot_marginals(sns.distplot, kde=False, bins=np.arange(1, 6, 0.05))
 
-    g.ax_marg_x.set_xticks(np.arange(1,6))
-    g.ax_marg_y.set_yticks(np.arange(1,6))
+    g.ax_marg_x.set_xticks(np.arange(1, 6))
+    g.ax_marg_y.set_yticks(np.arange(1, 6))
 
-    g.ax_marg_x.set_xlim(0.9,5.1)
-    g.ax_marg_y.set_ylim(0.9,5)
+    g.ax_marg_x.set_xlim(0.9, 5.1)
+    g.ax_marg_y.set_ylim(0.9, 5)
 
     plt.savefig('images/' + name)
     plt.close()

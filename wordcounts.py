@@ -28,20 +28,20 @@ def file_infos(path):
         words = wordcount(path)
         # only cache if there's a wordcount
         if words:
-            wcs[path] = [ words, author, title, language ]
+            wcs[path] = [words, author, title, language]
     else:
         words = wcs[path][0]
-        (author, title, language) = [ s.encode('utf-8') for s in wcs[path][1:] ]
+        (author, title, language) = [s.encode('utf-8') for s in wcs[path][1:]]
 
     display = display_title(author, title)
 
     return {
-        'title':  title,
+        'title': title,
         'author': author,
-        'words':  words,
+        'words': words,
         'display': display,
         'language': language,
-        'file':   os.path.basename(path),
+        'file': os.path.basename(path),
     }
 
 
@@ -109,7 +109,7 @@ def format_author(author):
     author = re.sub(r' \(.+?\)', '', author)
 
     # reorder
-    author = ' '.join([ x for x in reversed(author.split(', ')) if re.search(r'\w', x)])
+    author = ' '.join([x for x in reversed(author.split(', ')) if re.search(r'\w', x)])
 
     # strip/squash unwanted whitespace
     author = re.sub(r'\s+', ' ', author)
@@ -161,6 +161,7 @@ def get_filehandle(tmpdir, category, language='en'):
     if (category, language) not in fhs:
         fhs[(category, language)] = open('{}/{}-{}-lengths.txt'.format(tmpdir, category, language), 'w')
     return fhs[(category, language)]
+
 
 def close_filehandles():
     for fh in fhs.values():

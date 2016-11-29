@@ -13,6 +13,7 @@ dirs = [
     'short-stories/',
 ]
 
+
 def clean_files(d):
     for item in glob.glob(d + '*.sdr/'):
         head, sep, tail = item.partition('.sdr/')

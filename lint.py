@@ -105,6 +105,6 @@ def check_bad_binding():
 
 # run them all
 n = __import__(__name__)
-for f in [ x for x in dir(n) if x.startswith('check_') ]:
+for f in [x for x in dir(n) if x.startswith('check_')]:
     getattr(n, f)()
 

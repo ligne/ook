@@ -29,7 +29,7 @@ df_old = get_books()
 df_new = get_books(sys.argv[1])
 
 # force both to use the same index
-ix = df_old.index|df_new.index
+ix = df_old.index | df_new.index
 df_old = df_old.reindex(ix).fillna('')
 df_new = df_new.reindex(ix).fillna('')
 
