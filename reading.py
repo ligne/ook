@@ -124,9 +124,9 @@ def save_image(df, name):
 def backlog():
     p = pd.DataFrame({
         'elsewhere': added_pages('elsewhere'),
-        'ebooks'   : ebook_pages(),
-        'pending'  : added_pages('currently-reading') + added_pages('pending'),
-        'read'     : added_pages('read') - completed_pages('read'),
+        'ebooks':    ebook_pages(),
+        'pending':   added_pages('currently-reading') + added_pages('pending'),
+        'read':      added_pages('read') - completed_pages('read'),
     }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere'])
 
     # truncate to the interesting bit (after i'd added my books and those from home)
