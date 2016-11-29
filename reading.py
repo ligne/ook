@@ -311,7 +311,7 @@ def scheduled():
     rate = current_reading_rate()
 
     years = df['Bookshelves'].str.split(', ').values
-    years = filter(lambda x:re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
+    years = filter(lambda x: re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
 
     fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
     sp = 0
