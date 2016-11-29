@@ -310,17 +310,21 @@ def scheduled_pages(df, year):
     return p['Number of Pages'].sum()
 
 
+def scheduled_years(df):
+    years = df['Bookshelves'].str.extract(r'(\d{4})').dropna()
+    return sorted(list(set(years)))
+
+
 # plot reading schedule against time left, with warnings.
 def scheduled():
     rate = current_reading_rate()
 
-    years = df['Bookshelves'].str.split(', ').values
-    years = filter(lambda x: re.search(r'^\d{4}$', x), list(set([item for sublist in years for item in sublist])))
+    years = scheduled_years(df)
 
     fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
     sp = 0
 
-    for year in sorted(years):
+    for year in years:
         pages_remaining = scheduled_pages(df, year)
 
         days_remaining = _days_remaining(year)
