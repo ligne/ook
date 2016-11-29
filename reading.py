@@ -301,20 +301,13 @@ def _days_remaining(year):
         return 365  # FIXME
 
 
-def _scheduled_for_year(df, year):
-    pattern = r'\b{}\b'.format(str(year))
-    return df[df['Bookshelves'].str.contains(pattern)]
-
-
 # returns then number of pages scheduled for $year
 def scheduled_pages(df, year):
-    p = _scheduled_for_year(df, year)
-
-    pages = p['Number of Pages'].sum()
+    p = reading.on_shelves(df, others=[year])
     if is_current_year(year):
-        pages += added_pages('currently-reading').ix[-1]
+        p = p.append(reading.on_shelves(df, ['currently-reading']))
 
-    return pages
+    return p['Number of Pages'].sum()
 
 
 # plot reading schedule against time left, with warnings.
