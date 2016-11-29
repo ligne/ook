@@ -306,6 +306,17 @@ def _scheduled_for_year(df, year):
     return df[df['Bookshelves'].str.contains(pattern)]
 
 
+# returns then number of pages scheduled for $year
+def scheduled_pages(df, year):
+    p = _scheduled_for_year(df, year)
+
+    pages = p['Number of Pages'].sum()
+    if is_current_year(year):
+        pages += added_pages('currently-reading').ix[-1]
+
+    return pages
+
+
 # plot reading schedule against time left, with warnings.
 def scheduled():
     rate = current_reading_rate()
@@ -317,11 +328,7 @@ def scheduled():
     sp = 0
 
     for year in sorted(years):
-        p = _scheduled_for_year(df, year)
-
-        pages_remaining = p['Number of Pages'].sum()
-        if is_current_year(year):
-            pages_remaining += added_pages('currently-reading').ix[-1]
+        pages_remaining = scheduled_pages(df, year)
 
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
