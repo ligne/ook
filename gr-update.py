@@ -6,26 +6,11 @@ import datetime
 
 import pandas as pd
 
-GR_HISTORY = 'data/goodreads_library_export.csv'
+import reading
 
 
-def get_books(filename):
-    try:
-        df = pd.read_csv(filename, index_col=0)
-    except IOError:
-        print "Missing file: '{}'".format(filename)
-        sys.exit()
-
-    for column in ['Date Read', 'Date Added']:
-        df[column] = pd.to_datetime(df[column])
-    # this doesn't seem to be set for some reason
-    df['Bookshelves'].fillna('read', inplace=True)
-
-    # split the series name/number out from the title
-    s = df['Title'].str.extract('(?P<Title>.+?)(?: \((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
-    df = df.rename(columns={
-        'Title': 'Original Title',
-    }).join(s)
+def get_books(*args):
+    df = reading.get_books(no_fixes=True, *args)
 
     columns = [
         'Title',
@@ -40,7 +25,7 @@ def get_books(filename):
     return df[columns].sort_index()
 
 
-df_old = get_books(GR_HISTORY)
+df_old = get_books()
 df_new = get_books(sys.argv[1])
 
 # force both to use the same index
