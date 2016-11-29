@@ -95,6 +95,7 @@ def check_bad_binding():
         'Hardcover',
         'Mass Market Paperback',
         'Kindle Edition',
+        'ebook',
     ]
     # ignore old books, along with those that i've not properly entered.
     binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
