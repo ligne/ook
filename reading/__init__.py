@@ -12,8 +12,12 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 ################################################################################
 
 # load the data and patch it up
-def get_books(no_fixes=False):
-    df = pd.read_csv(GR_HISTORY, index_col=0)
+def get_books(filename=GR_HISTORY, no_fixes=False):
+    try:
+        df = pd.read_csv(filename, index_col=0)
+    except IOError:
+        print "Missing file: '{}'".format(filename)
+        sys.exit()
 
     # lint doesn't want the fixes applying.
     if not no_fixes:
