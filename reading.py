@@ -210,7 +210,7 @@ def median_date(df):
 
 # ratio of old/new books
 def oldness(df):
-    read = df[df['Exclusive Shelf'] == 'read'].dropna(subset=['Date Read'])
+    read = df.dropna(subset=['Date Read'])
 
     # use the edition year if the original publication year was missing
     read.loc[:,'Original Publication Year'].fillna(read['Year Published'], inplace=True)
