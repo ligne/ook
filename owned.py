@@ -6,27 +6,11 @@ import datetime
 
 import pandas as pd
 
-GR_HISTORY = 'data/goodreads_library_export.csv'
+import reading
 
+# FIXME also books that i want to buy. and books that i have ebooks of?
 
-def get_books(filename):
-    df = pd.read_csv(filename, index_col=0)
-
-    for column in ['Date Read', 'Date Added']:
-        df[column] = pd.to_datetime(df[column])
-    # this doesn't seem to be set for some reason
-    df['Bookshelves'].fillna('read', inplace=True)
-
-    columns = [
-        'Title',
-        'Author',
-        'Exclusive Shelf',
-    ]
-
-    return df[columns].sort_index()
-
-
-df = get_books(GR_HISTORY)
+df = reading.get_books()
 
 owned_shelves = [
     'pending',
@@ -34,7 +18,6 @@ owned_shelves = [
 ]
 
 owned = df[df['Exclusive Shelf'].isin(owned_shelves)].sort(['Author', 'Title'])
-
 
 author = None
 
