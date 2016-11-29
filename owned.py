@@ -17,15 +17,11 @@ owned_shelves = [
     'elsewhere',
 ]
 
-owned = df[df['Exclusive Shelf'].isin(owned_shelves)].sort(['Author', 'Title'])
+g = reading.on_shelves(df, owned_shelves).sort(['Author', 'Title']).groupby('Author')
 
-author = None
-
-for ix, row in owned.iterrows():
-    if author != row['Author']:
-        author = row['Author']
-        print
-        print row['Author']
-
-    print '* {Title}'.format(**row.to_dict())
+for author in sorted(g.groups.keys()):
+    print '{}'.format(author)
+    for ix, row in g.get_group(author).iterrows():
+        print '* {Title}'.format(**row)
+    print
 
