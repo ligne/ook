@@ -79,10 +79,11 @@ def check_scheduled_but_already_read():
 # duplicate books
 # FIXME should be clearer...
 def check_duplicate_books():
-    duplicate_books = reading.get_books()
-    duplicate_books['Clean Title'] = duplicate_books['Title'].str.replace(r' \(.+?\)$', '')
-    duplicate_books = duplicate_books[duplicate_books.duplicated(subset=['Clean Title', 'Author'])]
-    print_entries(duplicate_books, 'Duplicate books')
+    df = reading.get_books()
+    # FIXME may still want this to remove any stray descriptions?
+#     df['Clean Title'] = df['Title'].str.replace(r' \(.+?\)$', '')
+    df = df[df.duplicated(subset=['Title', 'Author', 'Volume'])]
+    print_entries(df, 'Duplicate books')
 
 
 # books with silly formats
