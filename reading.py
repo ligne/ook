@@ -307,7 +307,7 @@ def scheduled_pages(df, year):
 
 
 def scheduled_years(df):
-    years = df['Bookshelves'].str.extract(r'(\d{4})').dropna()
+    years = df['Scheduled'].dropna()
     return sorted(list(set(years)))
 
 
