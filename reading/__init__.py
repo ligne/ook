@@ -19,6 +19,12 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
         print "Missing file: '{}'".format(filename)
         sys.exit()
 
+    # split the volume number and series name/number out from the title
+    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: \((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
+    df = df.rename(columns={
+        'Title': 'Original Title',
+    }).join(s)
+
     # lint doesn't want the fixes applying.
     if not no_fixes:
         with open('data/fixes.yml') as fh:
@@ -32,12 +38,6 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
 
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
-
-    # split the volume number and series name/number out from the title
-    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: \((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
-    df = df.rename(columns={
-        'Title': 'Original Title',
-    }).join(s)
 
     # the year it's scheduled for (if any)
     df['Scheduled'] = df['Bookshelves'].str.extract(r'\b(\d{4})\b')
