@@ -371,7 +371,7 @@ def _make_rating_scatterplot(data, name, **args):
     g.ax_marg_y.set_yticks(np.arange(1, 6))
 
     g.ax_marg_x.set_xlim(0.9, 5.1)
-    g.ax_marg_y.set_ylim(0.9, 5)
+    g.ax_marg_y.set_ylim(0.9, 5.1)
 
     plt.savefig('images/' + name)
     plt.close()
