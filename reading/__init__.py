@@ -39,6 +39,9 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
         'Title': 'Original Title',
     }).join(s)
 
+    # the year it's scheduled for (if any)
+    df['Scheduled'] = df['Bookshelves'].str.extract(r'\b(\d{4})\b')
+
     return df
 
 
