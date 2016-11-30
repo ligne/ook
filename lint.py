@@ -13,8 +13,6 @@ import pandas as pd
 
 today = datetime.date.today()
 
-pd.set_option('display.max_rows', 999, 'display.width', 1000)
-
 
 def print_entries(df, desc, additional=None):
     if not len(df):
