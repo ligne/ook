@@ -69,7 +69,7 @@ def check_scheduled_but_already_read():
     ignore_authors = [
         'Terry Pratchett',
     ]
-    authors = suggestions.already_read(df)
+    authors = suggestions.recent_authors(df)
     pattern = r'\b{}\b'.format(today.year)
     df = df[df['Bookshelves'].str.contains(pattern)]
     df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))]
