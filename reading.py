@@ -181,10 +181,9 @@ def new_authors(df):
     plt.close()
 
 
+# median publication date of books read in the previous year
 def median_date(df):
-    read = df[df['Exclusive Shelf'] == 'read'].dropna(subset=['Date Read'])
-
-    read.loc[:,'Original Publication Year'].fillna(read['Year Published'], inplace=True)
+    read = df.dropna(subset=['Date Read', 'Original Publication Year'])
 
     read = read.set_index('Date Read')  \
                 ['Original Publication Year']  \
@@ -210,10 +209,7 @@ def median_date(df):
 
 # ratio of old/new books
 def oldness(df):
-    read = df.dropna(subset=['Date Read'])
-
-    # use the edition year if the original publication year was missing
-    read.loc[:,'Original Publication Year'].fillna(read['Year Published'], inplace=True)
+    read = df.dropna(subset=['Date Read', 'Original Publication Year'])
 
     df['thresh'] = df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0))
     df['total'] = df['Original Publication Year'].apply(lambda x: 1)
