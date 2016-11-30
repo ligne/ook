@@ -42,14 +42,14 @@ for (index, changes) in changed.groupby(level=0):
 
     if not new_row['Author']:
         print "Removed '{Title}' by {Author}".format(**old_row)
+        print '  Bookshelves: {Bookshelves}'.format(**old_row)
     elif not old_row['Author']:
         fmt = "Added '{Title}' by {Author}"
         if new_row['Series']:
             fmt += ' ({Series}, {Entry})'
         print fmt.format(**new_row)
         # also show any bookshelves it's been added to
-        print 'Bookshelves:'
-        print '\t', new_row['Bookshelves']
+        print '  Bookshelves: {Bookshelves}'.format(**new_row)
     else:
         print '{Author}, {Title}'.format(**old_row)
 
