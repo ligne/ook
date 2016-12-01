@@ -96,15 +96,15 @@ def new_authors(df):
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
-    median_ix = int(math.floor(len(df.index)/2))
+    median_ix = int(math.floor(len(df.index) / 2))
     mean_ix = df[df.words > df.mean().words].index[0]
 
     suggestions = pd.concat([
         show_nearby(df, median_ix, size),
-        show_nearby(df, mean_ix, size)
+        show_nearby(df, mean_ix, size),
     ], ignore_index=True).drop_duplicates()
 
-    suggestion_median = int(math.floor(len(suggestions.index)/2))
+    suggestion_median = int(math.floor(len(suggestions.index) / 2))
 
     return show_nearby(suggestions, suggestion_median, size)
 
