@@ -11,6 +11,8 @@ import reading
 import pandas as pd
 
 
+# TODO check there aren't any unwanted entries in fixes.yml
+
 today = datetime.date.today()
 
 
