@@ -72,17 +72,28 @@ def check_duplicate_years():
 
 
 # scheduled books by authors i've already read this year
-# FIXME should be clearer...
 def check_scheduled_but_already_read():
     df = reading.get_books()
+
     ignore_authors = [
         'Terry Pratchett',
     ]
-    authors = suggestions.recent_authors(df)
-    pattern = r'\b{}\b'.format(today.year)
-    df = df[df['Bookshelves'].str.contains(pattern)]
-    df = df[(df['Author'].isin(authors))&(~df['Author'].isin(ignore_authors))]
-    print_entries(df, 'Multiple scheduled books by the same author')
+
+    # has been scheduled
+    scheduled = df.Scheduled.notnull()
+    # duplicate author for the same year, ignoring volumes of the same book
+    duplicated = df.duplicated(['Author', 'Scheduled', 'Volume'])
+    # by authors i expect to be reading several times a year
+    ignored = df['Author'].isin(ignore_authors)
+    # scheduled for this year
+    this_year = df.Scheduled == str(today.year)
+    # by authors i've already read this year
+    authors = df[(df['Date Read'].dt.year == today.year) | (df['Exclusive Shelf'] == 'currently-reading')].Author.values
+    read_this_year = df.Author.isin(authors)
+
+    df = df[scheduled & ~ignored & (duplicated | (this_year & read_this_year))]
+
+    print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
 
 
 # duplicate books
