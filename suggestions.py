@@ -120,7 +120,6 @@ def print_rows(df):
 
 if __name__ == "__main__":
     df = reading.get_books()
-    authors = already_read(df)
 
     # read in the options.
     parser = argparse.ArgumentParser()
