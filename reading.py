@@ -218,9 +218,9 @@ def oldness(df):
            .resample('D', how='sum')  \
            .fillna(0)
 
-    df['rate'] = (pd.rolling_sum(df.thresh, 365) / pd.rolling_sum(df.total, 365))
+    rate = (pd.rolling_sum(df.thresh, 365) / pd.rolling_sum(df.total, 365))
 
-    pd.rolling_mean(df['rate'], 10, min_periods=0).reindex(ix).ffill().plot()
+    pd.rolling_mean(rate, 10, min_periods=0).reindex(ix).ffill().plot()
 
     # set to the full range
     plt.ylim([0, 1])
