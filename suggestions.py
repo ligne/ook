@@ -15,22 +15,21 @@ import reading
 today = datetime.date.today()
 
 
-# return a list of the authors i've read recently (this year, or within the
-# last 6 months).
+# return a list of the authors i'm currently reading, or have read recently
+# (this year, or within the last 6 months).
 #
 # FIXME also books that are read but don't have a date?
-def already_read(df):
-    read = df[df['Exclusive Shelf'] == 'read'].copy()
-    read['age'] = today - read['Date Read']
-    old = read[(read['Date Read'].dt.year == today.year) | (read['age'] < '180 days')]
-    return old['Author'].values
+def recent_authors(df):
+    this_year = df['Date Read'].dt.year == today.year
+    recent = (today - df['Date Read']) < '180 days'
+    current = df['Exclusive Shelf'] == 'currently-reading'
 
+    return df[this_year | recent | current].Author.values
 
-ignored_authors = already_read(reading.get_books())
 
 # filter out authors from the list
 def ignore_authors(df):
-    return df[~df['author'].isin(ignored_authors)]
+    return df[~df['author'].isin(recent_authors(reading.get_books()))]
 
 
 def _scheduled_for_year(df, year):
