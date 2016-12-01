@@ -56,3 +56,13 @@ def on_shelves(df, shelves=[], others=[]):
 
     return df
 
+
+# books added since $date
+def added_since(df, date):
+    return df[df['Date Added'] >= str(date)]
+
+
+# books finished since $date
+def read_since(df, date):
+    return df[df['Date Read'] >= str(date)]
+
