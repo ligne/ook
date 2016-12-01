@@ -57,13 +57,17 @@ def bump(df):
 
 
 # books by authors that i've read before
+# FIXME not scheduled, already read or later in series
 def old_authors(df):
     # list of all authors i've previously read
-    authors = df[df['Exclusive Shelf'] == 'read']['Author'].values
+    authors = reading.on_shelves(df, ['read'])['Author'].values
     scheduled_authors = _scheduled_authors(df)
-    df = df[df['Exclusive Shelf'].isin(['pending', 'elsewhere'])]
+
+    df = reading.on_shelves(df, ['pending', 'elsewhere'])
+
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
+
     df = df[df['author'].isin(authors)]
 
     # remove ones i've already read this year
@@ -77,14 +81,16 @@ def old_authors(df):
 # FIXME only unscheduled?
 def new_authors(df):
     # list of all authors i've previously read
-    authors = df[df['Exclusive Shelf'] == 'read']['Author'].values
+    authors = reading.on_shelves(df, ['read'])['Author'].values
 
-    df = df[df['Exclusive Shelf'].isin(['pending', 'elsewhere'])]
+    df = reading.on_shelves(df, ['pending', 'elsewhere'])
 
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
 
-    return df[~df['author'].isin(authors)].sort(['words'])
+    df = df[~df['author'].isin(authors)]
+
+    return df.sort(['words'])
 
 
 # pick (FIXME approximately) $size rows from around the median and mean of the
