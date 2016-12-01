@@ -49,6 +49,13 @@ def check_missing_start_date():
     print_entries(missing_start, 'Missing a start date')
 
 
+# the original publication year is missing
+def check_missing_publication_year():
+    df = reading.get_books()
+    df = df[df['Original Publication Year'].isnull()]
+    print_entries(df, 'Missing a publication year')
+
+
 # check for $year/currently-reading double-counting
 def check_scheduled_book_on_wrong_shelf():
     df = reading.get_books()
