@@ -158,10 +158,16 @@ if __name__ == "__main__":
     else:
         # use the goodreads list
         df = df[df['Exclusive Shelf'] == 'pending']
+
+        # remove books if there's already an earlier one in the series
+        # drop_duplicates() treats NaNs as being the same, so need to be more
+        # circuitous.
+        df = df.sort('Entry')
+        df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
+
         df = df[['Author', 'Number of Pages', 'Title']]
         df.columns = ['author', 'words', 'title']
         df = df.sort(['words']).reset_index(drop=True)
-        # FIXME remove books if there's already an earlier one in the series
 
         df = ignore_authors(df)
         df = limit_rows(df, size)
