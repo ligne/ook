@@ -17,6 +17,7 @@ class Author():
         'Nationality',
     )
     _nationalities = reading.load_yaml('nationalities')
+    _genders = reading.load_yaml('nationalities')
 
 
     def __init__(self, name):
@@ -128,7 +129,18 @@ class Author():
 
     # returns the subject's gender.
     def _get_gender(self):
-        pass
+        p = str(self._get_property('P21'))
+
+        if p in self._genders:
+            return self._genders[p]
+
+        gender = self._get_entity(p)
+        gender = gender['labels']['en']['value']
+
+        if gender:
+            self._genders[p] = str(gender).lower()
+
+        return self._genders.get(p)
 
 
     # returns the subject's nationality as a two-letter code.
@@ -163,22 +175,6 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa', 'Joseph Conrad']:
     author = Author(name)
     author.fetch_missing()
     print
-
-
-
-
-
-################################################################################
-
-# returns the author's gender.
-#
-# FIXME should look it up from a cache, like author_nationality does.
-def author_gender(author):
-    genders = {
-        'Q6581097': 'male',
-        'Q6581072': 'female',
-    }
-    return genders.get(_get_property(author, 'P21'), '')
 
 
 
