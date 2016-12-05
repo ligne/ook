@@ -36,6 +36,11 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
     for column in ['Date Read', 'Date Added', 'Date Started']:
         df[column] = pd.to_datetime(df[column])
 
+    # load information about the author
+    a = load_yaml('authors')
+    for col in ['Nationality', 'Gender']:
+        df[col] = df['Author'].apply(lambda x: a.get(x, {}).get(col))
+
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
 
