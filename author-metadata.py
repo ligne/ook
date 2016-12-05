@@ -39,8 +39,6 @@ class Author():
     # fetch any missing fields and report this in a pretty format
     def fetch_missing(self):
         for field in self.missing_fields():
-            print self._author  # FIXME debugging
-
             # first, need to work out who we're talking about
             if not self.get('QID'):
                 self._search_author()
@@ -140,10 +138,7 @@ class Author():
 
 
 for name in ['Iain Banks', 'Ffeafe Reqttqa', 'Joseph Conrad']:
-    print name
     author = Author(name)
-    print author.missing_fields()
-    print author.get('Nationality')
     author.fetch_missing()
     print
 
