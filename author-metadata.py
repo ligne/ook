@@ -116,9 +116,24 @@ class Author():
             return p[0]['mainsnak']['datavalue']['value']['id']
 
 
+    # returns the description of the subject.
+    def _get_description(self):
+        pass
+
+
+    # returns the subject's gender.
+    def _get_gender(self):
+        pass
+
+
+    # returns the subject's nationality as a two-letter code.
+    def _get_nationality(self):
+        pass
+
+
     # look up a field in the author blob.
     def get_field(self, field):
-        return str(getattr(self, '_get_' + field.lower()))
+        return str(getattr(self, '_get_' + field.lower())())
 
 
 
