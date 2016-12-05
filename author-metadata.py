@@ -101,6 +101,11 @@ class Author():
         return r.json()
 
 
+    # look up a field in the author blob.
+    def get_field(self, field):
+        return str(getattr(self, '_get_' + field.lower()))
+
+
 
 
 
@@ -173,13 +178,6 @@ def author_nationality(author):
 # wrong person.
 def author_description(subj):
     return subj['descriptions']['en']['value']
-
-
-# look up a field on the author blob.
-n = __import__(__name__)
-def get_field(field, subj):
-    for f in [x for x in dir(n) if x.startswith('author_' + field.lower())]:
-        return str(getattr(n, f)(subj))
 
 
 ################################################################################
