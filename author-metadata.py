@@ -42,13 +42,16 @@ class Author():
             # first, need to work out who we're talking about
             if not self.get('QID'):
                 self._search_author()
+                # give up if nothing could be found.
+                if not self.get('QID'):
+                    return
 
 
     # searches for the author and caches the result.
-    def _search_author():
+    def _search_author(self):
         r = requests.get('https://www.wikidata.org/w/api.php', {
             'action': 'wbsearchentities',
-            'search': author,
+            'search': self.name,
             'language': 'en',
             'format': 'json',
         })
@@ -60,11 +63,27 @@ class Author():
         #    print occupation['mainsnak']['datavalue']['value']['id'] == 'Q36180'
         # FIXME also look for non-person writers (eg. collaborations)
         for res in r.json()['search']:
-            subj = _get_entity(res['id'])
+            subj = self._get_entity(res['id'])
             for stmt in subj['claims'].get('P31'):
                 if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
+                    # save the QID, and cache the subject since we have it.
                     self._author['QID'] = res['id']
                     self._subj = subj
+                    return
+
+
+    # fetches the subject data for entity $qid
+    def _get_entity(self, qid):
+        r = requests.get('https://www.wikidata.org/w/api.php', {
+            'action': 'wbgetentities',
+            'ids': qid,
+            'languages': 'en',
+            'format': 'json',
+        })
+        time.sleep(0.5)
+
+        return r.json()['entities'][qid]
+
 
 
 
@@ -73,6 +92,7 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa']:
     author = Author(name)
     print author.missing_fields()
     print author.get('Nationality')
+    author.fetch_missing()
     print
 
 
@@ -80,19 +100,6 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa']:
 
 
 ################################################################################
-
-# searches for entity $subj (a Q\d+ code) and returns the actual subject data.
-def _get_entity(subj):
-    r = requests.get('https://www.wikidata.org/w/api.php', {
-        'action': 'wbgetentities',
-        'ids': subj,
-        'languages': 'en',
-        'format': 'json',
-    })
-    time.sleep(0.5)
-
-    return r.json()['entities'][subj]
-
 
 # returns a property of $entity.
 # FIXME should explode.  can catch errors further up.
