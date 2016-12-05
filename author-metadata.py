@@ -16,6 +16,7 @@ class Author():
         'Gender',
         'Nationality',
     )
+    _nationalities = reading.load_yaml('nationalities')
 
 
     def __init__(self, name):
@@ -131,8 +132,23 @@ class Author():
 
 
     # returns the subject's nationality as a two-letter code.
+    #
+    # FIXME doesn't work with old countries that don't have a code.
+    # could either try and look up the most recent equivalent, or just
+    # use its QID
     def _get_nationality(self):
-        pass
+        p = str(self._get_property('P27'))
+
+        if p in self._nationalities:
+            return self._nationalities[p]
+
+        country = self._get_entity(p)
+        country = self._get_property('P297', country)
+
+        if country:
+            self._nationalities[p] = str(country).lower()
+
+        return self._nationalities.get(p)
 
 
     # look up a field in the author blob.
@@ -165,31 +181,7 @@ def author_gender(author):
     return genders.get(_get_property(author, 'P21'), '')
 
 
-# returns the author's nationality as a two-letter code thing.
-#
-# FIXME doesn't work with old countries that don't have a code.  could either
-# try and look up the most recent equivalent, or just use the Q code.
-#
-# FIXME looks like this would all be a lot better as an Author class...
-nationalities = reading.load_yaml('nationalities')
 
-def author_nationality(author):
-    p = _get_property(author, 'P27')
-    if not p:
-        return
-
-    p = str(p)
-
-    if p in nationalities:
-        return nationalities[p]
-
-    country = _get_entity(p)
-    country = _get_property(country, 'P297')
-
-    if country:
-        nationalities[p] = str(country).lower()
-
-    return nationalities.get(p)
 
 
 ################################################################################
