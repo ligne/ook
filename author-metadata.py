@@ -46,7 +46,26 @@ class Author():
 
     # searches for the author and caches the result.
     def _search_author():
-        pass
+        r = requests.get('https://www.wikidata.org/w/api.php', {
+            'action': 'wbsearchentities',
+            'search': author,
+            'language': 'en',
+            'format': 'json',
+        })
+        time.sleep(0.5)
+
+        # check each entry for person-ness
+        # FIXME also look for "writer" occupation
+        # for occupation in subj['claims']['P106']:
+        #    print occupation['mainsnak']['datavalue']['value']['id'] == 'Q36180'
+        # FIXME also look for non-person writers (eg. collaborations)
+        for res in r.json()['search']:
+            subj = _get_entity(res['id'])
+            for stmt in subj['claims'].get('P31'):
+                if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
+                    self._author['QID'] = res['id']
+                    self._subj = subj
+
 
 
 for name in ['Iain Banks', 'Ffeafe Reqttqa']:
@@ -57,34 +76,10 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa']:
     print
 
 
-# searches for an author by name, and returns the best guess.
-#
-# FIXME short-circuit the search if id_hint was provided.
-def author_item(name, id_hint=None):
-#     if id_hint:
-#         return _get_entity(id_hint)
 
-    r = requests.get('https://www.wikidata.org/w/api.php', {
-        'action': 'wbsearchentities',
-        'search': author,
-        'language': 'en',
-        'format': 'json',
-    })
-    time.sleep(0.5)
 
-    # check each entry for person-ness
-    # FIXME also look for "writer" occupation
-    # for occupation in subj['claims']['P106']:
-    #    print occupation['mainsnak']['datavalue']['value']['id'] == 'Q36180'
-    # FIXME also look for non-person writers (eg. collaborations)
-    for res in r.json()['search']:
-        subj = _get_entity(res['id'])
-        for stmt in subj['claims'].get('P31'):
-            if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
-                return subj
 
-    return None
-
+################################################################################
 
 # searches for entity $subj (a Q\d+ code) and returns the actual subject data.
 def _get_entity(subj):
