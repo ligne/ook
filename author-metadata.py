@@ -113,7 +113,7 @@ class Author():
 
 
 
-for name in ['Iain Banks', 'Ffeafe Reqttqa']:
+for name in ['Iain Banks', 'Ffeafe Reqttqa', 'Joseph Conrad']:
     print name
     author = Author(name)
     print author.missing_fields()
