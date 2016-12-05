@@ -117,6 +117,8 @@ def get_field(field, subj):
 
 ################################################################################
 
+sys.exit()
+
 a = reading.load_yaml('authors')
 
 # FIXME allow it to run in batches of $n unprocessed entries at a time.
