@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import requests
 import time
 import yaml
 
@@ -78,13 +77,9 @@ class Author():
             'action': action,
             'language': 'en',
             'format': 'json',
+            'search': search,
+            'ids': ids,
         }
-        if action == 'wbsearchentities':
-            q['search'] = search
-        elif action == 'wbgetentities':
-            q['ids'] = ids
-        # FIXME can just send all of them out there and let the server
-        # decide what to look at?
 
         r = requests.get('https://www.wikidata.org/w/api.php', q)
         time.sleep(0.5)
