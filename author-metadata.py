@@ -45,6 +45,12 @@ class Author():
                 if not self.get('QID'):
                     return
 
+            # now get the entity from the server, if we don't already have it.
+            if not self._subj:
+                self._subj = self._get_entity(self.get('QID'))
+                self._author['Description'] = self._subj['description']
+            print self.get('Description')
+
 
     # searches for the author and caches the result.
     def _search_author(self):
