@@ -111,10 +111,11 @@ class Author():
 
         p = subj['claims'][prop]
 
-        if prop == 'P297':
-            return p[0]['mainsnak']['datavalue']['value']
+        p = p[0]['mainsnak']['datavalue']['value']
+        if type(p) == dict:
+            p = p['id']
 
-        return p[0]['mainsnak']['datavalue']['value']['id']
+        return p
 
 
     # returns the QID of the subject.
