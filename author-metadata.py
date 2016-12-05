@@ -49,12 +49,11 @@ class Author():
 
             # now get the entity from the server, if we don't already have it.
             if not self._subj:
-                self._subj = self._get_entity(self.get('QID'))
-                self._author['Description'] = self._subj['description']
+                self._subj = self._get_entity(self._get_qid())
 
             # print a banner of the author's name and description
             if not self._issued_info:
-                print '{} - {}'.format(self.name, self.get('Description'))
+                print '{} - {}'.format(self.name, self._get_description())
                 self._issued_info = True
 
             # now save the field, and print it.
