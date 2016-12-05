@@ -25,3 +25,4 @@ for author in sorted(g.groups.keys()):
         print '* {Title}'.format(**row)
     print
 
+# vim: ts=4 : sw=4 : et

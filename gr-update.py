@@ -75,3 +75,4 @@ for (index, changes) in changed.groupby(level=0):
 
     print '----'
 
+# vim: ts=4 : sw=4 : et
