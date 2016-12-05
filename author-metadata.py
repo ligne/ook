@@ -103,9 +103,11 @@ class Author():
 
 
     # returns a property of the subject blob.
-    # FIXME make the subject selectable.
-    def _get_property(self, prop):
-        p = self._subj['claims'][prop]
+    def _get_property(self, prop, subj=None):
+        if not subj:
+            subj = self._subj
+
+        p = subj['claims'][prop]
 
         if prop == 'P297':
             return p[0]['mainsnak']['datavalue']['value']
