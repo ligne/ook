@@ -59,6 +59,10 @@ class Author():
                 print '{} - {}'.format(self.name, self.get('Description'))
                 self._issued_info = True
 
+            # now save the field, and print it.
+            self._author[field] = self.get_field(field)
+            print '{:12s} - {}'.format(field, self.get(field))
+
 
     # searches for the author and caches the result.
     def _search_author(self):
