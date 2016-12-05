@@ -105,6 +105,17 @@ class Author():
         return r.json()
 
 
+    # returns a property of the subject blob.
+    # FIXME make the subject selectable.
+    def _get_property(self, prop):
+            p = self._subj['claims'][prop]
+
+            if prop == 'P297':
+                return p[0]['mainsnak']['datavalue']['value']
+
+            return p[0]['mainsnak']['datavalue']['value']['id']
+
+
     # look up a field in the author blob.
     def get_field(self, field):
         return str(getattr(self, '_get_' + field.lower()))
@@ -126,19 +137,6 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa', 'Joseph Conrad']:
 
 
 ################################################################################
-
-# returns a property of $entity.
-# FIXME should explode.  can catch errors further up.
-def _get_property(author, prop):
-    p = author['claims'].get(prop)
-    if not p:
-        return None
-
-    if prop == 'P297':
-        return p[0]['mainsnak']['datavalue']['value']
-
-    return p[0]['mainsnak']['datavalue']['value']['id']
-
 
 # returns the author's gender.
 #
