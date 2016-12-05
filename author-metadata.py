@@ -8,6 +8,38 @@ import yaml
 import reading
 
 
+# basic operations on an entity.
+class Entity():
+    def __init__(self, subj):
+        self._subj = subj
+
+
+    # returns the property $prop
+    def get_property(self, prop):
+        p = self._subj['claims'][prop]
+
+        p = p[0]['mainsnak']['datavalue']['value']
+        if type(p) == dict:
+            p = p['id']
+
+        return str(p)
+
+
+    # returns the QID
+    def get_qid(self):
+        return self._subj['id']
+
+
+    # returns the label
+    def get_label(self):
+        return self._subj['labels']['en']['value']
+
+
+    # returns the description
+    def get_description(self):
+        return self._subj['descriptions']['en']['value']
+
+
 class Author():
     _authors = reading.load_yaml('authors')
     _fields = (
@@ -76,17 +108,17 @@ class Author():
         # FIXME also look for non-person writers (eg. collaborations)
         for res in results:
             subj = self._get_entity(res['id'])
-            for stmt in subj['claims'].get('P31'):
+            for stmt in subj._subj['claims'].get('P31'):
                 if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
                     # save the QID, and cache the subject since we have it.
-                    self._author['QID'] = str(res['id'])
+                    self._author['QID'] = subj.get_qid()
                     self._subj = subj
                     return
 
 
     # fetches the subject data for entity $qid
     def _get_entity(self, qid):
-        return self._request(action='wbgetentities', ids=qid)['entities'][qid]
+        return Entity(self._request(action='wbgetentities', ids=qid)['entities'][qid])
 
 
     # runs a query against the API
@@ -107,27 +139,18 @@ class Author():
 
 
     # returns a property of the subject blob.
-    def _get_property(self, prop, subj=None):
-        if not subj:
-            subj = self._subj
-
-        p = subj['claims'][prop]
-
-        p = p[0]['mainsnak']['datavalue']['value']
-        if type(p) == dict:
-            p = p['id']
-
-        return str(p)
+    def _get_property(self, prop):
+        return self._subj.get_property(prop)
 
 
     # returns the QID of the subject.
     def _get_qid(self):
-        return self._subj['id']
+        return self._subj.get_qid()
 
 
     # returns the description of the subject.
     def _get_description(self):
-        return self._subj['descriptions']['en']['value']
+        return self._subj.get_description()
 
 
     # returns the subject's gender.
@@ -138,7 +161,7 @@ class Author():
             return self._genders[p]
 
         gender = self._get_entity(p)
-        gender = gender['labels']['en']['value']
+        gender = gender.get_label()
 
         self._genders[p] = str(gender).lower()
 
@@ -156,8 +179,7 @@ class Author():
         if p in self._nationalities:
             return self._nationalities[p]
 
-        country = self._get_entity(p)
-        country = self._get_property('P297', country)
+        country = self._get_entity(p).get_property('P297')
 
         self._nationalities[p] = country.lower()
 
