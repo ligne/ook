@@ -23,9 +23,18 @@ class Author():
         self.name = name
         self._author = self._authors.get(name, {})
 
+    # returns a list of missing fields for this author
+    def missing_fields(self):
+        return [ f for f in self._fields if f not in self._author ]
 
 
-author = Author('Iain Banks')
+
+
+for name in ['Iain Banks', 'Ffeafe Reqttqa']:
+    print name
+    author = Author(name)
+    print author.missing_fields()
+    print
 
 
 # searches for an author by name, and returns the best guess.
