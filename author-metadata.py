@@ -114,9 +114,14 @@ class Author():
             return p[0]['mainsnak']['datavalue']['value']['id']
 
 
+    # returns the QID of the subject.
+    def _get_qid(self):
+        return self._subj['id']
+
+
     # returns the description of the subject.
     def _get_description(self):
-        pass
+        return self._subj['descriptions']['en']['value']
 
 
     # returns the subject's gender.
@@ -184,12 +189,6 @@ def author_nationality(author):
         nationalities[p] = str(country).lower()
 
     return nationalities.get(p)
-
-
-# description field of the author blob.  make it clearer if it's found the
-# wrong person.
-def author_description(subj):
-    return subj['descriptions']['en']['value']
 
 
 ################################################################################
