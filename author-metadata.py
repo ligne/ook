@@ -115,7 +115,7 @@ class Author():
         if type(p) == dict:
             p = p['id']
 
-        return p
+        return str(p)
 
 
     # returns the QID of the subject.
@@ -130,7 +130,7 @@ class Author():
 
     # returns the subject's gender.
     def _get_gender(self):
-        p = str(self._get_property('P21'))
+        p = self._get_property('P21')
 
         if p in self._genders:
             return self._genders[p]
@@ -157,7 +157,7 @@ class Author():
         country = self._get_entity(p)
         country = self._get_property('P297', country)
 
-        self._nationalities[p] = str(country).lower()
+        self._nationalities[p] = country.lower()
 
         return self._nationalities.get(p)
 
