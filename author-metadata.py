@@ -51,9 +51,9 @@ class Author():
             if not self._subj:
                 self._subj = self._get_entity(self._get_qid())
 
-            # print a banner of the author's name and description
+            # print the author's name before the first new field.
             if not self._issued_info:
-                print '{} - {}'.format(self.name, self._get_description())
+                print self.name
                 self._issued_info = True
 
             # now save the field, and print it.
