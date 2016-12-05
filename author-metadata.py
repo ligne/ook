@@ -160,8 +160,7 @@ class Author():
         if p in self._genders:
             return self._genders[p]
 
-        gender = self._get_entity(p)
-        gender = gender.get_label()
+        gender = self._get_entity(p).get_label()
 
         self._genders[p] = str(gender).lower()
 
