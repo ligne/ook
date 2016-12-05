@@ -9,6 +9,25 @@ import yaml
 import reading
 
 
+class Author():
+    _authors = reading.load_yaml('authors')
+    _fields = (
+        'QID',
+        'Description',
+        'Gender',
+        'Nationality',
+    )
+
+
+    def __init__(self, name):
+        self.name = name
+        self._author = self._authors.get(name, {})
+
+
+
+author = Author('Iain Banks')
+
+
 # searches for an author by name, and returns the best guess.
 #
 # FIXME short-circuit the search if id_hint was provided.
