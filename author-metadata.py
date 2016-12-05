@@ -22,7 +22,9 @@ class Author():
 
     def __init__(self, name):
         self.name = name
-        self._author = self._authors.get(name, {})
+        if name not in self._authors:
+            self._authors[name] = {}
+        self._author = self._authors[name]
         # will be set to true if and when the author name/description is
         # printed out.
         self._issued_info = False
