@@ -43,6 +43,7 @@ class Author():
                 self._search_author()
                 # give up if nothing could be found.
                 if not self.get('QID'):
+                    print "Couldn't find {}".format(self.name)  # FIXME
                     return
 
             # now get the entity from the server, if we don't already have it.
