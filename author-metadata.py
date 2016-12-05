@@ -137,8 +137,7 @@ class Author():
         gender = self._get_entity(p)
         gender = gender['labels']['en']['value']
 
-        if gender:
-            self._genders[p] = str(gender).lower()
+        self._genders[p] = str(gender).lower()
 
         return self._genders.get(p)
 
@@ -157,8 +156,7 @@ class Author():
         country = self._get_entity(p)
         country = self._get_property('P297', country)
 
-        if country:
-            self._nationalities[p] = str(country).lower()
+        self._nationalities[p] = str(country).lower()
 
         return self._nationalities.get(p)
 
