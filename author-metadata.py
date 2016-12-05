@@ -21,6 +21,9 @@ class Author():
     def __init__(self, name):
         self.name = name
         self._author = self._authors.get(name, {})
+        # will be set to true if and when the author name/description is
+        # printed out.
+        self._issued_info = False
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
@@ -50,7 +53,11 @@ class Author():
             if not self._subj:
                 self._subj = self._get_entity(self.get('QID'))
                 self._author['Description'] = self._subj['description']
-            print self.get('Description')
+
+            # print a banner of the author's name and description
+            if not self._issued_info:
+                print '{} - {}'.format(self.name, self.get('Description'))
+                self._issued_info = True
 
 
     # searches for the author and caches the result.
