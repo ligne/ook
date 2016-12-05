@@ -17,7 +17,7 @@ class Author():
         'Nationality',
     )
     _nationalities = reading.load_yaml('nationalities')
-    _genders = reading.load_yaml('nationalities')
+    _genders = reading.load_yaml('genders')
 
 
     def __init__(self, name):
