@@ -23,6 +23,12 @@ class Author():
         self.name = name
         self._author = self._authors.get(name, {})
 
+
+    # like a dictionary's get() method.  FIXME warn if it's not a known one?
+    def get(self, field):
+        return self._author.get(field)
+
+
     # returns a list of missing fields for this author
     def missing_fields(self):
         return [ f for f in self._fields if f not in self._author ]
@@ -34,6 +40,7 @@ for name in ['Iain Banks', 'Ffeafe Reqttqa']:
     print name
     author = Author(name)
     print author.missing_fields()
+    print author.get('Nationality')
     print
 
 
