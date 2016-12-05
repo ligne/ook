@@ -49,40 +49,48 @@ class Author():
 
     # searches for the author and caches the result.
     def _search_author(self):
-        r = requests.get('https://www.wikidata.org/w/api.php', {
-            'action': 'wbsearchentities',
-            'search': self.name,
-            'language': 'en',
-            'format': 'json',
-        })
-        time.sleep(0.5)
+        results = self._request(action='wbsearchentities', search=self.name)['search']
 
         # check each entry for person-ness
         # FIXME also look for "writer" occupation
         # for occupation in subj['claims']['P106']:
         #    print occupation['mainsnak']['datavalue']['value']['id'] == 'Q36180'
         # FIXME also look for non-person writers (eg. collaborations)
-        for res in r.json()['search']:
+        for res in results:
             subj = self._get_entity(res['id'])
             for stmt in subj['claims'].get('P31'):
                 if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
                     # save the QID, and cache the subject since we have it.
-                    self._author['QID'] = res['id']
+                    self._author['QID'] = str(res['id'])
                     self._subj = subj
                     return
 
 
     # fetches the subject data for entity $qid
     def _get_entity(self, qid):
-        r = requests.get('https://www.wikidata.org/w/api.php', {
-            'action': 'wbgetentities',
-            'ids': qid,
-            'languages': 'en',
+        return self._request(action='wbgetentities', ids=qid)['entities'][qid]
+
+
+    # runs a query against the API
+    def _request(self, action='', search='', ids=''):
+        import requests
+        q = {
+            'action': action,
+            'language': 'en',
             'format': 'json',
-        })
+        }
+        if action == 'wbsearchentities':
+            q['search'] = search
+        elif action == 'wbgetentities':
+            q['ids'] = ids
+        # FIXME can just send all of them out there and let the server
+        # decide what to look at?
+
+        r = requests.get('https://www.wikidata.org/w/api.php', q)
         time.sleep(0.5)
 
-        return r.json()['entities'][qid]
+        return r.json()
+
 
 
 
