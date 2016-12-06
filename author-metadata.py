@@ -162,7 +162,7 @@ class Author():
 
         gender = self._get_entity(p).get_label()
 
-        self._genders[p] = str(gender).lower()
+        self._genders[p] = gender.lower()
 
         return self._genders.get(p)
 
