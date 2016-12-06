@@ -79,6 +79,8 @@ class Author():
 
     # fetch any missing fields and report this in a pretty format
     def fetch_missing(self):
+        missing = self.missing_fields()
+
         for field in self.missing_fields():
             # first, need to work out who we're talking about
             if not self.get('QID'):
@@ -86,6 +88,7 @@ class Author():
                 # give up if nothing could be found.
                 if not self.get('QID'):
                     print "Couldn't find {}".format(self.name)  # FIXME
+                    print
                     return
 
             # now get the entity from the server, if we don't already have it.
@@ -103,6 +106,10 @@ class Author():
 
         # make sure the authors cache gets updated.
         self._authors[self.name] = self._author
+
+        if missing:
+            print
+
 
     # searches for the author and caches the result.
     def _search_author(self):
