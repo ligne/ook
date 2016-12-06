@@ -27,17 +27,17 @@ class Entity():
 
     # returns the QID
     def get_qid(self):
-        return self._subj['id']
+        return str(self._subj['id'])
 
 
     # returns the label
     def get_label(self):
-        return self._subj['labels']['en']['value']
+        return str(self._subj['labels']['en']['value'])
 
 
     # returns the description
     def get_description(self):
-        return self._subj['descriptions']['en']['value']
+        return str(self._subj['descriptions']['en']['value']).capitalize()
 
 
 class Author():
