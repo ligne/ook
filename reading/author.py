@@ -5,7 +5,7 @@ import sys
 import time
 import yaml
 
-import reading
+import reading.cache
 
 
 # basic operations on an entity.
@@ -46,15 +46,15 @@ class Entity():
 
 
 class Author():
-    _authors = reading.load_yaml('authors')
+    _authors = reading.cache.load_yaml('authors')
     _fields = (
         'QID',
         'Description',
         'Gender',
         'Nationality',
     )
-    _nationalities = reading.load_yaml('nationalities')
-    _genders = reading.load_yaml('genders')
+    _nationalities = reading.cache.load_yaml('nationalities')
+    _genders = reading.cache.load_yaml('genders')
 
 
     def __init__(self, name):
