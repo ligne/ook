@@ -37,7 +37,8 @@ class Entity():
 
     # returns the description
     def get_description(self):
-        return str(self._subj['descriptions']['en']['value']).capitalize()
+        s = str(self._subj['descriptions']['en']['value'])
+        return s[0].upper() + s[1:]
 
 
     # returns the list of claims of type $prop
