@@ -16,7 +16,7 @@ class Entity():
 
     # returns the property $prop
     def get_property(self, prop):
-        p = self._subj['claims'][prop]
+        p = self._get_claims(prop)
 
         p = p[0]['mainsnak']['datavalue']['value']
         if type(p) == dict:
@@ -38,6 +38,11 @@ class Entity():
     # returns the description
     def get_description(self):
         return str(self._subj['descriptions']['en']['value']).capitalize()
+
+
+    # returns the list of claims of type $prop
+    def _get_claims(self, prop):
+        return self._subj['claims'][prop]
 
 
 class Author():
