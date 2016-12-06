@@ -178,16 +178,23 @@ class Author():
         if p in self._nationalities:
             return self._nationalities[p]
 
-        country = self._get_entity(p).get_property('P297')
+        country = self._get_entity(p)
+        try:
+            country = country.get_property('P297').lower()
+        except KeyError:
+            country = country.get_label()
 
-        self._nationalities[p] = country.lower()
+        self._nationalities[p] = country
 
         return self._nationalities.get(p)
 
 
     # look up a field in the author blob.
     def get_field(self, field):
-        return str(getattr(self, '_get_' + field.lower())())
+        try:
+            return str(getattr(self, '_get_' + field.lower())())
+        except KeyError:
+            return
 
 
 
