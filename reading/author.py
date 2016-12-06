@@ -59,9 +59,7 @@ class Author():
 
     def __init__(self, name):
         self.name = name
-        if name not in self._authors:
-            self._authors[name] = {}
-        self._author = self._authors[name]
+        self._author = self._authors.get(name, {})
         # will be set to true if and when the author name/description is
         # printed out.
         self._issued_info = False
@@ -101,6 +99,8 @@ class Author():
             self._author[field] = self.get_field(field)
             print '{:12s} - {}'.format(field, self.get(field))
 
+        # make sure the authors cache gets updated.
+        self._authors[self.name] = self._author
 
     # searches for the author and caches the result.
     def _search_author(self):
