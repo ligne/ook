@@ -209,18 +209,18 @@ def median_date(df):
 
 # ratio of old/new books
 def oldness(df):
-    read = df.dropna(subset=['Date Read', 'Original Publication Year'])
+    df = df.dropna(subset=['Date Read', 'Original Publication Year'])
 
-    df['thresh'] = df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0))
-    df['total'] = df['Original Publication Year'].apply(lambda x: 1)
+    df1 = pd.DataFrame({
+        'thresh': df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0)),
+        'total':  df['Original Publication Year'].apply(lambda x: 1),
+        'Date Read': df['Date Read'],
+    }, index=df.index).set_index('Date Read')    \
+                      .resample('D', how='sum')  \
+                      .fillna(0)
 
-    df = df.set_index('Date Read')  \
-           .resample('D', how='sum')  \
-           .fillna(0)
-
-    rate = (pd.rolling_sum(df.thresh, 365) / pd.rolling_sum(df.total, 365))
-
-    pd.rolling_mean(rate, 10, min_periods=0).reindex(ix).ffill().plot()
+    df1 = pd.rolling_sum(df1, 365, min_periods=0)
+    pd.rolling_mean((df1.thresh / df1.total), 10, min_periods=0).reindex(ix).ffill().plot()
 
     # set to the full range
     plt.ylim([0, 1])
