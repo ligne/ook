@@ -34,45 +34,39 @@ def print_entries(df, desc, additional=None):
 ################################################################################
 
 # missing page count
-def check_missing_page_count():
-    df = reading.get_books(no_fixes=True)
+def check_missing_page_count(df):
+    '''no_fixes'''
     missing = df[df.isnull()['Number of Pages']]
     print_entries(missing, 'Missing page count')
 
 
 # i've not manually added the start date
-def check_missing_start_date():
-    df = reading.get_books()
+def check_missing_start_date(df):
     df = reading.read_since(df, 2016)
     missing_start = df[df['Date Started'].isnull()]
     print_entries(missing_start, 'Missing a start date')
 
 
 # the original publication year is missing
-def check_missing_publication_year():
-    df = reading.get_books()
+def check_missing_publication_year(df):
     df = df[df['Original Publication Year'].isnull()]
     print_entries(df, 'Missing a publication year')
 
 
 # check for $year/currently-reading double-counting
-def check_scheduled_book_on_wrong_shelf():
-    df = reading.get_books()
+def check_scheduled_book_on_wrong_shelf(df):
     f = df[df.Scheduled.notnull() & ~df['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
     print_entries(f, 'Scheduled books on the wrong shelf', ['Bookshelves'])
 
 
 # check for books in multiple years
-def check_duplicate_years():
-    df = reading.get_books()
+def check_duplicate_years(df):
     duplicate_years = reading.on_shelves(df, others=[r'\d{4}.+?\d{4}'])
     print_entries(duplicate_years, 'Books in multiple years', ['Bookshelves'])
 
 
 # scheduled books by authors i've already read this year
-def check_scheduled_but_already_read():
-    df = reading.get_books()
-
+def check_scheduled_but_already_read(df):
     ignore_authors = [
         'Terry Pratchett',
     ]
@@ -95,8 +89,7 @@ def check_scheduled_but_already_read():
 
 # duplicate books
 # FIXME should be clearer...
-def check_duplicate_books():
-    df = reading.get_books()
+def check_duplicate_books(df):
     # FIXME may still want this to remove any stray descriptions?
 #     df['Clean Title'] = df['Title'].str.replace(r' \(.+?\)$', '')
     df = df[df.duplicated(subset=['Title', 'Author', 'Volume'])]
@@ -104,8 +97,7 @@ def check_duplicate_books():
 
 
 # books with silly formats
-def check_bad_binding():
-    df = reading.get_books()
+def check_bad_binding(df):
     good_bindings = [
         'Paperback',
         'Hardcover',
@@ -122,5 +114,12 @@ def check_bad_binding():
 # run them all
 n = __import__(__name__)
 for f in [x for x in dir(n) if x.startswith('check_')]:
-    getattr(n, f)()
+    func = getattr(n, f)
+    doc = func.__doc__
+    if doc and doc == 'no_fixes':
+        df = reading.get_books(no_fixes=True)
+    else:
+        df = reading.get_books()
+
+    func(df)
 
