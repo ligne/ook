@@ -235,6 +235,74 @@ def oldness(df):
     plt.close()
 
 
+# plot the gender ratio
+def gender(df):
+    df = df.dropna(subset=['Gender'])
+
+    df = pd.DataFrame({
+        'thresh': df['Gender'].apply(lambda x: (x == 'male' and 1 or 0)),
+        'total':  df['Gender'].apply(lambda x: 1),
+        'Date Read': df['Date Read'],
+    }, index=df.index).set_index('Date Read')    \
+                      .resample('D', how='sum')  \
+                      .fillna(0)
+
+    df = pd.rolling_sum(df, 365, min_periods=0)
+    pd.rolling_mean((df.thresh / df.total), 10, min_periods=0).reindex(ix).ffill().plot()
+
+    # set to the full range
+    plt.ylim([0, 1])
+
+    plt.axhline(0.5, color='k', alpha=0.5)
+
+    # prettify and save
+    name = 'gender'
+    plt.grid(True)
+    plt.title('Gender ratio')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
+# plot total/new nationalities over the preceding year
+def nationality(df):
+    authors = reading.read_since(df, '2013').sort('Date Read')
+    authors = authors.dropna(subset=['Nationality'])
+
+    # how many new nationalities a year
+    first = authors.drop_duplicates(['Nationality'])  \
+                 .set_index('Date Read')  \
+                 ['Nationality']  \
+                 .resample('D', how='count')  \
+                 .reindex(pd.DatetimeIndex(start='2015-01-01', end='today', freq='D'))  \
+                 .fillna(0)
+
+    # total number of distinct nationalities
+    authors = authors.set_index('Date Read')
+    values = []
+    for date in ix:
+        start = (date - pd.Timedelta('365 days')).strftime('%F')
+        end = date.strftime('%F')
+        values.append(len(set(authors.ix[start:end].Nationality.values)))
+
+    df_ = pd.DataFrame({
+        'Distinct': pd.Series(data=values, index=ix, name='Nationalities'),
+        'New': pd.rolling_sum(first, window=365),
+    }).ix['2016':]
+    df_.plot()
+
+    # force the bottom of the graph to zero and make sure the top doesn't clip.
+    ylim = plt.ylim()
+    plt.ylim([min(ylim[0], 0), ylim[1] + 1])
+
+    # prettify and save
+    name = 'nationalities'
+    plt.grid(True)
+    plt.axvspan(today, first.index[-1], color='k', alpha=0.1)
+    plt.title('Nationalities')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 # plot reading rate so far.
 def reading_rate():
     pending = df.dropna(subset=['Date Read'])
@@ -393,6 +461,8 @@ def rating_scatter():
 #################################################################################
 
 if __name__ == "__main__":
+    nationality(df)
+    gender(df)
     rate_area(df)
     oldness(df)
     median_date(df)
