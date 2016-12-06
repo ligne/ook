@@ -58,15 +58,14 @@ def check_missing_publication_year():
 # check for $year/currently-reading double-counting
 def check_scheduled_book_on_wrong_shelf():
     df = reading.get_books()
-    f = df[df['Bookshelves'].str.contains(r'\b\d+\b')]
-    f = f[~f['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
+    f = df[df.Scheduled.notnull() & ~df['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
     print_entries(f, 'Scheduled books on the wrong shelf', ['Bookshelves'])
 
 
 # check for books in multiple years
 def check_duplicate_years():
     df = reading.get_books()
-    duplicate_years = df[df['Bookshelves'].str.contains(r'\d{4}.+?\d{4}')]
+    duplicate_years = reading.on_shelves(df, others=[r'\d{4}.+?\d{4}'])
     print_entries(duplicate_years, 'Books in multiple years', ['Bookshelves'])
 
 
@@ -91,7 +90,6 @@ def check_scheduled_but_already_read():
     read_this_year = df.Author.isin(authors)
 
     df = df[scheduled & ~ignored & (duplicated | (this_year & read_this_year))]
-
     print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
 
 
