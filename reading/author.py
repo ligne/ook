@@ -59,6 +59,7 @@ class Author():
 
 
     def __init__(self, name):
+        name = ' '.join(name.split())  # normalise whitespace
         self.name = name
         self._author = self._authors.get(name, {})
         # will be set to true if and when the author name/description is
