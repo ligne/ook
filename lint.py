@@ -16,20 +16,19 @@ import pandas as pd
 today = datetime.date.today()
 
 
-def print_entries(df, desc, additional=None):
+def print_entries(df, desc, additional=[]):
     if not len(df):
         return
 
     fmt = "{Author}, '{Title}'"
-    if additional:
-        fmt += ':\n'
     for field in additional:
-        fmt += '  {0}\t{{{0}}}\n'.format(field)
+        fmt += '\n  {0}:\t{{{0}}}'.format(field)
 
     print '=== {} ==='.format(desc)
     print
     for ix, row in df.iterrows():
         print fmt.format(**row)
+        print
 
 
 ################################################################################
