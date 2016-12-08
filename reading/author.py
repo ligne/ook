@@ -115,19 +115,55 @@ class Author():
     def _search_author(self):
         results = self._request(action='wbsearchentities', search=self.name)['search']
 
+        if not len(results):
+            return
+
+        candidates = []
+
         # check each entry for person-ness
-        # FIXME also look for "writer" occupation
-        # for occupation in subj['claims']['P106']:
-        #    print occupation['mainsnak']['datavalue']['value']['id'] == 'Q36180'
         # FIXME also look for non-person writers (eg. collaborations)
         for res in results:
+            if 'disambiguation page' in res.get('description', ''):
+                continue
+
             subj = self._get_entity(res['id'])
-            for stmt in subj._subj['claims'].get('P31'):
-                if stmt['mainsnak']['datavalue']['value']['id'] == 'Q5':
-                    # save the QID, and cache the subject since we have it.
-                    self._author['QID'] = subj.get_qid()
-                    self._subj = subj
-                    return
+            score = 0
+
+            # other interesting occupations:
+            #   Q28389 (screenwriter)
+            #   Q1930187 (journalist)
+            #   Q6625963 (novelist)
+            #   Q482980 (author)
+            #   Q49757 (poet)
+            #   Q28389 (screenwriter)
+            #   Q214917 (playwright)
+            # in fact, all the subclasses of Q38180 (writer), and others.
+
+            occupations = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P106') or [] ]
+
+            for qid in list(set(['Q36180', 'Q482980', 'Q28389', 'Q1930187', 'Q6625963', 'Q49757', 'Q214917', 'Q15980158'])):
+                if qid in occupations:
+                    score += 1
+
+            instanceof = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P31') or [] ]
+            for qid in ['Q5', 'Q1690980']:
+                if qid in instanceof:
+                    score += 1
+
+            candidates.append((score, subj))
+            if score >= 3:
+                break
+            else:
+                subj = None
+
+        # return the most likely candidate (earliest result with the highest score)
+        if not subj:
+            subj = sorted(candidates, key=lambda x: -x[0])[0][1]
+        # save the QID, and cache the subject since we have it.
+        self._author['QID'] = subj.get_qid()
+        self._subj = subj
+
+        return
 
 
     # fetches the subject data for entity $qid
