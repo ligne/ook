@@ -23,7 +23,8 @@ def print_entries(df, desc, additional=None):
     fmt = "{Author}, '{Title}'"
     if additional:
         fmt += ':\n'
-        fmt += '\t{' + additional[0] + '}\n'
+    for field in additional:
+        fmt += '  {0}\t{{{0}}}\n'.format(field)
 
     print '=== {} ==='.format(desc)
     print
