@@ -112,6 +112,12 @@ def check_bad_binding(df):
     print_entries(bad_binding, 'Bad binding', ['Binding'])
 
 
+def check_read_author_metadata(df):
+    df = reading.read_since(df, '2016')
+    df = df[df[['Nationality', 'Gender']].isnull().any(axis='columns')]
+    print_entries(df, 'Missing author metadata', ['Nationality', 'Gender'])
+
+
 # run them all
 n = __import__(__name__)
 for f in [x for x in dir(n) if x.startswith('check_')]:
