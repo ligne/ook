@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+
+import sys
+import glob
+
+import pandas as pd
+
+from reading.author import Author
+
+
+# FIXME get additional data: clean title, original publication date
+# FIXME drop entries that already exist on ebooks shelf?
+# FIXME need to create non-numeric index to avoid clashes.
+def get_books(fix_names=True):
+        # figure out which files to load.
+
+        files = (
+            glob.glob('wordcounts/books-*-lengths.txt') + \
+            glob.glob('wordcounts/short-stories-*-lengths.txt') + \
+            glob.glob('wordcounts/non-fiction-*-lengths.txt')
+        )
+        df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'Title', 'Author']) for f in files])
+
+        df = df.dropna(subset=['Author'])
+
+        df['Number of Pages'] = (df.words / 390).astype(int)
+
+        df['Exclusive Shelf'] = 'kindle'
+        df['Bookshelves'] = 'kindle'
+        df['Binding'] = 'ebook'
+
+        # standardise the author name.  FIXME use the QID instead?
+        if fix_names:
+            df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
+
+        for col in ['Gender', 'Nationality']:
+            df[col] = df['Author'].apply(lambda x: Author(x).get(col))
+
+        # set a new index that won't clash with the GR one.
+        return df.set_index([['_' + str(x) for x in range(len(df.index))]])
+
+
+# vim: ts=4 : sw=4 : et
