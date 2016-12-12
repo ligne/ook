@@ -68,8 +68,8 @@ class Author():
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
-    def get(self, field):
-        return self._author.get(field)
+    def get(self, field, *args):
+        return self._author.get(field, *args)
 
 
     # returns a list of missing fields for this author
