@@ -1,20 +1,25 @@
 #!/usr/bin/python
 
-import time
-
 import reading
+import reading.ebooks
 from reading.author import Author
 
-df = reading.get_books()
+df = reading.get_books(fix_names=False)
 
 df = reading.on_shelves(df, ['read', 'currently-reading', 'pending', 'elsewhere', 'ebooks'])
 
-all_authors = sorted(list(set(df.Author.values)))
+df1 = reading.ebooks.get_books(fix_names=False)
 
-for authors in zip(*[iter(all_authors)]*10):
-    for author in authors:
+df = df.append(df1)
+
+authors = sorted(df.Author.unique())
+
+for author in authors:
+    try:
         Author(author).fetch_missing()
-
+    except Exception as e:
+        print e
+        continue
 
 Author.save()
 
