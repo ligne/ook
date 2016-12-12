@@ -94,7 +94,7 @@ class Author():
 
             # now get the entity from the server, if we don't already have it.
             if not self._subj:
-                self._subj = self._get_entity(self._get_qid())
+                self._subj = self._get_entity(self.get('QID'))
 
             # print the author's name before the first new field.
             if not self._issued_info:
