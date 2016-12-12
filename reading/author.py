@@ -252,4 +252,12 @@ class Author():
             return
 
 
+    # saves all the caches at the end.
+    @staticmethod
+    def save():
+        reading.cache.dump_yaml('authors',       Author._authors)
+        reading.cache.dump_yaml('nationalities', Author._nationalities)
+        reading.cache.dump_yaml('genders',       Author._genders)
+
+
 # vim: ts=4 : sw=4 : et
