@@ -133,7 +133,6 @@ def format_title(title):
 # $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
     if fi:
-#        print '\033[32m' + fi['title'] + '\033[00m'
         filehandle.write('{words}\t{display}\n'.format(**fi))
 
 
@@ -179,6 +178,8 @@ def process_dir(category, d):
 
         fi = file_infos(path)
         mtime = os.path.getmtime(path)
+
+        #print '\033[32m' + fi['title'] + '\033[00m'
 
         # don't merge articles
         if category == 'articles':
