@@ -49,6 +49,7 @@ class Author():
     _authors = reading.cache.load_yaml('authors')
     _fields = (
         'QID',
+        'Name',
         'Description',
         'Gender',
         'Nationality',
@@ -195,6 +196,11 @@ class Author():
     # returns the QID of the subject.
     def _get_qid(self):
         return self._subj.get_qid()
+
+
+    # returns the name of the subject.
+    def _get_name(self):
+        return self._subj.get_label()
 
 
     # returns the description of the subject.
