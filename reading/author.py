@@ -32,12 +32,12 @@ class Entity():
 
     # returns the label
     def get_label(self):
-        return str(self._subj['labels']['en']['value'])
+        return str(self._subj['labels']['en']['value'].encode('utf-8'))
 
 
     # returns the description
     def get_description(self):
-        s = str(self._subj['descriptions']['en']['value'])
+        s = str(self._subj['descriptions']['en']['value'].encode('utf-8'))
         return s[0].upper() + s[1:]
 
 
