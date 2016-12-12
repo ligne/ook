@@ -22,7 +22,7 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
         sys.exit()
 
     # split the volume number and series name/number out from the title
-    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: \((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
+    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: ?\((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
     df = df.rename(columns={
         'Title': 'Original Title',
     }).join(s)
