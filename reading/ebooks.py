@@ -12,14 +12,9 @@ from reading.author import Author
 # FIXME drop entries that already exist on ebooks shelf?
 # FIXME need to create non-numeric index to avoid clashes.
 def get_books(fix_names=True):
-        # figure out which files to load.
+        df = pd.read_csv('data/wordcounts.csv', sep='\t', index_col=False)
 
-        files = (
-            glob.glob('wordcounts/books-*-lengths.txt') + \
-            glob.glob('wordcounts/short-stories-*-lengths.txt') + \
-            glob.glob('wordcounts/non-fiction-*-lengths.txt')
-        )
-        df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'Title', 'Author']) for f in files])
+        df = df[~(df.category == 'articles')]
 
         df = df.dropna(subset=['Author'])
 
