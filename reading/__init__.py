@@ -14,7 +14,7 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 ################################################################################
 
 # load the data and patch it up
-def get_books(filename=GR_HISTORY, no_fixes=False):
+def get_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
     try:
         df = pd.read_csv(filename, index_col=0)
     except IOError:
@@ -41,6 +41,9 @@ def get_books(filename=GR_HISTORY, no_fixes=False):
     # load information about the authors
     for col in ['Nationality', 'Gender']:
         df[col] = df['Author'].apply(lambda x: Author(x).get(col))
+
+    if fix_names:
+        df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
 
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
