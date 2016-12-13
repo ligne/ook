@@ -414,6 +414,11 @@ def scheduled():
 
     for year in years:
         pages_remaining = scheduled_pages(df, year)
+        p = reading.on_shelves(df, others=[year])
+        if is_current_year(year):
+            p = p.append(reading.on_shelves(df, ['currently-reading']))
+
+        pages = p['Number of Pages'].order().values
 
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
@@ -432,7 +437,8 @@ def scheduled():
             print
 
         ax = axes[sp]
-        pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
+        #pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
+        pd.DataFrame([pages], index=[year]).plot(kind='bar', stacked=True, ax=ax, rot=0, legend=False)
         ax.axhline(_days_remaining(year) * rate)
 
         sp += 1
