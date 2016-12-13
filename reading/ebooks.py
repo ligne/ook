@@ -31,6 +31,9 @@ def get_books(fix_names=True):
         for col in ['Gender', 'Nationality']:
             df[col] = df['Author'].apply(lambda x: Author(x).get(col))
 
+        for col in df.columns:
+            if col[0].islower(): del df[col]
+
         # set a new index that won't clash with the GR one.
         return df.set_index([['_' + str(x) for x in range(len(df.index))]])
 
