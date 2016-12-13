@@ -10,7 +10,6 @@ from reading.author import Author
 
 # FIXME get additional data: clean title, original publication date
 # FIXME drop entries that already exist on ebooks shelf?
-# FIXME need to create non-numeric index to avoid clashes.
 def get_books(fix_names=True):
         df = pd.read_csv('data/wordcounts.csv', sep='\t', index_col=False)
 
