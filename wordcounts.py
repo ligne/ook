@@ -4,6 +4,7 @@
 import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
+import csv
 
 sys.path.insert(0, '/usr/lib64/calibre')
 sys.resources_location = os.environ.get('CALIBRE_RESOURCES_PATH', '/usr/share/calibre')
@@ -174,7 +175,7 @@ def close_filehandles():
 
 
 # processes all the files in directory d
-def process_dir(category, d):
+def process_dir(category, d, out):
     entries = {}
     for f in os.walk(d).next()[2]:
         if f == 'My Clippings.txt':
@@ -202,6 +203,7 @@ def process_dir(category, d):
     for (mtime, fi) in sorted(entries.values(), key=lambda x: x[0]):
         fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
+        out.writerow([ fi.get(x) for x in ('words', 'title', 'author', 'language', 'file')] + [int(mtime), category])
 
 
 if __name__ == "__main__":
@@ -210,17 +212,25 @@ if __name__ == "__main__":
 
     os.mkdir(wordcounts_tmpdir)
 
-    for d in 'articles', 'short-stories', 'books', 'non-fiction':
-        path = os.environ['HOME'] + '/.kindle/documents/' + d
-        process_dir(d, path)
+    csvfile = '{}/wordcounts.csv'.format(tmpdir)
 
-    process_dir('articles', os.environ['HOME'] + '/.kindle/documents/')
+    with open(csvfile, 'wb') as csvf:
+        fieldnames = ['words', 'Title', 'Author', 'language', 'file', 'mtime', 'category']
+        out = csv.writer(csvf, delimiter='\t')
+        out.writerow(fieldnames)
 
-    close_filehandles()
+        for d in 'articles', 'short-stories', 'books', 'non-fiction':
+            path = os.environ['HOME'] + '/.kindle/documents/' + d
+            process_dir(d, path, out)
+
+        process_dir('articles', os.environ['HOME'] + '/.kindle/documents/', out)
+
+        close_filehandles()
 
     # reset the colours, because ffs calibre.
     sys.stderr.write('\033[0m')
 
+    show_update(csvfile, 'data/wordcounts.csv')
     show_update(wordcounts_tmpdir, 'wordcounts/')
 
 # vim: ts=4 : sw=4 : et
