@@ -119,11 +119,15 @@ def format_author(author):
 
 
 def format_title(title):
-    title = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', title, flags=re.I).expandtabs())
+    #title = re.sub(r'\n', ' ', re.sub(r'^(the|a|le|la|les) ', '', title, flags=re.I).expandtabs())
+    # clean up whitespace
+    title = re.sub(r'\n', ' ', title).expandtabs()
+    # remove volume numbers
     title = re.sub(r'Tome [IV]+', '', title)
     title = re.sub(r'Vol(ume|\.) [IV\d]+ \(of \d+\)', '', title)
     title = re.sub(r'tome .*', '', title)
 
+    # remove stray punctuation
     title = re.sub(r'[/ .,]+$', '', title)
 
     return title
@@ -133,6 +137,8 @@ def format_title(title):
 # $filehandle.
 def print_entry(fi, filehandle=sys.stdout):
     if fi:
+        fi = fi.copy()
+        fi['display'] = re.sub(r'^(the|a|le|la|les) ', '', fi['display'], flags=re.I)
         filehandle.write('{words}\t{display}\n'.format(**fi))
 
 
