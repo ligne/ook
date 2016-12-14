@@ -103,3 +103,5 @@ print tmpdir
 # diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
 # rsync -ha --delete $tmpdir/ $kindle_dir/documents/wordcounts/
 #
+
+# vim: ts=4 : sw=4 : et
