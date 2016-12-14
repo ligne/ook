@@ -2,7 +2,6 @@
 
 import sys
 import time
-import yaml
 
 import reading.cache
 
