@@ -86,7 +86,7 @@ class Author():
         for field in self.missing_fields():
             # first, need to work out who we're talking about
             if not self.get('QID'):
-                self._search_author()
+                self._search()
                 # give up if nothing could be found.
                 if not self.get('QID'):
                     print "Couldn't find {}".format(self.name)  # FIXME
@@ -115,7 +115,7 @@ class Author():
 
 
     # searches for the author and caches the result.
-    def _search_author(self):
+    def _search(self):
         results = self._request(action='wbsearchentities', search=self.name)['search']
 
         if not len(results):
