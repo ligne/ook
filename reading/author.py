@@ -129,16 +129,6 @@ class Author():
             subj = self._get_entity(res['id'])
             score = 0
 
-            # other interesting occupations:
-            #   Q28389 (screenwriter)
-            #   Q1930187 (journalist)
-            #   Q6625963 (novelist)
-            #   Q482980 (author)
-            #   Q49757 (poet)
-            #   Q28389 (screenwriter)
-            #   Q214917 (playwright)
-            # in fact, all the subclasses of Q38180 (writer), and others.
-
             occupations = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P106') or [] ]
 
             for qid in list(set(['Q36180', 'Q482980', 'Q28389', 'Q1930187', 'Q6625963', 'Q49757', 'Q214917', 'Q15980158', 'Q21036234'])):
