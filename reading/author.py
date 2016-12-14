@@ -45,7 +45,10 @@ class Entity():
 
 
 class Author():
-    _authors = reading.cache.load_yaml('authors')
+    _qids = reading.cache.load_yaml('authors_q')
+    _names = reading.cache.load_yaml('authors_n')
+    _authors = dict([(n, _qids[q]) for (n, q) in _names.iteritems()])
+
     _fields = (
         'QID',
         'Name',
@@ -105,7 +108,8 @@ class Author():
             print '{:12s} - {}'.format(field, self.get(field))
 
         # make sure the authors cache gets updated.
-        self._authors[self.name] = self._author
+        self._qids[self.get('QID')] = self._author
+        self._names[self.name] = self.get('QID')
 
         if missing:
             print
@@ -246,8 +250,9 @@ class Author():
     @staticmethod
     def save():
         reading.cache.dump_yaml('authors',       Author._authors)
+        reading.cache.dump_yaml('authors_n',     Author._names)
+        reading.cache.dump_yaml('authors_q',     Author._qids)
         reading.cache.dump_yaml('nationalities', Author._nationalities)
         reading.cache.dump_yaml('genders',       Author._genders)
-
 
 # vim: ts=4 : sw=4 : et
