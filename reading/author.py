@@ -194,7 +194,7 @@ class Author():
     # could either try and look up the most recent equivalent, or just
     # use its QID
     def _get_nationality(self):
-        p = str(self._get_property('P27'))
+        p = self._get_property('P27')
 
         if p in self._nationalities:
             return self._nationalities[p]
