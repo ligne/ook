@@ -178,14 +178,10 @@ class Author():
     def _get_gender(self):
         p = self._get_property('P21')
 
-        if p in self._genders:
-            return self._genders[p]
+        if p not in self._genders:
+            self._genders[p] = self._get_entity(p).get_label().lower()
 
-        gender = self._get_entity(p).get_label()
-
-        self._genders[p] = gender.lower()
-
-        return self._genders.get(p)
+        return self._genders[p]
 
 
     # returns the subject's nationality as a two-letter code.
@@ -196,18 +192,16 @@ class Author():
     def _get_nationality(self):
         p = self._get_property('P27')
 
-        if p in self._nationalities:
-            return self._nationalities[p]
+        if p not in self._nationalities:
+            try:
+                country = self._get_entity(p)
+                country = country.get_property('P297').lower()
+            except KeyError:
+                country = country.get_label()
 
-        country = self._get_entity(p)
-        try:
-            country = country.get_property('P297').lower()
-        except KeyError:
-            country = country.get_label()
+            self._nationalities[p] = country
 
-        self._nationalities[p] = country
-
-        return self._nationalities.get(p)
+        return self._nationalities[p]
 
 
     # look up a field in the author blob.
