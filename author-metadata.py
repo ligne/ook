@@ -1,12 +1,21 @@
 #!/usr/bin/python
 
+import sys
+
 import reading
 import reading.ebooks
 from reading.author import Author
 
+
 df = reading.get_books(fix_names=False)
 
-df = reading.on_shelves(df, ['read', 'currently-reading', 'pending', 'elsewhere', 'ebooks'])
+df = reading.on_shelves(df, [
+    'read',
+    'currently-reading',
+    'pending',
+    'elsewhere',
+    'ebooks',
+])
 
 df1 = reading.ebooks.get_books(fix_names=False)
 
@@ -19,7 +28,7 @@ for author in authors:
         Author(author).fetch_missing()
     except Exception as e:
         print e
-        continue
 
 Author.save()
 
+# vim: ts=4 : sw=4 : et
