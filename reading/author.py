@@ -37,7 +37,7 @@ class Author():
 
     # returns a list of missing fields for this author
     def missing_fields(self):
-        return [ f for f in self._fields if f not in self._item ]
+        return [f for f in self._fields if f not in self._item]
 
 
     # fetch any missing fields and report this in a pretty format
