@@ -28,8 +28,6 @@ class Author():
         self.name = name
         self._subj = None
         self._item = self._items.get(name, {})
-        # will be set to true if and when the name/description is printed out.
-        self._issued_info = False
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
@@ -44,28 +42,21 @@ class Author():
 
     # fetch any missing fields and report this in a pretty format
     def fetch_missing(self):
+        # work out if anything is missing
         missing = self.missing_fields()
+        if not missing:
+            return
 
-        for field in self.missing_fields():
-            # first, need to work out who we're talking about
-            if not self.get('QID'):
-                self._search()
-                # give up if nothing could be found.
-                if not self.get('QID'):
-                    print "Couldn't find {}".format(self.name)  # FIXME
-                    print
-                    return
+        # first, need to work out who we're talking about
+        if not self._find():
+            return
 
-            # now get the entity from the server, if we don't already have it.
-            if not self._subj:
-                self._subj = self._get_entity(self.get('QID'))
+        # print the author's name before the first new field.
+        #print '{} - {}'.format(self.name, self.get('QID'))
+        print self.name
 
-            # print the author's name before the first new field.
-            if not self._issued_info:
-                print self.name
-                self._issued_info = True
-
-            # now save the field, and print it.
+        for field in missing:
+            # save the field, and print it.
             self._item[field] = self.get_field(field)
             print '{:12s} - {}'.format(field, self.get(field))
 
@@ -73,8 +64,27 @@ class Author():
         self._qids[self.get('QID')] = self._item
         self._names[self.name] = self.get('QID')
 
-        if missing:
-            print
+        print
+
+
+    # searches for the author if necessary.
+    def _find(self):
+        if not self.get('QID'):
+            self._search()
+            # give up if nothing could be found.
+            if not self.get('QID'):
+                print "Couldn't find {}".format(self.name)  # FIXME
+                print
+                return 0
+        return 1
+
+
+    # loads the entity if necessary.
+    def _load_entity(self):
+        # now get the entity from the server, if we don't already have it.
+        if not self._subj:
+            self._subj = self._get_entity(self.get('QID'))
+        return
 
 
     # searches for the author and caches the result.
@@ -203,6 +213,7 @@ class Author():
     # look up a field in the author blob.
     def get_field(self, field):
         try:
+            self._load_entity()
             return str(getattr(self, '_get_' + field.lower())())
         except KeyError:
             return
