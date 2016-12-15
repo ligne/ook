@@ -129,6 +129,7 @@ if __name__ == "__main__":
     # read in the options.
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='*')
+    parser.add_argument('--date', type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
     parser.add_argument('--scheduled', action="store_true")
     parser.add_argument('--bump', action="store_true")
     parser.add_argument('--new-authors', action="store_true")
@@ -136,6 +137,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     files = args.args
+
+    if args.date:
+        today = args.date
 
     try:
         # only pop if it was numeric
