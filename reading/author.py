@@ -52,7 +52,6 @@ class Author():
             return
 
         # print the author's name before the first new field.
-        #print '{} - {}'.format(self.name, self.get('QID'))
         print self.name
 
         for field in missing:
