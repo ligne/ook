@@ -206,7 +206,7 @@ class Book():
         return self._get_entity(self._get_property('P50')).get_label(self._language)
 
 
-    # returns the URL to the entity.
+    # returns the URL for the entity.
     def _get_url(self):
         return 'http://www.wikidata.org/entity/{}'.format(self._subj.get_qid())
 

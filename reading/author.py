@@ -7,6 +7,7 @@ import reading.cache
 from reading._entity import Entity
 
 
+# represents an author and its properties.
 class Author():
     _qids = reading.cache.load_yaml('authors_q')
     _names = reading.cache.load_yaml('authors_n')
