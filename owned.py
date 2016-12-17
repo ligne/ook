@@ -17,6 +17,8 @@ owned_shelves = [
     'elsewhere',
 ]
 
+df = df.drop_duplicates(['Author', 'Title'])
+
 g = reading.on_shelves(df, owned_shelves).sort(['Author', 'Title']).groupby('Author')
 
 for author in sorted(g.groups.keys()):
