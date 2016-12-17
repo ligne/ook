@@ -5,6 +5,7 @@ import sys
 import reading
 import reading.ebooks
 from reading.author import Author
+from reading.book import Book
 
 
 df = reading.get_books(fix_names=False)
