@@ -33,7 +33,7 @@ def ignore_authors(df):
 
 
 def _scheduled_for_year(df, year):
-    df = df[df['Bookshelves'].fillna('').str.contains(str(year))]
+    df = df[df.Scheduled == str(year)]
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
     return df.sort(['words']).reset_index(drop=True)
