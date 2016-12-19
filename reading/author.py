@@ -83,7 +83,7 @@ class Author():
     def _load_entity(self):
         # now get the entity from the server, if we don't already have it.
         if not self._subj:
-            self._subj = self._get_entity(self.get('QID'))
+            self._subj = Entity(self.get('QID'))
         return
 
 
@@ -102,7 +102,7 @@ class Author():
             if 'disambiguation page' in res.get('description', ''):
                 continue
 
-            subj = self._get_entity(res['id'])
+            subj = Entity(res['id'])
             score = 0
 
             occupations = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P106') or [] ]
@@ -130,11 +130,6 @@ class Author():
         self._subj = subj
 
         return
-
-
-    # fetches the subject data for entity $qid
-    def _get_entity(self, qid):
-        return Entity(self._request(action='wbgetentities', ids=qid)['entities'][qid])
 
 
     # runs a query against the API
@@ -179,7 +174,7 @@ class Author():
         p = self._get_property('P21')
 
         if p not in self._genders:
-            self._genders[p] = self._get_entity(p).get_label().lower()
+            self._genders[p] = Entity(p).get_label().lower()
 
         return self._genders[p]
 
@@ -194,7 +189,7 @@ class Author():
 
         if p not in self._nationalities:
             try:
-                country = self._get_entity(p)
+                country = Entity(p)
                 country = country.get_property('P297').lower()
             except KeyError:
                 country = country.get_label()

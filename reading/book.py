@@ -90,7 +90,7 @@ class Book():
     def _load_entity(self):
         # now get the entity from the server, if we don't already have it.
         if not self._subj:
-            self._subj = self._get_entity(self.get('QID'))
+            self._subj = Entity(self.get('QID'))
         return
 
 
@@ -118,7 +118,7 @@ class Book():
             if 'disambiguation page' in res.get('description', ''):
                 continue
 
-            subj = self._get_entity(res['id'])
+            subj = Entity(res['id'])
             score = 0
 
             try:
@@ -153,11 +153,6 @@ class Book():
         self._subj = subj
 
         return
-
-
-    # fetches the subject data for entity $qid
-    def _get_entity(self, qid):
-        return Entity(self._request(action='wbgetentities', ids=qid)['entities'][qid])
 
 
     # runs a query against the API
@@ -203,7 +198,7 @@ class Book():
     # FIXME save the author:  create new Author object, run usual update on it.
     # can pass in the QID to skip the searching.
     def _get_author(self):
-        return self._get_entity(self._get_property('P50')).get_label(self._language)
+        return Entity(self._get_property('P50')).get_label(self._language)
 
 
     # returns the URL for the entity.

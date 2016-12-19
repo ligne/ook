@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import time
 
 
 # basic operations on an entity.
 class Entity():
 
-    def __init__(self, subj):
-        self._subj = subj
+    def __init__(self, qid):
+        import requests
+
+        r = requests.get('https://www.wikidata.org/wiki/Special:EntityData/{}.json'.format(qid))
+        time.sleep(1)
+
+        self._subj = r.json()['entities'][qid]
 
 
     # returns the property $prop
