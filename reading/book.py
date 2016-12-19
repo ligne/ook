@@ -210,7 +210,7 @@ class Book():
     def get_field(self, field):
         try:
             self._load_entity()
-            return str(getattr(self, '_get_' + field.lower().replace(' ', '_'))())
+            return getattr(self, '_get_' + field.lower().replace(' ', '_'))()
         except KeyError:
             return
 
