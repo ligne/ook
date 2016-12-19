@@ -88,9 +88,9 @@ def check_scheduled_but_already_read(df):
 
 
 # duplicate books
-# FIXME should be clearer...
 def check_duplicate_books(df):
     # FIXME may still want this to remove any stray descriptions?
+    # FIXME case-insensitive?
 #     df['Clean Title'] = df['Title'].str.replace(r' \(.+?\)$', '')
     df = df[df.duplicated(subset=['Title', 'Author', 'Volume'])]
     print_entries(df, 'Duplicate books')
