@@ -24,11 +24,14 @@ class Author():
     _genders = reading.cache.load_yaml('genders')
 
 
-    def __init__(self, name):
+    def __init__(self, name='', qid=None):
         name = ' '.join(name.split())  # normalise whitespace
         self.name = name
         self._subj = None
         self._item = self._items.get(name, {})
+        # we can bypass the usual search if a QID was provided.
+        if qid:
+            self._qids[qid] = self._item = self._qids.get(qid, {'QID': qid})
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
