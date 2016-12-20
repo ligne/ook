@@ -22,16 +22,13 @@ class Book():
         'Name',
         'Description',
         'URL',
-        'Author',
+        'AQIDs',
     )
 
     def __init__(self, name, author, language):
         self.name = name
         self._subj = None
         self._item = self._items.get(name, {})
-        # FIXME can have more than one author.
-        # https://www.wikidata.org/wiki/Q861461
-        #
         # FIXME combine all author QIDs into one string. then short stories
         # won't upset the duplicates test.
         self._author = Author(author)
@@ -199,6 +196,11 @@ class Book():
     # can pass in the QID to skip the searching.
     def _get_author(self):
         return Entity(self._get_property('P50')).get_label(self._language)
+
+
+    # returns a list of the QIDs for all the authors
+    def _get_aqids(self):
+        return [ str(x['mainsnak']['datavalue']['value']['id']) for x in self._subj._get_claims('P50') ]
 
 
     # returns the URL for the entity.
