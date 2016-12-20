@@ -27,6 +27,8 @@ def file_infos(path):
     if path not in wcs:
         (author, title, language) = metadata(path)
         words = wordcount(path)
+        if author == 'Unknown':
+            author = ''
         # only cache if there's a wordcount
         if words:
             wcs[path] = [words, author, title, language]
@@ -97,7 +99,7 @@ def metadata(path):
 # formats a title/author string for display
 def display_title(author, title):
     fmt = '{}'
-    if author != 'Unknown':
+    if author:
         fmt = '{}\t{}'
     return fmt.format(title, author)
 
