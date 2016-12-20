@@ -23,15 +23,13 @@ class Book():
         'Description',
         'URL',
         'AQIDs',
+        'Authors',
     )
 
     def __init__(self, name, author, language):
         self.name = name
         self._subj = None
         self._item = self._items.get(name, {})
-        # FIXME combine all author QIDs into one string. then short stories
-        # won't upset the duplicates test.
-        self._author = Author(author)
         self._language = language
 
 
@@ -191,11 +189,11 @@ class Book():
         return self._subj.get_description()
 
 
-    # returns the name of the author.
-    # FIXME save the author:  create new Author object, run usual update on it.
-    # can pass in the QID to skip the searching.
-    def _get_author(self):
-        return Entity(self._get_property('P50')).get_label(self._language)
+    # returns the name(s) of the author(s).
+    def _get_authors(self):
+        for qid in self.get_field('AQIDs'):
+            Author(qid=qid).fetch_missing()
+        return ', '.join([ Author(qid=x).get('Name', x) for x in self._item.get('AQIDs') ])
 
 
     # returns a list of the QIDs for all the authors
