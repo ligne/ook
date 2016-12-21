@@ -116,17 +116,12 @@ class Book():
             subj = Entity(res['id'])
             score = 0
 
-            try:
-                print subj.get_label(language=self._language)
-            except:
-                print '-'
-            print str(res.get('description', '').encode('utf-8'))
-            print res['concepturi']
-            print
-
             # FIXME check P50 against author QID and/or name.
 
-            instanceof = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P31') or [] ]
+            try:
+                instanceof = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P31') or [] ]
+            except AttributeError:
+                instanceof = []
             for qid in ['Q571', 'Q7725634', 'Q49084', 'Q8261', 'Q192782', 'Q35760']:
                 if qid in instanceof:
                     score += 1

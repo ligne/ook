@@ -108,13 +108,18 @@ class Author():
             subj = Entity(res['id'])
             score = 0
 
-            occupations = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P106') or [] ]
-
+            try:
+                occupations = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P106') or [] ]
+            except AttributeError:
+                occupations = []
             for qid in list(set(['Q36180', 'Q482980', 'Q28389', 'Q1930187', 'Q6625963', 'Q49757', 'Q214917', 'Q15980158', 'Q21036234'])):
                 if qid in occupations:
                     score += 1
 
-            instanceof = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P31') or [] ]
+            try:
+                instanceof = [ x['mainsnak']['datavalue']['value']['id'] for x in subj._subj['claims'].get('P31') or [] ]
+            except AttributeError:
+                instanceof = []
             for qid in ['Q5', 'Q1690980']:
                 if qid in instanceof:
                     score += 1
