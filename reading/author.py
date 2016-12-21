@@ -212,7 +212,7 @@ class Author():
         try:
             self._load_entity()
             return getattr(self, '_get_' + field.lower().replace(' ', '_'))()
-        except KeyError:
+        except (KeyError, TypeError):
             return
 
 
