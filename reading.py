@@ -14,6 +14,7 @@ import numpy as np
 
 import wordcounts
 import reading
+import reading.ebooks
 
 
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
@@ -75,19 +76,7 @@ def ebook_pages():
 
 # returns the current wordcount for all books
 def get_ebook_words():
-    import os
-    total = 0
-    for d in 'short-stories', 'books', 'non-fiction':
-        d = os.environ['HOME'] + '/.kindle/documents/' + d
-        files = os.walk(d).next()[2]
-        for f in files:
-            if f == 'My Clippings.txt':
-                continue
-            path = d + '/' + f
-            fi = wordcounts.file_infos(path)
-            total += fi['words']
-
-    return total
+    return reading.ebooks.get_books().Words.sum()
 
 
 # in pages per day...
