@@ -127,7 +127,7 @@ def format_title(title):
     title = re.sub(r'\n', ' ', title).expandtabs()
     # remove volume numbers
     title = re.sub(r'Tome [IV]+', '', title)
-    title = re.sub(r'Vol(ume|\.) [IV\d]+ \(of \d+\)', '', title)
+    title = re.sub(r'Vol(ume|\.) [IV\d]+(?: \(of \d+\))?', '', title)
     title = re.sub(r'tome .*', '', title)
 
     # remove stray punctuation
