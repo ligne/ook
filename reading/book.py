@@ -158,7 +158,7 @@ class Book():
             'ids': ids,
         }
 
-        r = requests.get('https://www.wikidata.org/w/api.php', q)
+        r = requests.get('https://www.wikidata.org/w/api.php', params=q)
         time.sleep(0.5)
 
         return r.json()
