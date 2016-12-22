@@ -28,10 +28,16 @@ class Author():
         name = ' '.join(name.split())  # normalise whitespace
         self.name = name
         self._subj = None
-        self._item = self._items.get(name, {})
-        # we can bypass the usual search if a QID was provided.
+
+        if not qid:
+            qid = self._names.get(name)
+
         if qid:
-            self._qids[qid] = self._item = self._qids.get(qid, {'QID': qid})
+            self._item = self._qids.get(qid, {'QID': qid})
+            if name:
+                self._names[name] = qid
+        else:
+            self._item = {}
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
@@ -48,26 +54,27 @@ class Author():
     def fetch_missing(self):
         # work out if anything is missing
         missing = self.missing_fields()
-        if not missing:
-            return
+        if missing:
+            # first, need to work out who we're talking about
+            if not self._find():
+                return
 
-        # first, need to work out who we're talking about
-        if not self._find():
-            return
+            # print the author's name before the first new field.
+            print self.name
 
-        # print the author's name before the first new field.
-        print self.name
+            for field in missing:
+                # save the field, and print it.
+                self._item[field] = self.get_field(field)
+                print '{:12s} - {}'.format(field, self.get(field))
 
-        for field in missing:
-            # save the field, and print it.
-            self._item[field] = self.get_field(field)
-            print '{:12s} - {}'.format(field, self.get(field))
+            print
 
         # make sure the authors cache gets updated.
         self._qids[self.get('QID')] = self._item
-        self._names[self.name] = self.get('QID')
-
-        print
+        if self.get('Name'):
+            self._names[self.get('Name')] = self.get('QID')
+        if self.name:
+            self._names[self.name] = self.get('QID')
 
 
     # searches for the author if necessary.
