@@ -41,8 +41,8 @@ class Book():
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
-    def get(self, field, *args):
-        return self._item.get(field, *args)
+    def get(self, field, d=None):
+        return self._item.get(field) or d
 
 
     # returns a list of missing fields for this book
