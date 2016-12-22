@@ -12,7 +12,6 @@ from reading._entity import Entity
 class Book():
     _qids = reading.cache.load_yaml('books_q')
     _names = reading.cache.load_yaml('books_n')
-    _items = dict([(n, _qids.get(q, {})) for (n, q) in _names.iteritems()])
 
     # publication date, original language? previous/subsequent books?
     # series/entry:

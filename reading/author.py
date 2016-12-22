@@ -11,7 +11,6 @@ from reading._entity import Entity
 class Author():
     _qids = reading.cache.load_yaml('authors_q')
     _names = reading.cache.load_yaml('authors_n')
-    _items = dict([(n, _qids.get(q, {})) for (n, q) in _names.iteritems()])
 
     _fields = (
         'QID',
