@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import re
 
 import reading.cache
 from reading.author import Author
@@ -97,19 +98,12 @@ class Book():
 
 
     # searches for the book and caches the result.
-    # FIXME try tweaking the title to get a better match.  anything after a / or ;.
-    #
-    # split on:
-    #   ' / '
-    #   '; '
-    #   ': '
-    #   ' - '
-    #   ', '
-    #   ', a'
-    #   ' — '
-    # anything in brackets at the end (square or round).
     def _search(self):
-        results = self._request(action='wbsearchentities', search=self.name, language=self._language)['search']
+        name = re.sub(r'\[\w+\]$', '', self.name)  # remove brackets
+        name = re.split(r'[-/;:,—]\s+', name)[0]  # take everything up to the delimiter.
+        # FIXME search for both this and the original
+
+        results = self._request(action='wbsearchentities', search=name, language=self._language)['search']
 
         if not len(results):
             return
