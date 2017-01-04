@@ -87,13 +87,12 @@ def print_section(header, df, fh=sys.stdout):
         fmt = '{Words:7.0f}  {Title}'
         if row['Author']:
             fmt += ' ({Author})'
-        fmt = '{Words}\t{Title}\t{Author}'
         print >>fh, '{:.50s}'.format(fmt.format(**row))
 
     print >>fh, '----'
 
 
-with open('images/00 Numeric.txt', 'w') as numeric, open('images/00 Alphabetical.txt', 'w') as alpha:
+with open(tmpdir + '/00 Numeric.txt', 'w') as numeric, open(tmpdir + '/00 Alphabetical.txt', 'w') as alpha:
     df = reading.ebooks.get_books()
 
     # for each combination
