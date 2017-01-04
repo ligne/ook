@@ -38,6 +38,9 @@ def get_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
     for column in ['Date Read', 'Date Added', 'Date Started']:
         df[column] = pd.to_datetime(df[column])
 
+    # remove old read books
+    df = df[~((df['Exclusive Shelf'] == 'read')&(df['Date Read'] < '2016'))]
+
     # load information about the authors
     for col in ['Nationality', 'Gender']:
         df[col] = df['Author'].apply(lambda x: Author(x).get(col))
