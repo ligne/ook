@@ -139,6 +139,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('args', nargs='*')
     parser.add_argument('--date', type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
+    parser.add_argument('--shelves', nargs='+')
+    parser.add_argument('--size', type=int)
     parser.add_argument('--scheduled', action="store_true")
     parser.add_argument('--bump', action="store_true")
     parser.add_argument('--new-authors', action="store_true")
@@ -150,12 +152,16 @@ if __name__ == "__main__":
     if args.date:
         today = args.date
 
+    shelves = args.shelves or default_shelves
+    df = reading.on_shelves(df, shelves)
+
     try:
         # only pop if it was numeric
         size = int(files[-1])
         files.pop()
     except:
         size = 10
+    size = args.size or size
 
     if len(files):
         # read in the CSVs, sort them, and set the index to match the new order.
