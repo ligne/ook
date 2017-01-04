@@ -63,13 +63,14 @@ def compare(df_old, df_new):
 
                     print '{}:'.format(col)
                     if removed:
-                        print '\t-{}'.format(', -'.join(removed)),
+                        print '  -{}'.format(', -'.join(removed)),
                     if added:
-                        print '\t+{}'.format(', +'.join(added)),
+                        print '  +{}'.format(', +'.join(added)),
                     print
                 else:
-                    print '{}:\n\t{} -> {}'.format(col, old_row[col], new_row[col])
+                    print '{}:\n  {} -> {}'.format(col, old_row[col], new_row[col])
 
+        print
         print '----'
 
 
