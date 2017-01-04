@@ -121,7 +121,10 @@ def show_nearby(df, index, size):
     return df.iloc[max(0, index - s):(index + s)]
 
 
-# prints it out.  FIXME hande missing author better.  FIXME allow sorting/grouping by author?
+# prints it out.
+# FIXME handle missing author better.
+# FIXME allow sorting/grouping by author?
+# FIXME merge multiple volumes.
 def print_rows(df):
     for ix, row in df.iterrows():
         print '{words:7.0f}  {title} ({author})'.format(**row)
