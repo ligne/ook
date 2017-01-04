@@ -6,6 +6,7 @@ import re
 import reading.cache
 from reading.author import Author
 from reading._entity import Entity
+from reading._grtree import GRTree
 
 
 # represents a book and its properties.
