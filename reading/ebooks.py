@@ -13,11 +13,11 @@ from reading.author import Author
 def get_books(fix_names=True):
         df = pd.read_csv('data/wordcounts.csv', sep='\t', index_col=False)
 
-        df = df[~(df.category == 'articles')]
+        df = df[~(df.Category == 'articles')]
 
         df.loc[:,'Author'].fillna('', inplace=True)
 
-        df['Number of Pages'] = (df.words / 390).astype(int)
+        df['Number of Pages'] = (df.Words / 390).astype(int)
 
         df['Exclusive Shelf'] = 'kindle'
         df['Bookshelves'] = 'kindle'
