@@ -175,6 +175,11 @@ class Book():
         return self._subj.get_qid()
 
 
+    # returns the GRID of the subject.
+    def _get_grid(self):
+        return self._tree.get_text('book/id')
+
+
     # returns the name of the subject.
     # FIXME check aliases for a closer match?
     def _get_name(self):
@@ -201,6 +206,16 @@ class Book():
     # returns the URL for the entity.
     def _get_url(self):
         return 'http://www.wikidata.org/entity/{}'.format(self._subj.get_qid())
+
+
+    # returns the language of the book.
+    def _get_language(self):
+        return self._tree.get_text('book/language_code')[:2]
+
+
+    # returns the year the book was originally published
+    def _get_original_publication_year(self):
+        return self._tree.get_text('book/work/original_publication_year')
 
 
     # look up a field in the author blob.
