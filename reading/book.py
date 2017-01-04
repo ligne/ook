@@ -65,7 +65,7 @@ class Book():
             for field in missing:
                 # save the field, and print it.
                 self._item[field] = self.get_field(field)
-                print '{:12s} - {}'.format(field, self.get(field))
+                print '{:12.12s} - {}'.format(field, self.get(field))
 
             print
 
