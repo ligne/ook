@@ -15,7 +15,7 @@ def get_books(fix_names=True):
 
         df = df[~(df.category == 'articles')]
 
-        df = df.dropna(subset=['Author'])
+        df.loc[:,'Author'].fillna('', inplace=True)
 
         df['Number of Pages'] = (df.words / 390).astype(int)
 
