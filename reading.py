@@ -389,7 +389,7 @@ def scheduled_pages(df, year):
 
 def scheduled_years(df):
     years = df['Scheduled'].dropna()
-    return sorted(list(set(years)))
+    return sorted(list(set(years) | {str(today.year)}))
 
 
 # plot reading schedule against time left, with warnings.
