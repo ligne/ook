@@ -14,6 +14,12 @@ import reading
 
 today = datetime.date.today()
 
+default_shelves = [
+    'pending',
+    'elsewhere',
+    'ebooks',
+]
+
 
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
