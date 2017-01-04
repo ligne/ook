@@ -4,6 +4,16 @@
 import sys, os
 import tempfile
 import subprocess
+import re
+
+import reading.ebooks
+
+
+default_categories = [
+    'books',
+    'short-stories',
+    'non-fiction',
+]
 
 
 kindle_dir = '/run/media/mlb/Kindle/'
@@ -55,53 +65,63 @@ print tmpdir
 #   echo
 #   ./suggestions.py wordcounts/non-fiction-*-lengths.txt 15
 # ) | cut -c-50 > $tmpdir/00\ Suggestions.txt
-#
-# # add alphabetically and numerically sorted versions of all wordcount lists.
-# (
-#   echo Articles
-#   echo
-#   sort -nr wordcounts/articles-*-lengths.txt
-#   echo ----
-#   echo Books
-#   echo
-#   sort -nr wordcounts/books-*-lengths.txt
-#   echo ----
-#   echo Short stories
-#   echo
-#   sort -nr wordcounts/short-stories-*-lengths.txt
-#   echo ----
-#   echo French books
-#   echo
-#   sort -nr wordcounts/*-fr-lengths.txt
-#   echo ----
-#   echo Non-fiction
-#   echo
-#   sort -nr wordcounts/non-fiction-*-lengths.txt
-# ) | cut -c-50 > $tmpdir/00\ Numeric.txt
-# (
-#   echo Articles
-#   echo
-#   sort -k2 wordcounts/articles-*-lengths.txt
-#   echo ----
-#   echo Books
-#   echo
-#   sort -k2 wordcounts/books-*-lengths.txt
-#   echo ----
-#   echo Short stories
-#   echo
-#   sort -k2 wordcounts/short-stories-*-lengths.txt
-#   echo ----
-#   echo French books
-#   echo
-#   sort -k2 wordcounts/*-fr-lengths.txt
-#   echo ----
-#   echo Non-fiction
-#   echo
-#   sort -k2 wordcounts/non-fiction-*-lengths.txt
-# ) | cut -c-50 > $tmpdir/00\ Alphabetical.txt
-#
+
+
+# add alphabetically and numerically sorted versions of all wordcount lists.
+
+# optionally cut out any rows that aren't in @categories or @languages.
+def select(df, categories=None, languages=None):
+    if not languages:
+        languages = df['Language'].unique()
+    if not categories:
+        categories = default_categories
+
+    return df[df['Category'].isin(categories) & df['Language'].isin(languages)]
+
+
+# print out rows in $df, with a maximum line length.
+def print_section(header, df, fh=sys.stdout):
+    print >>fh, header
+    print >>fh, ''
+    for ix, row in df.iterrows():
+        fmt = '{Words:7.0f}  {Title}'
+        if row['Author']:
+            fmt += ' ({Author})'
+        fmt = '{Words}\t{Title}\t{Author}'
+        print >>fh, '{:.50s}'.format(fmt.format(**row))
+
+    print >>fh, '----'
+
+
+with open('images/00 Numeric.txt', 'w') as numeric, open('images/00 Alphabetical.txt', 'w') as alpha:
+    df = reading.ebooks.get_books()
+
+    # for each combination
+    combinations = [
+        [ 'Articles', ['articles'], []],
+        [ 'Novels', ['books'], []],
+        [ 'Short stories', ['short-stories'], []],
+        [ 'Non-fiction', ['non-fiction'], []],
+        [ 'English', [], ['en']],
+        [ 'French', [], ['fr']],
+        [ 'Everything', [], []],
+    ]
+
+    for (t, c, l) in combinations:
+        # numeric
+        df = df.sort('Words', ascending=False)
+        print_section(t, select(df, **{'categories': c, 'languages': l}), numeric)
+
+        # alphabetical
+        df['alpha'] = df['Title'].apply(lambda x:
+            re.sub(r'^(the|a|le|la|les) ', '', x, flags=re.I).lower()
+        )
+        df = df.sort('alpha')
+        print_section(t, select(df, **{'categories': c, 'languages': l}), alpha)
+
+
 # diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
 # rsync -ha --delete $tmpdir/ $kindle_dir/documents/wordcounts/
-#
+
 
 # vim: ts=4 : sw=4 : et
