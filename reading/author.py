@@ -89,7 +89,7 @@ class Author():
 
 
     # loads the entity if necessary.
-    def _load_entity(self):
+    def _load_entities(self):
         # now get the entity from the server, if we don't already have it.
         if not self._subj:
             self._subj = Entity(self.get('QID'))
@@ -216,7 +216,7 @@ class Author():
     # look up a field in the author blob.
     def get_field(self, field):
         try:
-            self._load_entity()
+            self._load_entities()
             return getattr(self, '_get_' + field.lower().replace(' ', '_'))()
         except (KeyError, TypeError):
             return

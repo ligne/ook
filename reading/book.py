@@ -88,11 +88,12 @@ class Book():
         return 1
 
 
-    # loads the entity if necessary.
-    def _load_entity(self):
-        # now get the entity from the server, if we don't already have it.
-        if not self._subj:
+    # loads the entities if necessary.
+    def _load_entities(self):
+        if not self._subj and self.get('QID'):
             self._subj = Entity(self.get('QID'))
+        if not self._tree and self.get('GRID'):
+            self._tree = GRTree(self.get('GRID'))
         return
 
 
@@ -204,7 +205,7 @@ class Book():
     # look up a field in the author blob.
     def get_field(self, field):
         try:
-            self._load_entity()
+            self._load_entities()
             return getattr(self, '_get_' + field.lower().replace(' ', '_'))()
         except (KeyError, TypeError):
             return
