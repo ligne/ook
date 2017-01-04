@@ -217,7 +217,7 @@ if __name__ == "__main__":
     csvfile = '{}/wordcounts.csv'.format(tmpdir)
 
     with open(csvfile, 'wb') as csvf:
-        fieldnames = ['words', 'Title', 'Author', 'Language', 'file', 'mtime', 'category']
+        fieldnames = ['Words', 'Title', 'Author', 'Language', 'file', 'mtime', 'Category']
         out = csv.writer(csvf, delimiter='\t')
         out.writerow(fieldnames)
 
