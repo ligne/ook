@@ -215,9 +215,30 @@ class Book():
         return [ str(x['mainsnak']['datavalue']['value']['id']) for x in self._subj._get_claims('P50') ]
 
 
+    def _get_agrids(self):
+        return [
+            x.find('id').text.encode('utf-8')
+                for x in self._tree.get_values('book/authors/author')
+                if not x.find('role').text
+        ]
+
+
+    def _get_gr_authors(self):
+        return ', '.join([
+            x.find('name').text.encode('utf-8')
+                for x in self._tree.get_values('book/authors/author')
+                if not x.find('role').text
+        ])
+
+
     # returns the URL for the entity.
     def _get_url(self):
         return 'http://www.wikidata.org/entity/{}'.format(self._subj.get_qid())
+
+
+    # returns the GR URL for the entity.
+    def _get_gr_url(self):
+        return 'https://www.goodreads.com/book/show/{}'.format(self._tree.get_text('book/id'))
 
 
     # returns the language of the book.
