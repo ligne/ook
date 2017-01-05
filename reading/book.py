@@ -256,7 +256,7 @@ class Book():
         try:
             self._load_entities()
             return getattr(self, '_get_' + field.lower().replace(' ', '_'))()
-        except (KeyError, TypeError):
+        except (KeyError, TypeError, AttributeError):
             return
 
 
