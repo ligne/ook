@@ -83,11 +83,13 @@ class Book():
     def _find(self):
         if not self.get('QID'):
             self._search()
-            # give up if nothing could be found.
-            if not self.get('QID'):
-                print "Couldn't find {}".format(self.name)  # FIXME
-                print
-                return 0
+        if not self.get('GRID'):
+            self._gr_search()
+        # give up if nothing could be found.
+        if not (self.get('QID') or self.get('GRID')):
+            print "Couldn't find {}".format(self.name)  # FIXME
+            print
+            return 0
         return 1
 
 
