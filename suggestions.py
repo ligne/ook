@@ -130,6 +130,37 @@ def print_rows(df):
 
 ################################################################################
 
+# modes:
+#   scheduled
+#       scheduled for this year.
+#       next in series
+#       not read in the last 6 months (same year is fine).
+#           less than that is ok for authors i expect to read more of?  how many scheduled and read by that author this year, divide into equal chunks.
+#   bump
+#       scheduled for next year
+#       not already scheduled for this year
+#       not read recently
+#   suggest
+#       not scheduled
+#       not read recently
+#       next in series
+#   schedule next
+#       set year
+#       not authors scheduled in that year
+#       by authors i've got scheduled, or read recently, or where i've got a lot of their books
+#       
+#
+# filter:
+#   shelves
+#   old/new authors
+#   old/new nationalities
+#   novels/short stories/non-fiction
+#   language
+#   number of suggestions.  don't limit if listing scheduled books
+#
+# output:
+#
+
 if __name__ == "__main__":
     df = reading.get_books()
 
@@ -178,7 +209,11 @@ if __name__ == "__main__":
         df = new_authors(df)
     else:
         # use the goodreads list
-        df = df[df['Exclusive Shelf'] == 'pending']
+
+        # FIXME this really ought to be the default, with old/new whatever as
+        # filters on the output.  merge ebooks in, and $files mode can be made
+        # special.  and replace that with filters on novel/short-story/non-fiction
+        #and language?
 
         # remove books if there's already an earlier one in the series
         # drop_duplicates() treats NaNs as being the same, so need to be more
