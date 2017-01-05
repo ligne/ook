@@ -6,13 +6,14 @@ import yaml
 # FIXME shouldn't specify yaml...
 
 # returns a yaml data file's contents in a usable format.
-def load_yaml(name):
+def load_yaml(name, default=None):
     try:
         with open('data/{}.yml'.format(name)) as fh:
-            a = yaml.load(fh)
+            return yaml.load(fh)
     except:
-        a = None
-    return a or {}
+        if default is not None:
+            return default
+        return {}
 
 
 # saves as yaml in a vaguely readable form.
