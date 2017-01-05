@@ -11,10 +11,10 @@ class GRTree():
     with open('data/config.yml') as fh:
         config = yaml.load(fh)
 
-    def __init__(self, grid):
+    def __init__(self, grid, entity='book'):
         import requests
 
-        r = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(grid), params={
+        r = requests.get('https://www.goodreads.com/{}/show/{}.xml'.format(entity, grid), params={
             'key': self.config['GR Key'],
         })
         time.sleep(1)
