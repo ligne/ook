@@ -2,6 +2,8 @@
 
 import sys
 import re
+from difflib import SequenceMatcher
+from xml.etree import ElementTree
 
 import reading.cache
 from reading.author import Author
@@ -240,6 +242,52 @@ class Book():
     def save():
         reading.cache.dump_yaml('books_n', Book._names)
         reading.cache.dump_yaml('books_q', Book._qids)
+
+
+    def _gr_search(self):
+        import requests
+        import time
+        name = re.sub(r'\s?\[\w+\]$', '', self.name)  # remove brackets
+
+        author = self.author
+
+        r = requests.get('https://www.goodreads.com/search/index.xml', params={
+            'key': '_____gOoDrEaDsKeY_____',
+            'q': (name + ' ' + author).strip()
+        })
+        time.sleep(1)
+
+        tree = ElementTree.fromstring(r.content)
+
+        candidates = []
+
+        for work in tree.findall('search/results/work/best_book'):
+            # remove the series name blah blah first. also other cruft?
+            # force to lower.
+            title = str(work.find('title').text.encode('utf-8'))
+            title = re.sub('(?P<Title>.+?)(?: ?\((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$', lambda x: x.group('Title'), title)
+            tdist = SequenceMatcher(None, title.lower(), name.lower()).ratio()
+
+            author = str(work.find('author/name').text.encode('utf-8'))
+            adist = SequenceMatcher(None, author.lower(), str(self.author).lower()).ratio()
+
+            grid = work.find('id').text
+
+            score = tdist + adist
+
+            if score < 1:
+                continue
+
+            candidates.append((score, grid))
+
+        s = sorted(candidates, key=lambda x: -x[0])
+
+        try:
+            self._item['GRID'] = s[0][-1]
+        except IndexError:
+            pass
+
+        return
 
 
 # vim: ts=4 : sw=4 : et
