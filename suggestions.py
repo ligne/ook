@@ -66,17 +66,14 @@ def bump(df):
 # FIXME not scheduled, already read or later in series
 def old_authors(df):
     # list of all authors i've previously read
-    authors = reading.on_shelves(df, ['read'])['Author'].values
+    authors = reading.on_shelves(reading.get_books(), ['read'])['Author'].values
     scheduled_authors = _scheduled_authors(df)
-
-    df = reading.on_shelves(df, ['pending', 'elsewhere'])
 
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
 
     df = df[df['author'].isin(authors)]
 
-    # remove ones i've already read this year
     # removed scheduled authors
     df = df[~df['author'].isin(scheduled_authors)]
 
@@ -84,17 +81,18 @@ def old_authors(df):
 
 
 # books by authors i've not read before
-# FIXME only unscheduled?
 def new_authors(df):
     # list of all authors i've previously read
-    authors = reading.on_shelves(df, ['read'])['Author'].values
-
-    df = reading.on_shelves(df, ['pending', 'elsewhere'])
+    authors = reading.on_shelves(reading.get_books(), ['read'])['Author'].values
+    scheduled_authors = _scheduled_authors(df)
 
     df = df[['Author', 'Number of Pages', 'Title']]
     df.columns = ['author', 'words', 'title']
 
     df = df[~df['author'].isin(authors)]
+
+    # removed scheduled authors
+    df = df[~df['author'].isin(scheduled_authors)]
 
     return df.sort(['words'])
 
