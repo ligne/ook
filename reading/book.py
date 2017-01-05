@@ -37,12 +37,12 @@ class Book():
         'Category',
     )
 
-    def __init__(self, name, author, language):
-        self.name = name
-        self.author = author
+    def __init__(self, book, qid=None, grid=None):
+        self.name = book['Title']
+        self.author = book['Author']
         self._subj = None
         self._tree = None
-        self._language = language
+        self._language = book['Language']
 
         qid = self._names.get(name)
 
