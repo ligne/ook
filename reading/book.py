@@ -23,15 +23,23 @@ class Book():
     _fields = (
         'QID',
         'Name',
+        'GR Title',
         'Description',
         'URL',
+        'GR URL',
         'AQIDs',
         'Authors',
+        'AGRIDs',
+        'GR Authors',
+        'Language',
+        'Original Publication Year',
     )
 
     def __init__(self, name, author, language):
         self.name = name
+        self.author = author
         self._subj = None
+        self._tree = None
         self._language = language
 
         qid = self._names.get(name)
