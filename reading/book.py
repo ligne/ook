@@ -15,6 +15,7 @@ from reading._grtree import GRTree
 class Book():
     _qids = reading.cache.load_yaml('books_q')
     _names = reading.cache.load_yaml('books_n')
+    _items = reading.cache.load_yaml('books', [])
 
     # publication date, original language? previous/subsequent books?
     # series/entry:
@@ -298,6 +299,7 @@ class Book():
     def save():
         reading.cache.dump_yaml('books_n', Book._names)
         reading.cache.dump_yaml('books_q', Book._qids)
+        reading.cache.dump_yaml('books', Book._items)
 
 
     def _gr_search(self):
