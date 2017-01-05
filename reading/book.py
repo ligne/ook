@@ -22,6 +22,7 @@ class Book():
     #   https://www.wikidata.org/wiki/Q962265
     _fields = (
         'QID',
+        'GRID',
         'Name',
         'GR Title',
         'Description',
