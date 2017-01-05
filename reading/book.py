@@ -183,7 +183,15 @@ class Book():
     # returns the name of the subject.
     # FIXME check aliases for a closer match?
     def _get_name(self):
-        return self._subj.get_label(language=self._language)
+        try:
+            return self._subj.get_label(language=self._language)
+        except AttributeError:
+            return self._get_gr_title()
+
+
+    # returns the GR title.
+    def _get_gr_title(self):
+        return self._tree.get_text('book/title')
 
 
     # returns the description of the subject.
