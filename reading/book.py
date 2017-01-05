@@ -261,6 +261,7 @@ class Book():
         return self._tree.get_text('book/work/original_publication_year')
 
 
+    # returns the category for the book.
     def _get_category(self):
         shelves = [ x.get('name') for x in self._tree.get_values('book/popular_shelves/shelf')]
 
