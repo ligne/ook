@@ -34,6 +34,7 @@ class Book():
         'GR Authors',
         'Language',
         'Original Publication Year',
+        'Category',
     )
 
     def __init__(self, name, author, language):
@@ -260,6 +261,28 @@ class Book():
         return self._tree.get_text('book/work/original_publication_year')
 
 
+    def _get_category(self):
+        shelves = [ x.get('name') for x in self._tree.get_values('book/popular_shelves/shelf')]
+
+        cats = [
+            [ 'novels', 'novel', 'roman', 'romans', ],
+            [ 'non-fiction', 'nonfiction', ],
+            [ 'short-stories', 'graphic-novel', 'nouvelles', ],
+        ]
+
+        categories = []
+
+        for c in cats:
+            try:
+                i = min([shelves.index(term) for term in c if term in shelves])
+                categories.append((c[0], i))
+            except (IndexError, ValueError):
+                pass
+
+        try:  # FIXME not really needed?  catch further up.
+            return sorted(categories, key=lambda x: x[1])[0][0]
+        except IndexError:
+            return
     # look up a field in the author blob.
     def get_field(self, field):
         try:
