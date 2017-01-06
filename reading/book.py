@@ -92,10 +92,10 @@ class Book():
 
     # searches for the author if necessary.
     def _find(self):
-        if not self.get('QID'):
-            self._search()
         if not self.get('GRID'):
             self._gr_search()
+        if not self.get('QID'):
+            self._search()
         # give up if nothing could be found.
         if not (self.get('QID') or self.get('GRID')):
             print "Couldn't find {}".format(self.name)  # FIXME
@@ -119,7 +119,9 @@ class Book():
         name = re.split(r'[-/;:,—]\s+', name)[0]  # take everything up to the delimiter.
         # FIXME search for both this and the original
 
-        results = self._request(action='wbsearchentities', search=name, language=self._language)['search']
+        if not self._tree and self.get('GRID'):
+            self._tree = GRTree(self.get('GRID'))
+        results = self._request(action='wbsearchentities', search=name, language=self.get_field('Language'))['search']
 
         if not len(results):
             return
@@ -163,12 +165,13 @@ class Book():
 
 
     # runs a query against the API
-    def _request(self, action='', search='', ids='', language='en'):
+    def _request(self, action='', search='', ids='', language=None):
         import requests
         import time
+
         q = {
             'action': action,
-            'language': language,
+            'language': language or 'en',
             'format': 'json',
             'search': search,
             'ids': ids,
