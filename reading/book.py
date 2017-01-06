@@ -223,9 +223,13 @@ class Book():
 
     # returns a list of the QIDs for all the authors
     def _get_aqids(self):
-        return [ str(x['mainsnak']['datavalue']['value']['id']) for x in self._subj._get_claims('P50') ]
+        return [
+            str(x['mainsnak']['datavalue']['value']['id'])
+                for x in self._subj._get_claims('P50')
+        ]
 
 
+    # returns a list of the GRIDs for all the authors
     def _get_agrids(self):
         return [
             x.find('id').text.encode('utf-8')
@@ -234,6 +238,7 @@ class Book():
         ]
 
 
+    # returns the author(s)
     def _get_gr_authors(self):
         return ', '.join([
             x.find('name').text.encode('utf-8')
@@ -264,7 +269,10 @@ class Book():
 
     # returns the category for the book.
     def _get_category(self):
-        shelves = [ x.get('name') for x in self._tree.get_values('book/popular_shelves/shelf')]
+        shelves = [
+            x.get('name')
+                for x in self._tree.get_values('book/popular_shelves/shelf')
+        ]
 
         cats = [
             [ 'novels', 'novel', 'roman', 'romans', ],
@@ -285,6 +293,8 @@ class Book():
             return sorted(categories, key=lambda x: x[1])[0][0]
         except IndexError:
             return
+
+
     # look up a field in the author blob.
     def get_field(self, field):
         try:
