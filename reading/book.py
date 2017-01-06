@@ -264,7 +264,13 @@ class Book():
 
     # returns the year the book was originally published
     def _get_original_publication_year(self):
-        return self._tree.get_text('book/work/original_publication_year')
+        try:
+            ret = self._subj._get_claims('P577')[0]['mainsnak']['datavalue']['value']['time'].encode('utf-8')[1:5]
+        except (AttributeError, KeyError, TypeError):
+            ret = None
+        if ret is None:
+            return self._tree.get_text('book/work/original_publication_year')
+        return ret
 
 
     # returns the category for the book.
