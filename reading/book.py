@@ -16,6 +16,7 @@ class Book():
     _qids = reading.cache.load_yaml('books_q')
     _names = reading.cache.load_yaml('books_n')
     _items = reading.cache.load_yaml('books', [])
+    _names_g = reading.cache.load_yaml('books_g')
 
     # publication date, original language? previous/subsequent books?
     # series/entry:
@@ -38,20 +39,56 @@ class Book():
         'Category',
     )
 
+
     def __init__(self, book, qid=None, grid=None):
-        self.name = book['Title']
+        self.name = name = book['Title']
         self.author = book['Author']
+
         self._subj = None
         self._tree = None
-        self._language = book['Language']
 
-        qid = self._names.get(name)
+        if not qid:
+            qid = self._names.get(name)
+        if not grid:
+            grid = self._names_g.get(name)
+
+        try:
+            grid = int(grid)
+        except ValueError:
+            grid = None
+
+        self._item = self._find_item(qid, grid)
+
+        # copy known fields across
+        for col in ['Language', 'Category']:
+            val = book.get(col)
+            if val and val == val:
+                self._item[col] = val
 
         if qid:
-            self._item = self._qids.get(qid, {'QID': qid})
             self._names[name] = qid
-        else:
-            self._item = {}
+        if grid:
+            self._names_g[name] = grid
+
+        return
+
+
+    def _find_item(self, qid=None, grid=None):
+        if qid:
+            k = 'QID'
+            v = qid
+        elif grid:
+            k = 'GRID'
+            v = grid
+
+        try:
+            return next(x for x in self._items if k in x and x[k] == v)
+        except (StopIteration, NameError):
+            item = {}
+            if grid: item['GRID'] = grid
+            if qid:  item['QID'] = qid
+            self._items.append(item)
+            return item
 
 
     # like a dictionary's get() method.  FIXME warn if it's not a known one?
@@ -316,9 +353,8 @@ class Book():
     # saves all the caches at the end.
     @staticmethod
     def save():
-        reading.cache.dump_yaml('books_n', Book._names)
-        reading.cache.dump_yaml('books_q', Book._qids)
         reading.cache.dump_yaml('books', Book._items)
+        reading.cache.dump_yaml('books_g', Book._names_g)
 
 
     def _gr_search(self):
