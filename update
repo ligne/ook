@@ -28,6 +28,10 @@ tmpdir=`mktemp -d`
 
 # update suggestions
 (
+  echo Scheduled
+  echo
+  ./suggestions.py --scheduled
+  echo ----
   echo All Books
   echo
   ./suggestions.py wordcounts/books-*-lengths.txt 15
