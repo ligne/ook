@@ -97,6 +97,10 @@ def new_authors(df):
     return df.sort(['words'])
 
 
+def merge_volumes(df):
+    return df.groupby(['author', 'title'])['words'].sum().reset_index()
+
+
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
@@ -201,6 +205,8 @@ if __name__ == "__main__":
         df = limit_rows(df, size)
     elif args.scheduled:
         df = scheduled(df)
+        df = merge_volumes(df)
+        df = df.sort(['words']).reset_index(drop=True)
     elif args.bump:
         df = bump(df)
     elif args.old_authors:
