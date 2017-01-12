@@ -79,7 +79,21 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
 
     df['grid'] = df.index
 
-    return df
+    # remove columns that just aren't interesting.
+    df = df.drop([
+        'Additional Authors',
+        'Author l-f',
+        'Bookshelves with positions',
+        'ISBN',
+        'ISBN13',
+        'My Review',
+        'Owned Copies',
+        'Publisher',
+        'Year Published'
+    ], axis=1)
+
+
+    return df.dropna(axis='columns', how='all')
 
 
 ### filtering ##################################################################
