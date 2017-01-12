@@ -95,6 +95,10 @@ def check_duplicate_books(df):
     # duplicates here are expected.
     df = df[df['Exclusive Shelf'] != 'ebooks']
 
+    # ignore books that i've got scheduled
+    # FIXME only if one is on Kindle?
+    df = df[df.Scheduled.isnull()]
+
     # FIXME case-insensitive?
     df = df[df.duplicated(subset=['Title', 'Author', 'Volume'])]
     print_entries(df, 'Duplicate books')
