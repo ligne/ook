@@ -69,16 +69,6 @@ print tmpdir
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
 
-# optionally cut out any rows that aren't in @categories or @languages.
-def select(df, categories=None, languages=None):
-    if not languages:
-        languages = df['Language'].unique()
-    if not categories:
-        categories = default_categories
-
-    return df[df['Category'].isin(categories) & df['Language'].isin(languages)]
-
-
 # print out rows in $df, with a maximum line length.
 def print_section(header, df, fh=sys.stdout):
     print >>fh, header
@@ -93,8 +83,6 @@ def print_section(header, df, fh=sys.stdout):
 
 
 with open(tmpdir + '/00 Numeric.txt', 'w') as numeric, open(tmpdir + '/00 Alphabetical.txt', 'w') as alpha:
-    df = reading.ebooks.get_books()
-
     # for each combination
     combinations = [
         [ 'Articles', ['articles'], []],
@@ -107,16 +95,16 @@ with open(tmpdir + '/00 Numeric.txt', 'w') as numeric, open(tmpdir + '/00 Alphab
     ]
 
     for (t, c, l) in combinations:
+        df = reading.get_books(shelves=['kindle'], **{'categories': c, 'languages': l})
+
         # numeric
-        df = df.sort('Words', ascending=False)
-        print_section(t, select(df, **{'categories': c, 'languages': l}), numeric)
+        print_section(t, df.sort('Words', ascending=False), numeric)
 
         # alphabetical
         df['alpha'] = df['Title'].apply(lambda x:
             re.sub(r'^(the|a|le|la|les) ', '', x, flags=re.I).lower()
         )
-        df = df.sort('alpha')
-        print_section(t, select(df, **{'categories': c, 'languages': l}), alpha)
+        print_section(t, df.sort('alpha'), alpha)
 
 
 # diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
