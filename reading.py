@@ -76,7 +76,7 @@ def ebook_pages():
 
 # returns the current wordcount for all books
 def get_ebook_words():
-    return reading.ebooks.get_books().Words.sum()
+    return int(reading.get_books(shelves=['kindle']).Words.sum())
 
 
 # in pages per day...
