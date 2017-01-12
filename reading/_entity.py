@@ -34,7 +34,7 @@ class Entity():
 
     # returns the label
     def get_label(self, language='en'):
-        return str(self._subj['labels'][language]['value'].encode('utf-8'))
+        return str(self._subj['labels'][language or 'en']['value'].encode('utf-8'))
 
 
     # returns the description
