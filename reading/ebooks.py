@@ -13,8 +13,6 @@ from reading.author import Author
 def get_books(fix_names=True):
         df = pd.read_csv('data/wordcounts.csv', sep='\t', index_col=False)
 
-        df = df[~(df.Category == 'articles')]
-
         df.loc[:,'Author'].fillna('', inplace=True)
 
         df['Number of Pages'] = (df.Words / 390).astype(int)
@@ -22,13 +20,6 @@ def get_books(fix_names=True):
         df['Exclusive Shelf'] = 'kindle'
         df['Bookshelves'] = 'kindle'
         df['Binding'] = 'ebook'
-
-        # standardise the author name.  FIXME use the QID instead?
-        if fix_names:
-            df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
-
-        for col in ['Gender', 'Nationality']:
-            df[col] = df['Author'].apply(lambda x: Author(x).get(col))
 
         for col in df.columns:
             if col[0].islower(): del df[col]

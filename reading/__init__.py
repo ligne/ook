@@ -5,6 +5,7 @@ import yaml
 
 import pandas as pd
 
+import reading.ebooks
 from reading.author import Author
 
 
@@ -13,8 +14,37 @@ GR_HISTORY = 'data/goodreads_library_export.csv'
 
 ################################################################################
 
+def get_books(shelves=None, categories=None, languages=None, no_fixes=False, fix_names=True):
+    df = pd.concat([
+        get_gr_books(),
+        reading.ebooks.get_books(),
+    ])
+
+    # filtering
+    if categories:
+        df = df[df.Category.isin(categories)]
+    else:
+        # ignore articles unless explicitly requested
+        df = df[~df.Category.isin(['articles'])]
+
+    if languages:
+        df = df[df['Language'].isin(languages)]
+    if shelves:
+        df = df[df['Exclusive Shelf'].isin(shelves)]
+
+    # standardise the author name.  FIXME use the QID instead?
+    if fix_names:
+        df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
+
+    # load information about the authors
+    for col in ['Gender', 'Nationality']:
+        df[col] = df['Author'].apply(lambda x: Author(x).get(col))
+
+    return df
+
+
 # load the data and patch it up
-def get_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
+def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
     try:
         df = pd.read_csv(filename, index_col=0)
     except IOError:
@@ -40,13 +70,6 @@ def get_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
 
     # remove old read books
     df = df[~((df['Exclusive Shelf'] == 'read')&(df['Date Read'] < '2016'))]
-
-    # load information about the authors
-    for col in ['Nationality', 'Gender']:
-        df[col] = df['Author'].apply(lambda x: Author(x).get(col))
-
-    if fix_names:
-        df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
 
     # this doesn't seem to be set for some reason
     df['Bookshelves'].fillna('read', inplace=True)
