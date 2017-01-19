@@ -34,19 +34,19 @@ tmpdir=`mktemp -d`
   echo ----
   echo All novels
   echo
-  ./suggestions.py wordcounts/books-*-lengths.txt 15
+  ./suggestions.py --shelves kindle --categories books --size 15
   echo ----
   echo All short stories
   echo
-  ./suggestions.py wordcounts/short-stories-*-lengths.txt 15
+  ./suggestions.py --shelves kindle --categories short-stories --size 15
   echo ----
   echo French books
   echo
-  ./suggestions.py wordcounts/*-fr-lengths.txt 15
+  ./suggestions.py --shelves kindle --languages fr --size 15
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py wordcounts/non-fiction-*-lengths.txt 15
+  ./suggestions.py --shelves kindle --categories non-fiction --size 15
 ) | cut -c-50 > $tmpdir/00\ Suggestions.txt
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
