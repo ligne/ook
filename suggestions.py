@@ -3,7 +3,6 @@
 
 import math
 import sys
-import yaml
 import datetime
 import argparse
 
