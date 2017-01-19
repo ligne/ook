@@ -17,6 +17,7 @@ default_shelves = [
     'pending',
     'elsewhere',
     'ebooks',
+    'kindle',
 ]
 
 
@@ -34,77 +35,64 @@ def recent_authors(df):
 
 # filter out authors from the list
 def ignore_authors(df):
-    return df[~df['author'].isin(recent_authors(reading.get_books()))]
+    return df[~df['Author'].isin(recent_authors(reading.get_books()))]
 
 
 def _scheduled_for_year(df, year):
-    df = df[df.Scheduled == str(year)]
-    df = df[['Author', 'Number of Pages', 'Title']]
-    df.columns = ['author', 'words', 'title']
-    return df.sort(['words']).reset_index(drop=True)
+    return df[df.Scheduled == str(year)]
 
 
 # authors whose books are still scheduled for this year
 def _scheduled_authors(df):
-    return _scheduled_for_year(df, today.year)['author'].values
+    return _scheduled_for_year(df, today.year)['Author'].values
 
 
-# books scheduled for the current year, ignoring those i read recently.
+# books scheduled for the current year
 def scheduled(df):
-    return ignore_authors(_scheduled_for_year(df, today.year))
+    return _scheduled_for_year(df, today.year)
 
 
 # Scheduled for next year but not by already read author
 def bump(df):
     df = df[~df['Author'].isin(_scheduled_authors(df))]
-    df = _scheduled_for_year(df, today.year + 1)
-    return ignore_authors(df)
+    return _scheduled_for_year(df, today.year + 1)
 
 
 # books by authors that i've read before
-# FIXME not scheduled, already read or later in series
 def old_authors(df):
-    # list of all authors i've previously read
-    authors = reading.on_shelves(reading.get_books(), ['read'])['Author'].values
-    scheduled_authors = _scheduled_authors(df)
-
-    df = df[['Author', 'Number of Pages', 'Title']]
-    df.columns = ['author', 'words', 'title']
-
-    df = df[df['author'].isin(authors)]
-
-    # removed scheduled authors
-    df = df[~df['author'].isin(scheduled_authors)]
-
-    return ignore_authors(df).sort(['words'])
+    authors = reading.get_books(shelves=['read']).Author.values
+    return df[df['Author'].isin(authors)]
 
 
 # books by authors i've not read before
 def new_authors(df):
-    # list of all authors i've previously read
-    authors = reading.on_shelves(reading.get_books(), ['read'])['Author'].values
-    scheduled_authors = _scheduled_authors(df)
-
-    df = df[['Author', 'Number of Pages', 'Title']]
-    df.columns = ['author', 'words', 'title']
-
-    df = df[~df['author'].isin(authors)]
-
-    # removed scheduled authors
-    df = df[~df['author'].isin(scheduled_authors)]
-
-    return df.sort(['words'])
+    authors = reading.get_books(shelves=['read']).Author.values
+    return df[~df['Author'].isin(authors)]
 
 
 def merge_volumes(df):
-    return df.groupby(['author', 'title'])['words'].sum().reset_index()
+    pages = df.groupby(['Author', 'Title'], as_index=False)['Number of Pages'].sum()
+#     df.ix[pages.index,'Number of Pages'] = pages
+
+    return df.groupby(['Author', 'Title'], as_index=False).aggregate({
+        'Number of Pages': 'sum',
+        'Series': 'first',
+        'Entry': 'first',
+    })
+
+    return df
 
 
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
+    df = df.sort('Number of Pages').reset_index(drop=True)
+
+    if not len(df):
+        return df
+
     median_ix = int(math.floor(len(df.index) / 2))
-    mean_ix = df[df.words > df.mean().words].index[0]
+    mean_ix = df[df['Number of Pages'] >= df.mean()['Number of Pages']].index[0]
 
     suggestions = pd.concat([
         show_nearby(df, median_ix, size),
@@ -123,12 +111,12 @@ def show_nearby(df, index, size):
 
 
 # prints it out.
-# FIXME handle missing author better.
-# FIXME allow sorting/grouping by author?
-# FIXME merge multiple volumes.
 def print_rows(df):
-    for ix, row in df.iterrows():
-        print '{words:7.0f}  {title} ({author})'.format(**row)
+    for ix, row in df.sort('Number of Pages').iterrows():
+        fmt = '{Number of Pages:4.0f}  {Title}'
+        if row['Author']:
+            fmt += ' ({Author})'
+        print fmt.format(**row)
 
 
 ################################################################################
@@ -151,88 +139,80 @@ def print_rows(df):
 #       set year
 #       not authors scheduled in that year
 #       by authors i've got scheduled, or read recently, or where i've got a lot of their books
-#       
 #
 # filter:
-#   shelves
-#   old/new authors
-#   old/new nationalities
-#   novels/short stories/non-fiction
-#   language
 #   number of suggestions.  don't limit if listing scheduled books
 #
 # output:
+#   by word count
+#   by author
+#   by shelf
 #
 
 if __name__ == "__main__":
-    df = reading.get_books()
-
-    # read in the options.
     parser = argparse.ArgumentParser()
-    parser.add_argument('args', nargs='*')
+
+    # miscellaneous
     parser.add_argument('--date', type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
-    parser.add_argument('--shelves', nargs='+')
-    parser.add_argument('--size', type=int)
+    parser.add_argument('--size', nargs='?', type=int, default=10)
+
+    # mode
     parser.add_argument('--scheduled', action="store_true")
     parser.add_argument('--bump', action="store_true")
+
+    # filter
+    parser.add_argument('--shelves', nargs='+')
+    parser.add_argument('--languages', nargs='+')
+    parser.add_argument('--categories', nargs='+')
     parser.add_argument('--new-authors', action="store_true")
     parser.add_argument('--old-authors', action="store_true")
-    args = parser.parse_args()
+    parser.add_argument('--new-nationalities', action="store_true")
+    parser.add_argument('--old-nationalities', action="store_true")
+    # FIXME also gender, genre
 
-    files = args.args
+    args = parser.parse_args()
 
     if args.date:
         today = args.date
 
-    shelves = args.shelves or default_shelves
-    df = reading.on_shelves(df, shelves)
+    df = reading.get_books(
+        shelves=args.shelves,
+        languages=args.languages,
+        categories=args.categories,
+    )
 
-    try:
-        # only pop if it was numeric
-        size = int(files[-1])
-        files.pop()
-    except:
-        size = 10
-    size = args.size or size
+    # only books i've yet to read
+    df = reading.on_shelves(df, default_shelves)
 
-    if len(files):
-        # read in the CSVs, sort them, and set the index to match the new order.
-        df = pd.concat([pd.read_csv(f, sep='\t', names=['words', 'title', 'author']) for f in files])  \
-               .sort(['words'])         \
-               .reset_index(drop=True)
-        df = ignore_authors(df)
-        df = limit_rows(df, size)
-    elif args.scheduled:
-        df = scheduled(df)
-        df = merge_volumes(df)
-        df = df.sort(['words']).reset_index(drop=True)
-    elif args.bump:
-        df = bump(df)
-    elif args.old_authors:
+    # filter
+    if args.old_authors:
         df = old_authors(df)
     elif args.new_authors:
         df = new_authors(df)
+
+    # mode
+    if args.scheduled:
+        df = scheduled(df)
+        df = merge_volumes(df)
+    elif args.bump:
+        df = bump(df)
     else:
-        # use the goodreads list
+        df = limit_rows(df, args.size)
 
-        # FIXME this really ought to be the default, with old/new whatever as
-        # filters on the output.  merge ebooks in, and $files mode can be made
-        # special.  and replace that with filters on novel/short-story/non-fiction
-        #and language?
-
-        # remove books if there's already an earlier one in the series
-        # drop_duplicates() treats NaNs as being the same, so need to be more
-        # circuitous.
+    # remove books if there's already an earlier one in the series
+    #
+    # drop_duplicates() treats NaNs as being the same, so need to be more
+    # circuitous.
+#     if 'Entry' in df:
+    if True:
         df = df.sort('Entry')
         df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
 
-        df = df[['Author', 'Number of Pages', 'Title']]
-        df.columns = ['author', 'words', 'title']
-        df = df.sort(['words']).reset_index(drop=True)
+    # remove authors i've read recently
+    df = ignore_authors(df)
 
-        df = ignore_authors(df)
-        df = limit_rows(df, size)
-
+    # output
     print_rows(df)
+
 
 # vim: ts=4 : sw=4 : et
