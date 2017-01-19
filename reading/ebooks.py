@@ -15,7 +15,7 @@ def get_books(fix_names=True):
 
         df.loc[:,'Author'].fillna('', inplace=True)
 
-        df['Number of Pages'] = (df.Words / 390).astype(int)
+        df['Number of Pages'] = (df.Words / 390)
 
         df['Exclusive Shelf'] = 'kindle'
         df['Bookshelves'] = 'kindle'
