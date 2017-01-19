@@ -24,7 +24,6 @@ def compare(df_old, df_new):
     df_old = df_old[columns]
     df_new = df_new[columns]
 
-
     # force both to use the same index
     ix = df_old.index | df_new.index
     df_old = df_old.reindex(ix).fillna('')
@@ -76,8 +75,8 @@ def compare(df_old, df_new):
 
 if __name__ == "__main__":
     compare(
-        reading.get_books(no_fixes=True),
-        reading.get_books(no_fixes=True, filename=sys.argv[1]),
+        reading.get_gr_books(no_fixes=True, fix_names=False),
+        reading.get_gr_books(no_fixes=True, fix_names=False, filename=sys.argv[1]),
     )
 
 
