@@ -49,6 +49,8 @@ def check_missing_start_date(df):
 
 # the original publication year is missing
 def check_missing_publication_year(df):
+    # FIXME
+    df = reading.on_shelves(df, ['pending', 'ebooks', 'elsewhere'])
     df = df[df['Original Publication Year'].isnull()]
     print_entries(df, 'Missing a publication year')
 
