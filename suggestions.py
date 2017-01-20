@@ -70,6 +70,18 @@ def new_authors(df):
     return df[~df['Author'].isin(authors)]
 
 
+# books by nationalities that i've read before
+def old_nationalities(df):
+    nationalities = reading.get_books(shelves=['read']).Nationality.values
+    return df[df['Nationality'].isin(nationalities)]
+
+
+# books by nationalities i've not read before
+def new_nationalities(df):
+    nationalities = reading.get_books(shelves=['read']).Nationality.values
+    return df[~df['Nationality'].isin(nationalities)]
+
+
 def merge_volumes(df):
     pages = df.groupby(['Author', 'Title'], as_index=False)['Number of Pages'].sum()
 #     df.ix[pages.index,'Number of Pages'] = pages
@@ -189,6 +201,10 @@ if __name__ == "__main__":
         df = old_authors(df)
     elif args.new_authors:
         df = new_authors(df)
+    if args.old_nationalities:
+        df = old_nationalities(df)
+    elif args.new_nationalities:
+        df = new_nationalities(df)
 
     # mode
     if args.scheduled:
