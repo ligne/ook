@@ -9,13 +9,6 @@ import re
 import reading.ebooks
 
 
-default_categories = [
-    'books',
-    'short-stories',
-    'non-fiction',
-]
-
-
 kindle_dir = '/run/media/mlb/Kindle/'
 backup_dir = '/home/local/mlb/.kindle/'
 exclude_file = os.environ['HOME'] + '/.kindle-excludes'
