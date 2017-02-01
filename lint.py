@@ -5,7 +5,6 @@ import sys
 import datetime
 import yaml
 
-import suggestions
 import reading
 
 import pandas as pd
