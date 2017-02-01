@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-import wordcounts
 import reading
 import reading.ebooks
 
