@@ -94,7 +94,7 @@ def check_duplicate_books(df):
 #     df['Clean Title'] = df['Title'].str.replace(r' \(.+?\)$', '')
 
     # duplicates here are expected.
-    df = df[df['Exclusive Shelf'] != 'ebooks']
+    df = df[~(df['Exclusive Shelf'].isin(['ebooks', 'currently-reading']))]
 
     # ignore books that i've got scheduled
     # FIXME only if one is on Kindle?
