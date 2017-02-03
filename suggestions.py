@@ -196,6 +196,13 @@ if __name__ == "__main__":
     # only books i've yet to read
     df = reading.on_shelves(df, default_shelves)
 
+    # remove books if there's already an earlier one in the series
+    #
+    # drop_duplicates() treats NaNs as being the same, so need to be more
+    # circuitous.
+    df = df.sort('Entry')
+    df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
+
     # filter
     if args.old_authors:
         df = old_authors(df)
@@ -214,15 +221,6 @@ if __name__ == "__main__":
         df = bump(df)
     else:
         df = limit_rows(df, args.size)
-
-    # remove books if there's already an earlier one in the series
-    #
-    # drop_duplicates() treats NaNs as being the same, so need to be more
-    # circuitous.
-#     if 'Entry' in df:
-    if True:
-        df = df.sort('Entry')
-        df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
 
     # remove authors i've read recently
     df = ignore_authors(df)
