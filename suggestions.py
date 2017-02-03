@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     # miscellaneous
     parser.add_argument('--date', type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
-    parser.add_argument('--size', nargs='?', type=int, default=10)
+    parser.add_argument('--size', type=int, default=10)
 
     # mode
     parser.add_argument('--scheduled', action="store_true")
