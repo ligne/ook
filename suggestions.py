@@ -213,12 +213,12 @@ if __name__ == "__main__":
     elif args.bump:
         df = bump(df)
     else:
-        ## remove books if there's already an earlier one in the series
-        ##
-        ## drop_duplicates() treats NaNs as being the same, so need to be more
-        ## circuitous.
-        #df = df.sort('Entry')
-        #df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
+        # remove books if there's already an earlier one in the series
+        #
+        # drop_duplicates() treats NaNs as being the same, so need to be more
+        # circuitous.
+        df = df.sort('Entry')
+        df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
 
         df = df[df.Scheduled.isnull()]
         df = limit_rows(df, args.size)
