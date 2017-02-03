@@ -220,6 +220,7 @@ if __name__ == "__main__":
     elif args.bump:
         df = bump(df)
     else:
+        df = df[df.Scheduled.isnull()]
         df = limit_rows(df, args.size)
 
     # remove authors i've read recently
