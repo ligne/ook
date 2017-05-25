@@ -98,7 +98,7 @@ def merge_volumes(df):
 # pick (FIXME approximately) $size rows from around the median and mean of the
 # list.
 def limit_rows(df, size):
-    df = df.sort('Number of Pages').reset_index(drop=True)
+    df = df.sort_values(['Number of Pages']).reset_index(drop=True)
 
     if not len(df):
         return df
@@ -124,7 +124,7 @@ def show_nearby(df, index, size):
 
 # prints it out.
 def print_rows(df):
-    for ix, row in df.sort('Number of Pages').iterrows():
+    for ix, row in df.sort_values(['Number of Pages', 'Title']).iterrows():
         fmt = '{Number of Pages:4.0f}  {Title}'
         if row['Author']:
             fmt += ' ({Author})'
@@ -217,7 +217,7 @@ if __name__ == "__main__":
         #
         # drop_duplicates() treats NaNs as being the same, so need to be more
         # circuitous.
-        df = df.sort('Entry')
+        df = df.sort_values(['Entry'])
         df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
 
         df = df[df.Scheduled.isnull()]
