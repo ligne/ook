@@ -47,9 +47,15 @@ def compare(df_old, df_new):
             # also show any bookshelves it's been added to
             print '  Bookshelves: {Bookshelves}'.format(**new_row)
         else:
+            if (changes.index.get_level_values(1).values == ['Date Added']).all():
+                continue
+
             print '{Author}, {Title}'.format(**old_row)
 
             for col in changes.index.get_level_values(1).values:
+                if col == 'Date Added' and old_row[col] == new_row[col]:
+                    continue
+
                 if col == 'Bookshelves':
                     old = set(old_row[col].split(', '))
                     new = set(new_row[col].split(', '))
