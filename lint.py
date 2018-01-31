@@ -126,10 +126,27 @@ def check_read_author_metadata(df):
     print_entries(df, 'Missing author metadata', ['Nationality', 'Gender'])
 
 
+# books on elsewhere shelf that are not marked as borrowed.
+def check_missing_borrowed(df):
+    df = reading.on_shelves(df, ['elsewhere'])
+
+    shelf = 'borrowed'
+    df = df[~df['Bookshelves'].str.contains(r'\b{}\b'.format(shelf))]
+
+    print_entries(df, 'Elsewhere but not marked as borrowed')
+
+
+# books i've borrowed that need to be returned.
+def check_to_be_returned(df):
+    df = reading.on_shelves(df, ['read'], ['borrowed'])
+    print_entries(df, 'Borrowed and need to be returned')
+
+
 # run them all
 n = __import__(__name__)
 for f in [x for x in dir(n) if x.startswith('check_')]:
     func = getattr(n, f)
+    # FIXME push this down into the funtions
     doc = func.__doc__
     if doc and doc == 'no_fixes':
         df = reading.get_books(no_fixes=True)
