@@ -91,13 +91,13 @@ with open(tmpdir + '/00 Numeric.txt', 'w') as numeric, open(tmpdir + '/00 Alphab
         df = reading.get_books(shelves=['kindle'], **{'categories': c, 'languages': l})
 
         # numeric
-        print_section(t, df.sort('Words', ascending=False), numeric)
+        print_section(t, df.sort_values(['Words'], ascending=False), numeric)
 
         # alphabetical
         df['alpha'] = df['Title'].apply(lambda x:
             re.sub(r'^(the|a|le|la|les) ', '', x, flags=re.I).lower()
         )
-        print_section(t, df.sort('alpha'), alpha)
+        print_section(t, df.sort_values(['alpha']), alpha)
 
 
 # diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/

@@ -52,7 +52,7 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
         sys.exit()
 
     # split the volume number and series name/number out from the title
-    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: ?\((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$')
+    s = df['Title'].str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?(?: ?\((?P<Series>.+?),? +#(?P<Entry>\d+)(?:; .+?)?\))?$', expand=True)
     df = df.rename(columns={
         'Title': 'Original Title',
     }).join(s)
@@ -75,7 +75,7 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
     df['Bookshelves'].fillna('read', inplace=True)
 
     # the year it's scheduled for (if any)
-    df['Scheduled'] = df['Bookshelves'].str.extract(r'\b(\d{4})\b')
+    df['Scheduled'] = df['Bookshelves'].str.extract(r'\b(\d{4})\b', expand=True)
 
     df['grid'] = df.index
 
