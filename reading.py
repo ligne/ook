@@ -36,7 +36,8 @@ def changed_pages(df, shelf, direction):
     return df[df['Exclusive Shelf'] == shelf] \
                   .set_index([direction])  \
                    ['Number of Pages']  \
-                  .resample('D', how='sum')  \
+                  .resample('D')  \
+                  .sum()  \
                   .reindex(index=ix)  \
                   .fillna(0)
 
@@ -80,7 +81,7 @@ def get_ebook_words():
 
 # in pages per day...
 def daily_reading_rate():
-    return pd.expanding_mean(changed_pages(df, 'read', 'Date Read'))
+    return changed_pages(df, 'read', 'Date Read').expanding().mean()
 
 
 # ...or pages per year
@@ -140,7 +141,7 @@ def draw_rating_histogram(df):
 
 # number of new authors a year
 def new_authors(df):
-    authors = df.dropna(subset=['Date Read']).sort('Date Read')
+    authors = df.dropna(subset=['Date Read']).sort_values(['Date Read'])
 
     next_year = today + pd.Timedelta('365 days')
 
@@ -148,11 +149,12 @@ def new_authors(df):
     first = authors.drop_duplicates(['Author'])  \
                  .set_index('Date Read')  \
                  ['Author']  \
-                 .resample('D', how='count')  \
+                 .resample('D')  \
+                 .count()  \
                  .reindex(pd.DatetimeIndex(start='2015-01-01', end=next_year, freq='D'))  \
                  .fillna(0)
 
-    pd.rolling_sum(first, window=365).ffill().ix['2016':].plot()
+    first.rolling(window=365).sum().ffill().ix['2016':].plot()
 
     # force the bottom of the graph to zero and make sure the top doesn't clip.
     ylim = plt.ylim()
@@ -175,12 +177,11 @@ def median_date(df):
 
     read = read.set_index('Date Read')  \
                 ['Original Publication Year']  \
-                .resample('D')
+                .resample('D').mean()
 
-    read = pd.rolling_median(read, 365, min_periods=0)
-    read = pd.rolling_mean(read, 30)
-
-    read.reindex(ix).ffill().ix['2016':].plot()
+    read.rolling(window=365, min_periods=0).median()  \
+        .rolling(window=30).mean()  \
+        .reindex(ix).ffill().ix['2016':].plot()
 
     # set the top of the graph to the current year
     plt.ylim([plt.ylim()[0], today.year])
@@ -199,16 +200,18 @@ def median_date(df):
 def oldness(df):
     df = df.dropna(subset=['Date Read', 'Original Publication Year'])
 
-    df1 = pd.DataFrame({
+    df = pd.DataFrame({
         'thresh': df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0)),
         'total':  df['Original Publication Year'].apply(lambda x: 1),
         'Date Read': df['Date Read'],
     }, index=df.index).set_index('Date Read')    \
-                      .resample('D', how='sum')  \
+                      .resample('D')  \
+                      .sum()  \
+                      .reindex(ix)               \
                       .fillna(0)
 
-    df1 = pd.rolling_sum(df1, 365, min_periods=0)
-    pd.rolling_mean((df1.thresh / df1.total), 10, min_periods=0).reindex(ix).ffill().plot()
+    df = df.rolling(window=365,min_periods=0).sum()
+    (df.thresh / df.total).rolling(window=10,min_periods=0).mean().plot()
 
     # set to the full range
     plt.ylim([0, 1])
@@ -232,11 +235,13 @@ def gender(df):
         'total':  df['Gender'].apply(lambda x: 1),
         'Date Read': df['Date Read'],
     }, index=df.index).set_index('Date Read')    \
-                      .resample('D', how='sum')  \
+                      .resample('D')  \
+                      .sum()  \
+                      .reindex(ix)               \
                       .fillna(0)
 
-    df = pd.rolling_sum(df, 365, min_periods=0)
-    pd.rolling_mean((df.thresh / df.total), 10, min_periods=0).reindex(ix).ffill().plot()
+    df = df.rolling(window=365,min_periods=0).sum()
+    (df.thresh / df.total).rolling(window=10,min_periods=0).mean().plot()
 
     # set to the full range
     plt.ylim([0, 1])
@@ -253,14 +258,15 @@ def gender(df):
 
 # plot total/new nationalities over the preceding year
 def nationality(df):
-    authors = reading.read_since(df, '2013').sort('Date Read')
+    authors = reading.read_since(df, '2013').sort_values(['Date Read'])
     authors = authors.dropna(subset=['Nationality'])
 
     # how many new nationalities a year
     first = authors.drop_duplicates(['Nationality'])  \
                  .set_index('Date Read')  \
                  ['Nationality']  \
-                 .resample('D', how='count')  \
+                 .resample('D')  \
+                 .count()  \
                  .reindex(pd.DatetimeIndex(start='2015-01-01', end='today', freq='D'))  \
                  .fillna(0)
 
@@ -274,7 +280,7 @@ def nationality(df):
 
     df_ = pd.DataFrame({
         'Distinct': pd.Series(data=values, index=ix, name='Nationalities'),
-        'New': pd.rolling_sum(first, window=365),
+        'New': first.rolling(window=365).sum(),
     }).ix['2016':]
     df_.plot()
 
@@ -302,8 +308,8 @@ def reading_rate():
     reading.ix[tomorrow] = current_pages
 
     p = pd.DataFrame({
-        'Completed': pd.expanding_mean(completed),
-        'Reading':   pd.expanding_mean(reading).ix[-2:],
+        'Completed': completed.expanding().mean(),
+        'Reading': reading.expanding().mean().ix[-2:],
     }, index=reading.index)
 
     p.plot(title='Pages read per day')
@@ -323,7 +329,7 @@ def rate_area(df):
 
     g = pd.DataFrame(index=ix)
 
-    for ii, row in df.sort(['Date Started']).iterrows():
+    for ii, row in df.sort_values(['Date Started']).iterrows():
         g[ii] = pd.Series({
             row['Date Started']: row['ppd'],
             row['Date Read']: 0,
@@ -406,7 +412,7 @@ def scheduled():
         if is_current_year(year):
             p = p.append(reading.on_shelves(df, ['currently-reading']))
 
-        pages = p['Number of Pages'].order().values
+        pages = p['Number of Pages'].sort_values().values
 
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
