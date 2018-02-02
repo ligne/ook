@@ -183,6 +183,10 @@ def process_dir(category, d, out):
         if f == 'My Clippings.txt':
             continue
 
+        # calibre can't handle the latest kindle file format.
+        if f[-4:] == '.kfx':
+            continue
+
         path = d + '/' + f
 
         fi = file_infos(path)
