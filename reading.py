@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -365,10 +365,10 @@ def phase_space(df):
 
     df = df.dropna(subset=dimensions)
 
-    print df[dimensions].apply(lambda x: '|'.join(x), axis=1)
+    print(df[dimensions].apply(lambda x: '|'.join(x), axis=1))
     distinct = df[dimensions].apply(lambda x: '|'.join(x), axis=1).unique()
-    print distinct
-    print '{:.1f}%'.format(100*len(df[dimensions].apply(lambda x: '|'.join(x), axis=1).unique())/size)
+    print(distinct)
+    print('{:.1f}%'.format(100*len(df[dimensions].apply(lambda x: '|'.join(x), axis=1).unique())/size))
 
 ################################################################################
 
@@ -423,12 +423,12 @@ def scheduled():
             pages_over = pages_remaining - (days_remaining * rate)
             needed_rate = pages_remaining / days_remaining
 
-            print "Too many books for {}:".format(year)
-            print "    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining)
-            print "    {:.0f} days at current rate".format(days_required)
-            print "    {:.0f} days/{:.0f} pages over".format(days_over, pages_over)
-            print "    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate)
-            print
+            print("Too many books for {}:".format(year))
+            print("    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining))
+            print("    {:.0f} days at current rate".format(days_required))
+            print("    {:.0f} days/{:.0f} pages over".format(days_over, pages_over))
+            print("    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate))
+            print()
 
         ax = axes[sp]
         #pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
