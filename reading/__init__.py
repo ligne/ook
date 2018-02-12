@@ -48,7 +48,7 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
     try:
         df = pd.read_csv(filename, index_col=0)
     except IOError:
-        print "Missing file: '{}'".format(filename)
+        print("Missing file: '{}'".format(filename))
         sys.exit()
 
     # split the volume number and series name/number out from the title

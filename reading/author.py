@@ -59,14 +59,14 @@ class Author():
                 return
 
             # print the author's name before the first new field.
-            print self.name
+            print(self.name)
 
             for field in missing:
                 # save the field, and print it.
                 self._item[field] = self.get_field(field)
-                print '{:12s} - {}'.format(field, self.get(field))
+                print('{:12s} - {}'.format(field, self.get(field)))
 
-            print
+            print()
 
         # make sure the authors cache gets updated.
         self._qids[self.get('QID')] = self._item
@@ -82,8 +82,8 @@ class Author():
             self._search()
             # give up if nothing could be found.
             if not self.get('QID'):
-                print "Couldn't find {}".format(self.name)  # FIXME
-                print
+                print("Couldn't find {}".format(self.name)) # FIXME
+                print()
                 return 0
         return 1
 
