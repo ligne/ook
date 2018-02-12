@@ -1,6 +1,7 @@
 #!/bin/sh
 
 kindle_dir=/run/media/mlb/Kindle
+kindle_dir=/mnt/test/
 [ -d "$kindle_dir" ] || {
   echo Kindle not mounted.
   exit 1

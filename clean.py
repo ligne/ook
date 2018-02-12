@@ -4,6 +4,7 @@ import glob
 import pipes  # used for shell escapes
 
 kindle_dir = '/run/media/mlb/Kindle/documents/'
+kindle_dir = '/mnt/test/documents/'
 
 dirs = [
     '',
