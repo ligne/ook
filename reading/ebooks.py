@@ -15,6 +15,9 @@ def get_books(fix_names=True):
 
         df.loc[:,'Author'].fillna('', inplace=True)
 
+        df['Subtitle'] = df.Title.str.split(' / ', 1).str.get(1)
+        df['Title'] = df.Title.str.split(' / ', 1).str.get(0)
+
         df['Number of Pages'] = (df.Words / 390)
 
         df['Exclusive Shelf'] = 'kindle'
