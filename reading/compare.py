@@ -22,18 +22,18 @@ def compare(old, new):
 
     # changed
     for ix in old.index.intersection(new.index):
-        row = old.ix[ix][columns].fillna('')
-        _or = new.ix[ix][columns].fillna('')
+        orow = old.ix[ix][columns].fillna('')
+        nrow = new.ix[ix][columns].fillna('')
 
-        if row.equals(_or):
+        if nrow.equals(orow):
             continue
 
         # special cases:
         #   finished reading a book
 
-        s += '{Author}, {Title}\n'.format(**row)
-        for (col, v) in row.iteritems():
-            if v == _or[col]:
+        s += '{Author}, {Title}\n'.format(**nrow)
+        for (col, v) in nrow.iteritems():
+            if v == orow[col]:
                 continue
 
             if col == 'Bookshelves':
@@ -54,7 +54,7 @@ def compare(old, new):
 #                    print '  +{}'.format(', +'.join(added)),
 #                print
             else:
-                s += '{}:\n  {} -> {}\n'.format(col, _or[col], v)
+                s += '{}:\n  {} -> {}\n'.format(col, orow[col], v)
 
         s += '---\n\n'
 
