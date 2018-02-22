@@ -58,6 +58,24 @@ def compare(old, new):
 
         s += '---\n\n'
 
+#    g = pd.concat([
+#        new.ix[new.index.difference(old.index)],
+#        old.ix[old.index.difference(new.index)],
+#    ]).groupby('Work Id')
+#
+#    for work, group in g:
+#        if len(group) == 2:
+#            # it's changed
+#            print(group)
+#        elif len(group) == 1:
+#            # it's added/removed
+#            pass
+#        else:
+#            print('wtf? group size {} for work {}'.format(len(group), work))
+#
+#    return ''
+
+
     # FIXME handle edition changes
     for ix in new.index.difference(old.index):
         row = new.ix[ix]
@@ -86,5 +104,4 @@ if __name__ == "__main__":
     new = pd.read_csv(sys.argv[2], index_col=0)
 
     print(compare(old, new))
-
 
