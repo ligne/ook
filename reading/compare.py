@@ -7,7 +7,7 @@ columns = [
     'Title',
     'Author',
     'Date Added',
-#     'Date Started',
+    'Date Started',
     'Date Read',
     'Bookshelves',
     'Exclusive Shelf',
