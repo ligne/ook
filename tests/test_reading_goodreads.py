@@ -11,6 +11,7 @@ def test_process_book():
     #self.assertEqual(reading.goodreads.process_book(r), {
     nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'Joe Haldeman',
+        'Author Id': '12476',
         'Average Rating': '4.15',
         'Binding': 'Paperback',
         'Book Id': 13629345,
@@ -33,6 +34,7 @@ def test_process_book():
     #assert reading.goodreads.process_book(r) == {
     nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'James Fenimore Cooper',
+        'Author Id': '9121',
         'Average Rating': '3.37',
         'Binding': 'Paperback',
         'Book Id': 38290,

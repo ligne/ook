@@ -83,6 +83,7 @@ def process_book(r):
         'Book Id': int(r.find('book/id').text),
         'Work Id': r.find('book/work/id').text,
         'Author': r.find('book/authors/*').find('name').text,
+        'Author Id': ', '.join([ a.find('id').text for a in r.findall('book/authors/author') ]),
         'Title': title,
         'Date Added': parse(r.find('date_added').text).strftime('%Y/%m/%d'),
         'Date Started': date_started,
