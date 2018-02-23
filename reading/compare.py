@@ -74,8 +74,8 @@ def compare(old, new):
         row = new.ix[ix]
 
         fmt = "Added '{Title}' by {Author}\n"
-#        if row['Series']:
-#            fmt += ' ({Series}, book {Entry})'
+        if row['Series']:
+            fmt += ' ({Series}, book {Entry})'
         s += fmt.format(**row)
         # also show any bookshelves it's been added to
         s += '  Bookshelves: {Bookshelves}\n'.format(**row)
