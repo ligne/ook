@@ -3,22 +3,15 @@
 import pandas as pd
 import sys
 
-columns = [
-    'Title',
-    'Author',
-    'Date Added',
-    'Date Started',
-    'Date Read',
-    'Bookshelves',
-    'Exclusive Shelf',
-    'My Rating',
-    'Binding',
-    'Number of Pages',
+ignore_columns = [
+    'Average Rating',
 ]
 
 
 def compare(old, new):
     s = ''
+
+    columns = [ c for c in new.columns if c not in ignore_columns ]
 
     # changed
     for ix in old.index.intersection(new.index):
