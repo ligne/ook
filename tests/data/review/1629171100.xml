@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<review>
+  <id>1629171100</id>
+  <book>
+    <id type="integer">13629345</id>
+    <isbn>1407230085</isbn>
+    <isbn13>9781407230085</isbn13>
+    <text_reviews_count type="integer">18</text_reviews_count>
+    <uri>kca://book/amzn1.gr.book.v1.5M1RftSSKYr_p3GWZ5EgYg</uri>
+    <title>The Forever War</title>
+    <title_without_series>The Forever War</title_without_series>
+    <image_url>https://images.gr-assets.com/books/1335861463m/13629345.jpg</image_url>
+    <small_image_url>https://images.gr-assets.com/books/1335861463s/13629345.jpg</small_image_url>
+    <large_image_url/>
+    <link>https://www.goodreads.com/book/show/13629345-the-forever-war</link>
+    <num_pages>240</num_pages>
+    <format>Paperback</format>
+    <edition_information/>
+    <publisher>Gollancz</publisher>
+    <publication_day>29</publication_day>
+    <publication_year>2010</publication_year>
+    <publication_month>3</publication_month>
+    <average_rating>4.15</average_rating>
+    <ratings_count>107281</ratings_count>
+    <description>Private William Mandella is a reluctant hero in an interstellar war against an unknowable and unconquerable alien enemy, but his greatest test will come when he returns home. Relativity means that for every few months' tour of duty centuries have passed on earth, isolating the combatants ever more from the world for whose future they are fighting.</description>
+    <authors>
+      <author>
+        <id>12476</id>
+        <name>Joe Haldeman</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1224736362p5/12476.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1224736362p2/12476.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/12476.Joe_Haldeman]]></link>
+        <average_rating>3.97</average_rating>
+        <ratings_count>180330</ratings_count>
+        <text_reviews_count>9205</text_reviews_count>
+      </author>
+    </authors>
+    <published>2010</published>
+    <work>  <id>423</id><uri>kca://work/amzn1.gr.work.v1.3N5f1UcD9blp1W0J9OYoqg</uri></work>
+  </book>
+  <rating>0</rating>
+  <votes>0</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+  <shelves>
+    <shelf exclusive="true" name="pending" review_shelf_id="1301331269" sortable="false"/>
+  </shelves>
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Wed May 04 14:28:11 -0700 2016</date_added>
+  <date_updated>Wed May 04 14:30:16 -0700 2016</date_updated>
+  <read_count>0</read_count>
+  <body></body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1629171100]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1629171100]]></link>
+  <owned>0</owned>
+</review>

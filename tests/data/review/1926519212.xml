@@ -1,0 +1,61 @@
+<review>
+  <id>1926519212</id>
+  <book>
+    <id type="integer">38290</id>
+    <isbn>0192836676</isbn>
+    <isbn13>9780192836670</isbn13>
+    <text_reviews_count type="integer">70</text_reviews_count>
+    <uri>kca://book/amzn1.gr.book.v1.F1evqc0mrtFvnzEqnqc3JQ</uri>
+    <title>The Pioneers (Leatherstocking Tales, #4)</title>
+    <title_without_series>The Pioneers</title_without_series>
+    <image_url>https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png</image_url>
+    <small_image_url>https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png</small_image_url>
+    <large_image_url/>
+    <link>https://www.goodreads.com/book/show/38290.The_Pioneers</link>
+    <num_pages>496</num_pages>
+    <format>Paperback</format>
+    <edition_information/>
+    <publisher>Oxford University Press, USA</publisher>
+    <publication_day>24</publication_day>
+    <publication_year>2000</publication_year>
+    <publication_month>2</publication_month>
+    <average_rating>3.37</average_rating>
+    <ratings_count>2461</ratings_count>
+    <description>The first of the five Leatherstocking Tales, The Pioneers is perhaps the most realistic and beautiful of the series. Drawing on his own experiences, Cooper brilliantly describes Frontier life, providing a fascinating backdrop to the real heart of the novel--the competing claims to land ownership of Native Americans and settlers. This edition follows the publication of The Last of the Mohicans in the World's Classics series and uses the standard text approved by the Modern Language Association.</description>
+    <authors>
+      <author>
+        <id>9121</id>
+        <name>James Fenimore Cooper</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1210528548p5/9121.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1210528548p2/9121.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/9121.James_Fenimore_Cooper]]></link>
+        <average_rating>3.69</average_rating>
+        <ratings_count>99708</ratings_count>
+        <text_reviews_count>3123</text_reviews_count>
+      </author>
+    </authors>
+    <published>2000</published>
+    <work>  <id>443966</id><uri>kca://work/amzn1.gr.work.v1.1xgtCO1GIdJIGpV5-7Y0LA</uri></work>
+  </book>
+  <rating>0</rating>
+  <votes>0</votes>
+  <spoiler_flag>false</spoiler_flag>
+  <spoilers_state>none</spoilers_state>
+  <shelves>
+    <shelf exclusive="false" name="2018" review_shelf_id="1869716452" sortable="false"/>
+    <shelf exclusive="true" name="pending" review_shelf_id="1582847333" sortable="false"/>
+  </shelves>
+  <recommended_for></recommended_for>
+  <recommended_by></recommended_by>
+  <started_at></started_at>
+  <read_at></read_at>
+  <date_added>Mon Feb 27 10:18:29 -0800 2017</date_added>
+  <date_updated>Wed Dec 20 02:48:10 -0800 2017</date_updated>
+  <read_count>0</read_count>
+  <body></body>
+  <comments_count>0</comments_count>
+  <url><![CDATA[https://www.goodreads.com/review/show/1926519212]]></url>
+  <link><![CDATA[https://www.goodreads.com/review/show/1926519212]]></link>
+  <owned>0</owned>
+</review>
