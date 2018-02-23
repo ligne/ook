@@ -68,6 +68,17 @@ def process_book(r):
             series = m.group('Series')
             entry = m.group('Entry')
 
+    scheduled = [ s.get('name')
+        for s in r.findall('shelves/')
+            if re.match('^\d{4}$', s.get('name'))
+    ]
+    if scheduled:
+        if len(scheduled) > 1:
+            print("{} scheduled for multiple years".format(', '.join(scheduled)))
+        scheduled = scheduled[0]
+    else:
+        scheduled = None
+
     row = {
         'Book Id': int(r.find('book/id').text),
         'Work Id': r.find('book/work/id').text,
@@ -84,6 +95,7 @@ def process_book(r):
         'Binding': r.find('book/format').text,
         'Series': series,
         'Entry': entry,
+        'Scheduled': scheduled,
     }
 
     return row

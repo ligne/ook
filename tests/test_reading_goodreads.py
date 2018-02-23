@@ -1,5 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
+import nose
 from xml.etree import ElementTree
 
 import reading.goodreads
@@ -7,7 +8,8 @@ import reading.goodreads
 def test_process_book():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
 
-    assert reading.goodreads.process_book(r) == {
+    #self.assertEqual(reading.goodreads.process_book(r), {
+    nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'Joe Haldeman',
         'Average Rating': '4.15',
         'Binding': 'Paperback',
@@ -23,11 +25,13 @@ def test_process_book():
         'Work Id': '423',
         'Series': None,
         'Entry': None,
-    }
+        'Scheduled': None,
+    })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
 
-    assert reading.goodreads.process_book(r) == {
+    #assert reading.goodreads.process_book(r) == {
+    nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'James Fenimore Cooper',
         'Average Rating': '3.37',
         'Binding': 'Paperback',
@@ -43,5 +47,6 @@ def test_process_book():
         'Work Id': '443966',
         'Series': 'Leatherstocking Tales',
         'Entry': '4',
-    }
+        'Scheduled': '2018',
+    })
 
