@@ -7,8 +7,6 @@ import reading.goodreads
 
 def test_process_book():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
-
-    #self.assertEqual(reading.goodreads.process_book(r), {
     nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'Joe Haldeman',
         'Author Id': '12476',
@@ -27,11 +25,10 @@ def test_process_book():
         'Series': None,
         'Entry': None,
         'Scheduled': None,
+        'Borrowed': 'False',
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-
-    #assert reading.goodreads.process_book(r) == {
     nose.tools.eq_(reading.goodreads.process_book(r), {
         'Author': 'James Fenimore Cooper',
         'Author Id': '9121',
@@ -50,5 +47,28 @@ def test_process_book():
         'Series': 'Leatherstocking Tales',
         'Entry': '4',
         'Scheduled': '2018',
+        'Borrowed': 'False',
+    })
+
+    r = ElementTree.parse('tests/data/review/1977161022.xml')
+    nose.tools.eq_(reading.goodreads.process_book(r), {
+        'Author Id': '143840',
+        'Author': u'Françoise Mallet-Joris',
+        'Average Rating': '3.51',
+        'Binding': 'Mass Market Paperback',
+        'Book Id': 34910673,
+        'Bookshelves': 'borrowed, pending',
+        'Borrowed': 'True',
+        'Date Added': '2017/04/20',
+        'Date Read': '',
+        'Date Started': '',
+        'Entry': None,
+        'Exclusive Shelf': 'pending',
+        'My Rating': '0',
+        'Number of Pages': '242',
+        'Scheduled': None,
+        'Series': None,
+        'Title': u'Le rempart des b\xe9guines',
+        'Work Id': '238317',
     })
 

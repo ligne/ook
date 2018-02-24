@@ -97,6 +97,7 @@ def process_book(r):
         'Series': series,
         'Entry': entry,
         'Scheduled': scheduled,
+        'Borrowed': str(bool(r.findall('shelves/shelf[@name=\'borrowed\']'))),
     }
 
     return row
