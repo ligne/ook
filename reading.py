@@ -335,7 +335,7 @@ def rate_area(df):
             row['Date Read']: 0,
         }, index=ix).ffill()
 
-    g = g.plot(title='Reading rate', kind='area')
+    g = g.plot(title='Reading rate', kind='area', lw=0)
 
     # prettify and save
     name = 'rate_area'
