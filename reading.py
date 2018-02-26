@@ -411,6 +411,7 @@ def scheduled():
         p = reading.on_shelves(df, others=[year])
         if is_current_year(year):
             p = p.append(reading.on_shelves(df, ['currently-reading']))
+            p = p.drop_duplicates()
 
         pages = p['Number of Pages'].sort_values().values
 
