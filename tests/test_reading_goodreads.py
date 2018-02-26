@@ -24,7 +24,7 @@ def test_process_book():
         'Work Id': '423',
         'Series': None,
         'Entry': None,
-        'Scheduled': None,
+        'Scheduled': '',
         'Borrowed': 'False',
     })
 
@@ -66,7 +66,7 @@ def test_process_book():
         'Exclusive Shelf': 'pending',
         'My Rating': '0',
         'Number of Pages': '242',
-        'Scheduled': None,
+        'Scheduled': '',
         'Series': None,
         'Title': u'Le rempart des b\xe9guines',
         'Work Id': '238317',
