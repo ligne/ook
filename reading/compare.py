@@ -73,10 +73,10 @@ def compare(old, new):
     for ix in new.index.difference(old.index):
         row = new.ix[ix]
 
-        fmt = "Added '{Title}' by {Author}\n"
+        fmt = "Added '{Title}' by {Author}"
         if row['Series']:
             fmt += ' ({Series}, book {Entry})'
-        s += fmt.format(**row)
+        s += fmt.format(**row) + '\n'
         # also show any bookshelves it's been added to
         s += '  Bookshelves: {Bookshelves}\n'.format(**row)
         s += '---\n\n'
