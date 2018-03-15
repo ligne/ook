@@ -180,6 +180,7 @@ if __name__ == "__main__":
     parser.add_argument('--old-authors', action="store_true")
     parser.add_argument('--new-nationalities', action="store_true")
     parser.add_argument('--old-nationalities', action="store_true")
+    parser.add_argument('--borrowed', action='store_true')
     # FIXME also gender, genre
 
     args = parser.parse_args()
@@ -201,10 +202,14 @@ if __name__ == "__main__":
         df = old_authors(df)
     elif args.new_authors:
         df = new_authors(df)
+
     if args.old_nationalities:
         df = old_nationalities(df)
     elif args.new_nationalities:
         df = new_nationalities(df)
+
+    if args.borrowed:
+        df = reading.on_shelves(df, others=['borrowed'])
 
     # mode
     if args.scheduled:
