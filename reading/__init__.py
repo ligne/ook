@@ -57,13 +57,13 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
         'Title': 'Original Title',
     }).join(s)
 
+    with open('data/started.yml') as fh:
+        df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
+
     # lint doesn't want the fixes applying.
     if not no_fixes:
         with open('data/fixes.yml') as fh:
             df.update(pd.DataFrame(yaml.load(fh)).set_index(['Book Id']))
-
-    with open('data/started.yml') as fh:
-        df['Date Started'] = pd.DataFrame(yaml.load(fh)).set_index(['Book Id'])
 
     for column in ['Date Read', 'Date Added', 'Date Started']:
         df[column] = pd.to_datetime(df[column])
