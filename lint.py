@@ -35,6 +35,7 @@ def print_entries(df, desc, additional=[]):
 # missing page count
 def check_missing_page_count(df):
     '''no_fixes'''
+    df = reading.on_shelves(df, ['pending', 'ebooks'])
     missing = df[df.isnull()['Number of Pages']]
     print_entries(missing, 'Missing page count')
 
