@@ -447,6 +447,8 @@ def scheduled():
         #pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
         pd.DataFrame([pages], index=[year]).plot(kind='bar', stacked=True, ax=ax, rot=0, legend=False)
         ax.axhline(_days_remaining(year) * rate)
+        if is_current_year(year):
+            ax.axhspan(_days_remaining(year) * rate, _days_remaining(year) * rate * 1.1, color='k', alpha=0.1)
 
         sp += 1
 
