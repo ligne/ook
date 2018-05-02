@@ -131,6 +131,18 @@ def backlog():
     save_image(p, 'backlog')
 
 
+def increase():
+    p = pd.DataFrame({
+        'elsewhere': added_pages('elsewhere'),
+        'pending':   added_pages('currently-reading') + added_pages('pending'),
+        'read':      -(added_pages('read') - completed_pages('read')),
+    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere'])
+
+    p = (p - p.shift(365)).rolling(window=30).mean().ix['2018']
+
+    save_image(p, 'increase')
+
+
 # plot average scores as a histogram
 def draw_rating_histogram(df):
     ax = df['Average Rating'].plot(kind='hist', bins=100, title='Average Ratings')
@@ -494,6 +506,7 @@ if __name__ == "__main__":
     median_date(df)
     scheduled()
     backlog()
+    increase()
     new_authors(df)
     #draw_rating_histogram(df)
     reading_rate()
