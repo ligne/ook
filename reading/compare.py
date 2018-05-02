@@ -5,6 +5,7 @@ import sys
 
 ignore_columns = [
     'Average Rating',
+    'Bookshelves',
 ]
 
 
