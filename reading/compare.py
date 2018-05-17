@@ -19,6 +19,9 @@ def compare(old, new):
         orow = old.ix[ix][columns].fillna('')
         nrow = new.ix[ix][columns].fillna('')
 
+        if type(nrow['Original Publication Year']) != str:
+            nrow['Original Publication Year'] = '{:.0f}'.format(nrow['Original Publication Year'])
+
         if nrow.equals(orow):
             continue
 
@@ -52,24 +55,6 @@ def compare(old, new):
 
         s += '---\n\n'
 
-#    g = pd.concat([
-#        new.ix[new.index.difference(old.index)],
-#        old.ix[old.index.difference(new.index)],
-#    ]).groupby('Work Id')
-#
-#    for work, group in g:
-#        if len(group) == 2:
-#            # it's changed
-#            print(group)
-#        elif len(group) == 1:
-#            # it's added/removed
-#            pass
-#        else:
-#            print('wtf? group size {} for work {}'.format(len(group), work))
-#
-#    return ''
-
-
     # FIXME handle edition changes
     for ix in new.index.difference(old.index):
         row = new.ix[ix]
@@ -92,10 +77,117 @@ def compare(old, new):
     return s
 
 
+################################################################################
+
+# work out what books have been added, removed, had their edition changed, or
+# have updates.
+def _changed(old, new):
+    # changed
+    for ix in old.index.intersection(new.index):
+        _changed_book(old.loc[ix], new.loc[ix])
+
+    # added/removed/changed edition
+    idcs = old.index.symmetric_difference(new.index)
+    wids = pd.concat([
+        old.loc[old.index.intersection(idcs)],
+        new.loc[new.index.intersection(idcs)],
+    ])['Work Id'].drop_duplicates().values
+
+    for ix in wids:
+        _o = old[old['Work Id'] == ix]
+        _n = new[new['Work Id'] == ix]
+
+        if len(_o) and len(_n):
+            _changed_book(_o.iloc[0], _n.iloc[0])
+        elif len(_n):
+            print(_added_book(_n.iloc[0]))
+        else:
+            print(_removed_book(_o.iloc[0]))
+
+
+################################################################################
+
+# formatting for a book that's been added/removed/changed
+def _added_book(book):
+    return "Added '{Title}' by {Author}\n".format(**book)
+    # FIXME print more information
+
+
+def _removed_book(book):
+    return "Removed '{Title}' by {Author}\n".format(**book)
+
+
+def _changed_book(old, new):
+    columns = [ c for c in new.index if c not in ignore_columns ]
+
+    old = old[columns]
+    new = new[columns]
+
+    if type(new['Original Publication Year']) == float:
+        new['Original Publication Year'] = '{:.0f}'.format(new['Original Publication Year'])
+
+    if old.equals(new):
+        # nothing changed
+        return
+    elif new['Exclusive Shelf'] == 'currently-reading' != old['Exclusive Shelf']:
+        # started reading
+        print(_started_book(new))
+    elif new['Exclusive Shelf'] == 'read' != old['Exclusive Shelf']:
+        # finished reading
+        print(_finished_book(new.copy()))
+    else:
+        # just generally changed fields
+        print('{Author}, {Title}'.format(**new))
+        for (col, v) in new.iteritems():
+            if v == old[col]:
+                continue
+
+            if col == 'Original Publication Year':
+#                 v = '{:.0f}'.format(v)
+                if v == old[col]:
+                    continue
+
+            # FIXME work out what the dtype is, and if one or the other value is
+            # null, and handle accordingly.
+            if not old[col]:
+                print('  {} set to {}'.format(col, v))
+            elif not v:
+                print('  {} unset (previously {})'.format(col, old[col]))
+            else:
+                print('  {}: {} -> {}'.format(col, old[col], v))
+    print()
+
+    return ''
+
+
+################################################################################
+
+def _started_book(book):
+    return """Started '{Title}' by {Author}
+""".format(**book)
+
+
+def _finished_book(book):
+    # FIXME shift these elsewhere.
+    book['Time'] = (pd.to_datetime(book['Date Read']) - pd.to_datetime(book['Date Started'])).days
+    book['Number of Pages'] = float(book['Number of Pages'])
+    book['PPD'] = book['Number of Pages'] / book['Time']
+    return """Finished '{Title}' by {Author}
+  {Date Started} → {Date Read} ({Time} days)
+  {Number of Pages:0.0f} pages, {PPD:0.0f} pages/day
+  Rating: {My Rating}
+""".format(**book)
+
+
+################################################################################
+
 if __name__ == "__main__":
     import pandas as pd
-    old = pd.read_csv(sys.argv[1], index_col=0)
-    new = pd.read_csv(sys.argv[2], index_col=0)
+    old = pd.read_csv(sys.argv[1], index_col=0).fillna('')
+    new = pd.read_csv(sys.argv[2], index_col=0).fillna('')
 
-    print(compare(old, new))
+#    print(compare(old, new))
+
+    _changed(old, new)
+
 
