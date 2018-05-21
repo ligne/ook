@@ -91,6 +91,36 @@ def process_book(r):
 
     return row
 
+
+# information that's only available through the book-specific endpoints.
+def fetch_book(book_id):
+    book = _parse_book_api(_fetch_book_api(book_id))
+    # if the interesting information isn't there, fetch it via html
+    if False:
+        _book = _parse_book_html(_fetch_book_html(book_id))
+
+    # FIXME merge them
+
+    return book
+
+
+def _fetch_book_api(book_id):
+    pass
+
+
+def _parse_book_api(xml):
+    pass
+
+
+# the edition language isn't accessible through the API for some books.
+def _fetch_book_html(book_id):
+    pass
+
+
+def _parse_book_html(html):
+    pass
+
+
 if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     print(process_book(r))
