@@ -52,31 +52,22 @@ def get_books():
     return pd.DataFrame(data=books)
 
 
+def _get_date(xml, tag):
+    date = xml.find(tag).text
+    return date and parse(date).strftime('%Y/%m/%d') or ''
+
+
 # extract the interesting information from an xml blob, as a hash.
 def process_book(r):
-    if r.find('started_at').text:
-        date_started = parse(r.find('started_at').text).strftime('%Y/%m/%d')
-    else:
-        date_started = ''
-
-    if r.find('read_at').text:
-        date_read = parse(r.find('read_at').text).strftime('%Y/%m/%d')
-    else:
-        date_read = ''
-
-    series = entry = None
-
-    title = r.find('book/title_without_series').text
-
     row = {
         'Book Id': int(r.find('book/id').text),
         'Work Id': r.find('book/work/id').text,
         'Author': re.sub(' +', ' ', r.find('book/authors/*').find('name').text),
         'Author Id': ', '.join([ a.find('id').text for a in r.findall('book/authors/author') ]),
-        'Title': title,
+        'Title': r.find('book/title_without_series').text,
         'Date Added': parse(r.find('date_added').text).strftime('%Y/%m/%d'),
-        'Date Started': date_started,
-        'Date Read': date_read,
+        'Date Started': _get_date(r, 'started_at'),
+        'Date Read': _get_date(r, 'read_at'),
         'Number of Pages': r.find('book/num_pages').text,
         'Average Rating': r.find('book/average_rating').text,
         'My Rating': r.find('rating').text,
