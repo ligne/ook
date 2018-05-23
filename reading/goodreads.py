@@ -59,14 +59,6 @@ def process_book(r):
     series = entry = None
 
     title = r.find('book/title_without_series').text
-    ftitle = r.find('book/title').text
-
-    if title != ftitle:
-        t = ftitle[len(title)+1:]
-        m = re.match('\((?P<Series>.+?),? +#(?P<Entry>\d+)', t)
-        if m:
-            series = m.group('Series')
-            entry = m.group('Entry')
 
     row = {
         'Book Id': int(r.find('book/id').text),
@@ -83,8 +75,6 @@ def process_book(r):
         'Exclusive Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),
         'Bookshelves': ', '.join(sorted([ s.get('name') for s in r.findall('shelves/shelf') ])),
         'Binding': r.find('book/format').text,
-        'Series': series,
-        'Entry': entry,
         'Scheduled': ', '.join([ s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name')) ]),
         'Borrowed': str(bool(r.findall('shelves/shelf[@name=\'borrowed\']'))),
     }

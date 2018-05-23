@@ -22,8 +22,6 @@ def test_process_book():
         'Number of Pages': '240',
         'Title': 'The Forever War',
         'Work Id': '423',
-        'Series': None,
-        'Entry': None,
         'Scheduled': '',
         'Borrowed': 'False',
     })
@@ -44,8 +42,6 @@ def test_process_book():
         'Number of Pages': '496',
         'Title': 'The Pioneers',
         'Work Id': '443966',
-        'Series': 'Leatherstocking Tales',
-        'Entry': '4',
         'Scheduled': '2018',
         'Borrowed': 'False',
     })
@@ -62,12 +58,10 @@ def test_process_book():
         'Date Added': '2017/04/20',
         'Date Read': '',
         'Date Started': '',
-        'Entry': None,
         'Exclusive Shelf': 'pending',
         'My Rating': '0',
         'Number of Pages': '242',
         'Scheduled': '',
-        'Series': None,
         'Title': u'Le rempart des b\xe9guines',
         'Work Id': '238317',
     })
