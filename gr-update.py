@@ -1,13 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import time
-import yaml
-import datetime
-import re
-import sys
-from xml.etree import ElementTree
-from dateutil.parser import parse
 import pandas as pd
 
 import reading.goodreads
