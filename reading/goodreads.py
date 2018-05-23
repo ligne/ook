@@ -33,9 +33,17 @@ def get_books():
         time.sleep(1)
 
         x = ElementTree.fromstring(r.content)
-        r = x.find('reviews')
-        books += [ process_book(r) for r in x.findall('reviews/') ]
 
+        for r in x.findall('reviews/'):
+            book = process_book(r)
+            data = fetch_book(book['Book Id'])
+
+            for col in ['Series', 'Entry', 'Original Publication Year']:
+                book[col] = data[col]
+
+            books.append(book)
+
+        r = x.find('reviews')
         if r.get('end') >= r.get('total'):
             break
 
