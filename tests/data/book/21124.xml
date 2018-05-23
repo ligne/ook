@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>21124</id>
+    <title>Le deuxième sexe I</title>
+    <isbn><![CDATA[207032351X]]></isbn>
+    <isbn13><![CDATA[9782070323517]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[B00IARRPY4]]></kindle_asin>
+    <marketplace_id><![CDATA[A1F83G8C2ARO7P]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://images.gr-assets.com/books/1504454058m/21124.jpg</image_url>
+    <small_image_url>https://images.gr-assets.com/books/1504454058s/21124.jpg</small_image_url>
+    <publication_year>1999</publication_year>
+    <publication_month>4</publication_month>
+    <publication_day>21</publication_day>
+    <publisher>Gallimard</publisher>
+    <language_code>fre</language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[Nous commencerons par discuter les points de vue pris sur la femme par la biologie, la psychanalyse, le matérialisme historique. Nous essaierons de montrer ensuite positivement comment la "réalité féminine" s'est constituée, pourquoi la femme a été définie comme l'Autre et quelles en ont été les conséquences du point de vue des hommes. Alros nous décrirons du point de vue des femmes le monde tel qu'il leur est proposé; et nous pourrons comprendre à quelles difficutlés elle se heurtent au moment où, essayant de s'évader de la sphère qui leur a été jusqu'à présent assignée, elles prétendent participer au <i>mistsein</i> humain.]]></description>
+    <work>
+      <id type="integer">41037628</id>
+      <books_count type="integer">32</books_count>
+      <best_book_id type="integer">21124</best_book_id>
+      <reviews_count type="integer">4880</reviews_count>
+      <ratings_sum type="integer">6114</ratings_sum>
+      <ratings_count type="integer">1448</ratings_count>
+      <text_reviews_count type="integer">72</text_reviews_count>
+      <original_publication_year type="integer">1949</original_publication_year>
+      <original_publication_month nil="true" type="integer"/>
+      <original_publication_day nil="true" type="integer"/>
+      <original_title>Le deuxième sexe I</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:641|4:549|3:208|2:39|1:11|total:1448</rating_dist>
+      <desc_user_id type="integer">15077653</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+    </work>
+    <average_rating>4.22</average_rating>
+    <num_pages><![CDATA[]]></num_pages>
+    <format><![CDATA[Mass Market Paperback]]></format>
+    <edition_information><![CDATA[Folio essais]]></edition_information>
+    <ratings_count><![CDATA[1142]]></ratings_count>
+    <text_reviews_count><![CDATA[44]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/21124.Le_deuxi_me_sexe_I]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/21124.Le_deuxi_me_sexe_I]]></link>
+    <authors>
+      <author>
+        <id>5548</id>
+        <name>Simone de Beauvoir</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1382722690p5/5548.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1382722690p2/5548.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/5548.Simone_de_Beauvoir]]></link>
+        <average_rating>4.05</average_rating>
+        <ratings_count>66560</ratings_count>
+        <text_reviews_count>4062</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/21124.Le_deuxi_me_sexe_I">Le deuxième sexe I Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=207032351X&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow" href="https://www.goodreads.com/book/show/21124.Le_deuxi_me_sexe_I?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="1686" name="to-read"/>
+      <shelf count="259" name="currently-reading"/>
+      <shelf count="69" name="feminism"/>
+      <shelf count="57" name="non-fiction"/>
+      <shelf count="48" name="philosophy"/>
+      <shelf count="45" name="french"/>
+      <shelf count="23" name="feminisme"/>
+      <shelf count="22" name="favorites"/>
+      <shelf count="14" name="nonfiction"/>
+      <shelf count="13" name="owned"/>
+      <shelf count="12" name="français"/>
+      <shelf count="9" name="philosophie"/>
+      <shelf count="9" name="france"/>
+      <shelf count="8" name="essais"/>
+      <shelf count="8" name="books-i-own"/>
+      <shelf count="7" name="french-literature"/>
+      <shelf count="7" name="feminist"/>
+      <shelf count="7" name="default"/>
+      <shelf count="6" name="essai"/>
+      <shelf count="6" name="women"/>
+      <shelf count="6" name="classics"/>
+      <shelf count="6" name="littérature-française"/>
+      <shelf count="6" name="essays"/>
+      <shelf count="6" name="essay"/>
+      <shelf count="6" name="classic"/>
+      <shelf count="5" name="owned-books"/>
+      <shelf count="5" name="unfinished"/>
+      <shelf count="5" name="simone-de-beauvoir"/>
+      <shelf count="5" name="pal"/>
+      <shelf count="4" name="philo"/>
+      <shelf count="4" name="femmes"/>
+      <shelf count="4" name="classiques"/>
+      <shelf count="4" name="on-hold"/>
+      <shelf count="4" name="to-buy"/>
+      <shelf count="4" name="gender-studies"/>
+      <shelf count="4" name="en-français"/>
+      <shelf count="4" name="sociology"/>
+      <shelf count="4" name="favourites"/>
+      <shelf count="3" name="pile-à-lire"/>
+      <shelf count="3" name="french-books"/>
+      <shelf count="3" name="read-in-french"/>
+      <shelf count="3" name="woman"/>
+      <shelf count="3" name="psychology"/>
+      <shelf count="3" name="nao-ficcao"/>
+      <shelf count="3" name="french-authors"/>
+      <shelf count="3" name="female-authors"/>
+      <shelf count="3" name="francophone"/>
+      <shelf count="3" name="filosofia"/>
+      <shelf count="3" name="ebooks"/>
+      <shelf count="3" name="existentialism"/>
+      <shelf count="2" name="reading-classics-challenge"/>
+      <shelf count="2" name="to-read-1"/>
+      <shelf count="2" name="fr"/>
+      <shelf count="2" name="to-read-non-fiction"/>
+      <shelf count="2" name="europa"/>
+      <shelf count="2" name="fran-ais"/>
+      <shelf count="2" name="in-french"/>
+      <shelf count="2" name="papier"/>
+      <shelf count="2" name="fem"/>
+      <shelf count="2" name="gallimard"/>
+      <shelf count="2" name="thesis"/>
+      <shelf count="2" name="my-library"/>
+      <shelf count="2" name="library"/>
+      <shelf count="2" name="lidos-em-2015"/>
+      <shelf count="2" name="bookshelf"/>
+      <shelf count="2" name="فلسفه"/>
+      <shelf count="2" name="social"/>
+      <shelf count="2" name="biblio"/>
+      <shelf count="2" name="gender"/>
+      <shelf count="2" name="les-cent-livres-du-siècle"/>
+      <shelf count="2" name="series"/>
+      <shelf count="2" name="abandoned"/>
+      <shelf count="2" name="read-in-2014"/>
+      <shelf count="2" name="litterature"/>
+      <shelf count="2" name="in-portuguese"/>
+      <shelf count="2" name="history"/>
+      <shelf count="2" name="feminismo"/>
+      <shelf count="2" name="classique"/>
+      <shelf count="2" name="theory"/>
+      <shelf count="2" name="tbr"/>
+      <shelf count="2" name="societe"/>
+      <shelf count="2" name="politics"/>
+      <shelf count="2" name="livres-en-francais"/>
+      <shelf count="2" name="litt-française"/>
+      <shelf count="2" name="literature"/>
+      <shelf count="2" name="french-language"/>
+      <shelf count="2" name="beauvoir"/>
+      <shelf count="2" name="20th-century"/>
+      <shelf count="1" name="filozofia"/>
+      <shelf count="1" name="dar-avalin-forsat"/>
+      <shelf count="1" name="a-acheter"/>
+      <shelf count="1" name="left"/>
+      <shelf count="1" name="fe"/>
+      <shelf count="1" name="crítica"/>
+      <shelf count="1" name="womanpower"/>
+      <shelf count="1" name="school-reads"/>
+      <shelf count="1" name="pas-disponible"/>
+      <shelf count="1" name="escritos-por-mulheres"/>
+      <shelf count="1" name="x"/>
+      <shelf count="1" name="soon"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Kobo</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple iBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works>
+      <series_work>
+        <id>663675</id>
+        <user_position>1</user_position>
+        <series>
+          <id>132910</id>
+          <title><![CDATA[
+    Le deuxième sexe
+]]></title>
+          <description><![CDATA[
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>3</series_works_count>
+          <primary_work_count>2</primary_work_count>
+          <numbered>true</numbered>
+        </series>
+      </series_work>
+    </series_works>
+    <similar_books>
+      <book>
+        <id>821187</id>
+        <title><![CDATA[A l'ami qui ne m'a pas sauvé la vie]]></title>
+        <title_without_series><![CDATA[A l'ami qui ne m'a pas sauvé la vie]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/821187.A_l_ami_qui_ne_m_a_pas_sauv_la_vie]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1377634397s/821187.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1377634397m/821187.jpg]]></image_url>
+        <num_pages>282</num_pages>
+        <work>
+          <id>807020</id>
+        </work>
+        <isbn>2070385035</isbn>
+        <isbn13>9782070385034</isbn13>
+        <average_rating>3.93</average_rating>
+        <ratings_count>492</ratings_count>
+        <publication_year>1993</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>98210</id>
+            <name>Hervé Guibert</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/98210.Herv_Guibert]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>393637</id>
+        <title>Masculine Domination</title>
+        <title_without_series>Masculine Domination</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/393637.Masculine_Domination]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1407813421s/393637.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1407813421m/393637.jpg]]></image_url>
+        <num_pages>144</num_pages>
+        <work>
+          <id>1226357</id>
+        </work>
+        <isbn>0804738203</isbn>
+        <isbn13>9780804738200</isbn13>
+        <average_rating>3.93</average_rating>
+        <ratings_count>849</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>45739</id>
+            <name>Pierre Bourdieu</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/45739.Pierre_Bourdieu]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>88140</id>
+        <title><![CDATA[Les Nourritures terrestres suivi de Les Nouvelles Nourritures]]></title>
+        <title_without_series><![CDATA[Les Nourritures terrestres suivi de Les Nouvelles Nourritures]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/88140.Les_Nourritures_terrestres_suivi_de_Les_Nouvelles_Nourritures]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>246</num_pages>
+        <work>
+          <id>26435395</id>
+        </work>
+        <isbn>2070361179</isbn>
+        <isbn13>9782070361175</isbn13>
+        <average_rating>3.75</average_rating>
+        <ratings_count>822</ratings_count>
+        <publication_year>1995</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>7617</id>
+            <name>André Gide</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7617.Andr_Gide]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>852431</id>
+        <title><![CDATA[Albertine disparue (À la recherche du temps perdu, #6)]]></title>
+        <title_without_series>Albertine disparue</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/852431.Albertine_disparue]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1328092229s/852431.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1328092229m/852431.jpg]]></image_url>
+        <num_pages>374</num_pages>
+        <work>
+          <id>2331440</id>
+        </work>
+        <isbn>2070382338</isbn>
+        <isbn13>9782070382330</isbn13>
+        <average_rating>4.28</average_rating>
+        <ratings_count>1509</ratings_count>
+        <publication_year>1990</publication_year>
+        <publication_month>3</publication_month>
+        <publication_day>13</publication_day>
+        <authors>
+          <author>
+            <id>233619</id>
+            <name>Marcel Proust</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/233619.Marcel_Proust]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1062382</id>
+        <title><![CDATA[Dernier inventaire avant liquidation]]></title>
+        <title_without_series><![CDATA[Dernier inventaire avant liquidation]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1062382.Dernier_inventaire_avant_liquidation]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1480858822s/1062382.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1480858822m/1062382.jpg]]></image_url>
+        <num_pages>233</num_pages>
+        <work>
+          <id>1048986</id>
+        </work>
+        <isbn>2070426483</isbn>
+        <isbn13>9782070426485</isbn13>
+        <average_rating>3.33</average_rating>
+        <ratings_count>389</ratings_count>
+        <publication_year>2003</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>23</publication_day>
+        <authors>
+          <author>
+            <id>209478</id>
+            <name>Frédéric Beigbeder</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/209478.Fr_d_ric_Beigbeder]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>2099048</id>
+        <title>King Kong Theorie</title>
+        <title_without_series>King Kong Theorie</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/2099048.King_Kong_Theorie]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1521000596s/2099048.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1521000596m/2099048.jpg]]></image_url>
+        <num_pages>155</num_pages>
+        <work>
+          <id>2104411</id>
+        </work>
+        <isbn>2253122114</isbn>
+        <isbn13>9782253122111</isbn13>
+        <average_rating>4.07</average_rating>
+        <ratings_count>3584</ratings_count>
+        <publication_year>2007</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>3</publication_day>
+        <authors>
+          <author>
+            <id>35668</id>
+            <name>Virginie Despentes</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/35668.Virginie_Despentes]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1755919</id>
+        <title><![CDATA[On n'y voit rien : descriptions]]></title>
+        <title_without_series><![CDATA[On n'y voit rien : descriptions]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1755919.On_n_y_voit_rien_]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>216</num_pages>
+        <work>
+          <id>1753780</id>
+        </work>
+        <isbn>2070427641</isbn>
+        <isbn13>9782070427642</isbn13>
+        <average_rating>4.14</average_rating>
+        <ratings_count>276</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>21</publication_day>
+        <authors>
+          <author>
+            <id>203000</id>
+            <name>Daniel Arasse</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/203000.Daniel_Arasse]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>568674</id>
+        <title>Thérèse Desqueyroux</title>
+        <title_without_series>Thérèse Desqueyroux</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/568674.Th_r_se_Desqueyroux]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1335423182s/568674.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1335423182m/568674.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>46658121</id>
+        </work>
+        <isbn>2253004219</isbn>
+        <isbn13>9782253004219</isbn13>
+        <average_rating>3.71</average_rating>
+        <ratings_count>2960</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>61023</id>
+            <name>François Mauriac</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/61023.Fran_ois_Mauriac]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>371734</id>
+        <title><![CDATA[Intimate Death: How the Dying Teach Us How to Live]]></title>
+        <title_without_series><![CDATA[Intimate Death: How the Dying Teach Us How to Live]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/371734.Intimate_Death]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1320494027s/371734.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1320494027m/371734.jpg]]></image_url>
+        <num_pages>208</num_pages>
+        <work>
+          <id>361684</id>
+        </work>
+        <isbn>0679768599</isbn>
+        <isbn13>9780679768593</isbn13>
+        <average_rating>4.21</average_rating>
+        <ratings_count>243</ratings_count>
+        <publication_year>1998</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>28</publication_day>
+        <authors>
+          <author>
+            <id>39981</id>
+            <name>Marie de Hennezel</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/39981.Marie_de_Hennezel]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>72407</id>
+        <title>Qu&apos;est ce que le cinéma?</title>
+        <title_without_series>Qu&apos;est ce que le cinéma?</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/72407.Qu_est_ce_que_le_cin_ma_]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>376</num_pages>
+        <work>
+          <id>18059618</id>
+        </work>
+        <isbn>2204024198</isbn>
+        <isbn13>9782204024198</isbn13>
+        <average_rating>4.13</average_rating>
+        <ratings_count>283</ratings_count>
+        <publication_year>1996</publication_year>
+        <publication_month>3</publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>40962</id>
+            <name>André Bazin</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/40962.Andr_Bazin]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1262472</id>
+        <title>The Ripening Seed</title>
+        <title_without_series>The Ripening Seed</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1262472.The_Ripening_Seed]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1332373824s/1262472.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1332373824m/1262472.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1183660</id>
+        </work>
+        <isbn>0374250693</isbn>
+        <isbn13>9780374250690</isbn13>
+        <average_rating>3.54</average_rating>
+        <ratings_count>984</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>51575</id>
+            <name>Colette</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/51575.Colette]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>30525</id>
+        <title>Search for a Method</title>
+        <title_without_series>Search for a Method</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/30525.Search_for_a_Method]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1403166484s/30525.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1403166484m/30525.jpg]]></image_url>
+        <num_pages>228</num_pages>
+        <work>
+          <id>30888</id>
+        </work>
+        <isbn>0394704649</isbn>
+        <isbn13>9780394704647</isbn13>
+        <average_rating>3.58</average_rating>
+        <ratings_count>196</ratings_count>
+        <publication_year>1968</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>12</publication_day>
+        <authors>
+          <author>
+            <id>1466</id>
+            <name>Jean-Paul Sartre</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1466.Jean_Paul_Sartre]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>366627</id>
+        <title><![CDATA[Romans de la Table Ronde: Erec et Enide, Cligès, Lancelot, Yvain]]></title>
+        <title_without_series><![CDATA[Romans de la Table Ronde: Erec et Enide, Cligès, Lancelot, Yvain]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/366627.Romans_de_la_Table_Ronde]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>369</num_pages>
+        <work>
+          <id>356643</id>
+        </work>
+        <isbn>2070366960</isbn>
+        <isbn13>9782070366965</isbn13>
+        <average_rating>3.81</average_rating>
+        <ratings_count>303</ratings_count>
+        <publication_year>1975</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>20903</id>
+            <name>Chrétien de Troyes</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/20903.Chr_tien_de_Troyes]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>220336</id>
+        <title><![CDATA[Marius (Trilogie marseillaise, #1)]]></title>
+        <title_without_series>Marius</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/220336.Marius]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1323374449s/220336.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1323374449m/220336.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>213345</id>
+        </work>
+        <isbn>287706056X</isbn>
+        <isbn13>9782877060561</isbn13>
+        <average_rating>4.00</average_rating>
+        <ratings_count>674</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>101107</id>
+            <name>Marcel Pagnol</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/101107.Marcel_Pagnol]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>2709688</id>
+        <title><![CDATA[Ce qui est précieux (Le combat ordinaire, #3)]]></title>
+        <title_without_series>Ce qui est précieux</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/2709688-ce-qui-est-pr-cieux]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1332178347s/2709688.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1332178347m/2709688.jpg]]></image_url>
+        <num_pages>64</num_pages>
+        <work>
+          <id>2735183</id>
+        </work>
+        <isbn>220505791X</isbn>
+        <isbn13>9782205057911</isbn13>
+        <average_rating>4.33</average_rating>
+        <ratings_count>625</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>3</publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>45200</id>
+            <name>Manu Larcenet</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/45200.Manu_Larcenet]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>582035</id>
+        <title>Soy, Not Oi!</title>
+        <title_without_series>Soy, Not Oi!</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/582035.Soy_Not_Oi_]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>111</num_pages>
+        <work>
+          <id>568908</id>
+        </work>
+        <isbn>1904859194</isbn>
+        <isbn13>9781904859192</isbn13>
+        <average_rating>4.07</average_rating>
+        <ratings_count>180</ratings_count>
+        <publication_year>2005</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>5740570</id>
+            <name>Hippycore Krew</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/5740570.Hippycore_Krew]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>375468</id>
+        <title>Theory of the Avant-Garde</title>
+        <title_without_series>Theory of the Avant-Garde</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/375468.Theory_of_the_Avant_Garde]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>192</num_pages>
+        <work>
+          <id>365335</id>
+        </work>
+        <isbn>0816610681</isbn>
+        <isbn13>9780816610686</isbn13>
+        <average_rating>3.69</average_rating>
+        <ratings_count>302</ratings_count>
+        <publication_year>1984</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>18</publication_day>
+        <authors>
+          <author>
+            <id>675089</id>
+            <name>Peter Bürger</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/675089.Peter_B_rger]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1514057</id>
+        <title>Un roi sans divertissement</title>
+        <title_without_series>Un roi sans divertissement</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1514057.Un_roi_sans_divertissement]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1445715999s/1514057.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1445715999m/1514057.jpg]]></image_url>
+        <num_pages>244</num_pages>
+        <work>
+          <id>2502537</id>
+        </work>
+        <isbn>2070362205</isbn>
+        <isbn13>9782070362202</isbn13>
+        <average_rating>3.65</average_rating>
+        <ratings_count>549</ratings_count>
+        <publication_year>2004</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>54103</id>
+            <name>Jean Giono</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/54103.Jean_Giono]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>

@@ -105,11 +105,36 @@ def fetch_book(book_id):
 
 
 def _fetch_book_api(book_id):
-    pass
+    r = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
+        'key': config['GR Key'],
+    })
+    return ElementTree.fromstring(r.content)
 
 
 def _parse_book_api(xml):
-    pass
+    lang = xml.find('book/language_code').text
+    try:
+        lang = lang[:2]
+    except:
+        lang = str(lang)
+
+    # FIXME work out which one is preferred
+    series = entry = series_id = None
+    for s in xml.findall('book/series_works/series_work'):
+        series = s.find('series/title').text.strip()
+        entry = s.find('user_position').text
+        series_id = s.find('series/id').text
+        break
+
+    # FIXME work out category and genres too
+
+    return {
+        'Language': lang,
+        'Original Publication Year': xml.find('book/work/original_publication_year').text,
+        'Series': series,
+        'Series Id': series_id,
+        'Entry': entry,
+    }
 
 
 # the edition language isn't accessible through the API for some books.

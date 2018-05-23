@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>115069</id>
+    <title>L&apos;Argent</title>
+    <isbn><![CDATA[2253003670]]></isbn>
+    <isbn13><![CDATA[9782253003670]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[B004UJA1DS]]></kindle_asin>
+    <marketplace_id><![CDATA[A1F83G8C2ARO7P]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://images.gr-assets.com/books/1362238464m/115069.jpg</image_url>
+    <small_image_url>https://images.gr-assets.com/books/1362238464s/115069.jpg</small_image_url>
+    <publication_year>1974</publication_year>
+    <publication_month>3</publication_month>
+    <publication_day>1</publication_day>
+    <publisher>Le Livre de Poche</publisher>
+    <language_code>fre</language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[Dix-huitième volume des Rougon-Macquart, <i>L'Argent</i> est le premier grand western financier des temps modernes : bilans falsifiés, connivences politiques, fièvre spéculative, manipulations médiatiques, rumeurs, scandales, coups de Bourse et coups de Jarnac, lutte à mort entre les loups-cerviers de la finance qui déjà rôdaient chez Balzac.<br /><br />S'inspirant de quelques faits divers retentissants, Zola décrit le culte nouveau du Veau d'or, la vie secrète de son temple, l'activité fiévreuse de ses desservants ; il dénombre ses élus et ses victimes.<br /><br />A l'heure des conflits économiques planétaires, il faut revivre cette croisade et cette épopée du Capital.<br /><br />A l'heure où les audaces de la technologie bancaire nous font frémir, il faut relire cet hymne à la vie.]]></description>
+    <work>
+      <id type="integer">417025</id>
+      <books_count type="integer">111</books_count>
+      <best_book_id type="integer">115069</best_book_id>
+      <reviews_count type="integer">2624</reviews_count>
+      <ratings_sum type="integer">4817</ratings_sum>
+      <ratings_count type="integer">1227</ratings_count>
+      <text_reviews_count type="integer">78</text_reviews_count>
+      <original_publication_year type="integer">1891</original_publication_year>
+      <original_publication_month nil="true" type="integer"/>
+      <original_publication_day nil="true" type="integer"/>
+      <original_title>L'Argent</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:390|4:470|3:274|2:72|1:21|total:1227</rating_dist>
+      <desc_user_id type="integer">23069756</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+    </work>
+    <average_rating>3.93</average_rating>
+    <num_pages><![CDATA[542]]></num_pages>
+    <format><![CDATA[Mass Market Paperback]]></format>
+    <edition_information><![CDATA[]]></edition_information>
+    <ratings_count><![CDATA[965]]></ratings_count>
+    <text_reviews_count><![CDATA[34]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/115069.L_Argent]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/115069.L_Argent]]></link>
+    <authors>
+      <author>
+        <id>4750</id>
+        <name>Émile Zola</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1189528657p5/4750.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1189528657p2/4750.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/4750._mile_Zola]]></link>
+        <average_rating>3.92</average_rating>
+        <ratings_count>109859</ratings_count>
+        <text_reviews_count>5948</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/115069.L_Argent">L&#39;Argent Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=2253003670&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow" href="https://www.goodreads.com/book/show/115069.L_Argent?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="253" name="to-read"/>
+      <shelf count="40" name="currently-reading"/>
+      <shelf count="38" name="classics"/>
+      <shelf count="32" name="french"/>
+      <shelf count="23" name="fiction"/>
+      <shelf count="20" name="french-literature"/>
+      <shelf count="17" name="france"/>
+      <shelf count="13" name="zola"/>
+      <shelf count="11" name="19th-century"/>
+      <shelf count="9" name="novels"/>
+      <shelf count="8" name="default"/>
+      <shelf count="8" name="les-rougon-macquart"/>
+      <shelf count="7" name="classic"/>
+      <shelf count="7" name="literature"/>
+      <shelf count="7" name="classique"/>
+      <shelf count="7" name="owned"/>
+      <shelf count="6" name="series"/>
+      <shelf count="6" name="french-lit"/>
+      <shelf count="6" name="français"/>
+      <shelf count="5" name="favorites"/>
+      <shelf count="5" name="rougon-macquart"/>
+      <shelf count="4" name="french-classics"/>
+      <shelf count="4" name="kindle"/>
+      <shelf count="4" name="emile-zola"/>
+      <shelf count="4" name="zola-emile"/>
+      <shelf count="3" name="tbr"/>
+      <shelf count="3" name="novel"/>
+      <shelf count="3" name="ebook"/>
+      <shelf count="3" name="19th-century-lit"/>
+      <shelf count="3" name="roman"/>
+      <shelf count="3" name="classiques"/>
+      <shelf count="3" name="literary-fiction"/>
+      <shelf count="3" name="in-french"/>
+      <shelf count="3" name="wish-list"/>
+      <shelf count="3" name="lit-french"/>
+      <shelf count="3" name="read-in-french"/>
+      <shelf count="2" name="read-different-version"/>
+      <shelf count="2" name="émile-zola"/>
+      <shelf count="2" name="author-male"/>
+      <shelf count="2" name="1800s"/>
+      <shelf count="2" name="oxford-world-s-classics"/>
+      <shelf count="2" name="book-type-novel"/>
+      <shelf count="2" name="classic-literature"/>
+      <shelf count="2" name="to-buy"/>
+      <shelf count="2" name="en-français"/>
+      <shelf count="2" name="litterature"/>
+      <shelf count="2" name="ebooks"/>
+      <shelf count="2" name="france-algeria"/>
+      <shelf count="2" name="romane"/>
+      <shelf count="2" name="bibliothèque"/>
+      <shelf count="2" name="own-it"/>
+      <shelf count="2" name="paris"/>
+      <shelf count="2" name="favourite"/>
+      <shelf count="2" name="euro-lit"/>
+      <shelf count="2" name="adult-fiction"/>
+      <shelf count="2" name="shelved"/>
+      <shelf count="2" name="romans"/>
+      <shelf count="2" name="francia"/>
+      <shelf count="2" name="fiction-french"/>
+      <shelf count="2" name="historical-fiction"/>
+      <shelf count="2" name="favourites"/>
+      <shelf count="2" name="french-litterature"/>
+      <shelf count="1" name="billy-billy"/>
+      <shelf count="1" name="want-to-read-but-don-t-own"/>
+      <shelf count="1" name="owned-and-to-read"/>
+      <shelf count="1" name="livres"/>
+      <shelf count="1" name="foreign"/>
+      <shelf count="1" name="dont-own"/>
+      <shelf count="1" name="scaffali-veri"/>
+      <shelf count="1" name="z-author_emile-zola"/>
+      <shelf count="1" name="type_my-aesthetics"/>
+      <shelf count="1" name="to-buy-fiction"/>
+      <shelf count="1" name="À-la-maison"/>
+      <shelf count="1" name="zola-oup"/>
+      <shelf count="1" name="19th-century-novels"/>
+      <shelf count="1" name="18-spring-tbr"/>
+      <shelf count="1" name="waiting-to-be-read"/>
+      <shelf count="1" name="considering"/>
+      <shelf count="1" name="2019-year-of-french-litterature"/>
+      <shelf count="1" name="gallimard"/>
+      <shelf count="1" name="read-in-german"/>
+      <shelf count="1" name="books-i-own-and-need-to-read"/>
+      <shelf count="1" name="sequels-tbr"/>
+      <shelf count="1" name="en-stock"/>
+      <shelf count="1" name="litterature-francophone"/>
+      <shelf count="1" name="getting-ol-lit"/>
+      <shelf count="1" name="culture"/>
+      <shelf count="1" name="l-french"/>
+      <shelf count="1" name="19e"/>
+      <shelf count="1" name="owned-but-not-read-yet"/>
+      <shelf count="1" name="19th-century-classics"/>
+      <shelf count="1" name="sociology"/>
+      <shelf count="1" name="classic-french-lit"/>
+      <shelf count="1" name="rougon-marquart"/>
+      <shelf count="1" name="priority-literature"/>
+      <shelf count="1" name="ba-mfa-phd"/>
+      <shelf count="1" name="classici"/>
+      <shelf count="1" name="xix-secolo"/>
+      <shelf count="1" name="french-litriture"/>
+      <shelf count="1" name="to-consider"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Kobo</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple iBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works>
+      <series_work>
+        <id>149016</id>
+        <user_position>18</user_position>
+        <series>
+          <id>40441</id>
+          <title><![CDATA[
+    Les Rougon-Macquart
+]]></title>
+          <description><![CDATA[
+    This is the series in publication order. In an "Introduction" of his last novel, Le Docteur Pascal, Zola gave a recommended reading order, although it is not required, as each novel stands on its own. You can find Zola's recommended order here: <a href="http://www.goodreads.com/series/100339-zola-s-les-rougon-macquart">Recommended Reading Order</a>
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>22</series_works_count>
+          <primary_work_count>20</primary_work_count>
+          <numbered>true</numbered>
+        </series>
+      </series_work>
+      <series_work>
+        <id>486100</id>
+        <user_position></user_position>
+        <series>
+          <id>100339</id>
+          <title><![CDATA[
+    Les Rougon-Macquart (recommended reading order)
+]]></title>
+          <description><![CDATA[
+    In his last Rougon-Macquart novel, <i>Le Docteur Pascal</i>, Zola gave a recommended reading order, although it is not required, as each novel stands on its own. You can find the series in publication order here: <a href="http://www.goodreads.com/series/40441-les-rougon-macquart">Les Rougon-Macquart</a>
+    
+    Note: This recommend reading order isn't mentioned in the most authoritative French editions. However, in the fifth chapter of <i>Le Docteur Pascal</i> the Docteur Pascal summarizes all the Rougon Macquart history and the English journalist Ernest Alfred Vizetelly derived a recommended reading order from it, affirming that it was Zola's recommended reading order.
+    
+    Les Rougon-Macquart may be read in any reading order anyway, as long as you start the reading with <i>La Fortune des Rougon</i> and end it with <i>Le Docteur Pascal</i>. Although most of the novels stand on their own, it would be better to read <i>L'Assommoir</i> before reading <i>Nana</i>, and to read <i>Pot-Bouille</i> before reading <i>The Ladies Paradise</i>.
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>20</series_works_count>
+          <primary_work_count>20</primary_work_count>
+          <numbered>false</numbered>
+        </series>
+      </series_work>
+    </series_works>
+    <similar_books>
+      <book>
+        <id>1481738</id>
+        <title><![CDATA[La confession d'un enfant du siècle]]></title>
+        <title_without_series><![CDATA[La confession d'un enfant du siècle]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1481738.La_confession_d_un_enfant_du_si_cle]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>220</num_pages>
+        <work>
+          <id>2526095</id>
+        </work>
+        <isbn>0543897788</isbn>
+        <isbn13>9780543897787</isbn13>
+        <average_rating>3.70</average_rating>
+        <ratings_count>991</ratings_count>
+        <publication_year>2001</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>20</publication_day>
+        <authors>
+          <author>
+            <id>224009</id>
+            <name>Alfred de Musset</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/224009.Alfred_de_Musset]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1505064</id>
+        <title>Les Diaboliques </title>
+        <title_without_series>Les Diaboliques</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1505064.Les_Diaboliques]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1355092023s/1505064.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1355092023m/1505064.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1496555</id>
+        </work>
+        <isbn>2253036544</isbn>
+        <isbn13>9782253036548</isbn13>
+        <average_rating>3.77</average_rating>
+        <ratings_count>1096</ratings_count>
+        <publication_year>1985</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>24</publication_day>
+        <authors>
+          <author>
+            <id>4547067</id>
+            <name>Jules Barbey d&apos;Aurevilly</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/4547067.Jules_Barbey_d_Aurevilly]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>533470</id>
+        <title>Vendetta</title>
+        <title_without_series>Vendetta</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/533470.Vendetta]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1499241337s/533470.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1499241337m/533470.jpg]]></image_url>
+        <num_pages>66</num_pages>
+        <work>
+          <id>2076563</id>
+        </work>
+        <isbn>1406948756</isbn>
+        <isbn13>9781406948752</isbn13>
+        <average_rating>3.62</average_rating>
+        <ratings_count>380</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>228089</id>
+            <name>Honoré de Balzac</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/228089.Honor_de_Balzac]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1782011</id>
+        <title>Afloat</title>
+        <title_without_series>Afloat</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1782011.Afloat]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1320461490s/1782011.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1320461490m/1782011.jpg]]></image_url>
+        <num_pages>120</num_pages>
+        <work>
+          <id>1780840</id>
+        </work>
+        <isbn>1590172590</isbn>
+        <isbn13>9781590172599</isbn13>
+        <average_rating>3.88</average_rating>
+        <ratings_count>242</ratings_count>
+        <publication_year>2008</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>29</publication_day>
+        <authors>
+          <author>
+            <id>18791</id>
+            <name>Guy de Maupassant</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/18791.Guy_de_Maupassant]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>346024</id>
+        <title>Penguin Island</title>
+        <title_without_series>Penguin Island</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/346024.Penguin_Island]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1875406</id>
+        </work>
+        <isbn>1426404050</isbn>
+        <isbn13>9781426404054</isbn13>
+        <average_rating>3.66</average_rating>
+        <ratings_count>1136</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>48535</id>
+            <name>Anatole France</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/48535.Anatole_France]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1480565</id>
+        <title>Le Capitaine Fracasse</title>
+        <title_without_series>Le Capitaine Fracasse</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1480565.Le_Capitaine_Fracasse]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1325548760s/1480565.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1325548760m/1480565.jpg]]></image_url>
+        <num_pages>511</num_pages>
+        <work>
+          <id>1471650</id>
+        </work>
+        <isbn>2877142183</isbn>
+        <isbn13>9782877142182</isbn13>
+        <average_rating>3.82</average_rating>
+        <ratings_count>629</ratings_count>
+        <publication_year>1999</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>103384</id>
+            <name>Théophile Gautier</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/103384.Th_ophile_Gautier]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>220174</id>
+        <title><![CDATA[Les Filles du feu - Les Chimères]]></title>
+        <title_without_series><![CDATA[Les Filles du feu - Les Chimères]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/220174.Les_Filles_du_feu_Les_Chim_res]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1376487604s/220174.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1376487604m/220174.jpg]]></image_url>
+        <num_pages>254</num_pages>
+        <work>
+          <id>213186</id>
+        </work>
+        <isbn>2080707825</isbn>
+        <isbn13>9782080707826</isbn13>
+        <average_rating>3.86</average_rating>
+        <ratings_count>325</ratings_count>
+        <publication_year>1994</publication_year>
+        <publication_month>7</publication_month>
+        <publication_day>20</publication_day>
+        <authors>
+          <author>
+            <id>128771</id>
+            <name>Gérard de Nerval</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/128771.G_rard_de_Nerval]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1022266</id>
+        <title>Germinie Lacerteux</title>
+        <title_without_series>Germinie Lacerteux</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1022266.Germinie_Lacerteux]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1471969551s/1022266.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1471969551m/1022266.jpg]]></image_url>
+        <num_pages>170</num_pages>
+        <work>
+          <id>1008393</id>
+        </work>
+        <isbn>0140444386</isbn>
+        <isbn13>9780140444384</isbn13>
+        <average_rating>3.49</average_rating>
+        <ratings_count>163</ratings_count>
+        <publication_year>1985</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>5</publication_day>
+        <authors>
+          <author>
+            <id>202304</id>
+            <name>Edmond de Goncourt</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/202304.Edmond_de_Goncourt]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1339655</id>
+        <title>Deerbrook</title>
+        <title_without_series>Deerbrook</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1339655.Deerbrook]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1311647452s/1339655.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1311647452m/1339655.jpg]]></image_url>
+        <num_pages>656</num_pages>
+        <work>
+          <id>1329226</id>
+        </work>
+        <isbn>0141439394</isbn>
+        <isbn13>9780141439396</isbn13>
+        <average_rating>3.61</average_rating>
+        <ratings_count>163</ratings_count>
+        <publication_year>2005</publication_year>
+        <publication_month>6</publication_month>
+        <publication_day>28</publication_day>
+        <authors>
+          <author>
+            <id>55843</id>
+            <name>Harriet Martineau</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/55843.Harriet_Martineau]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1424169</id>
+        <title>Chroniques Italiennes</title>
+        <title_without_series>Chroniques Italiennes</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1424169.Chroniques_Italiennes]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>18308451</id>
+        </work>
+        <isbn>2070363929</isbn>
+        <isbn13>9782070363926</isbn13>
+        <average_rating>3.61</average_rating>
+        <ratings_count>375</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>1481537</id>
+            <name>Stendhal</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1481537.Stendhal]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>316101</id>
+        <title><![CDATA[Le jeu de l'amour et du hasard]]></title>
+        <title_without_series><![CDATA[Le jeu de l'amour et du hasard]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/316101.Le_jeu_de_l_amour_et_du_hasard]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>145</num_pages>
+        <work>
+          <id>306931</id>
+        </work>
+        <isbn>2030345911</isbn>
+        <isbn13>9782038700831</isbn13>
+        <average_rating>3.69</average_rating>
+        <ratings_count>3419</ratings_count>
+        <publication_year>1970</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>7815558</id>
+            <name>Pierre de Marivaux</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7815558.Pierre_de_Marivaux]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>

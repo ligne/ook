@@ -72,3 +72,27 @@ def test_process_book():
         'Work Id': '238317',
     })
 
+
+def test__parse_book_api():
+    r = ElementTree.parse('tests/data/book/115069.xml')
+    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Language': 'fr',
+        'Original Publication Year': '1891',
+        'Series Id': '40441',
+        'Series': 'Les Rougon-Macquart',
+        'Entry': '18',
+#        'Category': 'novel',
+#        'Genres': '',
+    })
+
+    r = ElementTree.parse('tests/data/book/3602116.xml')
+    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Language': 'en',
+        'Original Publication Year': '397',
+        'Series Id': None,
+        'Series': None,
+        'Entry': None,
+#        'Category': 'non-fiction',
+#        'Genres': '',
+    })
+

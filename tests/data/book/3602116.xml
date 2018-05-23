@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>3602116</id>
+    <title>Confessions</title>
+    <isbn><![CDATA[0199537828]]></isbn>
+    <isbn13><![CDATA[9780199537822]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[B00AAW5EDG]]></kindle_asin>
+    <marketplace_id><![CDATA[A1F83G8C2ARO7P]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png</image_url>
+    <small_image_url>https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png</small_image_url>
+    <publication_year>2009</publication_year>
+    <publication_month>2</publication_month>
+    <publication_day>1</publication_day>
+    <publisher>Oxford University Press</publisher>
+    <language_code>eng</language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[In his own day the dominant personality of the Western Church, Augustine of Hippo today stands as perhaps the greatest thinker of Christian antiquity, and his <em>Confessions</em> is one of the great works of Western literature. In this intensely personal narrative, Augustine relates his rare ascent from a humble Algerian farm to the edge of the corridors of power at the imperial court in Milan, his struggle against the domination of his sexual nature, his renunciation of secular ambition and marriage, and the recovery of the faith his mother Monica had taught him during his childhood.<br /><br />Now, Henry Chadwick, an eminent scholar of early Christianity, has given us the first new English translation in thirty years of this classic spiritual journey. Chadwick renders the details of Augustine's conversion in clear, modern English. We witness the future saint's fascination with astrology and with the Manichees, and then follow him through scepticism and disillusion with pagan myths until he finally reaches Christian faith. There are brilliant philosophical musings about Platonism and the nature of God, and touching portraits of Augustine's beloved mother, of St. Ambrose of Milan, and of other early Christians like Victorinus, who gave up a distinguished career as a rhetorician to adopt the orthodox faith. Augustine's concerns are often strikingly contemporary, yet his work contains many references and allusions that are easily understood only with background information about the ancient social and intellectual setting. To make <em>The Confessions</em> accessible to contemporary readers, Chadwick provides the most complete and informative notes of any recent translation, and includes an introduction to establish the context.<br /><br />The religious and philosophical value of <em>The Confessions</em> is unquestionable--now modern readers will have easier access to St. Augustine's deeply personal meditations. Chadwick's lucid translation and helpful introduction clear the way for a new experience of this classic.<br /><br /><strong>About the Series: </strong> For over 100 years <strong>Oxford World's Classics </strong>has made available the broadest spectrum of literature from around the globe. Each affordable volume reflects Oxford's commitment to scholarship, providing the most accurate text plus a wealth of other valuable features, including expert introductions by leading authorities, voluminous notes to clarify the text, up-to-date bibliographies for further study, and much more.<br />]]></description>
+    <work>
+      <id type="integer">1427207</id>
+      <books_count type="integer">922</books_count>
+      <best_book_id type="integer">27037</best_book_id>
+      <reviews_count type="integer">83943</reviews_count>
+      <ratings_sum type="integer">142429</ratings_sum>
+      <ratings_count type="integer">36630</ratings_count>
+      <text_reviews_count type="integer">1746</text_reviews_count>
+      <original_publication_year type="integer">397</original_publication_year>
+      <original_publication_month nil="true" type="integer"/>
+      <original_publication_day nil="true" type="integer"/>
+      <original_title>Confessiones Sancti Patris nostri Augustini</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:13237|4:11401|3:7965|2:2718|1:1309|total:36630</rating_dist>
+      <desc_user_id type="integer">38793030</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+    </work>
+    <average_rating>3.89</average_rating>
+    <num_pages><![CDATA[311]]></num_pages>
+    <format><![CDATA[Paperback]]></format>
+    <edition_information><![CDATA[Oxford World's Classics]]></edition_information>
+    <ratings_count><![CDATA[558]]></ratings_count>
+    <text_reviews_count><![CDATA[43]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/3602116-confessions]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/3602116-confessions]]></link>
+    <authors>
+      <author>
+        <id>6819578</id>
+        <name>Augustine of Hippo</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1404280110p5/6819578.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1404280110p2/6819578.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/6819578.Augustine_of_Hippo]]></link>
+        <average_rating>3.91</average_rating>
+        <ratings_count>53188</ratings_count>
+        <text_reviews_count>2605</text_reviews_count>
+      </author>
+      <author>
+        <id>1119</id>
+        <name>Henry Chadwick</name>
+        <role>Translator/Introduction</role>
+        <image_url nophoto="true"><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_200x266-d279b33f8eec0f27b7272477f09806be.png]]></image_url>
+        <small_image_url nophoto="true"><![CDATA[https://s.gr-assets.com/assets/nophoto/user/m_50x66-82093808bca726cb3249a493fbd3bd0f.png]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/1119.Henry_Chadwick]]></link>
+        <average_rating>3.87</average_rating>
+        <ratings_count>30456</ratings_count>
+        <text_reviews_count>1099</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/3602116-confessions">Confessions Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=0199537828&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow" href="https://www.goodreads.com/book/show/3602116-confessions?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="1076" name="philosophy"/>
+      <shelf count="914" name="to-read"/>
+      <shelf count="899" name="classics"/>
+      <shelf count="776" name="religion"/>
+      <shelf count="701" name="theology"/>
+      <shelf count="560" name="non-fiction"/>
+      <shelf count="363" name="christianity"/>
+      <shelf count="348" name="favorites"/>
+      <shelf count="259" name="owned"/>
+      <shelf count="254" name="nonfiction"/>
+      <shelf count="221" name="history"/>
+      <shelf count="189" name="currently-reading"/>
+      <shelf count="179" name="spirituality"/>
+      <shelf count="169" name="memoir"/>
+      <shelf count="140" name="autobiography"/>
+      <shelf count="133" name="books-i-own"/>
+      <shelf count="132" name="classic"/>
+      <shelf count="122" name="catholic"/>
+      <shelf count="120" name="faith"/>
+      <shelf count="107" name="spiritual"/>
+      <shelf count="103" name="default"/>
+      <shelf count="102" name="religious"/>
+      <shelf count="79" name="school"/>
+      <shelf count="78" name="literature"/>
+      <shelf count="73" name="library"/>
+      <shelf count="73" name="church-history"/>
+      <shelf count="69" name="catholicism"/>
+      <shelf count="66" name="kindle"/>
+      <shelf count="65" name="college"/>
+      <shelf count="64" name="biographies"/>
+      <shelf count="58" name="biography-memoir"/>
+      <shelf count="51" name="owned-books"/>
+      <shelf count="49" name="memoirs"/>
+      <shelf count="48" name="religión"/>
+      <shelf count="47" name="my-library"/>
+      <shelf count="43" name="christian-living"/>
+      <shelf count="37" name="latin"/>
+      <shelf count="37" name="ancient"/>
+      <shelf count="36" name="filosofia"/>
+      <shelf count="35" name="religion-spirituality"/>
+      <shelf count="34" name="augustine"/>
+      <shelf count="34" name="my-books"/>
+      <shelf count="34" name="patristics"/>
+      <shelf count="33" name="medieval"/>
+      <shelf count="33" name="historical"/>
+      <shelf count="31" name="for-school"/>
+      <shelf count="30" name="great-books"/>
+      <shelf count="29" name="partially-read"/>
+      <shelf count="29" name="read-for-school"/>
+      <shelf count="28" name="home-library"/>
+      <shelf count="28" name="philosophy-religion"/>
+      <shelf count="28" name="devotional"/>
+      <shelf count="28" name="antiquity"/>
+      <shelf count="28" name="classic-literature"/>
+      <shelf count="28" name="christian-classics"/>
+      <shelf count="28" name="to-buy"/>
+      <shelf count="28" name="biography-autobiography"/>
+      <shelf count="27" name="church-fathers"/>
+      <shelf count="27" name="personal-library"/>
+      <shelf count="26" name="classical"/>
+      <shelf count="25" name="unfinished"/>
+      <shelf count="24" name="church"/>
+      <shelf count="24" name="saints"/>
+      <shelf count="24" name="religious-studies"/>
+      <shelf count="23" name="religion-theology"/>
+      <shelf count="23" name="christian-non-fiction"/>
+      <shelf count="23" name="christian-books"/>
+      <shelf count="22" name="ebook"/>
+      <shelf count="22" name="4th-century"/>
+      <shelf count="22" name="apologetics"/>
+      <shelf count="21" name="audiobooks"/>
+      <shelf count="21" name="religion-philosophy"/>
+      <shelf count="20" name="own-it"/>
+      <shelf count="20" name="abandoned"/>
+      <shelf count="20" name="school-books"/>
+      <shelf count="20" name="fiction"/>
+      <shelf count="19" name="audiobook"/>
+      <shelf count="19" name="philosophy-and-religion"/>
+      <shelf count="19" name="autobiography-memoir"/>
+      <shelf count="18" name="filosofía"/>
+      <shelf count="18" name="biographical"/>
+      <shelf count="18" name="academic"/>
+      <shelf count="18" name="re-read"/>
+      <shelf count="17" name="christian-life"/>
+      <shelf count="17" name="theology-religion"/>
+      <shelf count="17" name="spiritual-reading"/>
+      <shelf count="16" name="wish-list"/>
+      <shelf count="16" name="classic-lit"/>
+      <shelf count="16" name="i-own"/>
+      <shelf count="16" name="ancient-history"/>
+      <shelf count="15" name="torrey"/>
+      <shelf count="15" name="reference"/>
+      <shelf count="15" name="rome"/>
+      <shelf count="15" name="history-biography"/>
+      <shelf count="15" name="ebooks"/>
+      <shelf count="15" name="auto-biography"/>
+      <shelf count="15" name="theology-philosophy"/>
+      <shelf count="15" name="translated"/>
+      <shelf count="15" name="psychology"/>
+      <shelf count="15" name="christian-theology"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Kobo</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple iBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works></series_works>
+    <similar_books>
+      <book>
+        <id>25709</id>
+        <title>Summa Theologica, 5 Vols</title>
+        <title_without_series>Summa Theologica, 5 Vols</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/25709.Summa_Theologica_5_Vols]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1356056552s/25709.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1356056552m/25709.jpg]]></image_url>
+        <num_pages>3020</num_pages>
+        <work>
+          <id>26432</id>
+        </work>
+        <isbn>0870610635</isbn>
+        <isbn13>9780870610639</isbn13>
+        <average_rating>4.09</average_rating>
+        <ratings_count>3003</ratings_count>
+        <publication_year>1981</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>158904</id>
+            <name>Thomas Aquinas</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/158904.Thomas_Aquinas]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>673655</id>
+        <title>On the Incarnation</title>
+        <title_without_series>On the Incarnation</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/673655.On_the_Incarnation]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1269974899s/673655.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1269974899m/673655.jpg]]></image_url>
+        <num_pages>120</num_pages>
+        <work>
+          <id>659669</id>
+        </work>
+        <isbn>0913836400</isbn>
+        <isbn13>9780913836408</isbn13>
+        <average_rating>4.28</average_rating>
+        <ratings_count>6800</ratings_count>
+        <publication_year>1977</publication_year>
+        <publication_month>6</publication_month>
+        <publication_day>28</publication_day>
+        <authors>
+          <author>
+            <id>5786637</id>
+            <name>Athanasius of Alexandria</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/5786637.Athanasius_of_Alexandria]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1686</id>
+        <title><![CDATA[Augustine of Hippo: A Biography]]></title>
+        <title_without_series><![CDATA[Augustine of Hippo: A Biography]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1686.Augustine_of_Hippo]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>576</num_pages>
+        <work>
+          <id>236188</id>
+        </work>
+        <isbn>0520227573</isbn>
+        <isbn13>9780520227576</isbn13>
+        <average_rating>4.26</average_rating>
+        <ratings_count>1543</ratings_count>
+        <publication_year>2000</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>24</publication_day>
+        <authors>
+          <author>
+            <id>1104</id>
+            <name>Peter R.L. Brown</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1104.Peter_R_L_Brown]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>232467</id>
+        <title><![CDATA[Institutes of the Christian Religion, 2 Vols]]></title>
+        <title_without_series><![CDATA[Institutes of the Christian Religion, 2 Vols]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/232467.Institutes_of_the_Christian_Religion_2_Vols]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>1810</num_pages>
+        <work>
+          <id>225160</id>
+        </work>
+        <isbn>0664220282</isbn>
+        <isbn13>9780664220280</isbn13>
+        <average_rating>4.13</average_rating>
+        <ratings_count>8750</ratings_count>
+        <publication_year>2016</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>9</publication_day>
+        <authors>
+          <author>
+            <id>30510</id>
+            <name>John Calvin</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/30510.John_Calvin]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>590692</id>
+        <title><![CDATA[Early Christian Writings: The Apostolic Fathers]]></title>
+        <title_without_series><![CDATA[Early Christian Writings: The Apostolic Fathers]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/590692.Early_Christian_Writings]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>208</num_pages>
+        <work>
+          <id>577452</id>
+        </work>
+        <isbn>0140444750</isbn>
+        <isbn13></isbn13>
+        <average_rating>4.23</average_rating>
+        <ratings_count>746</ratings_count>
+        <publication_year>1987</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>30</publication_day>
+        <authors>
+          <author>
+            <id>2759324</id>
+            <name>Maxwell Staniforth</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/2759324.Maxwell_Staniforth]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>25708</id>
+        <title>Saint Thomas Aquinas</title>
+        <title_without_series>Saint Thomas Aquinas</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/25708.Saint_Thomas_Aquinas]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>167</num_pages>
+        <work>
+          <id>2494397</id>
+        </work>
+        <isbn>0385090021</isbn>
+        <isbn13>9780385090025</isbn13>
+        <average_rating>4.15</average_rating>
+        <ratings_count>2886</ratings_count>
+        <publication_year>1974</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>15</publication_day>
+        <authors>
+          <author>
+            <id>7014283</id>
+            <name>G.K. Chesterton</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7014283.G_K_Chesterton]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>82406</id>
+        <title>The Rule of Saint Benedict</title>
+        <title_without_series>The Rule of Saint Benedict</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/82406.The_Rule_of_Saint_Benedict]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1320401047s/82406.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1320401047m/82406.jpg]]></image_url>
+        <num_pages>112</num_pages>
+        <work>
+          <id>79552</id>
+        </work>
+        <isbn>037570017X</isbn>
+        <isbn13>9780375700170</isbn13>
+        <average_rating>4.04</average_rating>
+        <ratings_count>4234</ratings_count>
+        <publication_year>1998</publication_year>
+        <publication_month>3</publication_month>
+        <publication_day>24</publication_day>
+        <authors>
+          <author>
+            <id>6430363</id>
+            <name>Benedict of Nursia</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/6430363.Benedict_of_Nursia]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>354007</id>
+        <title>The Major Works</title>
+        <title_without_series>The Major Works</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/354007.The_Major_Works]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>544</num_pages>
+        <work>
+          <id>344203</id>
+        </work>
+        <isbn>0192825259</isbn>
+        <isbn13>9780192825254</isbn13>
+        <average_rating>3.99</average_rating>
+        <ratings_count>833</ratings_count>
+        <publication_year>1998</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>19</publication_day>
+        <authors>
+          <author>
+            <id>7638903</id>
+            <name>Anselm of Canterbury</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7638903.Anselm_of_Canterbury]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>260811</id>
+        <title>God Is Love: Deus Caritas Est</title>
+        <title_without_series>God Is Love: Deus Caritas Est</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/260811.God_Is_Love]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>54</num_pages>
+        <work>
+          <id>252796</id>
+        </work>
+        <isbn>1574557580</isbn>
+        <isbn13>9781574557589</isbn13>
+        <average_rating>4.51</average_rating>
+        <ratings_count>2194</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>4905855</id>
+            <name>Pope Benedict XVI</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/4905855.Pope_Benedict_XVI]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>427961</id>
+        <title><![CDATA[The Christian Tradition 1: The Emergence of the Catholic Tradition 100-600]]></title>
+        <title_without_series><![CDATA[The Christian Tradition 1: The Emergence of the Catholic Tradition 100-600]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/427961.The_Christian_Tradition_1]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1328872489s/427961.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1328872489m/427961.jpg]]></image_url>
+        <num_pages>442</num_pages>
+        <work>
+          <id>416977</id>
+        </work>
+        <isbn>0226653714</isbn>
+        <isbn13>9780226653716</isbn13>
+        <average_rating>4.26</average_rating>
+        <ratings_count>863</ratings_count>
+        <publication_year>1975</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>15</publication_day>
+        <authors>
+          <author>
+            <id>5414963</id>
+            <name>Jaroslav Pelikan</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/5414963.Jaroslav_Pelikan]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>370774</id>
+        <title>Revelations of Divine Love</title>
+        <title_without_series>Revelations of Divine Love</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/370774.Revelations_of_Divine_Love]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1420607880s/370774.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1420607880m/370774.jpg]]></image_url>
+        <num_pages>240</num_pages>
+        <work>
+          <id>360743</id>
+        </work>
+        <isbn>0140446737</isbn>
+        <isbn13>9780140446739</isbn13>
+        <average_rating>3.98</average_rating>
+        <ratings_count>4110</ratings_count>
+        <publication_year>1998</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>27</publication_day>
+        <authors>
+          <author>
+            <id>156980</id>
+            <name>Julian of Norwich</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/156980.Julian_of_Norwich]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>673855</id>
+        <title>The Complete Works</title>
+        <title_without_series>The Complete Works</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/673855.The_Complete_Works]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>336</num_pages>
+        <work>
+          <id>659869</id>
+        </work>
+        <isbn>0809128381</isbn>
+        <isbn13>9780809128389</isbn13>
+        <average_rating>4.33</average_rating>
+        <ratings_count>512</ratings_count>
+        <publication_year>1988</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>425642</id>
+            <name><![CDATA[Pseudo-Dionysius the Areopagite]]></name>
+            <link><![CDATA[https://www.goodreads.com/author/show/425642.Pseudo_Dionysius_the_Areopagite]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>398834</id>
+        <title><![CDATA[Introduction to the Devout Life]]></title>
+        <title_without_series><![CDATA[Introduction to the Devout Life]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/398834.Introduction_to_the_Devout_Life]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>288</num_pages>
+        <work>
+          <id>388282</id>
+        </work>
+        <isbn>0375725628</isbn>
+        <isbn13>9780375725623</isbn13>
+        <average_rating>4.38</average_rating>
+        <ratings_count>3341</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>9</publication_day>
+        <authors>
+          <author>
+            <id>7041089</id>
+            <name>Francis de Sales</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7041089.Francis_de_Sales]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>43958</id>
+        <title><![CDATA[Apologia Pro Vita Sua (A Defense of One's Life)]]></title>
+        <title_without_series>Apologia Pro Vita Sua</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/43958.Apologia_Pro_Vita_Sua]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>336</num_pages>
+        <work>
+          <id>2069981</id>
+        </work>
+        <isbn>0486442136</isbn>
+        <isbn13>9780486442136</isbn13>
+        <average_rating>4.10</average_rating>
+        <ratings_count>1007</ratings_count>
+        <publication_year>2005</publication_year>
+        <publication_month>6</publication_month>
+        <publication_day>17</publication_day>
+        <authors>
+          <author>
+            <id>24706</id>
+            <name>John Henry Newman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/24706.John_Henry_Newman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>406639</id>
+        <title>Interior Castle</title>
+        <title_without_series>Interior Castle</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/406639.Interior_Castle]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1320481112s/406639.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1320481112m/406639.jpg]]></image_url>
+        <num_pages>288</num_pages>
+        <work>
+          <id>156879</id>
+        </work>
+        <isbn>0385036434</isbn>
+        <isbn13>9780385036436</isbn13>
+        <average_rating>4.19</average_rating>
+        <ratings_count>4423</ratings_count>
+        <publication_year>1972</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>4</publication_day>
+        <authors>
+          <author>
+            <id>74226</id>
+            <name>Teresa of Ávila</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/74226.Teresa_of_vila]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>483701</id>
+        <title><![CDATA[The History of the Church: From Christ to Constantine]]></title>
+        <title_without_series><![CDATA[The History of the Church: From Christ to Constantine]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/483701.The_History_of_the_Church]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1345538420s/483701.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1345538420m/483701.jpg]]></image_url>
+        <num_pages>480</num_pages>
+        <work>
+          <id>743209</id>
+        </work>
+        <isbn>0140445358</isbn>
+        <isbn13>9780140445350</isbn13>
+        <average_rating>3.98</average_rating>
+        <ratings_count>3029</ratings_count>
+        <publication_year>1989</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>23</publication_day>
+        <authors>
+          <author>
+            <id>270243</id>
+            <name>Eusebius</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/270243.Eusebius]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>71653</id>
+        <title>True Devotion to Mary</title>
+        <title_without_series>True Devotion to Mary</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/71653.True_Devotion_to_Mary]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>215</num_pages>
+        <work>
+          <id>69387</id>
+        </work>
+        <isbn>0895552795</isbn>
+        <isbn13>9780895552792</isbn13>
+        <average_rating>4.49</average_rating>
+        <ratings_count>2826</ratings_count>
+        <publication_year>1999</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>31</publication_day>
+        <authors>
+          <author>
+            <id>3499701</id>
+            <name>St. Louis de Montfort</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3499701.St_Louis_de_Montfort]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1676414</id>
+        <title>Humanae Vitae: Of Human Life</title>
+        <title_without_series>Humanae Vitae: Of Human Life</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1676414.Humanae_Vitae]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>16</num_pages>
+        <work>
+          <id>1671463</id>
+        </work>
+        <isbn>0819833479</isbn>
+        <isbn13>9780819833471</isbn13>
+        <average_rating>4.56</average_rating>
+        <ratings_count>2141</ratings_count>
+        <publication_year>1968</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>121091</id>
+            <name>Pope Paul VI</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/121091.Pope_Paul_VI]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>
