@@ -62,7 +62,7 @@ def test_process_book():
         'My Rating': '0',
         'Number of Pages': '242',
         'Scheduled': '',
-        'Title': u'Le rempart des b\xe9guines',
+        'Title': u'Le rempart des béguines',
         'Work Id': '238317',
     })
 
