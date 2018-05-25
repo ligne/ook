@@ -90,6 +90,12 @@ def fetch_book(book_id):
 
     # FIXME merge them
 
+    # fetch series (possibly several?)
+    if book['Series Id']:
+        series = _parse_series(_fetch_series(book['Series Id']))
+
+    # based on the series information, fix up book if necessary
+
     return book
 
 
