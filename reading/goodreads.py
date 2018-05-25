@@ -135,6 +135,28 @@ def _parse_book_html(html):
     pass
 
 
+def _fetch_series(series_id):
+    fname = 'cache/series/{}.xml'.format(series_id)
+    try:
+        with open(fname) as fh:
+            xml = fh.read()
+    except FileNotFoundError:
+        xml = requests.get('https://www.goodreads.com/series/show/{}.xml'.format(series_id), params={
+            'key': config['GR Key'],
+        }).content
+        with open(fname, 'wb') as fh:
+            fh.write(xml)
+    return ElementTree.fromstring(xml)
+
+
+def _parse_series(xml):
+    return {
+        'Series': xml.find('series/title').text.strip(),
+        'Count': xml.find('series/primary_work_count').text,
+        'Entries': [ x.find('user_position').text for x in xml.find('series/series_works') ],
+    }
+
+
 if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     print(process_book(r))
