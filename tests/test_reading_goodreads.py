@@ -90,3 +90,13 @@ def test__parse_book_api():
 #        'Genres': '',
     })
 
+
+def test__parse_series():
+    r = ElementTree.parse('tests/data/series/40441.xml')
+    nose.tools.eq_(reading.goodreads._parse_series(r), {
+        'Series': 'Les Rougon-Macquart',
+        'Count': '20',
+        'Entries': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '1-4', '5-8'],
+    })
+
+

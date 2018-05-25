@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[series_show]]></method>
+  </Request>
+  <series>
+    <id>40441</id>
+    <title><![CDATA[
+    Les Rougon-Macquart
+]]></title>
+    <description><![CDATA[
+    This is the series in publication order. In an "Introduction" of his last novel, Le Docteur Pascal, Zola gave a recommended reading order, although it is not required, as each novel stands on its own. You can find Zola's recommended order here: <a href="http://www.goodreads.com/series/100339-zola-s-les-rougon-macquart">Recommended Reading Order</a>
+]]></description>
+    <note><![CDATA[
+]]></note>
+    <series_works_count>22</series_works_count>
+    <primary_work_count>20</primary_work_count>
+    <numbered>true</numbered>
+    <series_works>
+      <series_work>
+        <id>147891</id>
+        <user_position>1</user_position>
+        <work>
+          <id>303087</id>
+          <uri>kca://work/amzn1.gr.work.v1.t6B78xCqeEazP_AFm7Kdkw</uri>
+          <best_book>
+            <id>956734</id>
+            <title>The Fortune of the Rougons (Les Rougon-Macquart, #1)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>214</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1870</original_publication_year>
+          <original_title>La Fortune des Rougon</original_title>
+          <ratings_count>3412</ratings_count>
+          <ratings_sum>12907</ratings_sum>
+          <reviews_count>14977</reviews_count>
+          <text_reviews_count>208</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>152993</id>
+        <user_position>2</user_position>
+        <work>
+          <id>839934</id>
+          <uri>kca://work/amzn1.gr.work.v1.i3MXM35PKf1A68cmEI4R6Q</uri>
+          <best_book>
+            <id>816918</id>
+            <title>La Curée (Les Rougon-Macquart, #2)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1356495973m/816918.jpg]]></image_url>
+          </best_book>
+          <books_count>144</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1872</original_publication_year>
+          <original_title>La Curée</original_title>
+          <ratings_count>2575</ratings_count>
+          <ratings_sum>9878</ratings_sum>
+          <reviews_count>4929</reviews_count>
+          <text_reviews_count>155</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>144564</id>
+        <user_position>3</user_position>
+        <work>
+          <id>10242</id>
+          <uri>kca://work/amzn1.gr.work.v1.lhx2Xp_mRC-8cbVQZ3J5Ig</uri>
+          <best_book>
+            <id>92965</id>
+            <title>The Belly of Paris (Les Rougon-Macquart, #3)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>52</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1873</original_publication_year>
+          <original_title>Le Ventre de Paris</original_title>
+          <ratings_count>3255</ratings_count>
+          <ratings_sum>12701</ratings_sum>
+          <reviews_count>8563</reviews_count>
+          <text_reviews_count>267</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>152688</id>
+        <user_position>4</user_position>
+        <work>
+          <id>803050</id>
+          <uri>kca://work/amzn1.gr.work.v1.UnABI7yYkeonXysshlaT9A</uri>
+          <best_book>
+            <id>1367083</id>
+            <title>La Conquête de Plassans</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1355055644m/1367083.jpg]]></image_url>
+          </best_book>
+          <books_count>108</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1874</original_publication_year>
+          <original_title>La Conquête de Plassans</original_title>
+          <ratings_count>801</ratings_count>
+          <ratings_sum>3110</ratings_sum>
+          <reviews_count>1763</reviews_count>
+          <text_reviews_count>71</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>153704</id>
+        <user_position>5</user_position>
+        <work>
+          <id>941617</id>
+          <uri>kca://work/amzn1.gr.work.v1.cPl0jy3kgKYS8igW9WX3qw</uri>
+          <best_book>
+            <id>1367078</id>
+            <title>La Faute de l'abbé Mouret (Les Rougon-Macquart, #5)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>165</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1875</original_publication_year>
+          <original_title>La Faute de l'Abbé Mouret</original_title>
+          <ratings_count>919</ratings_count>
+          <ratings_sum>3338</ratings_sum>
+          <reviews_count>1987</reviews_count>
+          <text_reviews_count>77</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>156696</id>
+        <user_position>6</user_position>
+        <work>
+          <id>1356899</id>
+          <uri>kca://work/amzn1.gr.work.v1.sySfSTTbcJO9PjHPhABv-w</uri>
+          <best_book>
+            <id>1367070</id>
+            <title>Son Excellence Eugène Rougon (Les Rougon-Macquart, #6)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1355058707m/1367070.jpg]]></image_url>
+          </best_book>
+          <books_count>99</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1876</original_publication_year>
+          <original_title>Son Excellence Eugène Rougon</original_title>
+          <ratings_count>610</ratings_count>
+          <ratings_sum>2244</ratings_sum>
+          <reviews_count>1488</reviews_count>
+          <text_reviews_count>54</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>152157</id>
+        <user_position>7</user_position>
+        <work>
+          <id>741363</id>
+          <uri>kca://work/amzn1.gr.work.v1.z9bqfb5Mq2Wx1TAzXNKlHw</uri>
+          <best_book>
+            <id>92967</id>
+            <title>L'Assommoir (The Dram Shop) (Les Rougon-Macquart, #7)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1309282204m/92967.jpg]]></image_url>
+          </best_book>
+          <books_count>297</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1877</original_publication_year>
+          <original_title>L' Assommoir</original_title>
+          <ratings_count>10050</ratings_count>
+          <ratings_sum>40817</ratings_sum>
+          <reviews_count>17883</reviews_count>
+          <text_reviews_count>413</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>158876</id>
+        <user_position>8</user_position>
+        <work>
+          <id>1776975</id>
+          <uri>kca://work/amzn1.gr.work.v1.tGZVRRtu2iMRFL_TAOdhWA</uri>
+          <best_book>
+            <id>1367035</id>
+            <title>Une Page d'amour (Les Rougon-Macquart, #8)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1363093838m/1367035.jpg]]></image_url>
+          </best_book>
+          <books_count>142</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1877</original_publication_year>
+          <original_title>Une page d’amour</original_title>
+          <ratings_count>983</ratings_count>
+          <ratings_sum>3564</ratings_sum>
+          <reviews_count>2203</reviews_count>
+          <text_reviews_count>59</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>370464</id>
+        <user_position>9</user_position>
+        <work>
+          <id>89633</id>
+          <uri>kca://work/amzn1.gr.work.v1.DPJJlPpJoCulIF7YJjZbfA</uri>
+          <best_book>
+            <id>371456</id>
+            <title>Nana (Les Rougon-Macquart, #9)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>449</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1880</original_publication_year>
+          <original_title>Nana</original_title>
+          <ratings_count>16949</ratings_count>
+          <ratings_sum>65107</ratings_sum>
+          <reviews_count>32913</reviews_count>
+          <text_reviews_count>470</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>145936</id>
+        <user_position>10</user_position>
+        <work>
+          <id>110658</id>
+          <uri>kca://work/amzn1.gr.work.v1.KkuaaAymYhCXzVNGPZvSUg</uri>
+          <best_book>
+            <id>114916</id>
+            <title>Pot Luck (Les Rougon-Macquart, #10)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>98</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1882</original_publication_year>
+          <original_title>Pot-Bouille</original_title>
+          <ratings_count>1310</ratings_count>
+          <ratings_sum>5116</ratings_sum>
+          <reviews_count>2762</reviews_count>
+          <text_reviews_count>70</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>157756</id>
+        <user_position>11</user_position>
+        <work>
+          <id>1540214</id>
+          <uri>kca://work/amzn1.gr.work.v1.S6sOQPNHPRi9NAfr9FPP0w</uri>
+          <best_book>
+            <id>28413</id>
+            <title>The Ladies' Paradise (Les Rougon-Macquart #11)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>136</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1883</original_publication_year>
+          <original_title></original_title>
+          <ratings_count>8954</ratings_count>
+          <ratings_sum>35602</ratings_sum>
+          <reviews_count>18539</reviews_count>
+          <text_reviews_count>661</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>153706</id>
+        <user_position>12</user_position>
+        <work>
+          <id>941672</id>
+          <uri>kca://work/amzn1.gr.work.v1.Ob7T02yXYUejsXcd8QfVUw</uri>
+          <best_book>
+            <id>92966</id>
+            <title>The Joy of Life (Les Rougon-Macquart, #12)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>88</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1883</original_publication_year>
+          <original_title>La Joie de vivre</original_title>
+          <ratings_count>873</ratings_count>
+          <ratings_sum>3330</ratings_sum>
+          <reviews_count>2298</reviews_count>
+          <text_reviews_count>70</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>153705</id>
+        <user_position>13</user_position>
+        <work>
+          <id>941651</id>
+          <uri>kca://work/amzn1.gr.work.v1.InKv-rP_TR_y4J4Zd3s4-Q</uri>
+          <best_book>
+            <id>28407</id>
+            <title>Germinal (Les Rougon-Macquart, #13)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>479</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month>3</original_publication_month>
+          <original_publication_year>1885</original_publication_year>
+          <original_title>Germinal</original_title>
+          <ratings_count>23703</ratings_count>
+          <ratings_sum>97261</ratings_sum>
+          <reviews_count>48557</reviews_count>
+          <text_reviews_count>912</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>144800</id>
+        <user_position>14</user_position>
+        <work>
+          <id>28958</id>
+          <uri>kca://work/amzn1.gr.work.v1.4jIcPFXIFNtTrHVD8PckXg</uri>
+          <best_book>
+            <id>28409</id>
+            <title>The Masterpiece (Les Rougon-Macquart, #14)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>165</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1886</original_publication_year>
+          <original_title>L'Œuvre</original_title>
+          <ratings_count>2509</ratings_count>
+          <ratings_sum>9931</ratings_sum>
+          <reviews_count>5404</reviews_count>
+          <text_reviews_count>157</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>159104</id>
+        <user_position>15</user_position>
+        <work>
+          <id>1810722</id>
+          <uri>kca://work/amzn1.gr.work.v1.-5xSvIdZ_g734D54vbELWw</uri>
+          <best_book>
+            <id>28420</id>
+            <title>The Earth (Les Rougon-Macquart, #15)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1378935017m/28420.jpg]]></image_url>
+          </best_book>
+          <books_count>93</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1887</original_publication_year>
+          <original_title>La Terre</original_title>
+          <ratings_count>1242</ratings_count>
+          <ratings_sum>5065</ratings_sum>
+          <reviews_count>3037</reviews_count>
+          <text_reviews_count>93</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>157590</id>
+        <user_position>16</user_position>
+        <work>
+          <id>1504240</id>
+          <uri>kca://work/amzn1.gr.work.v1.Fq-tv_Cpto7LwwW5SH77jQ</uri>
+          <best_book>
+            <id>335072</id>
+            <title>The Dream (Les Rougon-Macquart, #16)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>176</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month>10</original_publication_month>
+          <original_publication_year>1888</original_publication_year>
+          <original_title>Le Rêve</original_title>
+          <ratings_count>958</ratings_count>
+          <ratings_sum>3472</ratings_sum>
+          <reviews_count>2219</reviews_count>
+          <text_reviews_count>80</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>145848</id>
+        <user_position>17</user_position>
+        <work>
+          <id>101404</id>
+          <uri>kca://work/amzn1.gr.work.v1.i0xXsyON6oVqevvomLkHTA</uri>
+          <best_book>
+            <id>28417</id>
+            <title>La Bête humaine</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1327185344m/28417.jpg]]></image_url>
+          </best_book>
+          <books_count>175</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1890</original_publication_year>
+          <original_title>La Bête humaine</original_title>
+          <ratings_count>6781</ratings_count>
+          <ratings_sum>27443</ratings_sum>
+          <reviews_count>13175</reviews_count>
+          <text_reviews_count>251</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>149016</id>
+        <user_position>18</user_position>
+        <work>
+          <id>417025</id>
+          <uri>kca://work/amzn1.gr.work.v1.Hrc3PXlDzXmnt2wloUadNw</uri>
+          <best_book>
+            <id>115069</id>
+            <title>L'Argent</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1362238464m/115069.jpg]]></image_url>
+          </best_book>
+          <books_count>111</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1891</original_publication_year>
+          <original_title>L'Argent</original_title>
+          <ratings_count>1228</ratings_count>
+          <ratings_sum>4819</ratings_sum>
+          <reviews_count>2629</reviews_count>
+          <text_reviews_count>78</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>166660</id>
+        <user_position>19</user_position>
+        <work>
+          <id>3522286</id>
+          <uri>kca://work/amzn1.gr.work.v1.mW1bjTopoGxbkz3XkWKdaw</uri>
+          <best_book>
+            <id>28419</id>
+            <title>La Débâcle (Les Rougon-Macquart #19)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+          </best_book>
+          <books_count>145</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1892</original_publication_year>
+          <original_title>La Débâcle</original_title>
+          <ratings_count>919</ratings_count>
+          <ratings_sum>3660</ratings_sum>
+          <reviews_count>2560</reviews_count>
+          <text_reviews_count>70</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>231224</id>
+        <user_position>20</user_position>
+        <work>
+          <id>1356866</id>
+          <uri>kca://work/amzn1.gr.work.v1.3_IKo6mhauv7cO359W9KCA</uri>
+          <best_book>
+            <id>1367037</id>
+            <title>Le Docteur Pascal (Les Rougon-Macquart, #20)</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1397294897m/1367037.jpg]]></image_url>
+          </best_book>
+          <books_count>123</books_count>
+          <original_publication_day></original_publication_day>
+          <original_publication_month></original_publication_month>
+          <original_publication_year>1893</original_publication_year>
+          <original_title>Le Docteur Pascal</original_title>
+          <ratings_count>515</ratings_count>
+          <ratings_sum>1945</ratings_sum>
+          <reviews_count>1422</reviews_count>
+          <text_reviews_count>32</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>652698</id>
+        <user_position>1-4</user_position>
+        <work>
+          <id>15269345</id>
+          <uri>kca://work/amzn1.gr.work.v1.M2IDkCIvXFEcwj2QYfkS9Q</uri>
+          <best_book>
+            <id>1030425</id>
+            <title>Les Rougon-Macquart. Volume 1</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1498927197m/1030425.jpg]]></image_url>
+          </best_book>
+          <books_count>3</books_count>
+          <original_publication_day>1</original_publication_day>
+          <original_publication_month>1</original_publication_month>
+          <original_publication_year>1960</original_publication_year>
+          <original_title>Les Rougon-Macquart. Volume 1</original_title>
+          <ratings_count>34</ratings_count>
+          <ratings_sum>142</ratings_sum>
+          <reviews_count>109</reviews_count>
+          <text_reviews_count>1</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+      <series_work>
+        <id>652699</id>
+        <user_position>5-8</user_position>
+        <work>
+          <id>42076436</id>
+          <uri>kca://work/amzn1.gr.work.v1.kFsDpuhAPMUYEkpMSO6aIA</uri>
+          <best_book>
+            <id>22594554</id>
+            <title>Les Rougon-Macquart, Tome 2: La faute de l'abbé Mouret / Son excellence Eugène Rougon / L'assommoir / Une page d'amour</title>
+            <author>
+              <id>4750</id>
+              <name>Émile Zola</name>
+            </author>
+            <image_url><![CDATA[https://images.gr-assets.com/books/1403865231m/22594554.jpg]]></image_url>
+          </best_book>
+          <books_count>1</books_count>
+          <original_publication_day>1</original_publication_day>
+          <original_publication_month>1</original_publication_month>
+          <original_publication_year>1970</original_publication_year>
+          <original_title></original_title>
+          <ratings_count>4</ratings_count>
+          <ratings_sum>17</ratings_sum>
+          <reviews_count>25</reviews_count>
+          <text_reviews_count>1</text_reviews_count>
+          <average_rating></average_rating>
+        </work>
+      </series_work>
+    </series_works>
+  </series>
+</GoodreadsResponse>
