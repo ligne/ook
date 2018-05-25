@@ -94,10 +94,17 @@ def fetch_book(book_id):
 
 
 def _fetch_book_api(book_id):
-    r = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
-        'key': config['GR Key'],
-    })
-    return ElementTree.fromstring(r.content)
+    fname = 'cache/book/{}.xml'.format(book_id)
+    try:
+        with open(fname) as fh:
+            xml = fh.read()
+    except FileNotFoundError:
+        xml = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
+            'key': config['GR Key'],
+        }).content
+        with open(fname, 'wb') as fh:
+            fh.write(xml)
+    return ElementTree.fromstring(xml)
 
 
 def _parse_book_api(xml):
