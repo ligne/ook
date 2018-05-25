@@ -38,6 +38,7 @@ def get_books():
             book = process_book(r)
             data = fetch_book(book['Book Id'])
 
+            # FIXME merge properly
             for col in ['Series', 'Entry', 'Original Publication Year']:
                 book[col] = data[col]
 
@@ -86,9 +87,7 @@ def fetch_book(book_id):
     book = _parse_book_api(_fetch_book_api(book_id))
     # if the interesting information isn't there, fetch it via html
     if False:
-        _book = _parse_book_html(_fetch_book_html(book_id))
-
-    # FIXME merge them
+        book.update(_parse_book_html(_fetch_book_html(book_id)))
 
     # fetch series (possibly several?)
     if book['Series Id']:
