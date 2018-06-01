@@ -112,7 +112,7 @@ def _parse_book_api(xml):
     try:
         lang = lang[:2]
     except:
-        lang = str(lang)
+        pass
 
     # FIXME work out which one is preferred
     series = entry = series_id = None

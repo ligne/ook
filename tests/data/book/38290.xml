@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>38290</id>
+    <title><![CDATA[The Pioneers (Leatherstocking Tales, #4)]]></title>
+    <isbn><![CDATA[0192836676]]></isbn>
+    <isbn13><![CDATA[9780192836670]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[B00JG77KYM]]></kindle_asin>
+    <marketplace_id><![CDATA[A1F83G8C2ARO7P]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png</image_url>
+    <small_image_url>https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png</small_image_url>
+    <publication_year>2000</publication_year>
+    <publication_month>2</publication_month>
+    <publication_day>24</publication_day>
+    <publisher>Oxford University Press, USA</publisher>
+    <language_code></language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[The first of the five Leatherstocking Tales, The Pioneers is perhaps the most realistic and beautiful of the series. Drawing on his own experiences, Cooper brilliantly describes Frontier life, providing a fascinating backdrop to the real heart of the novel--the competing claims to land ownership of Native Americans and settlers. This edition follows the publication of The Last of the Mohicans in the World's Classics series and uses the standard text approved by the Modern Language Association.]]></description>
+    <work>
+      <id type="integer">443966</id>
+      <books_count type="integer">263</books_count>
+      <best_book_id type="integer">38290</best_book_id>
+      <reviews_count type="integer">6700</reviews_count>
+      <ratings_sum type="integer">8552</ratings_sum>
+      <ratings_count type="integer">2538</ratings_count>
+      <text_reviews_count type="integer">114</text_reviews_count>
+      <original_publication_year type="integer">1823</original_publication_year>
+      <original_publication_month nil="true" type="integer"/>
+      <original_publication_day nil="true" type="integer"/>
+      <original_title>The Pioneers, or The Sources of the Susquehanna; a Descriptive Tale</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:452|4:744|3:813|2:348|1:181|total:2538</rating_dist>
+      <desc_user_id type="integer">31430985</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+    </work>
+    <average_rating>3.37</average_rating>
+    <num_pages><![CDATA[496]]></num_pages>
+    <format><![CDATA[Paperback]]></format>
+    <edition_information><![CDATA[]]></edition_information>
+    <ratings_count><![CDATA[2235]]></ratings_count>
+    <text_reviews_count><![CDATA[76]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/38290.The_Pioneers]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/38290.The_Pioneers]]></link>
+    <authors>
+      <author>
+        <id>9121</id>
+        <name>James Fenimore Cooper</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1210528548p5/9121.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1210528548p2/9121.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/9121.James_Fenimore_Cooper]]></link>
+        <average_rating>3.69</average_rating>
+        <ratings_count>101954</ratings_count>
+        <text_reviews_count>3237</text_reviews_count>
+      </author>
+      <author>
+        <id>1077311</id>
+        <name>James D. Wallace</name>
+        <role>Editor</role>
+        <image_url nophoto="true"><![CDATA[https://s.gr-assets.com/assets/nophoto/user/u_200x266-e183445fd1a1b5cc7075bb1cf7043306.png]]></image_url>
+        <small_image_url nophoto="true"><![CDATA[https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/1077311.James_D_Wallace]]></link>
+        <average_rating>3.39</average_rating>
+        <ratings_count>2291</ratings_count>
+        <text_reviews_count>87</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/38290.The_Pioneers">The Pioneers Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=0192836676&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow" href="https://www.goodreads.com/book/show/38290.The_Pioneers?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="3570" name="to-read"/>
+      <shelf count="130" name="classics"/>
+      <shelf count="92" name="currently-reading"/>
+      <shelf count="83" name="fiction"/>
+      <shelf count="69" name="historical-fiction"/>
+      <shelf count="31" name="literature"/>
+      <shelf count="30" name="adventure"/>
+      <shelf count="30" name="classic"/>
+      <shelf count="14" name="owned"/>
+      <shelf count="13" name="american-literature"/>
+      <shelf count="12" name="default"/>
+      <shelf count="11" name="american"/>
+      <shelf count="10" name="19th-century"/>
+      <shelf count="9" name="novels"/>
+      <shelf count="9" name="american-lit"/>
+      <shelf count="8" name="books-i-own"/>
+      <shelf count="8" name="historical"/>
+      <shelf count="7" name="western"/>
+      <shelf count="6" name="history"/>
+      <shelf count="6" name="kindle"/>
+      <shelf count="6" name="novel"/>
+      <shelf count="5" name="series"/>
+      <shelf count="5" name="own-it"/>
+      <shelf count="5" name="favorites"/>
+      <shelf count="5" name="owned-books"/>
+      <shelf count="5" name="action-adventure"/>
+      <shelf count="4" name="university"/>
+      <shelf count="4" name="unfinished"/>
+      <shelf count="4" name="library"/>
+      <shelf count="4" name="classic-fiction"/>
+      <shelf count="4" name="james-fenimore-cooper"/>
+      <shelf count="4" name="united-states"/>
+      <shelf count="4" name="penguin-classics"/>
+      <shelf count="4" name="leatherstocking-tales"/>
+      <shelf count="4" name="westerns"/>
+      <shelf count="4" name="school"/>
+      <shelf count="3" name="literary-fiction"/>
+      <shelf count="3" name="to-buy"/>
+      <shelf count="3" name="native-americans"/>
+      <shelf count="3" name="abandoned"/>
+      <shelf count="3" name="american-classic"/>
+      <shelf count="3" name="ebooks"/>
+      <shelf count="3" name="new-york"/>
+      <shelf count="3" name="cooper-james-fenimore"/>
+      <shelf count="3" name="canon"/>
+      <shelf count="3" name="general-fiction"/>
+      <shelf count="3" name="classic-literature"/>
+      <shelf count="3" name="to-read-classics"/>
+      <shelf count="2" name="north-america"/>
+      <shelf count="2" name="genre-historical"/>
+      <shelf count="2" name="19th-century-literature"/>
+      <shelf count="2" name="unread"/>
+      <shelf count="2" name="have"/>
+      <shelf count="2" name="i-own"/>
+      <shelf count="2" name="books-in-my-library"/>
+      <shelf count="2" name="greatest-books"/>
+      <shelf count="2" name="war"/>
+      <shelf count="2" name="public-domain"/>
+      <shelf count="2" name="adult"/>
+      <shelf count="2" name="to-read-historical-fiction"/>
+      <shelf count="2" name="nook"/>
+      <shelf count="2" name="own-not-read"/>
+      <shelf count="2" name="e-book"/>
+      <shelf count="2" name="classroom"/>
+      <shelf count="2" name="cooper"/>
+      <shelf count="2" name="before-goodreads"/>
+      <shelf count="2" name="usa"/>
+      <shelf count="2" name="to-read-owned"/>
+      <shelf count="2" name="kindle-books"/>
+      <shelf count="2" name="grad-school"/>
+      <shelf count="2" name="pre-1900"/>
+      <shelf count="2" name="my-library"/>
+      <shelf count="2" name="inventory"/>
+      <shelf count="2" name="english"/>
+      <shelf count="2" name="classics-to-read"/>
+      <shelf count="2" name="1000"/>
+      <shelf count="2" name="4"/>
+      <shelf count="2" name="american-history"/>
+      <shelf count="2" name="fiction-classics"/>
+      <shelf count="2" name="1800s"/>
+      <shelf count="2" name="fiction-adventure"/>
+      <shelf count="2" name="leatherstocking"/>
+      <shelf count="2" name="literature-classics"/>
+      <shelf count="2" name="dnf"/>
+      <shelf count="2" name="frontier"/>
+      <shelf count="2" name="penguin"/>
+      <shelf count="2" name="academic"/>
+      <shelf count="2" name="2002"/>
+      <shelf count="2" name="american-authors"/>
+      <shelf count="2" name="read-classics"/>
+      <shelf count="2" name="adult-fiction"/>
+      <shelf count="2" name="read-for-school"/>
+      <shelf count="2" name="already-read"/>
+      <shelf count="1" name="classic-american-lit"/>
+      <shelf count="1" name="ibooks"/>
+      <shelf count="1" name="own-on-home-bookshelf"/>
+      <shelf count="1" name="ep"/>
+      <shelf count="1" name="hudson-river"/>
+      <shelf count="1" name="ref_other_bk"/>
+      <shelf count="1" name="over-50-pages"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Kobo</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple iBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works>
+      <series_work>
+        <id>222541</id>
+        <user_position>4</user_position>
+        <series>
+          <id>55486</id>
+          <title><![CDATA[
+    The Leatherstocking Tales
+]]></title>
+          <description><![CDATA[
+    Listed in Chronological Order
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>21</series_works_count>
+          <primary_work_count>5</primary_work_count>
+          <numbered>true</numbered>
+        </series>
+      </series_work>
+      <series_work>
+        <id>387754</id>
+        <user_position>1</user_position>
+        <series>
+          <id>81550</id>
+          <title><![CDATA[
+    The Leatherstocking Tales
+]]></title>
+          <description><![CDATA[
+    Listed in Publication Order
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>5</series_works_count>
+          <primary_work_count>5</primary_work_count>
+          <numbered>true</numbered>
+        </series>
+      </series_work>
+    </series_works>
+    <similar_books>
+      <book>
+        <id>514689</id>
+        <title>Guy Mannering</title>
+        <title_without_series>Guy Mannering</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/514689.Guy_Mannering]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1311644235s/514689.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1311644235m/514689.jpg]]></image_url>
+        <num_pages>552</num_pages>
+        <work>
+          <id>502652</id>
+        </work>
+        <isbn>014043657X</isbn>
+        <isbn13>9780140436570</isbn13>
+        <average_rating>3.74</average_rating>
+        <ratings_count>427</ratings_count>
+        <publication_year>2003</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>4345</id>
+            <name>Walter Scott</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/4345.Walter_Scott]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>469792</id>
+        <title><![CDATA[Letters from an American Farmer and Sketches of Eighteenth-Century America]]></title>
+        <title_without_series><![CDATA[Letters from an American Farmer and Sketches of Eighteenth-Century America]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/469792.Letters_from_an_American_Farmer_and_Sketches_of_Eighteenth_Century_America]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1475975680s/469792.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1475975680m/469792.jpg]]></image_url>
+        <num_pages>501</num_pages>
+        <work>
+          <id>458102</id>
+        </work>
+        <isbn>0140390065</isbn>
+        <isbn13>9780140390063</isbn13>
+        <average_rating>3.39</average_rating>
+        <ratings_count>220</ratings_count>
+        <publication_year>1986</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>17</publication_day>
+        <authors>
+          <author>
+            <id>741791</id>
+            <name><![CDATA[J. Hector St. John de Crèvecoeur]]></name>
+            <link><![CDATA[https://www.goodreads.com/author/show/741791.J_Hector_St_John_de_Cr_vecoeur]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>876843</id>
+        <title><![CDATA[The Octopus: A Story of California]]></title>
+        <title_without_series><![CDATA[The Octopus: A Story of California]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/876843.The_Octopus]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>688</num_pages>
+        <work>
+          <id>151337</id>
+        </work>
+        <isbn>0140187707</isbn>
+        <isbn13>9780140187700</isbn13>
+        <average_rating>3.80</average_rating>
+        <ratings_count>1424</ratings_count>
+        <publication_year>1994</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>82926</id>
+            <name>Frank Norris</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/82926.Frank_Norris]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>307880</id>
+        <title><![CDATA[France and England in North America, Vol. 1: Pioneers of France in the New World / The Jesuits in North America in the Seventeenth Century / La Salle and the Discovery of the Great West / The Old Regime in Canada]]></title>
+        <title_without_series><![CDATA[France and England in North America, Vol. 1: Pioneers of France in the New World / The Jesuits in North America in the Seventeenth Century / La Salle and the Discovery of the Great West / The Old Regime in Canada]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/307880.France_and_England_in_North_America_Vol_1]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>1504</num_pages>
+        <work>
+          <id>298840</id>
+        </work>
+        <isbn>0940450100</isbn>
+        <isbn13>9780940450103</isbn13>
+        <average_rating>4.29</average_rating>
+        <ratings_count>87</ratings_count>
+        <publication_year>1983</publication_year>
+        <publication_month>7</publication_month>
+        <publication_day>4</publication_day>
+        <authors>
+          <author>
+            <id>61732</id>
+            <name>Francis Parkman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/61732.Francis_Parkman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>247960</id>
+        <title><![CDATA[Clotel: or, The President's Daughter]]></title>
+        <title_without_series><![CDATA[Clotel: or, The President's Daughter]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/247960.Clotel]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1309287092s/247960.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1309287092m/247960.jpg]]></image_url>
+        <num_pages>320</num_pages>
+        <work>
+          <id>240254</id>
+        </work>
+        <isbn>0142437727</isbn>
+        <isbn13>9780142437728</isbn13>
+        <average_rating>3.55</average_rating>
+        <ratings_count>1380</ratings_count>
+        <publication_year>2003</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>30</publication_day>
+        <authors>
+          <author>
+            <id>109821</id>
+            <name>William Wells Brown</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/109821.William_Wells_Brown]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>106574</id>
+        <title>New Orleans Sketches</title>
+        <title_without_series>New Orleans Sketches</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/106574.New_Orleans_Sketches]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>139</num_pages>
+        <work>
+          <id>102724</id>
+        </work>
+        <isbn>1578064716</isbn>
+        <isbn13>9781578064717</isbn13>
+        <average_rating>3.57</average_rating>
+        <ratings_count>237</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>22</publication_day>
+        <authors>
+          <author>
+            <id>3535</id>
+            <name>William Faulkner</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3535.William_Faulkner]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>296462</id>
+        <title><![CDATA[White Jacket or, the World on a Man-of-War]]></title>
+        <title_without_series><![CDATA[White Jacket or, the World on a Man-of-War]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/296462.White_Jacket_or_the_World_on_a_Man_of_War]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>336</num_pages>
+        <work>
+          <id>287659</id>
+        </work>
+        <isbn>1598180703</isbn>
+        <isbn13>9781598180701</isbn13>
+        <average_rating>3.75</average_rating>
+        <ratings_count>589</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>1624</id>
+            <name>Herman Melville</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1624.Herman_Melville]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>723762</id>
+        <title>Men of Iron</title>
+        <title_without_series>Men of Iron</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/723762.Men_of_Iron]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1367447532s/723762.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1367447532m/723762.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1164596</id>
+        </work>
+        <isbn>141793977X</isbn>
+        <isbn13>9781417939770</isbn13>
+        <average_rating>3.94</average_rating>
+        <ratings_count>2017</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>53350</id>
+            <name>Howard Pyle</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/53350.Howard_Pyle]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>169751</id>
+        <title><![CDATA[The Virginian: A Horseman of the Plains]]></title>
+        <title_without_series><![CDATA[The Virginian: A Horseman of the Plains]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/169751.The_Virginian]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>352</num_pages>
+        <work>
+          <id>3280421</id>
+        </work>
+        <isbn>0743238028</isbn>
+        <isbn13>9780743238021</isbn13>
+        <average_rating>3.88</average_rating>
+        <ratings_count>6449</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>3</publication_day>
+        <authors>
+          <author>
+            <id>98909</id>
+            <name>Owen Wister</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/98909.Owen_Wister]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1567000</id>
+        <title>The Newcomes</title>
+        <title_without_series>The Newcomes</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1567000.The_Newcomes]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>801</num_pages>
+        <work>
+          <id>1559625</id>
+        </work>
+        <isbn>0460874950</isbn>
+        <isbn13>9780460874953</isbn13>
+        <average_rating>3.65</average_rating>
+        <ratings_count>193</ratings_count>
+        <publication_year>1994</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>15</publication_day>
+        <authors>
+          <author>
+            <id>3953</id>
+            <name>William Makepeace Thackeray</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3953.William_Makepeace_Thackeray]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>214434</id>
+        <title>Rabble in Arms</title>
+        <title_without_series>Rabble in Arms</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/214434.Rabble_in_Arms]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>586</num_pages>
+        <work>
+          <id>207588</id>
+        </work>
+        <isbn>0892723866</isbn>
+        <isbn13>9780892723867</isbn13>
+        <average_rating>4.30</average_rating>
+        <ratings_count>855</ratings_count>
+        <publication_year>1996</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>59605</id>
+            <name>Kenneth Roberts</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/59605.Kenneth_Roberts]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>123984</id>
+        <title><![CDATA[Dred: A Tale of the Great Dismal Swamp]]></title>
+        <title_without_series><![CDATA[Dred: A Tale of the Great Dismal Swamp]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/123984.Dred]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1398029042s/123984.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1398029042m/123984.jpg]]></image_url>
+        <num_pages>656</num_pages>
+        <work>
+          <id>1417229</id>
+        </work>
+        <isbn>0807856851</isbn>
+        <isbn13>9780807856857</isbn13>
+        <average_rating>3.67</average_rating>
+        <ratings_count>127</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>26242</id>
+            <name>Harriet Beecher Stowe</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/26242.Harriet_Beecher_Stowe]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>888</id>
+        <title>The Last Days of Pompeii</title>
+        <title_without_series>The Last Days of Pompeii</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/888.The_Last_Days_of_Pompeii]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>360</num_pages>
+        <work>
+          <id>2260008</id>
+        </work>
+        <isbn>158715739X</isbn>
+        <isbn13>9781587157394</isbn13>
+        <average_rating>3.60</average_rating>
+        <ratings_count>1581</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>3</publication_day>
+        <authors>
+          <author>
+            <id>44512</id>
+            <name>Edward Bulwer-Lytton</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/44512.Edward_Bulwer_Lytton]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>693238</id>
+        <title>Ramona</title>
+        <title_without_series>Ramona</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/693238.Ramona]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>432</num_pages>
+        <work>
+          <id>679565</id>
+        </work>
+        <isbn>0451528425</isbn>
+        <isbn13>9780451528421</isbn13>
+        <average_rating>3.72</average_rating>
+        <ratings_count>1521</ratings_count>
+        <publication_year>2002</publication_year>
+        <publication_month>7</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>52436</id>
+            <name>Helen Hunt Jackson</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/52436.Helen_Hunt_Jackson]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>671844</id>
+        <title><![CDATA[To Have and to Hold: A Tale of Providence and Perseverance in Colonial Jamestown]]></title>
+        <title_without_series><![CDATA[To Have and to Hold: A Tale of Providence and Perseverance in Colonial Jamestown]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/671844.To_Have_and_to_Hold]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>429</num_pages>
+        <work>
+          <id>657874</id>
+        </work>
+        <isbn>0978755936</isbn>
+        <isbn13>9780978755935</isbn13>
+        <average_rating>3.99</average_rating>
+        <ratings_count>555</ratings_count>
+        <publication_year>2006</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>13</publication_day>
+        <authors>
+          <author>
+            <id>54636</id>
+            <name>Mary Johnston</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/54636.Mary_Johnston]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>13084</id>
+        <title>The Man Without A Country</title>
+        <title_without_series>The Man Without A Country</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/13084.The_Man_Without_A_Country]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>46</num_pages>
+        <work>
+          <id>15263</id>
+        </work>
+        <isbn>1406917893</isbn>
+        <isbn13>9781406917895</isbn13>
+        <average_rating>3.70</average_rating>
+        <ratings_count>786</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>8183</id>
+            <name>Edward Everett Hale</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/8183.Edward_Everett_Hale]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1238139</id>
+        <title><![CDATA[The Nigger of the Narcissus and Other Stories]]></title>
+        <title_without_series><![CDATA[The Nigger of the Narcissus and Other Stories]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1238139.The_Nigger_of_the_Narcissus_and_Other_Stories]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>528</num_pages>
+        <work>
+          <id>6383544</id>
+        </work>
+        <isbn>0141441704</isbn>
+        <isbn13>9780141441702</isbn13>
+        <average_rating>3.80</average_rating>
+        <ratings_count>127</ratings_count>
+        <publication_year>2007</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>18</publication_day>
+        <authors>
+          <author>
+            <id>3345</id>
+            <name>Joseph Conrad</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3345.Joseph_Conrad]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>143509</id>
+        <title>Humorous Stories and Sketches</title>
+        <title_without_series>Humorous Stories and Sketches</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/143509.Humorous_Stories_and_Sketches]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1328867675s/143509.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1328867675m/143509.jpg]]></image_url>
+        <num_pages>80</num_pages>
+        <work>
+          <id>138435</id>
+        </work>
+        <isbn>0486292797</isbn>
+        <isbn13>9780486292793</isbn13>
+        <average_rating>3.75</average_rating>
+        <ratings_count>282</ratings_count>
+        <publication_year>1996</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>24</publication_day>
+        <authors>
+          <author>
+            <id>1244</id>
+            <name>Mark Twain</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1244.Mark_Twain]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>
