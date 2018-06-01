@@ -94,9 +94,9 @@ def test__parse_book_api():
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': None,
         'Original Publication Year': '1823',
-        'Series Id': '55486',
+        'Series Id': '81550',
         'Series': 'The Leatherstocking Tales',
-        'Entry': '4',
+        'Entry': '1',
 #        'Category': 'non-fiction',
 #        'Genres': '',
     })

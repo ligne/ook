@@ -117,10 +117,11 @@ def _parse_book_api(xml):
     # FIXME work out which one is preferred
     series = entry = series_id = None
     for s in xml.findall('book/series_works/series_work'):
-        series = s.find('series/title').text.strip()
-        entry = s.find('user_position').text
-        series_id = s.find('series/id').text
-        break
+        if int(s.find('series/id').text) not in config['series']['ignore']:
+            series_id = s.find('series/id').text
+            series = s.find('series/title').text.strip()
+            entry = s.find('user_position').text
+            break
 
     # FIXME work out category and genres too
 
