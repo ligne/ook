@@ -36,12 +36,7 @@ def get_books():
 
         for r in x.findall('reviews/'):
             book = process_book(r)
-            data = fetch_book(book['Book Id'])
-
-            # FIXME merge properly
-            for col in ['Series', 'Entry', 'Original Publication Year']:
-                book[col] = data[col]
-
+            book.update(fetch_book(book['Book Id']))
             books.append(book)
 
         r = x.find('reviews')
