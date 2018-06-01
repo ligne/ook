@@ -114,7 +114,6 @@ def _parse_book_api(xml):
     except:
         pass
 
-    # FIXME work out which one is preferred
     series = entry = series_id = None
     for s in xml.findall('book/series_works/series_work'):
         if int(s.find('series/id').text) not in config['series']['ignore']:
