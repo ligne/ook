@@ -5,6 +5,12 @@ import yaml
 import sys
 
 
+import yaml
+with open('data/config.yml') as fh:
+    config = yaml.load(fh)
+
+
+
 # options:
 #   what to select
 #       author
@@ -33,15 +39,10 @@ import sys
 #   lint.py for checking books are correctly allocated
 #       no filtering, just check
 
-def _get_schedules(f):
-    with open(f) as fh:
-        return yaml.load(fh)
-
-
 # all the scheduled books
-def scheduled(df, config='data/scheduled.yml'):
+def scheduled(df):
     # read the scheduling config
-    schedules = _get_schedules(config)
+    schedules = config['scheduled']
     print(schedules)
 
     for settings in schedules:
@@ -49,8 +50,8 @@ def scheduled(df, config='data/scheduled.yml'):
         _schedule(df, settings)
 
 
-def lint(df, config='data/scheduled.yml'):
-    schedules = _get_schedules(config)
+def lint(df):
+    schedules = config['scheduled']
 
     horizon = str(datetime.date.today().year + 2)
 
