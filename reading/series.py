@@ -103,6 +103,7 @@ class Series():
             self.df = df[df.Series.fillna('').str.contains(series)]
         else:
             # error
+            raise ValueError("Must provide either author or series.")
             pass
 
 
