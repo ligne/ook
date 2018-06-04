@@ -5,6 +5,7 @@ from nose.tools import *
 
 import pandas as pd
 import itertools
+import datetime
 
 from io import StringIO
 
@@ -94,10 +95,22 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
 833444,Terry Pratchett,1654,4.23,Paperback,read,False,2017/05/24,2018/01/14,2018/01/05,4,read,,5,320,1987,,Discworld,40650,Mort,1857065
 """), index_col=0, parse_dates=['Date Read', 'Date Added'])
 
+    # one per year, already read this year
+    eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'series': 'Discworld$',
+    }, date=datetime.date(2018, 6, 4))], [
+        ('2019-01-01', 'Reaper Man'),
+        ('2020-01-01', 'Witches Abroad'),
+        ('2021-01-01', 'Soul Music'),
+        ('2022-01-01', 'Maskerade'),
+        ('2023-01-01', 'Feet of Clay'),
+        ('2024-01-01', 'Hogfather'),
+    ])
+
     eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
         'series': 'Discworld$',
         'per_year': 4,
-    })], [
+    }, date=datetime.date(2018, 6, 4))], [
         ('2018-07-01', 'Reaper Man'),
         ('2018-10-01', 'Witches Abroad'),
         ('2019-01-01', 'Soul Music'),
