@@ -119,3 +119,18 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
         ('2019-10-01', 'Hogfather'),
     ])
 
+
+    # missing publication year
+    df = pd.read_csv(StringIO("""
+Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Exclusive Shelf,Language,My Rating,Number of Pages,Original Publication Year,Scheduled,Series,Series Id,Title,Work Id
+159435,Honoré de Balzac,228089,4.00,Mass Market Paperback,"2018, borrowed, pending",True,2016/05/23,,,,pending,fr,0,,1832,2018,,,Le Colonel Chabert : suivi de trois nouvelles,23642267
+34674970,Honoré de Balzac,228089,0.0,Paperback,pending,False,2017/03/24,,,,pending,fr,0,381,,,,,L'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié,55846262
+"""), index_col=0, parse_dates=['Date Read', 'Date Added'])
+
+    eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'author': 'Honoré de Balzac',
+    }, date=datetime.date(2018, 6, 4))], [
+        ('2018-01-01', 'Le Colonel Chabert : suivi de trois nouvelles'),
+        ('2019-01-01', 'L\'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié'),
+    ])
+

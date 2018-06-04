@@ -33,7 +33,7 @@ def scheduled(df):
         print(settings.get('author', settings.get('series')))
         for date, book in _schedule(df, settings):
             book = df.loc[book]
-            print(date, book.Title, int(book['Original Publication Year']))
+            print('{} {} ({:0.0f})'.format(date, book.Title, book['Original Publication Year']))
         print()
 
 
