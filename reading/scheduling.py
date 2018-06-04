@@ -52,19 +52,21 @@ def _schedule(df, settings, date=datetime.date.today()):
     series = Series(
         author=settings.get('author'),
         series=settings.get('series'),
+        df=df,
     )
-    books = series.remaining()
 
-    start = date.year
-    if series.read_in_year(start):
-        start += 1
-
-    return _allocate(books, start, settings.get('rate', 1), settings.get('offset', 1))
+    return _allocate(
+        series.remaining(),
+        start=date.year,
+        per_year=settings.get('per_year', 1),
+        offset=settings.get('offset', 1),
+        skip=series.read_in_year(date.year)
+    )
 
 
 # takes a df of unread books, and sets start dates
 def _allocate(df, start, per_year=1, offset=1, skip=0):
-    return [ (date, ix) for date, (ix, row) in zip(_dates(start, per_year, offset, skip), df.iterrows()) ]
+    return [ (date, ix) for date, (ix, row) in zip(_dates(start, per_year, offset, min(per_year, skip)), df.iterrows()) ]
 
 
 def _dates(start, per_year=1, offset=1, skip=0):
