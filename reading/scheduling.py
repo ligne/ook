@@ -44,7 +44,7 @@ def lint(df):
         for date, book in _schedule(df, settings):
             book = df.loc[book]
             if float(date[:4]) != book.Scheduled and date[:4] <= horizon:
-                print(date[:4], book.Scheduled, book.Title)
+                print(date[:4], book.Scheduled, book.Title, 'https://www.goodreads.com/book/show/{}'.format(book.name))
         print('----')
 
 
