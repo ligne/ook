@@ -10,6 +10,8 @@ import pandas as pd
 from xml.etree import ElementTree
 from dateutil.parser import parse
 
+import reading.series
+
 
 # load the config to get the GR API key.
 with open('data/config.yml') as fh:
@@ -44,6 +46,8 @@ def get_books():
             break
 
         page += 1
+
+        reading.cache.dump_yaml('series', reading.series.cache)
 
     return pd.DataFrame(data=books)
 
@@ -84,11 +88,12 @@ def fetch_book(book_id):
     if False:
         book.update(_parse_book_html(_fetch_book_html(book_id)))
 
-    # fetch series (possibly several?)
+    # fetch series
     if book['Series Id']:
         series = _parse_series(_fetch_series(book['Series Id']))
+        reading.series.cache[book['Series Id']] = series
 
-    # based on the series information, fix up book if necessary
+    # using the series, fix up book if necessary
 
     return book
 
