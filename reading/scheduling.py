@@ -1,8 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
 import datetime
-import yaml
 import sys
+import itertools
 
 from .series import Series
 
@@ -63,9 +63,21 @@ def _schedule(df, settings, date=datetime.date.today()):
 
 
 # takes a df of unread books, and sets start dates
-def _allocate(df, start, per_year=1, month=1):
-    return [ ('{}-{:02d}-01'.format(ix+start, month), ii)
-        for ix, (ii, row) in enumerate(df.iterrows()) ]
+def _allocate(df, start, per_year=1, offset=1, skip=0):
+    return [ (date, ix) for date, (ix, row) in zip(_dates(start, per_year, offset, skip), df.iterrows()) ]
+
+
+def _dates(start, per_year=1, offset=1, skip=0):
+    # work out which months to use
+    months = [x+offset for x in range(12) if not x % (12/per_year)]
+
+    for year in itertools.count(start):
+        for month in months:
+            if skip:
+                skip -= 1
+                continue
+
+            yield '{}-{:02d}-01'.format(year, month)
 
 
 if __name__ == "__main__":
