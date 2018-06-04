@@ -84,13 +84,10 @@ def _dates(start, per_year=1, offset=1, skip=0):
 
 if __name__ == "__main__":
     import pandas as pd
-    df = pd.read_csv('gr-api.csv', index_col=0).fillna('')
+    df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added'], dtype={'Original Publication Year': float}, na_values=[])
     df = df[~df['Exclusive Shelf'].isin(['to-read'])]
     df = df.drop_duplicates(['Work Id'])
 
-    for column in ['Date Read', 'Date Added']:
-        df[column] = pd.to_datetime(df[column])
-
     lint(df)
-#     scheduled(df)
+    scheduled(df)
 
