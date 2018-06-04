@@ -99,7 +99,7 @@ def fetch_book(book_id):
 
 
 def _fetch_book_api(book_id):
-    fname = 'cache/book/{}.xml'.format(book_id)
+    fname = 'data/cache/book/{}.xml'.format(book_id)
     try:
         with open(fname) as fh:
             xml = fh.read()
@@ -148,7 +148,7 @@ def _parse_book_html(html):
 
 
 def _fetch_series(series_id):
-    fname = 'cache/series/{}.xml'.format(series_id)
+    fname = 'data/cache/series/{}.xml'.format(series_id)
     try:
         with open(fname) as fh:
             xml = fh.read()
