@@ -135,3 +135,32 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
         ('2019-01-01', 'L\'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié'),
     ])
 
+
+    df = pd.read_csv(StringIO("""
+Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Exclusive Shelf,Language,My Rating,Number of Pages,Original Publication Year,Scheduled,Series,Series Id,Title,Work Id
+366649,Émile Zola,4750,3.90,Paperback,"2018, pending",False,2017/06/20,,,3,pending,fr,0,384,1873,2018,Les Rougon-Macquart,40441,Le Ventre de Paris,10242
+816920,Émile Zola,4750,3.84,Mass Market Paperback,ebooks,False,2016/11/24,,,9,ebooks,,0,,1880,,Les Rougon-Macquart,40441,Nana,89633
+816921,Émile Zola,4750,4.06,Mass Market Paperback,"borrowed, elsewhere",True,2016/05/22,,,7,elsewhere,fr,0,517,1877,,Les Rougon-Macquart,40441,L'Assommoir,741363
+816926,Émile Zola,4750,3.71,Mass Market Paperback,pending,False,2016/05/20,,,,pending,fr,0,317,1867,,,,Thérèse Raquin,1656117
+956703,Émile Zola,4750,3.90,Paperback,ebooks,False,2016/11/24,,,10,ebooks,fr,0,510,1882,,Les Rougon-Macquart,40441,Pot-Bouille,110658
+1312303,Émile Zola,4750,3.89,Mass Market Paperback,"2019, ebooks",False,2016/11/24,,,4,ebooks,fr,0,480,1874,2019,Les Rougon-Macquart,40441,La Conquête de Plassans,803050
+1367035,Émile Zola,4750,3.62,Mass Market Paperback,ebooks,False,2016/11/24,,,8,ebooks,fr,0,370,1877,,Les Rougon-Macquart,40441,Une Page d'amour,1776975
+1367070,Émile Zola,4750,3.68,Paperback,ebooks,False,2016/11/24,,,6,ebooks,fr,0,453,1876,,Les Rougon-Macquart,40441,Son Excellence Eugène Rougon,1356899
+3071647,Émile Zola,4750,3.63,Mass Market Paperback,pending,False,2017/08/31,,,5,pending,,0,512,1875,,Les Rougon-Macquart,40441,La Faute de l'abbé Mouret,941617
+20636970,Émile Zola,4750,3.84,Paperback,read,False,2017/02/07,2018/03/14,2017/12/28,2,read,fr,3,380,1872,,Les Rougon-Macquart,40441,La Curée,839934
+"""), index_col=0, parse_dates=['Date Read', 'Date Added'])
+
+    # series sorted numerically
+    eq_([ (date, int(df.loc[ix].Entry), df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'series': 'Rougon-Macquart',
+    }, date=datetime.date(2018, 6, 4))], [
+        ('2019-01-01', 3, 'Le Ventre de Paris'),
+        ('2020-01-01', 4, 'La Conquête de Plassans'),
+        ('2021-01-01', 5, "La Faute de l'abbé Mouret"),
+        ('2022-01-01', 6, 'Son Excellence Eugène Rougon'),
+        ('2023-01-01', 7, "L'Assommoir"),
+        ('2024-01-01', 8, "Une Page d'amour"),
+        ('2025-01-01', 9, 'Nana'),
+        ('2026-01-01', 10, 'Pot-Bouille'),
+    ])
+
