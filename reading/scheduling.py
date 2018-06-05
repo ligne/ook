@@ -66,19 +66,17 @@ def _schedule(df, settings, date=datetime.date.today()):
 
 # takes a df of unread books, and sets start dates
 def _allocate(df, start, per_year=1, offset=1, skip=0):
-    return [ (date, ix) for date, (ix, row) in zip(_dates(start, per_year, offset, min(per_year, skip)), df.iterrows()) ]
+    skip = min(per_year, skip)
+    dates = itertools.islice(_dates(start, per_year, offset), skip, None)
+    return [ (date, ix) for date, ix in zip(dates, df.index) ]
 
 
-def _dates(start, per_year=1, offset=1, skip=0):
+def _dates(start, per_year=1, offset=1):
     # work out which months to use
     months = [x+offset for x in range(12) if not x % (12/per_year)]
 
     for year in itertools.count(start):
         for month in months:
-            if skip:
-                skip -= 1
-                continue
-
             yield '{}-{:02d}-01'.format(year, month)
 
 

@@ -65,8 +65,9 @@ def test__dates():
     ])
 
     # only one remaining this year
-    it = reading.scheduling._dates(2018, per_year=4, skip=3)
-    eq_(list(itertools.islice(it, 5)), [
+    df = pd.DataFrame(index=range(10))
+    it = reading.scheduling._allocate(df, 2018, per_year=4, skip=3)
+    eq_([ d for (d, ix) in itertools.islice(it, 5)], [
         '2018-10-01',
         '2019-01-01',
         '2019-04-01',
