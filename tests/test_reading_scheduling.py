@@ -164,3 +164,18 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
         ('2026-01-01', 10, 'Pot-Bouille'),
     ])
 
+    # force to schedule this year even if i've already read one
+    eq_([ (date, int(df.loc[ix].Entry), df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'series': 'Rougon-Macquart',
+        'force': 2018
+    }, date=datetime.date(2018, 6, 4))], [
+        ('2018-01-01', 3, 'Le Ventre de Paris'),
+        ('2019-01-01', 4, 'La Conquête de Plassans'),
+        ('2020-01-01', 5, "La Faute de l'abbé Mouret"),
+        ('2021-01-01', 6, 'Son Excellence Eugène Rougon'),
+        ('2022-01-01', 7, "L'Assommoir"),
+        ('2023-01-01', 8, "Une Page d'amour"),
+        ('2024-01-01', 9, 'Nana'),
+        ('2025-01-01', 10, 'Pot-Bouille'),
+    ])
+
