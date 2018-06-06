@@ -59,7 +59,7 @@ def lint(df):
     _set_schedules(df, config['scheduled'], 'Sched')
     df = df[df.Sched.notnull()]  # ignore unscheduled or manually-scheduled books
     df = df[(df.Sched < horizon)&(df.Scheduled.dt.year != df.Sched.dt.year)]
-    for ix, book in df.iterrows():
+    for ix, book in df.sort_values('Sched').iterrows():
         print('{} {} {} - https://www.goodreads.com/book/show/{}'.format(book.Sched.year, book.Scheduled.year, book.Title, ix))
     print('----')
     return df
