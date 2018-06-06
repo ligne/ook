@@ -75,7 +75,7 @@ def test__parse_book_api():
         'Series Id': '40441',
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
-#        'Category': 'novel',
+        'Category': 'novel',
 #        'Genres': '',
     })
 
@@ -86,7 +86,7 @@ def test__parse_book_api():
         'Series Id': None,
         'Series': None,
         'Entry': None,
-#        'Category': 'non-fiction',
+        'Category': 'non-fiction',
 #        'Genres': '',
     })
 
@@ -97,7 +97,18 @@ def test__parse_book_api():
         'Series Id': '81550',
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
-#        'Category': 'non-fiction',
+        'Category': 'novel',
+#        'Genres': '',
+    })
+
+    r = ElementTree.parse('tests/data/book/17999159.xml')
+    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Language': 'en',
+        'Original Publication Year': '2013',
+        'Series Id': None,
+        'Series': None,
+        'Entry': None,
+        'Category': 'non-fiction',  # FIXME should be 'graphic'
 #        'Genres': '',
     })
 

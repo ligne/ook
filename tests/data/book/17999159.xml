@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>17999159</id>
+    <title><![CDATA[Hyperbole and a Half: Unfortunate Situations, Flawed Coping Mechanisms, Mayhem, and Other Things That Happened]]></title>
+    <isbn><![CDATA[0224095374]]></isbn>
+    <isbn13><![CDATA[9780224095372]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[B00DSLZCR4]]></kindle_asin>
+    <marketplace_id><![CDATA[A1F83G8C2ARO7P]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://images.gr-assets.com/books/1373661794m/17999159.jpg</image_url>
+    <small_image_url>https://images.gr-assets.com/books/1373661794s/17999159.jpg</small_image_url>
+    <publication_year>2013</publication_year>
+    <publication_month>10</publication_month>
+    <publication_day>31</publication_day>
+    <publisher>Square Peg</publisher>
+    <language_code>eng</language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[Every time Allie Brosh posts something new on her hugely popular blog Hyperbole and a Half the internet rejoices. <br /><br /> Touching, absurd, and darkly comic, Allie Brosh’s highly anticipated book Hyperbole and a Half showcases her unique voice, leaping wit, and her ability to capture complex emotions with deceptively simple illustrations. <br /><br /> This full-color, beautifully illustrated edition features more than fifty percent new content, with ten never-before-seen essays and one wholly revised and expanded piece as well as classics from the website like, “The God of Cake,” “Dogs Don’t Understand Basic Concepts Like Moving,” and her astonishing, “Adventures in Depression,” and “Depression Part Two,” which have been hailed as some of the most insightful meditations on the disease ever written. <br /><br /> Brosh’s debut marks the launch of a major new American humorist who will surely make even the biggest scrooge or snob laugh. We dare you not to.<br /><br />Warning signs <br />The Simple Dog<br />Motivation<br />The God of Cake<br />The Helper Dog Is an Asshole<br />Depression Part One<br />Depression Part Two<br />Lost in the Woods<br />Dogs Don't Understand Basic Concepts Like Moving<br />The Hot Sauce Debacle<br />This is why I'll never Be an Adult<br />The Parrot<br />Dinosaur (The Goose Story)<br />Thoughts and Feelings<br />Dogs' Guide to Understanding Basic Concepts<br />The Party<br />Identity Part One <br />Identity Part Two]]></description>
+    <work>
+      <id type="integer">24510592</id>
+      <books_count type="integer">26</books_count>
+      <best_book_id type="integer">17571564</best_book_id>
+      <reviews_count type="integer">293507</reviews_count>
+      <ratings_sum type="integer">594786</ratings_sum>
+      <ratings_count type="integer">142472</ratings_count>
+      <text_reviews_count type="integer">10753</text_reviews_count>
+      <original_publication_year type="integer">2013</original_publication_year>
+      <original_publication_month type="integer">10</original_publication_month>
+      <original_publication_day type="integer">29</original_publication_day>
+      <original_title>Hyperbole and a Half: Unfortunate Situations, Flawed Coping Mechanisms, Mayhem, and Other Things That Happened</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:69761|4:42937|3:19289|2:5881|1:4604|total:142472</rating_dist>
+      <desc_user_id type="integer">171430</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+    </work>
+    <average_rating>4.17</average_rating>
+    <num_pages><![CDATA[369]]></num_pages>
+    <format><![CDATA[Paperback]]></format>
+    <edition_information><![CDATA[]]></edition_information>
+    <ratings_count><![CDATA[933]]></ratings_count>
+    <text_reviews_count><![CDATA[107]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/17999159-hyperbole-and-a-half]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/17999159-hyperbole-and-a-half]]></link>
+    <authors>
+      <author>
+        <id>6984726</id>
+        <name>Allie Brosh</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1384994070p5/6984726.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1384994070p2/6984726.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/6984726.Allie_Brosh]]></link>
+        <average_rating>4.17</average_rating>
+        <ratings_count>143165</ratings_count>
+        <text_reviews_count>10843</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/17999159-hyperbole-and-a-half">Hyperbole and a Half Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=0224095374&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow" href="https://www.goodreads.com/book/show/17999159-hyperbole-and-a-half?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="143411" name="to-read"/>
+      <shelf count="2563" name="currently-reading"/>
+      <shelf count="2340" name="humor"/>
+      <shelf count="2242" name="non-fiction"/>
+      <shelf count="2180" name="favorites"/>
+      <shelf count="1676" name="graphic-novels"/>
+      <shelf count="1182" name="memoir"/>
+      <shelf count="1103" name="nonfiction"/>
+      <shelf count="1094" name="graphic-novel"/>
+      <shelf count="782" name="comics"/>
+      <shelf count="452" name="humour"/>
+      <shelf count="428" name="funny"/>
+      <shelf count="414" name="owned"/>
+      <shelf count="379" name="comedy"/>
+      <shelf count="363" name="books-i-own"/>
+      <shelf count="347" name="biography"/>
+      <shelf count="317" name="memoirs"/>
+      <shelf count="295" name="read-in-2014"/>
+      <shelf count="256" name="adult"/>
+      <shelf count="237" name="húmor"/>
+      <shelf count="196" name="fiction"/>
+      <shelf count="195" name="short-stories"/>
+      <shelf count="182" name="mental-health"/>
+      <shelf count="176" name="favourites"/>
+      <shelf count="171" name="autobiography"/>
+      <shelf count="169" name="comics-graphic-novels"/>
+      <shelf count="168" name="biography-memoir"/>
+      <shelf count="167" name="graphic"/>
+      <shelf count="160" name="read-in-2013"/>
+      <shelf count="157" name="mental-illness"/>
+      <shelf count="152" name="read-in-2015"/>
+      <shelf count="148" name="library"/>
+      <shelf count="145" name="to-buy"/>
+      <shelf count="141" name="graphic-novels-comics"/>
+      <shelf count="131" name="read-2014"/>
+      <shelf count="129" name="essays"/>
+      <shelf count="128" name="cómics"/>
+      <shelf count="124" name="book-club"/>
+      <shelf count="106" name="comics-and-graphic-novels"/>
+      <shelf count="104" name="owned-books"/>
+      <shelf count="99" name="ebook"/>
+      <shelf count="98" name="read-in-2016"/>
+      <shelf count="98" name="contemporary"/>
+      <shelf count="89" name="comic"/>
+      <shelf count="88" name="depression"/>
+      <shelf count="87" name="kindle"/>
+      <shelf count="85" name="wish-list"/>
+      <shelf count="84" name="memoir-biography"/>
+      <shelf count="83" name="graphic-novels-and-comics"/>
+      <shelf count="81" name="psychology"/>
+      <shelf count="77" name="illustrated"/>
+      <shelf count="74" name="read-in-2017"/>
+      <shelf count="74" name="2014-reads"/>
+      <shelf count="71" name="read-2015"/>
+      <shelf count="70" name="fun"/>
+      <shelf count="68" name="humorous"/>
+      <shelf count="63" name="female-author"/>
+      <shelf count="62" name="ebooks"/>
+      <shelf count="56" name="2015-reading-challenge"/>
+      <shelf count="54" name="art"/>
+      <shelf count="52" name="dogs"/>
+      <shelf count="52" name="hilarious"/>
+      <shelf count="51" name="biographies"/>
+      <shelf count="48" name="read-2016"/>
+      <shelf count="48" name="read-2013"/>
+      <shelf count="48" name="non-fic"/>
+      <shelf count="47" name="library-books"/>
+      <shelf count="47" name="5-stars"/>
+      <shelf count="46" name="read-in-english"/>
+      <shelf count="45" name="borrowed"/>
+      <shelf count="45" name="reviewed"/>
+      <shelf count="45" name="all-time-favorites"/>
+      <shelf count="44" name="female-authors"/>
+      <shelf count="44" name="own-it"/>
+      <shelf count="43" name="2014-books"/>
+      <shelf count="43" name="favorite"/>
+      <shelf count="41" name="english"/>
+      <shelf count="41" name="animals"/>
+      <shelf count="41" name="women-authors"/>
+      <shelf count="40" name="my-library"/>
+      <shelf count="40" name="stand-alone"/>
+      <shelf count="39" name="women"/>
+      <shelf count="38" name="lol"/>
+      <shelf count="38" name="abandoned"/>
+      <shelf count="38" name="recommended"/>
+      <shelf count="38" name="bio-memoir"/>
+      <shelf count="36" name="my-books"/>
+      <shelf count="36" name="autobiography-memoir"/>
+      <shelf count="35" name="2014-read"/>
+      <shelf count="35" name="biographical"/>
+      <shelf count="34" name="2015-reads"/>
+      <shelf count="34" name="i-own"/>
+      <shelf count="33" name="2016-reads"/>
+      <shelf count="33" name="favorite-books"/>
+      <shelf count="33" name="2013-reads"/>
+      <shelf count="32" name="graphic-novel-comic"/>
+      <shelf count="32" name="adult-non-fiction"/>
+      <shelf count="32" name="comic-books"/>
+      <shelf count="32" name="comix"/>
+      <shelf count="31" name="books-read-in-2014"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Kobo</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple iBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works></series_works>
+    <similar_books>
+      <book>
+        <id>23848561</id>
+        <title><![CDATA[Step Aside, Pops (Hark! A Vagrant, #3)]]></title>
+        <title_without_series>Step Aside, Pops</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/23848561-step-aside-pops]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1446841265s/23848561.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1446841265m/23848561.jpg]]></image_url>
+        <num_pages>168</num_pages>
+        <work>
+          <id>43458443</id>
+        </work>
+        <isbn>1770462082</isbn>
+        <isbn13>9781770462083</isbn13>
+        <average_rating>4.11</average_rating>
+        <ratings_count>7838</ratings_count>
+        <publication_year>2015</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>15</publication_day>
+        <authors>
+          <author>
+            <id>2921970</id>
+            <name>Kate Beaton</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/2921970.Kate_Beaton]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>22488052</id>
+        <title>Displacement: A Travelogue</title>
+        <title_without_series>Displacement: A Travelogue</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/22488052-displacement]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1416176755s/22488052.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1416176755m/22488052.jpg]]></image_url>
+        <num_pages>161</num_pages>
+        <work>
+          <id>41927892</id>
+        </work>
+        <isbn>1606998102</isbn>
+        <isbn13>9781606998106</isbn13>
+        <average_rating>3.93</average_rating>
+        <ratings_count>3671</ratings_count>
+        <publication_year>2015</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>8</publication_day>
+        <authors>
+          <author>
+            <id>731384</id>
+            <name>Lucy Knisley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/731384.Lucy_Knisley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>16059657</id>
+        <title>My Dirty Dumb Eyes</title>
+        <title_without_series>My Dirty Dumb Eyes</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/16059657-my-dirty-dumb-eyes]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1358588674s/16059657.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1358588674m/16059657.jpg]]></image_url>
+        <num_pages>120</num_pages>
+        <work>
+          <id>21846421</id>
+        </work>
+        <isbn>1770461167</isbn>
+        <isbn13>9781770461161</isbn13>
+        <average_rating>4.01</average_rating>
+        <ratings_count>1696</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>28</publication_day>
+        <authors>
+          <author>
+            <id>3407411</id>
+            <name>Lisa Hanawalt</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3407411.Lisa_Hanawalt]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>22752445</id>
+        <title>SuperMutant Magic Academy</title>
+        <title_without_series>SuperMutant Magic Academy</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/22752445-supermutant-magic-academy]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1422266201s/22752445.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1422266201m/22752445.jpg]]></image_url>
+        <num_pages>276</num_pages>
+        <work>
+          <id>42299020</id>
+        </work>
+        <isbn>1770461981</isbn>
+        <isbn13>9781770461987</isbn13>
+        <average_rating>3.99</average_rating>
+        <ratings_count>5172</ratings_count>
+        <publication_year>2015</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>28</publication_day>
+        <authors>
+          <author>
+            <id>634455</id>
+            <name>Jillian Tamaki</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/634455.Jillian_Tamaki]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>18077878</id>
+        <title>Reasons My Kid Is Crying</title>
+        <title_without_series>Reasons My Kid Is Crying</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/18077878-reasons-my-kid-is-crying]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1375673092s/18077878.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1375673092m/18077878.jpg]]></image_url>
+        <num_pages>208</num_pages>
+        <work>
+          <id>25384293</id>
+        </work>
+        <isbn>0804139830</isbn>
+        <isbn13>9780804139830</isbn13>
+        <average_rating>4.02</average_rating>
+        <ratings_count>661</ratings_count>
+        <publication_year>2014</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>7135374</id>
+            <name>Greg Pembroke</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7135374.Greg_Pembroke]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>17138271</id>
+        <title><![CDATA[My Dog: The Paradox: A Lovable Discourse about Man's Best Friend]]></title>
+        <title_without_series><![CDATA[My Dog: The Paradox: A Lovable Discourse about Man's Best Friend]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/17138271-my-dog]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1391653917s/17138271.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1391653917m/17138271.jpg]]></image_url>
+        <num_pages>32</num_pages>
+        <work>
+          <id>23540485</id>
+        </work>
+        <isbn>1449437524</isbn>
+        <isbn13>9781449437527</isbn13>
+        <average_rating>4.22</average_rating>
+        <ratings_count>8641</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>7</publication_day>
+        <authors>
+          <author>
+            <id>3409358</id>
+            <name>Matthew Inman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3409358.Matthew_Inman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>13542990</id>
+        <title><![CDATA[Marbles: Mania, Depression, Michelangelo, and Me]]></title>
+        <title_without_series><![CDATA[Marbles: Mania, Depression, Michelangelo, and Me]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/13542990-marbles]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>256</num_pages>
+        <work>
+          <id>19107284</id>
+        </work>
+        <isbn>1592407323</isbn>
+        <isbn13>9781592407323</isbn13>
+        <average_rating>3.95</average_rating>
+        <ratings_count>10797</ratings_count>
+        <publication_year>2012</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>6</publication_day>
+        <authors>
+          <author>
+            <id>202782</id>
+            <name>Ellen Forney</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/202782.Ellen_Forney]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>13429614</id>
+        <title>Calling Dr. Laura</title>
+        <title_without_series>Calling Dr. Laura</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/13429614-calling-dr-laura]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1344716812s/13429614.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1344716812m/13429614.jpg]]></image_url>
+        <num_pages>262</num_pages>
+        <work>
+          <id>18920336</id>
+        </work>
+        <isbn>0547615590</isbn>
+        <isbn13>9780547615592</isbn13>
+        <average_rating>3.84</average_rating>
+        <ratings_count>5463</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>22</publication_day>
+        <authors>
+          <author>
+            <id>7388682</id>
+            <name>Nicole J. Georges</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/7388682.Nicole_J_Georges]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>25528454</id>
+        <title><![CDATA[Not Funny Ha-Ha: A Handbook for Something Hard]]></title>
+        <title_without_series><![CDATA[Not Funny Ha-Ha: A Handbook for Something Hard]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/25528454-not-funny-ha-ha]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1435193433s/25528454.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1435193433m/25528454.jpg]]></image_url>
+        <num_pages>148</num_pages>
+        <work>
+          <id>45315922</id>
+        </work>
+        <isbn>1606998390</isbn>
+        <isbn13>9781606998397</isbn13>
+        <average_rating>3.96</average_rating>
+        <ratings_count>850</ratings_count>
+        <publication_year>2015</publication_year>
+        <publication_month>6</publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>521053</id>
+            <name>Leah Hayes</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/521053.Leah_Hayes]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>16006353</id>
+        <title><![CDATA[The Infinite Wait and Other Stories]]></title>
+        <title_without_series><![CDATA[The Infinite Wait and Other Stories]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/16006353-the-infinite-wait-and-other-stories]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1347557130s/16006353.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1347557130m/16006353.jpg]]></image_url>
+        <num_pages>228</num_pages>
+        <work>
+          <id>21771264</id>
+        </work>
+        <isbn></isbn>
+        <isbn13></isbn13>
+        <average_rating>4.20</average_rating>
+        <ratings_count>1195</ratings_count>
+        <publication_year>2012</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>939900</id>
+            <name>Julia Wertz</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/939900.Julia_Wertz]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>4309574</id>
+        <title><![CDATA[Picture This: The Near-Sighted Monkey Book]]></title>
+        <title_without_series><![CDATA[Picture This: The Near-Sighted Monkey Book]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/4309574-picture-this]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>204</num_pages>
+        <work>
+          <id>4357297</id>
+        </work>
+        <isbn>1897299648</isbn>
+        <isbn13>9781897299647</isbn13>
+        <average_rating>4.25</average_rating>
+        <ratings_count>1208</ratings_count>
+        <publication_year>2010</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>9</publication_day>
+        <authors>
+          <author>
+            <id>11646</id>
+            <name>Lynda Barry</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/11646.Lynda_Barry]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>18124640</id>
+        <title>Bandette, Volume 1: Presto!</title>
+        <title_without_series>Bandette, Volume 1: Presto!</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/18124640-bandette-volume-1]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1403207305s/18124640.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1403207305m/18124640.jpg]]></image_url>
+        <num_pages>144</num_pages>
+        <work>
+          <id>25455666</id>
+        </work>
+        <isbn>1616552794</isbn>
+        <isbn13>9781616552794</isbn13>
+        <average_rating>3.88</average_rating>
+        <ratings_count>2611</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>11</publication_month>
+        <publication_day>5</publication_day>
+        <authors>
+          <author>
+            <id>440975</id>
+            <name>Paul Tobin</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/440975.Paul_Tobin]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>10935132</id>
+        <title>Cat vs Human</title>
+        <title_without_series>Cat vs Human</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/10935132-cat-vs-human]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1337145711s/10935132.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1337145711m/10935132.jpg]]></image_url>
+        <num_pages>152</num_pages>
+        <work>
+          <id>15852296</id>
+        </work>
+        <isbn>1449408656</isbn>
+        <isbn13>9781449408657</isbn13>
+        <average_rating>4.03</average_rating>
+        <ratings_count>1709</ratings_count>
+        <publication_year>2011</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>4</publication_day>
+        <authors>
+          <author>
+            <id>4753536</id>
+            <name>Yasmine Surovec</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/4753536.Yasmine_Surovec]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>17210471</id>
+        <title>Saints (Boxers &amp; Saints, #2)</title>
+        <title_without_series>Saints</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/17210471-saints]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1359199657s/17210471.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1359199657m/17210471.jpg]]></image_url>
+        <num_pages>170</num_pages>
+        <work>
+          <id>23691810</id>
+        </work>
+        <isbn>1596436891</isbn>
+        <isbn13>9781596436893</isbn13>
+        <average_rating>3.84</average_rating>
+        <ratings_count>11418</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>10</publication_day>
+        <authors>
+          <author>
+            <id>68959</id>
+            <name>Gene Luen Yang</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/68959.Gene_Luen_Yang]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>16231347</id>
+        <title><![CDATA[The Adventures of Superhero Girl]]></title>
+        <title_without_series><![CDATA[The Adventures of Superhero Girl]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/16231347-the-adventures-of-superhero-girl]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1455007526s/16231347.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1455007526m/16231347.jpg]]></image_url>
+        <num_pages>112</num_pages>
+        <work>
+          <id>22223422</id>
+        </work>
+        <isbn>1616550848</isbn>
+        <isbn13>9781616550844</isbn13>
+        <average_rating>3.92</average_rating>
+        <ratings_count>5622</ratings_count>
+        <publication_year>2013</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>26</publication_day>
+        <authors>
+          <author>
+            <id>996558</id>
+            <name>Faith Erin Hicks</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/996558.Faith_Erin_Hicks]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>11725494</id>
+        <title>Marzi</title>
+        <title_without_series>Marzi</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/11725494-marzi]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1320565695s/11725494.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1320565695m/11725494.jpg]]></image_url>
+        <num_pages>240</num_pages>
+        <work>
+          <id>16673963</id>
+        </work>
+        <isbn>140122959X</isbn>
+        <isbn13>9781401229597</isbn13>
+        <average_rating>3.84</average_rating>
+        <ratings_count>1243</ratings_count>
+        <publication_year>2011</publication_year>
+        <publication_month>10</publication_month>
+        <publication_day>25</publication_day>
+        <authors>
+          <author>
+            <id>1194201</id>
+            <name>Marzena Sowa</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/1194201.Marzena_Sowa]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>6407014</id>
+        <title>Stitches</title>
+        <title_without_series>Stitches</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/6407014-stitches]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1327728261s/6407014.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1327728261m/6407014.jpg]]></image_url>
+        <num_pages>329</num_pages>
+        <work>
+          <id>6595917</id>
+        </work>
+        <isbn>0393068579</isbn>
+        <isbn13>9780393068573</isbn13>
+        <average_rating>4.03</average_rating>
+        <ratings_count>20207</ratings_count>
+        <publication_year>2009</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>8</publication_day>
+        <authors>
+          <author>
+            <id>104017</id>
+            <name>David Small</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/104017.David_Small]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>25761329</id>
+        <title><![CDATA[Lumberjanes, Vol. 3: A Terrible Plan]]></title>
+        <title_without_series><![CDATA[Lumberjanes, Vol. 3: A Terrible Plan]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/25761329-lumberjanes-vol-3]]></link>
+        <small_image_url><![CDATA[https://images.gr-assets.com/books/1445630715s/25761329.jpg]]></small_image_url>
+        <image_url><![CDATA[https://images.gr-assets.com/books/1445630715m/25761329.jpg]]></image_url>
+        <num_pages>112</num_pages>
+        <work>
+          <id>46670296</id>
+        </work>
+        <isbn>1608868036</isbn>
+        <isbn13>9781608868032</isbn13>
+        <average_rating>4.09</average_rating>
+        <ratings_count>10023</ratings_count>
+        <publication_year>2016</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>5</publication_day>
+        <authors>
+          <author>
+            <id>6887314</id>
+            <name>Noelle Stevenson</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/6887314.Noelle_Stevenson]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>

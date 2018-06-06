@@ -128,6 +128,7 @@ def _parse_book_api(xml):
             break
 
     # FIXME work out category and genres too
+    category = _get_category([s.get('name') for s in xml.findall('book/popular_shelves/')])
 
     return {
         'Language': lang,
@@ -135,6 +136,7 @@ def _parse_book_api(xml):
         'Series': series,
         'Series Id': series_id,
         'Entry': entry,
+        'Category': category,
     }
 
 
@@ -169,7 +171,26 @@ def _parse_series(xml):
     }
 
 
+# tries to divine what sort of book this is based on the shelves.
+def _get_category(shelves):
+    patterns = (
+        ('graphic', ('graphic-novels', 'comics', 'graphic-novel')),
+        ('short-stories', ('short-stories', 'short-story')),
+        ('non-fiction', ('non-fiction', 'nonfiction')),
+        ('novel', ('novel', 'novels', 'roman', 'romans')),
+    )
+
+    for shelf in shelves:
+        for (c, n) in patterns:
+            if shelf in n:
+                return c
+
+    return ''
+
+
 if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    print(process_book(r))
+    r = ElementTree.parse(sys.argv[1])
+    print(_parse_book_api(r)['Category'])
+    #print(process_book(r))
 
