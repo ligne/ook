@@ -77,7 +77,7 @@ def ignore(series_id):
 class Series():
 
     import pandas as pd
-    _df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added'], dtype={'Original Publication Year': str}, na_values=[]).drop_duplicates(['Work Id'])
+    _df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added'], dtype={'Original Publication Year': str})
 
 
     def __init__(self, author=None, series=None, settings=None, df=_df):
