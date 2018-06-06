@@ -78,11 +78,6 @@ def test__dates():
 
 def test_schedule():
 
-    # one a year, already read this year
-    # multiple a year, already read this year
-
-    ############################################################################
-
     df = pd.read_csv(StringIO("""
 Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Exclusive Shelf,Language,My Rating,Number of Pages,Original Publication Year,Scheduled,Series,Series Id,Title,Work Id
 34527,Terry Pratchett,1654,4.27,Paperback,"borrowed, elsewhere",True,2016/05/22,,,19,elsewhere,,0,416,1996,,Discworld,40650,Feet of Clay,3312754
@@ -108,6 +103,7 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
         ('2024-01-01', 'Hogfather'),
     ])
 
+    # multiple a year, already read this year
     eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
         'series': 'Discworld$',
         'per_year': 4,
