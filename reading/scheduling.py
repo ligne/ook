@@ -3,6 +3,7 @@
 import datetime
 import sys
 import itertools
+from dateutil.parser import parse
 
 from .series import Series
 
@@ -37,15 +38,31 @@ def scheduled(df):
         print()
 
 
-def lint(df):
-    horizon = str(datetime.date.today().year + 2)
+# fix up df with the scheduled dates
+def _set_schedules(df, scheduled=None, col='Scheduled'):
+    for settings in scheduled or config['scheduled']:
+        for d, book in _schedule(df, settings):
+            df.loc[book,col] = parse(d)
 
-    for settings in config['scheduled']:
-        for date, book in _schedule(df, settings):
-            book = df.loc[book]
-            if float(date[:4]) != book.Scheduled and date[:4] <= horizon:
-                print(date[:4], book.Scheduled, book.Title, 'https://www.goodreads.com/book/show/{}'.format(book.name))
-        print('----')
+
+# books ready to be read
+#   FIXME delay if per_year == 1.  fix using most recent read date?
+def scheduled_at(df, date=datetime.date.today(), scheduled=None):
+    _set_schedules(df, scheduled)
+    return df[(df.Scheduled.dt.year == date.year)&(df.Scheduled <= date)].sort_values('Title')
+
+
+# check the scheduled years are set correctly.
+def lint(df):
+    horizon = str(datetime.date.today().year + 3)
+
+    _set_schedules(df, config['scheduled'], 'Sched')
+    df = df[df.Sched.notnull()]  # ignore unscheduled or manually-scheduled books
+    df = df[(df.Sched < horizon)&(df.Scheduled.dt.year != df.Sched.dt.year)]
+    for ix, book in df.iterrows():
+        print('{} {} {} - https://www.goodreads.com/book/show/{}'.format(book.Sched.year, book.Scheduled.year, book.Title, ix))
+    print('----')
+    return df
 
 
 def _schedule(df, settings, date=datetime.date.today()):
@@ -87,10 +104,20 @@ def _dates(start, per_year=1, offset=1):
 
 if __name__ == "__main__":
     import pandas as pd
-    df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added'], dtype={'Original Publication Year': float}, na_values=[])
+    df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added', 'Scheduled'], dtype={'Original Publication Year': float}, na_values=[])
     df = df[~df['Exclusive Shelf'].isin(['to-read'])]
     df = df.drop_duplicates(['Work Id'])
 
     lint(df)
+    print('----')
     scheduled(df)
+    print('----')
+    for ix, row in scheduled_at(df, datetime.date(2019, 12, 31)).sort_values('Title').iterrows():
+        print(row.Title)
+    print('----')
+    for ix, row in scheduled_at(df, datetime.date(2018, 10, 2)).sort_values('Title').iterrows():
+        print(row.Title)
+    print('----')
+    for ix, row in scheduled_at(df, datetime.date.today()).sort_values('Title').iterrows():
+        print(row.Title)
 

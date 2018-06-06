@@ -175,3 +175,65 @@ Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,
         ('2025-01-01', 10, 'Pot-Bouille'),
     ])
 
+
+def test_scheduled_at():
+
+    df = pd.read_csv(StringIO("""
+Book Id,Author,Author Id,Average Rating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Exclusive Shelf,Language,My Rating,Number of Pages,Original Publication Year,Scheduled,Series,Series Id,Title,Work Id
+956325,Alexandre Dumas,4785,4.02,Paperback,"2018, ebooks",False,2016/11/08,,,2,ebooks,fr,0,904,1845,2018,The d'Artagnan Romances,55138,Vingt ans après,666376
+20636970,Émile Zola,4750,3.84,Paperback,read,False,2017/02/07,2018/03/14,2017/12/28,2,read,fr,3,380,1872,,Les Rougon-Macquart,40441,La Curée,839934
+366649,Émile Zola,4750,3.90,Paperback,"2018, pending",False,2017/06/20,,,3,pending,fr,0,384,1873,2018,Les Rougon-Macquart,40441,Le Ventre de Paris,10242
+1372764,Honoré de Balzac,228089,3.81,Mass Market Paperback,read,False,2016/08/30,2017/12/23,2017/06/14,,read,fr,4,381,1832,,,,La Maison du Chat-qui-pelote : et autres scènes de la vie privée,1362636
+1312606,Honoré de Balzac,228089,3.85,Mass Market Paperback,"2019, borrowed, elsewhere",True,2016/05/12,,,68,elsewhere,,0,407,1831,2019,La Comédie Humaine,56707,La Peau De Chagrin,1350145
+290566,Iain Banks,7628,3.21,Paperback,"2019, pending",False,2017/09/26,,,,pending,en,0,198,1989,2019,,,Canal Dreams,1494165
+827620,Iain Banks,7628,3.70,Paperback,read,False,2016/10/31,2017/04/21,2017/04/17,,read,en,4,239,1985,,,,Walking On Glass,813340
+1291492,Iain Banks,7628,3.86,,read,False,2016/10/31,2018/04/19,2018/04/14,,read,,3,249,1987,,,,Espedair Street,554751
+567700,Iain M. Banks,5807106,3.85,,"2018, pending",False,2016/04/18,,,4,pending,en,0,216,1991,2018,Culture,49118,The State of the Art,1280581
+12012,Iain M. Banks,5807106,4.26,,read,False,2016/04/18,2018/01/29,2018/01/15,2,read,en,4,309,1988,,Culture,49118,The Player of Games,1494157
+25965499,Iain M. Banks,5807106,4.49,ebook,"2018, ebooks",False,2016/01/19,,,,ebooks,en,0,17,1994,2018,,,A Few Notes on the Culture,45871652
+38290,James Fenimore Cooper,9121,3.37,Paperback,"2018, pending",False,2017/02/27,,,1,pending,,0,496,1823,2018,The Leatherstocking Tales,81550,The Pioneers,443966
+833422,Terry Pratchett,1654,4.01,Mass Market Paperback,read,False,2017/09/26,2018/04/27,2018/04/22,3,read,en,4,283,1987,,Discworld,40650,Equal Rites,583611
+833427,Terry Pratchett,1654,4.21,Paperback,"2018, borrowed, pending",True,2016/01/18,,,12,pending,en,0,288,1991,2018,Discworld,40650,Witches Abroad,929672
+833444,Terry Pratchett,1654,4.23,Paperback,read,False,2017/05/24,2018/01/14,2018/01/05,4,read,,5,320,1987,,Discworld,40650,Mort,1857065
+833424,Terry Pratchett,1654,4.28,Paperback,"2018, borrowed, elsewhere",True,2016/05/12,,,11,elsewhere,en,0,287,1991,2018,Discworld,40650,Reaper Man,1796454
+3263729,Unknown,4699102,3.95,Paperback,"2018, pending",False,2016/04/18,,2016/06/11,,pending,en,0,293,1410,2018,,,The Mabinogion,162739
+"""), index_col=0, parse_dates=['Date Read', 'Date Added', 'Scheduled'])
+
+    scheduled = [
+        {'author': 'Haruki Murakami'},
+        {'author': 'Honoré de Balzac'},
+        {'author': 'Iain Banks', 'offset': 4},
+        {'author': 'Iain M. Banks', 'force': 2018, 'offset': 10},
+        {'series': 'Discworld$', 'per_year': 4},
+        {'series': 'Leatherstocking Tales'},
+        {'series': 'Rougon-Macquart', 'force': 2018},
+    ]
+
+    eq_([ row.Title for (ix, row) in reading.scheduling.scheduled_at(df, date=datetime.date(2018, 6, 4), scheduled=scheduled).iterrows()], [
+        'La Peau De Chagrin',
+        'Le Ventre de Paris',
+        'The Mabinogion',
+        'The Pioneers',
+        'Vingt ans après',
+    ])
+
+    eq_([ row.Title for (ix, row) in reading.scheduling.scheduled_at(df, date=datetime.date(2018, 7, 4), scheduled=scheduled).iterrows()], [
+        'La Peau De Chagrin',
+        'Le Ventre de Paris',
+        'Reaper Man',
+        'The Mabinogion',
+        'The Pioneers',
+        'Vingt ans après',
+    ])
+
+    eq_([ row.Title for (ix, row) in reading.scheduling.scheduled_at(df, date=datetime.date(2018, 10, 4), scheduled=scheduled).iterrows()], [
+        'La Peau De Chagrin',
+        'Le Ventre de Paris',
+        'Reaper Man',
+        'The Mabinogion',
+        'The Pioneers',
+        'The State of the Art',
+        'Vingt ans après',
+        'Witches Abroad',
+    ])
+
