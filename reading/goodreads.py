@@ -127,8 +127,7 @@ def _parse_book_api(xml):
             entry = s.find('user_position').text
             break
 
-    # FIXME work out category and genres too
-    category = _get_category([s.get('name') for s in xml.findall('book/popular_shelves/')])
+    shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
     return {
         'Language': lang,
@@ -136,7 +135,7 @@ def _parse_book_api(xml):
         'Series': series,
         'Series Id': series_id,
         'Entry': entry,
-        'Category': category,
+        'Category': _get_category(shelves),
     }
 
 
