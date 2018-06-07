@@ -175,8 +175,8 @@ def _parse_series(xml):
 def _get_category(shelves):
     patterns = (
         ('graphic', ('graphic-novels', 'comics', 'graphic-novel')),
-        ('short-stories', ('short-stories', 'short-story')),
-        ('non-fiction', ('non-fiction', 'nonfiction')),
+        ('short-stories', ('short-stories', 'short-story', 'nouvelles', 'short-story-collections', 'relatos-cortos')),
+        ('non-fiction', ('non-fiction', 'nonfiction', 'essays')),
         ('novel', ('novel', 'novels', 'roman', 'romans')),
     )
 
