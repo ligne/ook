@@ -184,12 +184,24 @@ def _get_category(shelves):
             if shelf in n:
                 return c
 
+    # if that failed, try and guess a sensible default
+    patterns = (
+        ('non-fiction', ('education', 'theology', 'linguistics')),
+        ('novel', ('fiction')),
+    )
+
+    for shelf in shelves:
+        for (c, n) in patterns:
+            if shelf in n:
+                return c
+
     return ''
 
 
 if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    r = ElementTree.parse(sys.argv[1])
-    print(_parse_book_api(r)['Category'])
+    for f in sys.argv[1:]:
+        r = ElementTree.parse(f)
+        print(_parse_book_api(r)['Category'])
     #print(process_book(r))
 
