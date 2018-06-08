@@ -109,7 +109,7 @@ def _changed(old, new):
 
 # formatting for a book that's been added/removed/changed
 def _added_book(book):
-    return "Added '{Title}' by {Author}\n".format(**book)
+    return "Added '{Title}' by {Author}\n  {Category}\n".format(**book)
     # FIXME print more information
 
 
