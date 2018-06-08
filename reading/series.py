@@ -98,7 +98,9 @@ class Series():
             self.series = series
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
-            self.df = df[df.Series.fillna('').str.contains(series)]
+            # FIXME ugh
+            self.df = df[df.Series.fillna('').str.contains(series)].copy()
+            self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
         else:
             # error
             raise ValueError("Must provide either author or series.")
