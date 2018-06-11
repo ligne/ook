@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import math
@@ -128,7 +128,7 @@ def print_rows(df):
         fmt = '{Number of Pages:4.0f}  {Title}'
         if row['Author']:
             fmt += ' ({Author})'
-        print fmt.format(**row)
+        print(fmt.format(**row))
 
 
 ################################################################################
