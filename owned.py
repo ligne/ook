@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -21,13 +21,13 @@ df = df.drop_duplicates(['Author', 'Title'])
 g = df.sort_values(['Author', 'Title']).groupby('Author')
 
 for author in sorted(g.groups.keys()):
-    print '{}'.format(author)
+    print('{}'.format(author))
     for ix, row in g.get_group(author).iterrows():
-        print '* {Title}'.format(**row)
-    print
+        print('* {Title}'.format(**row))
+    print()
 
-print '----'
-print 'Ebooks'
+print('----')
+print('Ebooks')
 
 df = reading.get_books(shelves=[
     'kindle',
@@ -39,13 +39,13 @@ df = df.drop_duplicates(['Author', 'Title'])
 g = df.sort_values(['Author', 'Title']).groupby('Author')
 
 for author in sorted(g.groups.keys()):
-    print '{}'.format(author)
+    print('{}'.format(author))
     for ix, row in g.get_group(author).iterrows():
-        print '* {Title}'.format(**row)
-    print
+        print('* {Title}'.format(**row))
+    print()
 
-print '----'
-print 'To read'
+print('----')
+print('To read')
 
 df = reading.get_books(shelves=[
     'to-read',
@@ -57,9 +57,9 @@ df = df.drop_duplicates(['Author', 'Title'])
 g = df.sort_values(['Author', 'Title']).groupby('Author')
 
 for author in sorted(g.groups.keys()):
-    print '{}'.format(author)
+    print('{}'.format(author))
     for ix, row in g.get_group(author).iterrows():
-        print '* {Title}'.format(**row)
-    print
+        print('* {Title}'.format(**row))
+    print()
 
 # vim: ts=4 : sw=4 : et
