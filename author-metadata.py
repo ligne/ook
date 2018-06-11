@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import re
@@ -24,7 +24,7 @@ if len(sys.argv) > 1:
     parser.add_argument('--grid', type=int)
     args = parser.parse_args()
 
-    print args.__dict__
+    print(args.__dict__)
 
     df = reading.get_books(fix_names=False)
     df = df.append(reading.ebooks.get_books(fix_names=False))
@@ -36,7 +36,7 @@ if len(sys.argv) > 1:
         terms = args.author
         col = 'Author'
     else:
-        print "Either --book or --author must be specified"
+        print("Either --book or --author must be specified")
         sys.exit()
 
     for term in terms:
@@ -45,17 +45,17 @@ if len(sys.argv) > 1:
     name = df[col].unique()
 
     if len(name) > 1:
-        print "Not specific enough:"
+        print("Not specific enough:")
         for term in name:
-            print ' ', term
+            print(' ', term)
         sys.exit()
     if not len(df):
-        print "Nothing found"
+        print("Nothing found")
         sys.exit()
 
     # get the term
     name = name[0]
-    print name
+    print(name)
 
     # instantiate an object, set it, and fetch
     if args.book:
@@ -64,7 +64,7 @@ if len(sys.argv) > 1:
         o = Author(name, qid=args.qid, grid=args.grid)
 
     o.fetch_missing()
-    print o._item
+    print(o._item)
 
 #     Book.save()
 #     Author.save()
@@ -83,7 +83,7 @@ for ix, book in df.iterrows():
         if len(b.get('AQIDs', [])) == 1:
             Author(book['Author'], qid=b.get('AQIDs')[0])
     except Exception as e:
-        print e
+        print(e)
 
 ################################################################################
 
@@ -107,7 +107,7 @@ for author in authors:
     try:
         Author(author).fetch_missing()
     except Exception as e:
-        print e
+        print(e)
 
 Book.save()
 Author.save()
