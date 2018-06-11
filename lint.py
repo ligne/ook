@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -23,11 +23,11 @@ def print_entries(df, desc, additional=[]):
     for field in additional:
         fmt += '\n  {0}:\t{{{0}}}'.format(field)
 
-    print '=== {} ==='.format(desc)
-    print
+    print('=== {} ==='.format(desc))
+    print()
     for ix, row in df.iterrows():
-        print fmt.format(**row)
-        print
+        print(fmt.format(**row))
+        print()
 
 
 ################################################################################
