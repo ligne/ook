@@ -98,8 +98,8 @@ class Series():
             self.series = series
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
-            # FIXME ugh
-            self.df = df[df.Series.fillna('').str.contains(series)].copy()
+            self.df = df[df.Series.str.contains(series, na=False)].copy()
+            # FIXME add a sortable Entry column
             self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
         else:
             # error
