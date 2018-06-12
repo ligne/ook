@@ -1,6 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-import nose
 from nose.tools import *
 from xml.etree import ElementTree
 
@@ -58,6 +57,6 @@ def test__parse_entries():
 
 
 def test_ignore():
-    nose.tools.assert_equals(reading.series.ignore(1), False)
-    nose.tools.assert_equals(reading.series.ignore(123), True)
+    eq_(reading.series.ignore(1), False)
+    eq_(reading.series.ignore(123), True)
 
