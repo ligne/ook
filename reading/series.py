@@ -2,6 +2,9 @@
 
 import sys
 import datetime
+import operator
+import re
+from functools import reduce
 
 
 # configuration:
@@ -54,13 +57,33 @@ def hidden(df):
     pass
 
 
+# extracts a single entry from a string.
+def _get_entry(string):
+    # strip out the leading number and try and make it an int.
+    try:
+        m = re.match('\s*([\d.]+)', string)
+        return int(m.group(0))
+    except (ValueError, AttributeError):
+        return
+
+
 # converts an entries string into a list of integers
 def _parse_entries(entries):
-    if '-' in entries:
-        start, end = entries.split('-')
-        return list(range(int(start), int(end)+1))
+    if not entries:
+        return []
+
+    if re.search('[,&]', entries):
+        return reduce(operator.concat, [
+            _parse_entries(x) for x in re.split('[,&]', entries)
+        ])
+    elif '-' in entries:
+        start, end = map(lambda x: _get_entry(x), entries.split('-'))
+        if start and end:
+            return list(range(start, end+1))
+        return []
     else:
-        return [int(entries)]
+        e = _get_entry(entries)
+        return e and [e] or []
 
 
 # return the information for the series
