@@ -19,6 +19,8 @@ def test__parse_entries():
     eq_(_parse_entries('1-2'), [1,2])
     eq_(_parse_entries('2-4'), [2,3,4])
     eq_(_parse_entries('2-4 '), [2,3,4])
+    eq_(_parse_entries('0'), [0])
+    eq_(_parse_entries('0-2'), [0,1,2])
 
     eq_(_parse_entries('1, 2'), [1,2])
     eq_(_parse_entries('1,2'), [1,2])

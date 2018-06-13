@@ -78,12 +78,12 @@ def _parse_entries(entries):
         ])
     elif '-' in entries:
         start, end = map(lambda x: _get_entry(x), entries.split('-'))
-        if start and end:
+        if None not in (start, end):
             return list(range(start, end+1))
         return []
     else:
         e = _get_entry(entries)
-        return e and [e] or []
+        return (e is not None) and [e] or []
 
 
 # return the information for the series
