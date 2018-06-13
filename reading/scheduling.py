@@ -103,9 +103,8 @@ def _dates(start, per_year=1, offset=1):
 
 
 if __name__ == "__main__":
-    import pandas as pd
-    df = pd.read_csv('gr-api.csv', index_col=0, parse_dates=['Date Read', 'Date Added', 'Scheduled'], dtype={'Original Publication Year': float}, na_values=[])
-    df = df[~df['Exclusive Shelf'].isin(['to-read'])]
+    from .collection import Collection
+    df = Collection(shelves=['read', 'pending', 'elsewhere', 'ebooks', 'library']).df
     df = df.drop_duplicates(['Work Id'])
 
     lint(df)

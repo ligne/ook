@@ -182,6 +182,14 @@ def _finished_book(book):
 ################################################################################
 
 if __name__ == "__main__":
+    from .collection import Collection
+    old = Collection(gr_csv=sys.argv[1]).df.fillna('')
+    new = Collection(gr_csv=sys.argv[2]).df.fillna('')
+
+    _changed(old, new)
+
+    print('************')
+
     import pandas as pd
     old = pd.read_csv(sys.argv[1], index_col=0).fillna('')
     new = pd.read_csv(sys.argv[2], index_col=0).fillna('')
