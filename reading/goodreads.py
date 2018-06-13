@@ -89,11 +89,18 @@ def fetch_book(book_id):
         book.update(_parse_book_html(_fetch_book_html(book_id)))
 
     # fetch series
-    if book['Series Id']:
-        series = _parse_series(_fetch_series(book['Series Id']))
-        reading.series.cache[book['Series Id']] = series
+    series_id = book['Series Id']
+    if series_id:
+        series = _parse_series(_fetch_series(series_id))
+        reading.series.cache[series_id] = series
 
-    # using the series, fix up book if necessary
+        if not reading.series.interesting(book['Entry'], series):
+            # remove the series information
+            book.update({
+                'Series Id': None,
+                'Series': None,
+                'Entry': None,
+            })
 
     return book
 
