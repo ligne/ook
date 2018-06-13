@@ -25,7 +25,7 @@ def get_books():
 
     while True:
         r = requests.get('https://www.goodreads.com/review/list/10052745.xml', params={
-            'key': config['GR Key'],
+            'key': config['goodreads']['key'],
 #            'shelf': 'read',
             #'sort': 'date_added',
             'v': 2,
@@ -112,7 +112,7 @@ def _fetch_book_api(book_id):
             xml = fh.read()
     except FileNotFoundError:
         xml = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
-            'key': config['GR Key'],
+            'key': config['goodreads']['key'],
         }).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
@@ -162,7 +162,7 @@ def _fetch_series(series_id):
             xml = fh.read()
     except FileNotFoundError:
         xml = requests.get('https://www.goodreads.com/series/show/{}.xml'.format(series_id), params={
-            'key': config['GR Key'],
+            'key': config['goodreads']['key'],
         }).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
