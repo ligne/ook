@@ -6,7 +6,6 @@ import operator
 import re
 from functools import reduce
 
-
 # configuration:
 #   series information cache.  build it from the series extracted from books.
 #   series configuration.
@@ -23,23 +22,16 @@ from functools import reduce
 #   strict -- all books must be there; warn and leave gaps
 #   ignore -- pretend gaps aren't there
 #   break -- suspend when there's a gap.
+# only trilogies need to be strict, so default to 'ignore'?
 
 # might be multiple volumes of the same work
 #   subsume into volumes information
-# might be the entirety of a series in one volume
-#   get list of entries.
-#   dedup
-#   check if it matches the list from this volume.  and/or the count?
-#   ignore if that's the case
-# might not have an entry at all
 
 # use-cases
 #   scheduling
 #   handling book data
 #   linting for missing books?
 #   hiding blocked books
-
-# only trilogies need to be strict, so default to 'ignore'?
 
 # FIXME this is horrible.
 from .cache import load_yaml
