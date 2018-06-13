@@ -5,9 +5,9 @@ from xml.etree import ElementTree
 
 import reading.goodreads
 
-def test_process_book():
+def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
-    nose.tools.eq_(reading.goodreads.process_book(r), {
+    nose.tools.eq_(reading.goodreads.process_review(r), {
         'Author': 'Joe Haldeman',
         'Author Id': '12476',
         'Average Rating': '4.15',
@@ -27,7 +27,7 @@ def test_process_book():
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    nose.tools.eq_(reading.goodreads.process_book(r), {
+    nose.tools.eq_(reading.goodreads.process_review(r), {
         'Author': 'James Fenimore Cooper',
         'Author Id': '9121',
         'Average Rating': '3.37',
@@ -47,7 +47,7 @@ def test_process_book():
     })
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
-    nose.tools.eq_(reading.goodreads.process_book(r), {
+    nose.tools.eq_(reading.goodreads.process_review(r), {
         'Author Id': '143840',
         'Author': u'Françoise Mallet-Joris',
         'Average Rating': '3.51',

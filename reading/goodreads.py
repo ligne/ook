@@ -37,7 +37,7 @@ def get_books():
         x = ElementTree.fromstring(r.content)
 
         for r in x.findall('reviews/'):
-            book = process_book(r)
+            book = process_review(r)
             book.update(fetch_book(book['Book Id']))
             books.append(book)
 
@@ -57,8 +57,8 @@ def _get_date(xml, tag):
     return date and parse(date).strftime('%Y/%m/%d') or ''
 
 
-# extract the interesting information from an xml blob, as a hash.
-def process_book(r):
+# extract the interesting information from an xml review, as a hash.
+def process_review(r):
     row = {
         'Book Id': int(r.find('book/id').text),
         'Work Id': r.find('book/work/id').text,
@@ -210,5 +210,5 @@ if __name__ == "__main__":
     for f in sys.argv[1:]:
         r = ElementTree.parse(f)
         print(_parse_book_api(r)['Category'])
-    #print(process_book(r))
+    #print(process_review(r))
 
