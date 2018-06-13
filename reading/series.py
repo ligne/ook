@@ -86,6 +86,19 @@ def _parse_entries(entries):
         return (e is not None) and [e] or []
 
 
+# returns False if the series is deemed uninteresting.
+def interesting(entry, series):
+    book_entries = _parse_entries(entry)
+    series_entries = reduce(operator.concat, [
+        _parse_entries(x) for x in series['Entries']
+    ])
+
+    if set(book_entries) == set(series_entries):
+        return False
+
+    return True
+
+
 # return the information for the series
 # from cache and config?
 def _get_series_settings(series):

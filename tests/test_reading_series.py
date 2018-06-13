@@ -4,7 +4,7 @@ from nose.tools import *
 from xml.etree import ElementTree
 
 import reading.series
-from reading.series import _parse_entries, _get_entry
+from reading.series import _parse_entries, _get_entry, interesting
 
 
 def test__get_entry():
@@ -56,6 +56,20 @@ def test__parse_entries():
     eq_(_parse_entries('0.5-0.6'), [])
     eq_(_parse_entries('1-3, 3.1'), [1,2,3])
     eq_(_parse_entries('4, 5.2 & 13 '), [4, 13])
+
+
+def test_interesting():
+    eq_(interesting('1', {
+        'Entries': [ '1', '2', '3' ]
+    }), True)
+
+    eq_(interesting('1', {
+        'Entries': ['1']
+    }), False)
+
+    eq_(interesting('1-2', {
+        'Entries': ['1', '2']
+    }), False)
 
 
 def test_ignore():
