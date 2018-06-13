@@ -65,7 +65,7 @@ def process_book(r):
         'Author': re.sub(' +', ' ', r.find('book/authors/*').find('name').text),
         'Author Id': ', '.join([ a.find('id').text for a in r.findall('book/authors/author') ]),
         'Title': r.find('book/title_without_series').text,
-        'Date Added': parse(r.find('date_added').text).strftime('%Y/%m/%d'),
+        'Date Added': _get_date(r, 'date_added'),
         'Date Started': _get_date(r, 'started_at'),
         'Date Read': _get_date(r, 'read_at'),
         'Number of Pages': r.find('book/num_pages').text,
