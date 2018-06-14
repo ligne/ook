@@ -12,7 +12,6 @@ parser.add_argument('-n', '--ignore-changes', action='store_true')
 args = parser.parse_args()
 
 df = reading.goodreads.get_books()
-df = df.set_index('Book Id')
 
 old = pd.read_csv('gr-api.csv', index_col=0, dtype=object)
 
