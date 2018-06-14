@@ -16,7 +16,7 @@ df = reading.goodreads.get_books()
 old = reading.collection._get_gr_books()
 
 if not args.ignore_changes:
-    df.sort_index().to_csv('gr-api.csv', float_format='%.f')
+    df.sort_index().to_csv('gr-api.csv', float_format='%g')
 
 reading.compare._changed(old.fillna(''), df.fillna(''))
 
