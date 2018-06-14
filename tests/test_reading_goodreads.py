@@ -12,42 +12,42 @@ import reading.goodreads
 def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
     eq_(reading.goodreads.process_review(r), {
-        'Author': 'Joe Haldeman',
         'Author Id': 12476,
+        'Author': 'Joe Haldeman',
         'Average Rating': 4.15,
         'Binding': 'Paperback',
         'Book Id': 13629345,
         'Bookshelves': 'pending',
+        'Borrowed': False,
         'Date Added': pd.Timestamp('2016-05-04'),
-        'Date Started': pd.Timestamp(None),
         'Date Read': pd.Timestamp(None),
+        'Date Started': pd.Timestamp(None),
         'Exclusive Shelf': 'pending',
         'My Rating': 0,
         'Number of Pages': 240,
+        'Scheduled': pd.Timestamp(None),
         'Title': 'The Forever War',
         'Work Id': 423,
-        'Scheduled': pd.Timestamp(None),
-        'Borrowed': False,
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     eq_(reading.goodreads.process_review(r), {
-        'Author': 'James Fenimore Cooper',
         'Author Id': 9121,
+        'Author': 'James Fenimore Cooper',
         'Average Rating': 3.37,
         'Binding': 'Paperback',
         'Book Id': 38290,
         'Bookshelves': '2018, pending',
+        'Borrowed': False,
         'Date Added': pd.Timestamp('2017-02-27'),
         'Date Read': pd.Timestamp(None),
         'Date Started': pd.Timestamp(None),
         'Exclusive Shelf': 'pending',
         'My Rating': 0,
         'Number of Pages': 496,
+        'Scheduled': pd.Timestamp('2018'),
         'Title': 'The Pioneers',
         'Work Id': 443966,
-        'Scheduled': pd.Timestamp('2018'),
-        'Borrowed': False,
     })
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
