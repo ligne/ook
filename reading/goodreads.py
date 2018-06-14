@@ -52,6 +52,7 @@ def get_books():
     return pd.DataFrame(data=books).set_index('Book Id')
 
 
+# extract a (possibly missing) date.
 def _get_date(xml, tag):
     date = xml.find(tag).text
     return pd.Timestamp(date and parse(date).date() or None)
