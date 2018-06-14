@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 df = reading.goodreads.get_books()
 
-old = pd.read_csv('gr-api.csv', index_col=0, dtype=object)
+old = reading.collection._get_gr_books()
 
 if not args.ignore_changes:
     df.sort_index().to_csv('gr-api.csv', float_format='%.f')

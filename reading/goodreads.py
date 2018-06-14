@@ -59,23 +59,26 @@ def _get_date(xml, tag):
 
 # extract the interesting information from an xml review, as a hash.
 def process_review(r):
+    sched = [ s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name')) ]
+    scheduled = pd.Timestamp(len(sched) and min(sched) or None)
+
     row = {
         'Book Id': int(r.find('book/id').text),
-        'Work Id': r.find('book/work/id').text,
-        'Author': re.sub(' +', ' ', r.find('book/authors/*').find('name').text),
-        'Author Id': ', '.join([ a.find('id').text for a in r.findall('book/authors/author') ]),
+        'Work Id': int(r.find('book/work/id').text),
+        'Author': re.sub(' +', ' ', r.find('book/authors/author').find('name').text),
+        'Author Id': int(r.find('book/authors/author/id').text),
         'Title': r.find('book/title_without_series').text,
         'Date Added': _get_date(r, 'date_added'),
         'Date Started': _get_date(r, 'started_at'),
         'Date Read': _get_date(r, 'read_at'),
-        'Number of Pages': r.find('book/num_pages').text,
-        'Average Rating': r.find('book/average_rating').text,
-        'My Rating': r.find('rating').text,
+        'Number of Pages': float(r.find('book/num_pages').text or 'nan'),
+        'Average Rating': float(r.find('book/average_rating').text),
+        'My Rating': int(r.find('rating').text),
         'Exclusive Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),
         'Bookshelves': ', '.join(sorted([ s.get('name') for s in r.findall('shelves/shelf') ])),
         'Binding': r.find('book/format').text,
-        'Scheduled': ', '.join([ s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name')) ]),
-        'Borrowed': str(bool(r.findall('shelves/shelf[@name=\'borrowed\']'))),
+        'Scheduled': scheduled,
+        'Borrowed': bool(r.findall('shelves/shelf[@name=\'borrowed\']')),
     }
 
     return row
@@ -129,7 +132,7 @@ def _parse_book_api(xml):
     series = entry = series_id = None
     for s in xml.findall('book/series_works/series_work'):
         if int(s.find('series/id').text) not in config['series']['ignore']:
-            series_id = s.find('series/id').text
+            series_id = int(s.find('series/id').text)
             series = s.find('series/title').text.strip()
             entry = s.find('user_position').text
             break
@@ -138,7 +141,7 @@ def _parse_book_api(xml):
 
     return {
         'Language': lang,
-        'Original Publication Year': xml.find('book/work/original_publication_year').text,
+        'Original Publication Year': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Series': series,
         'Series Id': series_id,
         'Entry': entry,

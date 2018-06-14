@@ -123,8 +123,7 @@ def _changed_book(old, new):
     old = old[columns]
     new = new[columns]
 
-    if type(new['Original Publication Year']) == float:
-        new['Original Publication Year'] = '{:.0f}'.format(new['Original Publication Year'])
+    printed_header = False
 
     if old.equals(new):
         # nothing changed
@@ -137,15 +136,17 @@ def _changed_book(old, new):
         print(_finished_book(new.copy()))
     else:
         # just generally changed fields
-        print('{Author}, {Title}'.format(**new))
         for (col, v) in new.iteritems():
             if v == old[col]:
                 continue
 
-            if col == 'Original Publication Year':
-#                 v = '{:.0f}'.format(v)
-                if v == old[col]:
+            if col in ['Date Added', 'Date Started', 'Date Read']:
+                if old[col].to_pydatetime().date() == v:
                     continue
+
+            if not printed_header:
+                print('{Author}, {Title}'.format(**new))
+                printed_header = True
 
             # FIXME work out what the dtype is, and if one or the other value is
             # null, and handle accordingly.
@@ -155,7 +156,9 @@ def _changed_book(old, new):
                 print('  {} unset (previously {})'.format(col, old[col]))
             else:
                 print('  {}: {} -> {}'.format(col, old[col], v))
-    print()
+
+    if printed_header:
+        print()
 
     return ''
 

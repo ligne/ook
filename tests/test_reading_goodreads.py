@@ -5,14 +5,16 @@ from nose.tools import *
 from xml.etree import ElementTree
 import datetime
 
+import pandas as pd
+
 import reading.goodreads
 
 def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
-    assert_equals(reading.goodreads.process_review(r), {
+    eq_(reading.goodreads.process_review(r), {
         'Author': 'Joe Haldeman',
-        'Author Id': '12476',
-        'Average Rating': '4.15',
+        'Author Id': 12476,
+        'Average Rating': 4.15,
         'Binding': 'Paperback',
         'Book Id': 13629345,
         'Bookshelves': 'pending',
@@ -20,19 +22,19 @@ def test_process_review():
         'Date Started': None,
         'Date Read': None,
         'Exclusive Shelf': 'pending',
-        'My Rating': '0',
-        'Number of Pages': '240',
+        'My Rating': 0,
+        'Number of Pages': 240,
         'Title': 'The Forever War',
-        'Work Id': '423',
-        'Scheduled': '',
-        'Borrowed': 'False',
+        'Work Id': 423,
+        'Scheduled': pd.Timestamp(None),
+        'Borrowed': False,
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    assert_equals(reading.goodreads.process_review(r), {
+    eq_(reading.goodreads.process_review(r), {
         'Author': 'James Fenimore Cooper',
-        'Author Id': '9121',
-        'Average Rating': '3.37',
+        'Author Id': 9121,
+        'Average Rating': 3.37,
         'Binding': 'Paperback',
         'Book Id': 38290,
         'Bookshelves': '2018, pending',
@@ -40,32 +42,32 @@ def test_process_review():
         'Date Read': None,
         'Date Started': None,
         'Exclusive Shelf': 'pending',
-        'My Rating': '0',
-        'Number of Pages': '496',
+        'My Rating': 0,
+        'Number of Pages': 496,
         'Title': 'The Pioneers',
-        'Work Id': '443966',
-        'Scheduled': '2018',
-        'Borrowed': 'False',
+        'Work Id': 443966,
+        'Scheduled': pd.Timestamp('2018'),
+        'Borrowed': False,
     })
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
     nose.tools.eq_(reading.goodreads.process_review(r), {
-        'Author Id': '143840',
+        'Author Id': 143840,
         'Author': u'Françoise Mallet-Joris',
-        'Average Rating': '3.51',
+        'Average Rating': 3.51,
         'Binding': 'Mass Market Paperback',
         'Book Id': 34910673,
         'Bookshelves': 'borrowed, pending',
-        'Borrowed': 'True',
+        'Borrowed': True,
         'Date Added': datetime.date(2017, 4, 20),
         'Date Read': None,
         'Date Started': None,
         'Exclusive Shelf': 'pending',
-        'My Rating': '0',
-        'Number of Pages': '242',
-        'Scheduled': '',
+        'My Rating': 0,
+        'Number of Pages': 242,
+        'Scheduled': pd.Timestamp(None),
         'Title': u'Le rempart des béguines',
-        'Work Id': '238317',
+        'Work Id': 238317,
     })
 
 
@@ -73,8 +75,8 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'fr',
-        'Original Publication Year': '1891',
-        'Series Id': '40441',
+        'Original Publication Year': 1891,
+        'Series Id': 40441,
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
         'Category': 'novel',
@@ -84,7 +86,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/3602116.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'en',
-        'Original Publication Year': '397',
+        'Original Publication Year': 397,
         'Series Id': None,
         'Series': None,
         'Entry': None,
@@ -95,8 +97,8 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/38290.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': None,
-        'Original Publication Year': '1823',
-        'Series Id': '81550',
+        'Original Publication Year': 1823,
+        'Series Id': 81550,
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
         'Category': 'novel',
@@ -106,7 +108,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/17999159.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'en',
-        'Original Publication Year': '2013',
+        'Original Publication Year': 2013,
         'Series Id': None,
         'Series': None,
         'Entry': None,
