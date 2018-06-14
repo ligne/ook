@@ -19,9 +19,6 @@ def compare(old, new):
         orow = old.ix[ix][columns].fillna('')
         nrow = new.ix[ix][columns].fillna('')
 
-        if type(nrow['Original Publication Year']) != str:
-            nrow['Original Publication Year'] = '{:.0f}'.format(nrow['Original Publication Year'])
-
         if nrow.equals(orow):
             continue
 
@@ -123,8 +120,6 @@ def _changed_book(old, new):
     old = old[columns]
     new = new[columns]
 
-    printed_header = False
-
     if old.equals(new):
         # nothing changed
         return
@@ -136,17 +131,10 @@ def _changed_book(old, new):
         print(_finished_book(new.copy()))
     else:
         # just generally changed fields
+        print('{Author}, {Title}'.format(**new))
         for (col, v) in new.iteritems():
             if v == old[col]:
                 continue
-
-            if col in ['Date Added', 'Date Started', 'Date Read']:
-                if old[col].to_pydatetime().date() == v:
-                    continue
-
-            if not printed_header:
-                print('{Author}, {Title}'.format(**new))
-                printed_header = True
 
             # FIXME work out what the dtype is, and if one or the other value is
             # null, and handle accordingly.
@@ -157,8 +145,7 @@ def _changed_book(old, new):
             else:
                 print('  {}: {} -> {}'.format(col, old[col], v))
 
-    if printed_header:
-        print()
+    print()
 
     return ''
 
