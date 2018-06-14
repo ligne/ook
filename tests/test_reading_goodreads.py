@@ -1,22 +1,24 @@
 # vim: ts=4 : sw=4 : et
 
 import nose
+from nose.tools import *
 from xml.etree import ElementTree
+import datetime
 
 import reading.goodreads
 
 def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
-    nose.tools.eq_(reading.goodreads.process_review(r), {
+    assert_equals(reading.goodreads.process_review(r), {
         'Author': 'Joe Haldeman',
         'Author Id': '12476',
         'Average Rating': '4.15',
         'Binding': 'Paperback',
         'Book Id': 13629345,
         'Bookshelves': 'pending',
-        'Date Added': '2016/05/04',
-        'Date Started': '',
-        'Date Read': '',
+        'Date Added': datetime.date(2016, 5, 4),
+        'Date Started': None,
+        'Date Read': None,
         'Exclusive Shelf': 'pending',
         'My Rating': '0',
         'Number of Pages': '240',
@@ -27,16 +29,16 @@ def test_process_review():
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    nose.tools.eq_(reading.goodreads.process_review(r), {
+    assert_equals(reading.goodreads.process_review(r), {
         'Author': 'James Fenimore Cooper',
         'Author Id': '9121',
         'Average Rating': '3.37',
         'Binding': 'Paperback',
         'Book Id': 38290,
         'Bookshelves': '2018, pending',
-        'Date Added': '2017/02/27',
-        'Date Read': '',
-        'Date Started': '',
+        'Date Added': datetime.date(2017, 2, 27),
+        'Date Read': None,
+        'Date Started': None,
         'Exclusive Shelf': 'pending',
         'My Rating': '0',
         'Number of Pages': '496',
@@ -55,9 +57,9 @@ def test_process_review():
         'Book Id': 34910673,
         'Bookshelves': 'borrowed, pending',
         'Borrowed': 'True',
-        'Date Added': '2017/04/20',
-        'Date Read': '',
-        'Date Started': '',
+        'Date Added': datetime.date(2017, 4, 20),
+        'Date Read': None,
+        'Date Started': None,
         'Exclusive Shelf': 'pending',
         'My Rating': '0',
         'Number of Pages': '242',

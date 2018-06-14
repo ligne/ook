@@ -54,7 +54,7 @@ def get_books():
 
 def _get_date(xml, tag):
     date = xml.find(tag).text
-    return date and parse(date).strftime('%Y/%m/%d') or ''
+    return date and parse(date).date() or None
 
 
 # extract the interesting information from an xml review, as a hash.
