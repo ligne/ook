@@ -34,7 +34,6 @@ def _get_gr_books(csv=GR_CSV):
 #        'Average Rating': 'AvgRating',
 #        'Work Id': 'Work',
 #    })
-    df = df.drop(['Bookshelves'], axis='columns')
 
     return df
 
