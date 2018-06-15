@@ -32,7 +32,7 @@ def _get_gr_books(csv=GR_CSV):
 #        'Date Read': 'Read',
 #        'Original Publication Year': 'Published',
         'Number of Pages': 'Pages',
-#        'Exclusive Shelf': 'Shelf',
+        'Exclusive Shelf': 'Shelf',
 #        'My Rating': 'Rating',
         'Average Rating': 'AvgRating',
         'Work Id': 'Work',
@@ -116,7 +116,7 @@ class Collection():
         if languages:
             df = df[df['Language'].isin(languages)]
         if shelves:
-            df = df[df['Exclusive Shelf'].isin(shelves)]
+            df = df[df['Shelf'].isin(shelves)]
 
         # load information about the authors
 

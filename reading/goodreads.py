@@ -76,7 +76,7 @@ def process_review(r):
         'Pages': float(r.find('book/num_pages').text or 'nan'),
         'AvgRating': float(r.find('book/average_rating').text),
         'My Rating': int(r.find('rating').text),
-        'Exclusive Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),
+        'Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),
         'Binding': r.find('book/format').text,
         'Scheduled': scheduled,
         'Borrowed': bool(r.findall('shelves/shelf[@name=\'borrowed\']')),

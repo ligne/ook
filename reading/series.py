@@ -137,7 +137,7 @@ class Series():
     # books in the series that still need to be read
     def remaining(self):
         sort_col = self.order == 'series' and 'Entry' or 'Original Publication Year'
-        return self.df[~self.df['Exclusive Shelf'].isin(['read', 'currently-reading'])].sort_values(sort_col)
+        return self.df[~self.df['Shelf'].isin(['read', 'currently-reading'])].sort_values(sort_col)
 
 
     # return readable ones in order (for scheduling)
@@ -151,7 +151,7 @@ class Series():
     # returns true if the series has been read this year
     def read_in_year(self, year):
         return len(self.df[self.df['Date Read'].dt.year == year]) \
-             + len(self.df[self.df['Exclusive Shelf'] == 'currently-reading'])
+             + len(self.df[self.df['Shelf'] == 'currently-reading'])
 
 
 if __name__ == "__main__":

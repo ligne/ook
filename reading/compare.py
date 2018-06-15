@@ -98,10 +98,10 @@ def _changed_book(old, new):
     if old.equals(new):
         # nothing changed
         return
-    elif new['Exclusive Shelf'] == 'currently-reading' != old['Exclusive Shelf']:
+    elif new['Shelf'] == 'currently-reading' != old['Exclusive Shelf']:
         # started reading
         print(_started_book(new))
-    elif new['Exclusive Shelf'] == 'read' != old['Exclusive Shelf']:
+    elif new['Shelf'] == 'read' != old['Exclusive Shelf']:
         # finished reading
         print(_finished_book(new.copy()))
     else:

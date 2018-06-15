@@ -30,7 +30,7 @@ def test__get_gr_books():
         'Scheduled',
         'Series',
         'Series Id',
-        'Exclusive Shelf', #'Shelf',
+        'Shelf',
         'Date Started', #'Started',
         'Title',
         'Work',
