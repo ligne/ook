@@ -140,7 +140,7 @@ def _finished_book(book):
     return """Finished '{Title}' by {Author}
   {Date Started} → {Date Read} ({Time} days)
   {Pages:0.0f} pages, {PPD:0.0f} pages/day
-  Rating: {My Rating}
+  Rating: {Rating}
 """.format(**book)
 
 

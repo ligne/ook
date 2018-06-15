@@ -33,7 +33,7 @@ def _get_gr_books(csv=GR_CSV):
 #        'Original Publication Year': 'Published',
         'Number of Pages': 'Pages',
         'Exclusive Shelf': 'Shelf',
-#        'My Rating': 'Rating',
+        'My Rating': 'Rating',
         'Average Rating': 'AvgRating',
         'Work Id': 'Work',
     })

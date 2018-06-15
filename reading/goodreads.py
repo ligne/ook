@@ -75,7 +75,7 @@ def process_review(r):
         'Date Read': _get_date(r, 'read_at'),
         'Pages': float(r.find('book/num_pages').text or 'nan'),
         'AvgRating': float(r.find('book/average_rating').text),
-        'My Rating': int(r.find('rating').text),
+        'Rating': int(r.find('rating').text),
         'Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),
         'Binding': r.find('book/format').text,
         'Scheduled': scheduled,

@@ -25,7 +25,7 @@ def test__get_gr_books():
         'Language',
         'Pages',
         'Original Publication Year', #'Published',
-        'My Rating', #'Rating',
+        'Rating',
         'Date Read', #'Read',
         'Scheduled',
         'Series',
