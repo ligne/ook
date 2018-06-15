@@ -105,7 +105,7 @@ def _dates(start, per_year=1, offset=1):
 if __name__ == "__main__":
     from .collection import Collection
     df = Collection(shelves=['read', 'pending', 'elsewhere', 'ebooks', 'library']).df
-    df = df.drop_duplicates(['Work Id'])
+    df = df.drop_duplicates(['Work'])
 
     lint(df)
     print('----')

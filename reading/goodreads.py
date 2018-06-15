@@ -66,7 +66,7 @@ def process_review(r):
 
     row = {
         'Book Id': int(r.find('book/id').text),
-        'Work Id': int(r.find('book/work/id').text),
+        'Work': int(r.find('book/work/id').text),
         'Author': re.sub(' +', ' ', r.find('book/authors/author').find('name').text),
         'Author Id': int(r.find('book/authors/author/id').text),
         'Title': r.find('book/title_without_series').text,

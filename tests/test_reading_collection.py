@@ -33,7 +33,7 @@ def test__get_gr_books():
         'Exclusive Shelf', #'Shelf',
         'Date Started', #'Started',
         'Title',
-        'Work Id', #'Work',
+        'Work',
     ]))
 
     eq_(set(df.Category.values), set([

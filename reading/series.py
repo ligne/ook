@@ -113,7 +113,7 @@ class Series():
             settings = _get_series_settings(series)
 
         # FIXME dedup
-        df = df.drop_duplicates(['Work Id'])
+        df = df.drop_duplicates(['Work'])
 
         if author:
             # just work through in order

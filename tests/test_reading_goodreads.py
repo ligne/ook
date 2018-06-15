@@ -26,7 +26,7 @@ def test_process_review():
         'Number of Pages': 240,
         'Scheduled': pd.Timestamp(None),
         'Title': 'The Forever War',
-        'Work Id': 423,
+        'Work': 423,
     })
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
@@ -45,7 +45,7 @@ def test_process_review():
         'Number of Pages': 496,
         'Scheduled': pd.Timestamp('2018'),
         'Title': 'The Pioneers',
-        'Work Id': 443966,
+        'Work': 443966,
     })
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
@@ -64,7 +64,7 @@ def test_process_review():
         'Number of Pages': 242,
         'Scheduled': pd.Timestamp(None),
         'Title': u'Le rempart des béguines',
-        'Work Id': 238317,
+        'Work': 238317,
     })
 
 

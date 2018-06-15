@@ -63,11 +63,11 @@ def _changed(old, new):
     wids = pd.concat([
         old.loc[old.index.intersection(idcs)],
         new.loc[new.index.intersection(idcs)],
-    ])['Work Id'].drop_duplicates().values
+    ])['Work'].drop_duplicates().values
 
     for ix in wids:
-        _o = old[old['Work Id'] == ix]
-        _n = new[new['Work Id'] == ix]
+        _o = old[old['Work'] == ix]
+        _n = new[new['Work'] == ix]
 
         if len(_o) and len(_n):
             _changed_book(_o.iloc[0], _n.iloc[0])
