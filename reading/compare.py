@@ -7,53 +7,13 @@ ignore_columns = [
     'AvgRating',
 ]
 
-
-def compare(old, new):
-    s = ''
-
-    columns = [ c for c in new.columns if c not in ignore_columns ]
-
-    # changed
-    for ix in old.index.intersection(new.index):
-        orow = old.ix[ix][columns].fillna('')
-        nrow = new.ix[ix][columns].fillna('')
-
-        if nrow.equals(orow):
-            continue
-
-        s += '{Author}, {Title}\n'.format(**nrow)
-        for (col, v) in nrow.iteritems():
-            if v == orow[col]:
-                continue
-
-            s += '{}:\n  {} -> {}\n'.format(col, orow[col], v)
-
-        s += '---\n\n'
-
-    # FIXME handle edition changes
-    for ix in new.index.difference(old.index):
-        row = new.ix[ix]
-
-        fmt = "Added '{Title}' by {Author}"
-        if row['Series']:
-            fmt += ' ({Series}, book {Entry})'
-        s += fmt.format(**row) + '\n'
-        s += '---\n\n'
-
-    # removed
-    for ix in old.index.difference(new.index):
-        row = old.ix[ix]
-        s += "Removed '{Title}' by {Author}\n".format(**row)
-        s += '---\n\n'
-
-    return s
-
-
 ################################################################################
 
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
-def _changed(old, new):
+def compare(old, new):
+    (old, new) = [ df.fillna('') for df in (old, new) ]
+
     # changed
     for ix in old.index.intersection(new.index):
         _changed_book(old.loc[ix], new.loc[ix])

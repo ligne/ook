@@ -29,11 +29,6 @@ old = Collection(shelves=[
 if not args.ignore_changes:
     df.sort_index().to_csv('data/goodreads.csv', float_format='%g')
 
-reading.compare._changed(old.df.fillna(''), df.fillna(''))
-
-diff = compare(old.df, df)
-if diff:
-    print('******************')
-    print(diff)
+compare(old.df, df)
 
 # vim: ts=4 : sw=4 : et
