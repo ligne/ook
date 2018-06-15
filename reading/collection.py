@@ -20,16 +20,16 @@ def _get_gr_books(csv=GR_CSV):
     # FIXME Published as a date would be nice too, except pandas doesn't
     # support very old dates.
     df = pd.read_csv(csv, index_col=0, parse_dates=[
-        'Date Added',
-        'Date Started',
-        'Date Read',
+        'Added',
+        'Started',
+        'Read',
         'Scheduled'
     ])
 
     df = df.rename(columns={
-#        'Date Added': 'Added',
-#        'Date Started': 'Started',
-#        'Date Read': 'Read',
+        'Date Added': 'Added',
+        'Date Started': 'Started',
+        'Date Read': 'Read',
         'Original Publication Year': 'Published',
         'Number of Pages': 'Pages',
         'Exclusive Shelf': 'Shelf',

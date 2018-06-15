@@ -14,7 +14,7 @@ def test__get_gr_books():
     df = reading.collection._get_gr_books()
 
     assert_equals(sorted(df.columns), sorted([
-        'Date Added', #'Added',
+        'Added',
         'Author',
         'Author Id',
         'AvgRating',
@@ -26,12 +26,12 @@ def test__get_gr_books():
         'Pages',
         'Published',
         'Rating',
-        'Date Read', #'Read',
+        'Read',
         'Scheduled',
         'Series',
         'Series Id',
         'Shelf',
-        'Date Started', #'Started',
+        'Started',
         'Title',
         'Work',
     ]))
@@ -50,9 +50,9 @@ def test__get_gr_books():
     b = df.loc[2366570]  # Les Chouans
 
     # timestamp columns are ok
-    eq_(b['Date Added'].strftime('%F'), '2016-04-18') #eq_(b.Added.strftime('%F'), '2016-04-18')
-    eq_(b['Date Started'].strftime('%F'), '2016-09-08') #eq_(b.Started.strftime('%F'), '2016-09-08')
-    eq_(b['Date Read'].strftime('%F'), '2016-11-06') #eq_(b.Read.strftime('%F'), '2016-11-06')
+    eq_(b.Added.strftime('%F'), '2016-04-18')
+    eq_(b.Started.strftime('%F'), '2016-09-08')
+    eq_(b.Read.strftime('%F'), '2016-11-06')
     eq_(b.Published, 1829.)  # FIXME pandas can't do very old dates...
 
     b = df.loc[8861500]  # The Dain Curse

@@ -50,7 +50,7 @@ def get_books():
         reading.cache.dump_yaml('series', reading.series.cache)
 
     df = pd.DataFrame(data=books).set_index('Book Id')
-    return df[~(df['Date Read'] < config['filter']['ignore_before'])]
+    return df[~(df['Read'] < config['filter']['ignore_before'])]
 
 
 # extract a (possibly missing) date.
@@ -70,9 +70,9 @@ def process_review(r):
         'Author': re.sub(' +', ' ', r.find('book/authors/author').find('name').text),
         'Author Id': int(r.find('book/authors/author/id').text),
         'Title': r.find('book/title_without_series').text,
-        'Date Added': _get_date(r, 'date_added'),
-        'Date Started': _get_date(r, 'started_at'),
-        'Date Read': _get_date(r, 'read_at'),
+        'Added': _get_date(r, 'date_added'),
+        'Started': _get_date(r, 'started_at'),
+        'Read': _get_date(r, 'read_at'),
         'Pages': float(r.find('book/num_pages').text or 'nan'),
         'AvgRating': float(r.find('book/average_rating').text),
         'Rating': int(r.find('rating').text),

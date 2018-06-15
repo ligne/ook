@@ -150,7 +150,7 @@ class Series():
 
     # returns true if the series has been read this year
     def read_in_year(self, year):
-        return len(self.df[self.df['Date Read'].dt.year == year]) \
+        return len(self.df[self.df['Read'].dt.year == year]) \
              + len(self.df[self.df['Shelf'] == 'currently-reading'])
 
 

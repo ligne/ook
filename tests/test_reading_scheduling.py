@@ -80,7 +80,7 @@ def test__dates():
 def test_schedule():
 
     df = Collection(gr_csv=StringIO("""
-Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
+Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
 34527,Terry Pratchett,1654,4.27,Paperback,"borrowed, elsewhere",True,2016/05/22,,,19,elsewhere,,0,416,1996,,Discworld,40650,Feet of Clay,3312754
 597033,Terry Pratchett,1654,4.03,Mass Market Paperback,"borrowed, elsewhere",True,2016/05/12,,,16,elsewhere,en,0,378,1994,,Discworld,40650,Soul Music,1107935
 618221,Terry Pratchett,1654,3.92,Paperback,read,False,2016/05/12,2017/12/23,2017/09/10,10,read,en,5,332,1990,,Discworld,40650,Moving Pictures,1229354
@@ -120,7 +120,7 @@ Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date 
 
     # missing publication year
     df = Collection(gr_csv=StringIO("""
-Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
+Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
 159435,Honoré de Balzac,228089,4.00,Mass Market Paperback,"2018, borrowed, pending",True,2016/05/23,,,,pending,fr,0,,1832,2018,,,Le Colonel Chabert : suivi de trois nouvelles,23642267
 34674970,Honoré de Balzac,228089,0.0,Paperback,pending,False,2017/03/24,,,,pending,fr,0,381,,,,,L'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié,55846262
 """)).df
@@ -134,7 +134,7 @@ Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date 
 
 
     df = Collection(gr_csv=StringIO("""
-Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
+Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
 366649,Émile Zola,4750,3.90,Paperback,"2018, pending",False,2017/06/20,,,3,pending,fr,0,384,1873,2018,Les Rougon-Macquart,40441,Le Ventre de Paris,10242
 816920,Émile Zola,4750,3.84,Mass Market Paperback,ebooks,False,2016/11/24,,,9,ebooks,,0,,1880,,Les Rougon-Macquart,40441,Nana,89633
 816921,Émile Zola,4750,4.06,Mass Market Paperback,"borrowed, elsewhere",True,2016/05/22,,,7,elsewhere,fr,0,517,1877,,Les Rougon-Macquart,40441,L'Assommoir,741363
@@ -180,7 +180,7 @@ Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date 
 def test_scheduled_at():
 
     df = Collection(gr_csv=StringIO("""
-Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Date Added,Date Read,Date Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
+Book Id,Author,Author Id,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,Series Id,Title,Work
 956325,Alexandre Dumas,4785,4.02,Paperback,"2018, ebooks",False,2016/11/08,,,2,ebooks,fr,0,904,1845,2018,The d'Artagnan Romances,55138,Vingt ans après,666376
 20636970,Émile Zola,4750,3.84,Paperback,read,False,2017/02/07,2018/03/14,2017/12/28,2,read,fr,3,380,1872,,Les Rougon-Macquart,40441,La Curée,839934
 366649,Émile Zola,4750,3.90,Paperback,"2018, pending",False,2017/06/20,,,3,pending,fr,0,384,1873,2018,Les Rougon-Macquart,40441,Le Ventre de Paris,10242
