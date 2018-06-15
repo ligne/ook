@@ -4,7 +4,6 @@ import pandas as pd
 
 
 GR_CSV    = 'data/goodreads.csv'
-GR_CSV    = 'gr-api.csv'           # FIXME
 EBOOK_CSV = 'data/ebooks.csv'
 EBOOK_CSV = 'data/wordcounts.csv'  # FIXME
 
