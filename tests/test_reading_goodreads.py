@@ -72,7 +72,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'fr',
-        'Original Publication Year': 1891,
+        'Published': 1891,
         'Series Id': 40441,
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
@@ -83,7 +83,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/3602116.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'en',
-        'Original Publication Year': 397,
+        'Published': 397,
         'Series Id': None,
         'Series': None,
         'Entry': None,
@@ -94,7 +94,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/38290.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': None,
-        'Original Publication Year': 1823,
+        'Published': 1823,
         'Series Id': 81550,
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
@@ -105,7 +105,7 @@ def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/17999159.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
         'Language': 'en',
-        'Original Publication Year': 2013,
+        'Published': 2013,
         'Series Id': None,
         'Series': None,
         'Entry': None,

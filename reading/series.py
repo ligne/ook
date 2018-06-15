@@ -136,7 +136,7 @@ class Series():
 
     # books in the series that still need to be read
     def remaining(self):
-        sort_col = self.order == 'series' and 'Entry' or 'Original Publication Year'
+        sort_col = self.order == 'series' and 'Entry' or 'Published'
         return self.df[~self.df['Shelf'].isin(['read', 'currently-reading'])].sort_values(sort_col)
 
 

@@ -142,7 +142,7 @@ def _parse_book_api(xml):
 
     return {
         'Language': lang,
-        'Original Publication Year': float(xml.find('book/work/original_publication_year').text or 'nan'),
+        'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Series': series,
         'Series Id': series_id,
         'Entry': entry,

@@ -30,7 +30,7 @@ def _get_gr_books(csv=GR_CSV):
 #        'Date Added': 'Added',
 #        'Date Started': 'Started',
 #        'Date Read': 'Read',
-#        'Original Publication Year': 'Published',
+        'Original Publication Year': 'Published',
         'Number of Pages': 'Pages',
         'Exclusive Shelf': 'Shelf',
         'My Rating': 'Rating',

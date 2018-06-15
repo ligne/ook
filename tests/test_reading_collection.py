@@ -24,7 +24,7 @@ def test__get_gr_books():
         'Entry',
         'Language',
         'Pages',
-        'Original Publication Year', #'Published',
+        'Published',
         'Rating',
         'Date Read', #'Read',
         'Scheduled',
@@ -53,7 +53,7 @@ def test__get_gr_books():
     eq_(b['Date Added'].strftime('%F'), '2016-04-18') #eq_(b.Added.strftime('%F'), '2016-04-18')
     eq_(b['Date Started'].strftime('%F'), '2016-09-08') #eq_(b.Started.strftime('%F'), '2016-09-08')
     eq_(b['Date Read'].strftime('%F'), '2016-11-06') #eq_(b.Read.strftime('%F'), '2016-11-06')
-    eq_(b['Original Publication Year'], 1829.) #eq_(b.Published, 1829.)  # FIXME pandas can't do very old dates...
+    eq_(b.Published, 1829.)  # FIXME pandas can't do very old dates...
 
     b = df.loc[8861500]  # The Dain Curse
     # scheduled is a datetime
@@ -62,7 +62,7 @@ def test__get_gr_books():
 
     b = df.loc[28595808]  # The McCabe Reader
     # missing publication year
-    ok_(np.isnan(b['Original Publication Year'])) #ok_(np.isnan(b.Published))
+    ok_(np.isnan(b.Published))
 
 
 def test__get_kindle_books():
