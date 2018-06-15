@@ -153,14 +153,3 @@ if __name__ == "__main__":
 
     _changed(old, new)
 
-    print('************')
-
-    import pandas as pd
-    old = pd.read_csv(sys.argv[1], index_col=0).fillna('')
-    new = pd.read_csv(sys.argv[2], index_col=0).fillna('')
-
-#    print(compare(old, new))
-
-    _changed(old, new)
-
-
