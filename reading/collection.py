@@ -9,6 +9,10 @@ EBOOK_CSV = 'data/wordcounts.csv'  # FIXME
 
 words_per_page = 390
 
+pd.options.display.max_rows = None
+pd.options.display.max_colwidth = 40
+pd.options.display.width = None
+
 
 ################################################################################
 
