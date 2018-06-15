@@ -135,11 +135,11 @@ def _started_book(book):
 def _finished_book(book):
     # FIXME shift these elsewhere.
     book['Time'] = (pd.to_datetime(book['Date Read']) - pd.to_datetime(book['Date Started'])).days
-    book['Number of Pages'] = float(book['Number of Pages'])
-    book['PPD'] = book['Number of Pages'] / book['Time']
+    book['Pages'] = float(book['Pages'])
+    book['PPD'] = book['Pages'] / book['Time']
     return """Finished '{Title}' by {Author}
   {Date Started} → {Date Read} ({Time} days)
-  {Number of Pages:0.0f} pages, {PPD:0.0f} pages/day
+  {Pages:0.0f} pages, {PPD:0.0f} pages/day
   Rating: {My Rating}
 """.format(**book)
 

@@ -73,7 +73,7 @@ def process_review(r):
         'Date Added': _get_date(r, 'date_added'),
         'Date Started': _get_date(r, 'started_at'),
         'Date Read': _get_date(r, 'read_at'),
-        'Number of Pages': float(r.find('book/num_pages').text or 'nan'),
+        'Pages': float(r.find('book/num_pages').text or 'nan'),
         'AvgRating': float(r.find('book/average_rating').text),
         'My Rating': int(r.find('rating').text),
         'Exclusive Shelf': r.find('shelves/shelf[@exclusive=\'true\']').get('name'),

@@ -23,7 +23,7 @@ def test__get_gr_books():
         'Category',
         'Entry',
         'Language',
-        'Number of Pages', #'Pages',
+        'Pages',
         'Original Publication Year', #'Published',
         'My Rating', #'Rating',
         'Date Read', #'Read',
