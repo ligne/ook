@@ -14,7 +14,7 @@ def test_process_review():
     eq_(reading.goodreads.process_review(r), {
         'Author Id': 12476,
         'Author': 'Joe Haldeman',
-        'Average Rating': 4.15,
+        'AvgRating': 4.15,
         'Binding': 'Paperback',
         'Book Id': 13629345,
         'Borrowed': False,
@@ -33,7 +33,7 @@ def test_process_review():
     eq_(reading.goodreads.process_review(r), {
         'Author Id': 9121,
         'Author': 'James Fenimore Cooper',
-        'Average Rating': 3.37,
+        'AvgRating': 3.37,
         'Binding': 'Paperback',
         'Book Id': 38290,
         'Borrowed': False,
@@ -52,7 +52,7 @@ def test_process_review():
     nose.tools.eq_(reading.goodreads.process_review(r), {
         'Author Id': 143840,
         'Author': u'Françoise Mallet-Joris',
-        'Average Rating': 3.51,
+        'AvgRating': 3.51,
         'Binding': 'Mass Market Paperback',
         'Book Id': 34910673,
         'Borrowed': True,

@@ -34,7 +34,7 @@ def _get_gr_books(csv=GR_CSV):
 #        'Number of Pages': 'Pages',
 #        'Exclusive Shelf': 'Shelf',
 #        'My Rating': 'Rating',
-#        'Average Rating': 'AvgRating',
+        'Average Rating': 'AvgRating',
         'Work Id': 'Work',
     })
 

@@ -17,7 +17,7 @@ def test__get_gr_books():
         'Date Added', #'Added',
         'Author',
         'Author Id',
-        'Average Rating', #'AvgRating',
+        'AvgRating',
         'Binding',
         'Borrowed',
         'Category',

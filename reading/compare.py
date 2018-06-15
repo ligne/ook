@@ -4,7 +4,7 @@ import pandas as pd
 import sys
 
 ignore_columns = [
-    'Average Rating',
+    'AvgRating',
 ]
 
 
