@@ -187,7 +187,7 @@ def _get_category(shelves):
         ('graphic', ('graphic-novels', 'comics', 'graphic-novel')),
         ('short-stories', ('short-stories', 'short-story', 'nouvelles', 'short-story-collections', 'relatos-cortos')),
         ('non-fiction', ('non-fiction', 'nonfiction', 'essays')),
-        ('novel', ('novel', 'novels', 'roman', 'romans')),
+        ('novels', ('novel', 'novels', 'roman', 'romans')),
     )
 
     for shelf in shelves:
@@ -198,7 +198,7 @@ def _get_category(shelves):
     # if that failed, try and guess a sensible default
     patterns = (
         ('non-fiction', ('education', 'theology', 'linguistics')),
-        ('novel', ('fiction')),
+        ('novels', ('fiction')),
     )
 
     for shelf in shelves:

@@ -76,7 +76,7 @@ def test__parse_book_api():
         'Series Id': 40441,
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
-        'Category': 'novel',
+        'Category': 'novels',
 #        'Genres': '',
     })
 
@@ -98,7 +98,7 @@ def test__parse_book_api():
         'Series Id': 81550,
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
-        'Category': 'novel',
+        'Category': 'novels',
 #        'Genres': '',
     })
 

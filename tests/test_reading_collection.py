@@ -37,7 +37,7 @@ def test__get_gr_books():
     ]))
 
     eq_(set(df.Category.values), set([
-        'novel',
+        'novels',
         'short-stories',
         'non-fiction',
         'graphic',
