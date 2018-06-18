@@ -5,7 +5,6 @@ import pandas as pd
 
 GR_CSV    = 'data/goodreads.csv'
 EBOOK_CSV = 'data/ebooks.csv'
-EBOOK_CSV = 'data/wordcounts.csv'  # FIXME
 
 words_per_page = 390
 
