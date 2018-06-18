@@ -96,7 +96,7 @@ def process(df, force=False):
     ebooks = []
 
     for (category, path, name) in get_ebooks(kindle_dir):
-        if name in df.index:
+        if not force and name in df.index:
             ebook = df.loc[name].to_dict()
             ebook['Book Id'] = name
             ebooks.append(ebook)
@@ -122,10 +122,11 @@ def process(df, force=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--ignore-changes', action='store_true')
+    parser.add_argument('-f', '--force', action='store_true')
     args = parser.parse_args()
 
     old = Collection(shelves=['kindle']).df
-    new = process(old)
+    new = process(old, force=args.force)
 
     if not args.ignore_changes:
         new.sort_index().to_csv('data/ebooks.csv', float_format='%g')
