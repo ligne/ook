@@ -94,6 +94,7 @@ def test__get_kindle_books():
     # FIXME do we actually care?
     eq_(len(df[df.Author.isnull()]), 0)
 
-    # set an index that won't clash with goodreads's.
-    eq_(list(df.index[0:3]), ['_0', '_1', '_2'])
+    # filenames as the index
+    # FIXME
+    #eq_(list(df.index[0:3]), ['_0', '_1', '_2'])
 

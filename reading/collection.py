@@ -48,7 +48,9 @@ def _save_gr_books(csv, df):
 ################################################################################
 
 def _get_kindle_books(csv=EBOOK_CSV):
-    df = pd.read_csv(csv, sep='\t', index_col=False)  # FIXME use proper csv
+    df = pd.read_csv(csv, index_col=0, parse_dates=[
+        'Added',
+    ])
 
     # fix author from metadata?
     # split title, subtitle, volume
@@ -64,14 +66,12 @@ def _get_kindle_books(csv=EBOOK_CSV):
         Shelf='kindle',
     )
 
+    # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
-    df['Added'] = pd.to_datetime(df.mtime, unit='s')
+    df = df.drop(['Words'], axis='columns')
 
-    df = df.drop(['Words', 'file', 'mtime' ], axis='columns')
-
-    # set an index that won't clash
-    return df.set_index([['_'+str(ii) for ii in df.index]])
+    return df
 
 
 # FIXME maybe want this to not require pandas?
