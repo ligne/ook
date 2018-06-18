@@ -86,6 +86,13 @@ def test__get_kindle_books():
     eq_(df.Borrowed.unique(), [False])
     eq_(df.Shelf.unique(), ['kindle'])
 
+    eq_(set(df.Category.values), set([
+        'articles',
+        'non-fiction',
+        'novels',
+        'short-stories',
+    ]))
+
 #     eq_(list(zip(df.columns, df.dtypes)), [
 #     ])
 
