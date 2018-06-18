@@ -69,8 +69,6 @@ def _get_kindle_books(csv=EBOOK_CSV):
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
-    df = df.drop(['Words'], axis='columns')
-
     return df
 
 

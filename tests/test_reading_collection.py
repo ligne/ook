@@ -69,7 +69,7 @@ def test__get_kindle_books():
     # FIXME use a test csv
     df = reading.collection._get_kindle_books()
 
-    eq_(set(df.columns), set([
+    eq_(sorted(df.columns), sorted([
         'Author',
         'Binding',
         'Borrowed',
@@ -79,6 +79,7 @@ def test__get_kindle_books():
         'Language',
         'Pages',
         'Title',
+        'Words',
     ]))
 
     eq_(df.Binding.unique(), ['ebook'])
