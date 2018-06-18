@@ -240,6 +240,5 @@ if __name__ == "__main__":
     sys.stderr.write('\033[0m')
 
     show_update(csvfile, 'data/wordcounts.csv')
-    show_update(wordcounts_tmpdir, 'wordcounts/')
 
 # vim: ts=4 : sw=4 : et
