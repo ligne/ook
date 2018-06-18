@@ -72,22 +72,31 @@ print(yaml.dump({
     return (author, title, language)
 
 
-# returns all the interesting-looking files.  FIXME also want to use the files
-# in root of the kindle directory
-def get_ebooks(kindle_dir):
+def _ignore_item(path):
     ignore_fname = ['My Clippings.txt']
     ignore_ext   = ['.kfx']
 
+    fname = path.parts[-1]
+    return (not path.is_file()
+         or fname[0] == '.'
+         or fname in ignore_fname
+         or path.suffix in ignore_ext)
+
+
+# returns all the interesting-looking files.
+def get_ebooks(kindle_dir):
     for d in 'articles', 'short-stories', 'books', 'non-fiction':
         category = d == 'books' and 'novels' or d  # FIXME
         for f in (kindle_dir / d).iterdir():
-            fname = f.parts[-1]
-            if (not f.is_file()
-                 or fname[0] == '.'
-                 or fname in ignore_fname
-                 or f.suffix in ignore_ext):
+            if _ignore_item(f):
                 continue
-            yield (category, f, str(Path(category, fname)))
+            yield (category, f, str(Path(category, f.parts[-1])))
+
+    for f in kindle_dir.iterdir():
+        if _ignore_item(f):
+            continue
+        yield ('articles', f, str(Path('articles', f.parts[-1])))
+
 
 
 def process(df, force=False):
@@ -129,7 +138,7 @@ if __name__ == "__main__":
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
-        new.sort_index().to_csv('data/ebooks.csv', float_format='%g')
+        new.sort_index()[['Words','Title','Author','Language','Added','Category']].to_csv('data/ebooks.csv', float_format='%g')
 
     new = new.assign(Work=None, Shelf='kindle')
 
