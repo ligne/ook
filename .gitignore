@@ -1,11 +1,7 @@
-/.wordcounts.shelve
-/My Clippings.txt
-/count.png
-/articles/
-/wordcounts/
 .*.sw?
 .sw?
 *.pyc
 /images/
 /data/
 /old/
+todo
