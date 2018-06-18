@@ -5,6 +5,7 @@ import sys, os, glob, subprocess, re, time
 import tempfile
 import shelve
 import csv
+import datetime
 
 sys.path.insert(0, '/usr/lib64/calibre')
 sys.resources_location = os.environ.get('CALIBRE_RESOURCES_PATH', '/usr/share/calibre')
@@ -209,7 +210,9 @@ def process_dir(category, d, out):
     for (mtime, fi) in sorted(entries.values(), key=lambda x: x[0]):
         fh = get_filehandle(wordcounts_tmpdir, category, fi['language'])
         print_entry(fi, fh)
-        out.writerow([ fi.get(x) for x in ('words', 'title', 'author', 'language', 'file')] + [int(mtime), category])
+        fi['path'] = '{}/{}'.format(category == 'books' and 'novel' or category, fi.get('file'))
+        added = datetime.date.fromtimestamp(mtime).isoformat()
+        out.writerow([ fi.get(x) for x in ('path', 'words', 'title', 'author', 'language')] + [added, category])
 
 
 if __name__ == "__main__":
@@ -221,8 +224,8 @@ if __name__ == "__main__":
     csvfile = '{}/wordcounts.csv'.format(tmpdir)
 
     with open(csvfile, 'wb') as csvf:
-        fieldnames = ['Words', 'Title', 'Author', 'Language', 'file', 'mtime', 'Category']
-        out = csv.writer(csvf, delimiter='\t')
+        fieldnames = ['Book Id', 'Words', 'Title', 'Author', 'Language', 'Added', 'Category']
+        out = csv.writer(csvf)
         out.writerow(fieldnames)
 
         for d in 'articles', 'short-stories', 'books', 'non-fiction':
