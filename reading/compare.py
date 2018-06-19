@@ -16,7 +16,7 @@ def compare(old, new):
 
     # changed
     for ix in old.index.intersection(new.index):
-        _changed_book(old.loc[ix], new.loc[ix])
+        _changed(old.loc[ix], new.loc[ix])
 
     # added/removed/changed edition
     idcs = old.index.symmetric_difference(new.index)
@@ -30,26 +30,26 @@ def compare(old, new):
         _n = new[new['Work'] == ix]
 
         if len(_o) and len(_n):
-            _changed_book(_o.iloc[0], _n.iloc[0])
+            _changed(_o.iloc[0], _n.iloc[0])
         elif len(_n):
-            print(_added_book(_n.iloc[0]))
+            print(_added(_n.iloc[0]))
         else:
-            print(_removed_book(_o.iloc[0]))
+            print(_removed(_o.iloc[0]))
 
 
 ################################################################################
 
 # formatting for a book that's been added/removed/changed
-def _added_book(book):
+def _added(book):
     return "Added '{Title}' by {Author}\n  {Category}\n".format(**book)
     # FIXME print more information
 
 
-def _removed_book(book):
+def _removed(book):
     return "Removed '{Title}' by {Author}\n".format(**book)
 
 
-def _changed_book(old, new):
+def _changed(old, new):
     columns = [ c for c in new.index if c not in ignore_columns ]
 
     old = old[columns]
