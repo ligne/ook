@@ -31,6 +31,11 @@ def print_entries(df, desc, additional=[]):
 
 ################################################################################
 
+def lint_missing_pagecount():
+    c = Collection(fixes=None)
+    return c.df[c.df.Pages.isnull()]
+
+
 # missing page count
 def check_missing_page_count(df):
     '''no_fixes'''

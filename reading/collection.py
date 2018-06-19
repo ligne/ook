@@ -90,8 +90,10 @@ class Collection():
     #   control visibility of later books in series
 
     def __init__(self, df=None,
-        shelves=None, categories=None, languages=None, borrowed=None,
-        gr_csv=GR_CSV, ebook_csv=EBOOK_CSV):
+            gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
+            dedup=False, merge=False, fixes='data/fixes.yml',
+            shelves=None, categories=None, languages=None, borrowed=None
+        ):
 
         # just wrap it
         if df:
