@@ -9,6 +9,7 @@ EBOOK_CSV = 'data/ebooks.csv'
 words_per_page = 390
 
 pd.options.display.max_rows = None
+pd.options.display.max_columns = None
 pd.options.display.max_colwidth = 40
 pd.options.display.width = None
 
