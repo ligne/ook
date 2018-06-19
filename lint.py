@@ -46,10 +46,11 @@ def lint_scheduled_misshelved():
     return c.df[c.df.Scheduled.notnull()]
 
 
-# check for books in multiple years
-def check_duplicate_years(df):
-    duplicate_years = reading.on_shelves(df, others=[r'\d{4}.+?\d{4}'])
-    print_entries(duplicate_years, 'Books in multiple years', ['Bookshelves'])
+# FIXME no longer possible.
+## check for books in multiple years
+#def check_duplicate_years(df):
+#    duplicate_years = reading.on_shelves(df, others=[r'\d{4}.+?\d{4}'])
+#    print_entries(duplicate_years, 'Books in multiple years', ['Bookshelves'])
 
 
 # scheduled books by authors i've already read this year
