@@ -36,14 +36,6 @@ def lint_missing_pagecount():
     return c.df[c.df.Pages.isnull()]
 
 
-# missing page count
-def check_missing_page_count(df):
-    '''no_fixes'''
-    df = reading.on_shelves(df, ['pending', 'ebooks'])
-    missing = df[df.isnull()['Number of Pages']]
-    print_entries(missing, 'Missing page count')
-
-
 def lint_missing_published_date():
     c = Collection(shelves=['pending', 'ebooks', 'elsewhere', 'read'])
     return c.df[c.df.Published.isnull()]
