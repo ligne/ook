@@ -41,14 +41,6 @@ def lint_missing_published_date():
     return c.df[c.df.Published.isnull()]
 
 
-# the original publication year is missing
-def check_missing_publication_year(df):
-    # FIXME
-    df = reading.on_shelves(df, ['pending', 'ebooks', 'elsewhere'])
-    df = df[df['Original Publication Year'].isnull()]
-    print_entries(df, 'Missing a publication year')
-
-
 # check for $year/currently-reading double-counting
 def check_scheduled_book_on_wrong_shelf(df):
     f = df[df.Scheduled.notnull() & ~df['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
