@@ -41,10 +41,9 @@ def lint_missing_published_date():
     return c.df[c.df.Published.isnull()]
 
 
-# check for $year/currently-reading double-counting
-def check_scheduled_book_on_wrong_shelf(df):
-    f = df[df.Scheduled.notnull() & ~df['Exclusive Shelf'].isin(['pending', 'ebooks', 'elsewhere'])]
-    print_entries(f, 'Scheduled books on the wrong shelf', ['Bookshelves'])
+def lint_scheduled_misshelved():
+    c = Collection(shelves=['read', 'currently-reading', 'to-read'])
+    return c.df[c.df.Scheduled.notnull()]
 
 
 # check for books in multiple years
