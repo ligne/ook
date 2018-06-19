@@ -172,6 +172,9 @@ for f in [x for x in dir(n) if x.startswith('check_')]:
 
     func(df)
 
+print('='*80)
+print()
+
 for f in [x for x in dir(n) if x.startswith('lint_')]:
     print(getattr(n, f)())
 
