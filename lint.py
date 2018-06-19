@@ -39,6 +39,11 @@ def check_missing_page_count(df):
     print_entries(missing, 'Missing page count')
 
 
+def lint_missing_published_date():
+    c = Collection(shelves=['pending', 'ebooks', 'elsewhere', 'read'])
+    return c.df[c.df.Published.isnull()]
+
+
 # the original publication year is missing
 def check_missing_publication_year(df):
     # FIXME
