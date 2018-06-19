@@ -6,8 +6,7 @@ import datetime
 import yaml
 
 import reading
-
-import pandas as pd
+from reading.collection import Collection
 
 
 # TODO check there aren't any unwanted entries in fixes.yml
