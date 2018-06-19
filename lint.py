@@ -176,4 +176,8 @@ for f in [x for x in dir(n) if x.startswith('check_')]:
 
     func(df)
 
+for f in [x for x in dir(n) if x.startswith('lint_')]:
+    print(getattr(n, f)())
+
+
 # vim: ts=4 : sw=4 : et
