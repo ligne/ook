@@ -60,10 +60,10 @@ def _changed_book(old, new):
         return
     elif new['Shelf'] == 'currently-reading' != old['Shelf']:
         # started reading
-        print(_started_book(new))
+        print(_started(new))
     elif new['Shelf'] == 'read' != old['Shelf']:
         # finished reading
-        print(_finished_book(new.copy()))
+        print(_finished(new))
     else:
         # just generally changed fields
         print('{Author}, {Title}'.format(**new))
@@ -87,15 +87,14 @@ def _changed_book(old, new):
 
 ################################################################################
 
-def _started_book(book):
+def _started(book):
     return """Started '{Title}' by {Author}
 """.format(**book)
 
 
-def _finished_book(book):
-    # FIXME shift these elsewhere.
-    book['Time'] = (pd.to_datetime(book['Read']) - pd.to_datetime(book['Started'])).days
-    book['Pages'] = float(book['Pages'])
+def _finished(book):
+    book = book.copy()
+    book['Time'] = (book.Read - book.Started).days
     book['PPD'] = book['Pages'] / book['Time']
     return """Finished '{Title}' by {Author}
   {Started} → {Read} ({Time} days)
