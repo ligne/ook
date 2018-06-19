@@ -39,13 +39,6 @@ def check_missing_page_count(df):
     print_entries(missing, 'Missing page count')
 
 
-# i've not manually added the start date
-def check_missing_start_date(df):
-    df = reading.read_since(df, 2016)
-    missing_start = df[df['Date Started'].isnull()]
-    print_entries(missing_start, 'Missing a start date')
-
-
 # the original publication year is missing
 def check_missing_publication_year(df):
     # FIXME
