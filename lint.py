@@ -157,10 +157,20 @@ def check_missing_borrowed(df):
     print_entries(df, 'Elsewhere but not marked as borrowed')
 
 
+def lint_missing_borrowed():
+    c = Collection(shelves=['elsewhere'], borrowed=False)
+    return c.df
+
+
 # books i've borrowed that need to be returned.
 def check_to_be_returned(df):
     df = reading.on_shelves(df, ['read'], ['borrowed'])
     print_entries(df, 'Borrowed and need to be returned')
+
+
+def lint_needs_returning():
+    c = Collection(shelves=['read'], borrowed=True)
+    return c.df
 
 
 # run them all

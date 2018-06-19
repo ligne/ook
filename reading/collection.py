@@ -90,7 +90,7 @@ class Collection():
     #   control visibility of later books in series
 
     def __init__(self, df=None,
-        shelves=None, categories=None, languages=None,
+        shelves=None, categories=None, languages=None, borrowed=None,
         gr_csv=GR_CSV, ebook_csv=EBOOK_CSV):
 
         # just wrap it
@@ -115,6 +115,9 @@ class Collection():
             df = df[df['Language'].isin(languages)]
         if shelves:
             df = df[df['Shelf'].isin(shelves)]
+
+        if borrowed is not None:
+            df = df[df['Borrowed'] == borrowed]
 
         # load information about the authors
 
