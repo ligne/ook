@@ -72,8 +72,6 @@ if len(sys.argv) > 1:
     sys.exit()
 
 
-
-
 df = reading.ebooks.get_books(fix_names=False)
 
 for ix, book in df.iterrows():
@@ -89,21 +87,7 @@ for ix, book in df.iterrows():
 
 df = reading.get_books(fix_names=False)
 
-df = reading.on_shelves(df, [
-    'read',
-    'currently-reading',
-    'pending',
-    'elsewhere',
-    'ebooks',
-])
-
-df1 = reading.ebooks.get_books(fix_names=False)
-
-df = df.append(df1)
-
-authors = sorted(df.Author.unique())
-
-for author in authors:
+for author in sorted(df.Author.unique()):
     try:
         Author(author).fetch_missing()
     except Exception as e:
