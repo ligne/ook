@@ -148,26 +148,12 @@ def check_read_author_metadata(df):
 
 
 # books on elsewhere shelf that are not marked as borrowed.
-def check_missing_borrowed(df):
-    df = reading.on_shelves(df, ['elsewhere'])
-
-    shelf = 'borrowed'
-    df = df[~df['Bookshelves'].str.contains(r'\b{}\b'.format(shelf))]
-
-    print_entries(df, 'Elsewhere but not marked as borrowed')
-
-
 def lint_missing_borrowed():
     c = Collection(shelves=['elsewhere'], borrowed=False)
     return c.df
 
 
 # books i've borrowed that need to be returned.
-def check_to_be_returned(df):
-    df = reading.on_shelves(df, ['read'], ['borrowed'])
-    print_entries(df, 'Borrowed and need to be returned')
-
-
 def lint_needs_returning():
     c = Collection(shelves=['read'], borrowed=True)
     return c.df
