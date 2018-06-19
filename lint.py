@@ -125,22 +125,6 @@ def lint_binding():
     return c.df[~c.df.Binding.isin(good_bindings)]
 
 
-# books with silly formats
-def check_bad_binding(df):
-    good_bindings = [
-        'Paperback',
-        'Hardcover',
-        'Mass Market Paperback',
-        'Kindle Edition',
-        'ebook',
-        'Poche',
-    ]
-    # ignore old books, along with those that i've not properly entered.
-    binding = df[~df['Exclusive Shelf'].isin(['read', 'to-read', 'elsewhere'])]
-    bad_binding = binding[(~binding['Binding'].isin(good_bindings))&(~binding['Binding'].isnull())]
-    print_entries(bad_binding, 'Bad binding', ['Binding'])
-
-
 def check_read_author_metadata(df):
     df = reading.read_since(df, '2016')
     df = df[df[['Nationality', 'Gender']].isnull().any(axis='columns')]
