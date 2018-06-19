@@ -103,6 +103,28 @@ def check_duplicate_books(df):
     print_entries(df, 'Duplicate books')
 
 
+# books in dubious formats
+def lint_binding():
+    good_bindings = [
+        'Paperback',
+        'Hardcover',
+        'Mass Market Paperback',
+        'Kindle Edition',
+        'ebook',
+        'Poche',
+    ]
+    c = Collection(shelves=[
+        'read',
+        'currently-reading',
+        'pending',
+        'elsewhere',
+        'library',
+        'ebooks',
+#        'to-read',
+    ])
+    return c.df[~c.df.Binding.isin(good_bindings)]
+
+
 # books with silly formats
 def check_bad_binding(df):
     good_bindings = [
