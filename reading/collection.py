@@ -26,18 +26,6 @@ def _get_gr_books(csv=GR_CSV):
         'Scheduled'
     ])
 
-    df = df.rename(columns={
-        'Date Added': 'Added',
-        'Date Started': 'Started',
-        'Date Read': 'Read',
-        'Original Publication Year': 'Published',
-        'Number of Pages': 'Pages',
-        'Exclusive Shelf': 'Shelf',
-        'My Rating': 'Rating',
-        'Average Rating': 'AvgRating',
-        'Work Id': 'Work',
-    })
-
     return df
 
 
