@@ -3,7 +3,6 @@
 import sys
 import time
 import yaml
-import datetime
 import requests
 import re
 import pandas as pd
