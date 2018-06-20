@@ -18,7 +18,7 @@ def compare(old, new):
 
     # changed
     for ix in old.index.intersection(new.index):
-        _changed(old.loc[ix], new.loc[ix])
+        print(_changed(old.loc[ix], new.loc[ix]))
 
     # added/removed/changed edition
     idcs = old.index.symmetric_difference(new.index)
@@ -32,7 +32,7 @@ def compare(old, new):
         _n = new[new['Work'] == ix]
 
         if len(_o) and len(_n):
-            _changed(_o.iloc[0], _n.iloc[0])
+            print(_changed(_o.iloc[0], _n.iloc[0]))
         elif len(_n):
             print(_added(_n.iloc[0]))
         else:
@@ -44,8 +44,8 @@ def compare(old, new):
 # formatting for a book that's been added/removed/changed
 def _added(book):
     return Template('''Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
-{%- if b.Series is not number %}
-  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry}}{%endif %}
+{%- if b.Series %}
+  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {{b.Pages|int}} pages
@@ -69,29 +69,41 @@ def _changed(old, new):
         return
     elif new['Shelf'] == 'currently-reading' != old['Shelf']:
         # started reading
-        print(_started(new))
+        return _started(new)
     elif new['Shelf'] == 'read' != old['Shelf']:
         # finished reading
-        print(_finished(new))
+        return _finished(new)
     else:
         # just generally changed fields
-        print('{Author}, {Title}'.format(**new))
-        for (col, v) in new.iteritems():
-            if v == old[col]:
-                continue
+		# FIXME really need a more elegant way of arranging the columns :-/
+        return Template('''{{new.Author}}, {{new.Title}}
+{%- for col in ( 'Author', 'Title', 'Shelf', 'Category', 'Series', 'Entry', 'Language', 'Pages', 'Scheduled', 'Added', 'Started', 'Read', 'Author Id', 'Series Id', 'Binding', 'Published', 'Work', 'Rating', 'AvgRating', 'Borrowed') -%}
+  {%- if old[col] != new[col] %}
 
-            # FIXME work out what the dtype is, and if one or the other value is
-            # null, and handle accordingly.
-            if not old[col]:
-                print('  {} set to {}'.format(col, v))
-            elif not v:
-                print('  {} unset (previously {})'.format(col, old[col]))
-            else:
-                print('  {}: {} -> {}'.format(col, old[col], v))
+      {%- if old[col] and not new[col] %}
+  * {{col}} unset (previously {{old[col]}})
 
-    print()
+      {%- elif new[col] and not old[col] %}
+  * {{col}} set to {{new[col]}}
 
-    return ''
+      {%- else %}
+        {%- if col in ('Added', 'Started', 'Read') %}
+  * {{col}}: {{old[col].date()}} → {{new[col].date()}}
+
+        {%- elif col in ('Title', 'Author') %}
+  * {{col}} changed from '{{old[col]}}'
+
+        {%- elif new[col] is number %}
+  * {{col}}: {{old[col]|int}} → {{new[col]|int}}
+
+        {%- else %}
+  * {{col}}: {{old[col]}} → {{new[col]}}
+
+        {%- endif %}
+      {%- endif %}
+  {%- endif -%}
+{%- endfor %}
+''').render(old=old, new=new)
 
 
 ################################################################################
