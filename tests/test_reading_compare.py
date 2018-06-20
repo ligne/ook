@@ -45,7 +45,14 @@ Removed 'The Monk' by Matthew Lewis
 
 
 def test__changed():
-    pass
+    old, new = _to_books(
+"""
+34232174,2017-12-26,Helen Dunmore,41542,3.72,Paperback,True,novels,,en,416,2017,0,,,,,elsewhere,,Birdcage Walk,51949108
+34232174,2017-12-26,Helen Dunmore,41542,3.72,Paperback,True,novels,,en,426,2017,0,,,,,pending,,Birdcage Walk,51949108
+""")
+
+    eq_(reading.compare._changed(old, new), '''
+'''.lstrip())
 
 
 def test__started():
