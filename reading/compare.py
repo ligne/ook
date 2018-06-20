@@ -2,6 +2,8 @@
 
 import pandas as pd
 import sys
+from jinja2 import Template
+
 
 ignore_columns = [
     'AvgRating',
@@ -12,7 +14,7 @@ ignore_columns = [
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old, new):
-    (old, new) = [ df.fillna('') for df in (old, new) ]
+    (old, new) = [df.fillna('') for df in (old, new)]
 
     # changed
     for ix in old.index.intersection(new.index):
@@ -41,16 +43,23 @@ def compare(old, new):
 
 # formatting for a book that's been added/removed/changed
 def _added(book):
-    return "Added '{Title}' by {Author}\n  {Category}\n".format(**book)
-    # FIXME print more information
+    return Template('''Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
+{%- if b.Series is not number %}
+  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry}}{%endif %}
+{%- endif %}
+  * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
+  * {{b.Pages|int}} pages
+  * Language: {{b.Language}}
+''').render(b=book)
 
 
 def _removed(book):
-    return "Removed '{Title}' by {Author}\n".format(**book)
+    return Template('''Removed {{b.Title}} by {{b.Author}} from shelf '{{b.Shelf}}'
+''').render(b=book)
 
 
 def _changed(old, new):
-    columns = [ c for c in new.index if c not in ignore_columns ]
+    columns = [c for c in new.index if c not in ignore_columns]
 
     old = old[columns]
     new = new[columns]
@@ -88,19 +97,17 @@ def _changed(old, new):
 ################################################################################
 
 def _started(book):
-    return """Started '{Title}' by {Author}
-""".format(**book)
+    return Template('''Started {{ b.Title }} by {{b.Author}}
+  * {{b.Pages|int}} pages
+''').render(b=book)
 
 
 def _finished(book):
-    book = book.copy()
-    book['Time'] = (book.Read - book.Started).days
-    book['PPD'] = book['Pages'] / book['Time']
-    return """Finished '{Title}' by {Author}
-  {Started} → {Read} ({Time} days)
-  {Pages:0.0f} pages, {PPD:0.0f} pages/day
-  Rating: {Rating}
-""".format(**book)
+    return Template('''Finished {{b.Title}} by {{b.Author}}
+  {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)
+  {{b.Pages|int}} pages, {{(b.Pages / (b.Read - b.Started).days)|round|int}} pages/day
+  Rating: {{b.Rating|int}}
+''').render(b=book)
 
 
 ################################################################################

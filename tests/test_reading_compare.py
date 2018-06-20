@@ -27,10 +27,12 @@ Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Languag
 26570162,2017-07-27,Matthew Lewis,7798465,3.8,Paperback,False,novels,,en,339,1796,0,,,,,pending,,The Monk,3095060
 """))
 
-    eq_(reading.compare._added(c.df.iloc[0]), """
-Added 'The Monk' by Matthew Lewis
-  novels
-""".lstrip())
+    assert_multi_line_equal(reading.compare._added(c.df.iloc[0]), """
+Added The Monk by Matthew Lewis to shelf 'pending'
+  * novels
+  * 339 pages
+  * Language: en
+""".strip())
 
 
 def test__removed():
@@ -39,9 +41,9 @@ Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Languag
 26570162,2017-07-27,Matthew Lewis,7798465,3.8,Paperback,False,novels,,en,339,1796,0,,,,,pending,,The Monk,3095060
 """))
 
-    eq_(reading.compare._removed(c.df.iloc[0]), """
-Removed 'The Monk' by Matthew Lewis
-""".lstrip())
+    assert_multi_line_equal(reading.compare._removed(c.df.iloc[0]), """
+Removed The Monk by Matthew Lewis from shelf 'pending'
+""".strip())
 
 
 def test__changed():
@@ -51,8 +53,8 @@ def test__changed():
 34232174,2017-12-26,Helen Dunmore,41542,3.72,Paperback,True,novels,,en,426,2017,0,,,,,pending,,Birdcage Walk,51949108
 """)
 
-    eq_(reading.compare._changed(old, new), '''
-'''.lstrip())
+    assert_multi_line_equal(reading.compare._changed(old, new), '''
+'''.strip())
 
 
 def test__started():
@@ -61,9 +63,10 @@ Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Languag
 8899970,2018-02-24,Graham Greene,2533,3.66,Paperback,False,novels,,en,190,1936,4,,,,,currently-reading,2018-03-05,A Gun for Sale,151810
 """))
 
-    eq_(reading.compare._started(c.df.iloc[0]), """
-Started 'A Gun for Sale' by Graham Greene
-""".lstrip())
+    assert_multi_line_equal(reading.compare._started(c.df.iloc[0]), """
+Started A Gun for Sale by Graham Greene
+  * 190 pages
+""".strip())
 
 
 def test__finished():
@@ -72,10 +75,10 @@ Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Languag
 491030,2016-04-18,Iain Banks,7628,3.84,Paperback,False,novels,,en,288,1986,4,2016-08-10,,,,read,2016-07-19,The Bridge,1494168
 """))
 
-    eq_(reading.compare._finished(c.df.iloc[0]), """
-Finished 'The Bridge' by Iain Banks
-  2016-07-19 00:00:00 → 2016-08-10 00:00:00 (22 days)
+    assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
+Finished The Bridge by Iain Banks
+  2016-07-19 → 2016-08-10 (22 days)
   288 pages, 13 pages/day
-  Rating: 4.0
-""".lstrip())
+  Rating: 4
+""".strip())
 
