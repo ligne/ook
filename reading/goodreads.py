@@ -139,6 +139,9 @@ def _parse_book_api(xml):
 
     shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
+    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
+          for s in xml.findall('book/authors/author')]
+
     return {
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
@@ -180,6 +183,15 @@ def _parse_series(xml):
     }
 
 
+def _get_authors(authors):
+    _authors = list(filter(lambda x: x[2] is None, authors))
+    if len(_authors):
+        return (
+            ', '.join([re.sub('\s+', ' ', a[0]) for a in _authors]),
+            ', '.join([a[1] for a in _authors]),
+        )
+
+
 # tries to divine what sort of book this is based on the shelves.
 def _get_category(shelves):
     patterns = (
@@ -212,6 +224,7 @@ if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     for f in sys.argv[1:]:
         r = ElementTree.parse(f)
-        print(_parse_book_api(r)['Category'])
+        _parse_book_api(r)
+#         print(_parse_book_api(r))
     #print(process_review(r))
 
