@@ -14,26 +14,31 @@ def test__get_gr_books():
     df = reading.collection._get_gr_books()
 
     assert_equals(sorted(df.columns), sorted([
-        'Added',
         'Author',
-        'Author Id',
-        'AvgRating',
-        'Binding',
-        'Borrowed',
+        'Title',
+        'Shelf',
         'Category',
+        'Series',
         'Entry',
         'Language',
         'Pages',
-        'Published',
-        'Rating',
-        'Read',
+
         'Scheduled',
-        'Series',
-        'Series Id',
-        'Shelf',
+        'Added',
         'Started',
-        'Title',
+        'Read',
+
+        'Author Id',
+        'Series Id',
+
+        'Binding',
+        'Published',
         'Work',
+
+        'Rating',
+        'AvgRating',
+
+        'Borrowed',
     ]))
 
     eq_(set(df.Category.values), set([
