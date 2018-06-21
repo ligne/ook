@@ -18,7 +18,9 @@ def compare(old, new):
 
     # changed
     for ix in old.index.intersection(new.index):
-        print(_changed(old.loc[ix], new.loc[ix]))
+        changed = _changed(old.loc[ix], new.loc[ix])
+        if changed:
+            print(changed)
 
     # added/removed/changed edition
     idcs = old.index.symmetric_difference(new.index)
@@ -32,7 +34,9 @@ def compare(old, new):
         _n = new[new['Work'] == ix]
 
         if len(_o) and len(_n):
-            print(_changed(_o.iloc[0], _n.iloc[0]))
+            changed = _changed(_o.iloc[0], _n.iloc[0])
+            if changed:
+                print(changed)
         elif len(_n):
             print(_added(_n.iloc[0]))
         else:
