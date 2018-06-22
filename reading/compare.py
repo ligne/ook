@@ -88,7 +88,11 @@ def _changed(old, new):
   * {{col}} unset (previously {{old[col]}})
 
       {%- elif new[col] and not old[col] %}
+        {%- if new[col] is number %}
+  * {{col}} set to {{new[col]|int}}
+        {%- else %}
   * {{col}} set to {{new[col]}}
+        {%- endif %}
 
       {%- else %}
         {%- if col in ('Added', 'Started', 'Read') %}

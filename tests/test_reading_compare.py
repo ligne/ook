@@ -116,8 +116,6 @@ Helen Dunmore, Birdcage Walk
 34232174,2017-12-25,Helen Dunmore,41542,3.72,Paperback,True,,,en,426,2017,0,,,,,pending,,Birdcage Walk,51949108
 """)
 
-    print(reading.compare._changed(old, new))
-
     assert_multi_line_equal(reading.compare._changed(old, new), '''
 Helen Dunmore, Birdcage Walk
   * Shelf: elsewhere → pending
@@ -125,6 +123,17 @@ Helen Dunmore, Birdcage Walk
   * Pages: 416 → 426
   * Added: 2017-12-26 → 2017-12-25
   * Binding set to Paperback
+'''.strip())
+
+    old, new = _to_books(
+"""
+34232174,2017-12-25,Helen Dunmore,41542,3.72,Paperback,True,,,en,,2017,0,,,,,pending,,Birdcage Walk,51949108
+34232174,2017-12-25,Helen Dunmore,41542,3.72,Paperback,True,,,en,426,2017,0,,,,,pending,,Birdcage Walk,51949108
+""")
+
+    assert_multi_line_equal(reading.compare._changed(old, new), '''
+Helen Dunmore, Birdcage Walk
+  * Pages set to 426
 '''.strip())
 
     ####
