@@ -25,14 +25,10 @@ def get_books():
     while True:
         r = requests.get('https://www.goodreads.com/review/list/10052745.xml', params={
             'key': config['goodreads']['key'],
-#            'shelf': 'read',
-            #'sort': 'date_added',
             'v': 2,
             'per_page': 200,
             'page': page,
         })
-        time.sleep(1)
-
         x = ElementTree.fromstring(r.content)
 
         for r in x.findall('reviews/'):
