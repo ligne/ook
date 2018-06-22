@@ -49,7 +49,7 @@ def get_books():
         reading.cache.dump_yaml('series', reading.series.cache)
 
     df = pd.DataFrame(data=books).set_index('Book Id')
-    return df[~(df['Read'] < config['filter']['ignore_before'])]
+    return df[~(df['Read'] < config['goodreads']['ignore_before'])]
 
 
 # extract a (possibly missing) date.
