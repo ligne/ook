@@ -71,6 +71,7 @@ def test_process_review():
 def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author Id': '4750',
         'Language': 'fr',
         'Published': 1891,
         'Series Id': 40441,
@@ -82,6 +83,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/3602116.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author Id': '6819578',
         'Language': 'en',
         'Published': 397,
         'Series Id': None,
@@ -93,6 +95,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/38290.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author Id': '9121',
         'Language': None,
         'Published': 1823,
         'Series Id': 81550,
@@ -104,6 +107,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/17999159.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author Id': '6984726',
         'Language': 'en',
         'Published': 2013,
         'Series Id': None,
