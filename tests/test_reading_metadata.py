@@ -38,31 +38,26 @@ def test__list_choices():
       Elizabeth Gaskell
       Published: 1853
       Ratings: 31583
-      Work Id: 1016559
       https://www.goodreads.com/book/show/182381
  2. The Cranford Chronicles
       Elizabeth Gaskell
       Published: 1859
       Ratings: 1515
-      Work Id: 21949576
       https://www.goodreads.com/book/show/2141817
  3. Return to Cranford: Cranford and other stories
       Elizabeth Gaskell
       Published: 2009
       Ratings: 74
-      Work Id: 8965360
       https://www.goodreads.com/book/show/7329542
  4. Cranford
       J.Y.K. Kerr
       Published: 2000
       Ratings: 10
-      Work Id: 718606
       https://www.goodreads.com/book/show/732416
  5. Cranford/Cousin Phillis
       Elizabeth Gaskell
       Published: 1864
       Ratings: 428
-      Work Id: 215385
       https://www.goodreads.com/book/show/222401
 '''.lstrip())
 

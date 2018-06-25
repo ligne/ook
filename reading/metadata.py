@@ -23,9 +23,6 @@ def _list_choices(results):
     {%- if entry.Ratings %}
       Ratings: {{entry.Ratings}}
     {%- endif %}
-    {%- if entry.Work %}
-      Work Id: {{entry.Work|int}}
-    {%- endif %}
     {%- if entry.QID %}
       https://www.wikidata.org/wiki/{{entry.QID}}
     {%- elif entry.BookId %}
