@@ -11,10 +11,17 @@ def _list_choices(results):
     return Template('''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %} {{entry.Title}}
+    {%- if entry.Author %}
+      {{entry.Author}}
+    {%- endif %}
     {%- if entry.Description %}
       {{entry.Description}}
     {%- endif %}
+    {%- if entry.QID %}
       https://www.wikidata.org/wiki/{{entry.QID}}
+    {%- elif entry.BookId %}
+      https://www.goodreads.com/book/show/{{entry.BookId}}
+    {%- endif %}
 {% endfor %}
 ''').render(results=results)
 
