@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import pandas as pd
+import re
 
 
 GR_CSV    = 'data/goodreads.csv'
@@ -63,6 +64,36 @@ def _get_kindle_books(csv=EBOOK_CSV):
 # FIXME maybe want this to not require pandas?
 def _save_kindle_books(csv):
     pass
+
+
+################################################################################
+
+# split ebook titles into title, subtitle and volume parts, since they tend to
+# be unusably messy
+def _ebook_parse_title(title):
+    title = re.sub('\s+', ' ', title.strip())
+
+    t = title
+    s = v = ''
+
+    m = re.search('(?: / |\s?[;:] )', title)
+    if m:
+        t, s = re.split('(?: / |\s?[;:] )', title, maxsplit=1)
+
+    patterns = (
+        (', Tome ([IV]+)\.', 1),
+        (', Volume (\d+)(?: \(.+\))', 1),
+        (', tome (\w+)', 1),
+    )
+
+    for pat, grp in patterns:
+        m = re.search(pat, title, re.IGNORECASE)
+        if m:
+            t = re.sub(pat, '', t)
+            v = m.group(grp)
+            break
+
+    return t
 
 
 ################################################################################
