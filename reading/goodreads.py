@@ -216,6 +216,33 @@ def _get_category(shelves):
     return ''
 
 
+################################################################################
+
+def search(term):
+    r = requests.get('https://www.goodreads.com/search/index.xml', params={
+        'key': config['goodreads']['key'],
+        'q': term,
+    })
+
+    # FIXME try and cross-check author ID with existing ones?
+
+    xml = ElementTree.fromstring(r.content)
+
+    # FIXME additional information might be handy for identifying sensible
+    # results (eg. publication date, number of editions and ratings.
+    #
+    # could even look up the Book ID separately to get additional information.
+    return [{
+        'Title': x.find('best_book/title').text,
+        'BookId': x.find('best_book/id').text,
+        'Work': x.find('id').text,
+        'AuthorId': x.find('best_book/author/id').text,
+        'Author': x.find('best_book/author/name').text,
+    } for x in xml.findall('search/results/work')]
+
+
+################################################################################
+
 if __name__ == "__main__":
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     for f in sys.argv[1:]:
