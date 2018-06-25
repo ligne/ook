@@ -218,27 +218,52 @@ def _get_category(shelves):
 
 ################################################################################
 
-def search(term):
+# search by title
+def search_title(term):
     r = requests.get('https://www.goodreads.com/search/index.xml', params={
         'key': config['goodreads']['key'],
+        'search[field]': 'title',
         'q': term,
     })
 
-    # FIXME try and cross-check author ID with existing ones?
-
     xml = ElementTree.fromstring(r.content)
-
-    # FIXME additional information might be handy for identifying sensible
-    # results (eg. publication date, number of editions and ratings.
-    #
-    # could even look up the Book ID separately to get additional information.
     return [{
         'Title': x.find('best_book/title').text,
         'BookId': x.find('best_book/id').text,
         'Work': x.find('id').text,
         'AuthorId': x.find('best_book/author/id').text,
         'Author': x.find('best_book/author/name').text,
+        'Published': x.find('original_publication_year').text,
+        'Ratings': x.find('ratings_count').text,
     } for x in xml.findall('search/results/work')]
+
+
+# search by author name.  note that this still returns a list of books!
+def search_author(term):
+    term = re.sub(' [\d?-]+$', '', term)
+    print("searching for {}".format(term))
+
+    r = requests.get('https://www.goodreads.com/search/index.xml', params={
+        'key': config['goodreads']['key'],
+        'search[field]': 'author',
+        'q': term,
+    })
+
+    xml = ElementTree.fromstring(r.content)
+    authors = [(a.find('name').text, a.find('id').text) for a in xml.findall('search/results/work/best_book/author')]
+
+    author_ids = uniq(authors)
+    print(author_ids)
+
+    return [{
+        'Author': a.find('name').text,
+        'AuthorId': a.find('id').text,
+    } for x in xml.findall('search/results/work/best_book/author')]
+
+
+def uniq(seq):
+    seen = set()
+    return [x for x in seq if x not in seen and not seen.add(x)]
 
 
 ################################################################################
