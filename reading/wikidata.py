@@ -6,18 +6,18 @@ import requests
 
 # use the basic wikidata search.
 def search(term):
-        r = requests.get('https://www.wikidata.org/w/api.php', params={
-            'action': 'wbsearchentities',
-            'language': 'en',
-            'format': 'json',
-            'search': term,
-        })
+    r = requests.get('https://www.wikidata.org/w/api.php', params={
+        'action': 'wbsearchentities',
+        'language': 'en',
+        'format': 'json',
+        'search': term,
+    })
 
-        return [{
-            'Title': res['label'],
-            'QID': res['id'],
-            'Description': res.get('description', ''),
-        } for res in r.json()['search']]
+    return [{
+        'Title': res['label'],
+        'QID': res['id'],
+        'Description': res.get('description', ''),
+    } for res in r.json()['search']]
 
 
 ################################################################################
