@@ -92,11 +92,8 @@ def lookup_work_id(metadata):
 
     if response in 'sqQ':
         return response
-    else:
-        metadata['Work'] = results[int(response)-1]['Work']
-        print('fetching', results[int(response)-1]['BookId'])
-        book = fetch_book(results[int(response)-1]['BookId'])
-        metadata['AuthorId'] = book['Author Id']
+    metadata.update(results[int(response)-1])
+    return
 
 
 def lookup_author(name, grid=None):

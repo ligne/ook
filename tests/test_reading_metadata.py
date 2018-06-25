@@ -26,7 +26,7 @@ def test__list_choices():
 
     assert_multi_line_equal.__self__.maxDiff = None
 
-    # a couple of authors
+    # books from goodreads title search
     assert_multi_line_equal(reading.metadata._list_choices([
         {'Ratings': '31583', 'Published': '1853', 'BookId': '182381', 'Work': '1016559', 'Author': 'Elizabeth Gaskell', 'AuthorId': '1413437', 'Title': 'Cranford'},
         {'Ratings': '1515', 'Published': '1859', 'BookId': '2141817', 'Work': '21949576', 'Author': 'Elizabeth Gaskell', 'AuthorId': '1413437', 'Title': 'The Cranford Chronicles'},
