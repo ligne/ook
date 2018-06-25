@@ -5,7 +5,7 @@ import requests
 
 
 # use the basic wikidata search.
-def search(term):
+def wd_search(term):
     r = requests.get('https://www.wikidata.org/w/api.php', params={
         'action': 'wbsearchentities',
         'language': 'en',

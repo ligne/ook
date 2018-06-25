@@ -3,7 +3,10 @@
 import sys
 from jinja2 import Template
 
-import reading.wikidata
+from .wikidata import wd_search
+from .goodreads import search_title, fetch_book
+
+import reading.collection
 
 
 # formats a list of search results
@@ -71,6 +74,30 @@ Q - exit without saving
 
 
 ################################################################################
+
+def lookup_work_id(metadata):
+    title = reading.collection._ebook_parse_title(metadata['Title'])
+    results = search_title(title)
+    if not results:
+        # halp!
+        print("No books found with the title '{}'".format(title))
+        return 's'
+
+    # page these?
+    if len(results) > 10:
+        results = results[:10]
+
+    print(_list_choices(results))
+    response = _read_choice(len(results))
+
+    if response in 'sqQ':
+        return response
+    else:
+        metadata['Work'] = results[int(response)-1]['Work']
+        print('fetching', results[int(response)-1]['BookId'])
+        book = fetch_book(results[int(response)-1]['BookId'])
+        metadata['AuthorId'] = book['Author Id']
+
 
 def lookup_author(name, grid=None):
     results = reading.wikidata.search(name)
