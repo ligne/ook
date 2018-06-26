@@ -116,13 +116,18 @@ def process(df, force=False):
         words = wordcount(path)
 
         ebooks.append({
+            'Book Id': name,
             'Author': author,
             'Title': title,
-            'Added': pd.Timestamp(datetime.date.fromtimestamp(path.stat().st_mtime)),
-            'Language': language,
+            'Shelf': 'kindle',
             'Category': category,
-            'Book Id': name,
+            'Language': language,
+            'Added': pd.Timestamp(datetime.date.fromtimestamp(path.stat().st_mtime)),
+            'Author Id': None,
+            'Binding': 'ebook',
+            'Work': None,
             'Words': words,
+            'Borrowed': False,
         })
 
     return pd.DataFrame(ebooks).set_index('Book Id')
@@ -138,7 +143,7 @@ if __name__ == "__main__":
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
-        new.sort_index()[['Words','Title','Author','Language','Added','Category']].to_csv('data/ebooks.csv', float_format='%g')
+        Collection(df=new).save()
 
     new = new.assign(Work=None, Shelf='kindle')
 
