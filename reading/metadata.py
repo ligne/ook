@@ -10,12 +10,14 @@ import reading.collection
 
 
 # formats a list of search results
-def _list_choices(results):
+def _list_choices(results, author_ids, work_ids):
     return Template('''
 {%- for entry in results %}
-  {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %} {{entry.Title}}
+  {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
+  {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title}}\033[0m
     {%- if entry.Author %}
-      {{entry.Author}}
+      {%- if entry.AuthorId|int in authors %}\033[33m{% endif %}
+      {{entry.Author}}\033[0m
     {%- endif %}
     {%- if entry.Description %}
       {{entry.Description}}
@@ -32,7 +34,7 @@ def _list_choices(results):
       https://www.goodreads.com/book/show/{{entry.BookId}}
     {%- endif %}
 {% endfor %}
-''').render(results=results)
+''').render(results=results, authors=author_ids, works=work_ids)
 
 
 # prompts the user for a selection or other decision.
@@ -75,7 +77,7 @@ Q - exit without saving
 
 ################################################################################
 
-def lookup_work_id(metadata):
+def lookup_work_id(metadata, author_ids, work_ids):
     title = reading.collection._ebook_parse_title(metadata['Title'])
     results = sorted(search_title(title), key=lambda x: -int(x['Ratings']))
     if not results:
