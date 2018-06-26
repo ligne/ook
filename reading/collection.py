@@ -62,8 +62,12 @@ def _get_kindle_books(csv=EBOOK_CSV):
 
 
 # FIXME maybe want this to not require pandas?
-def _save_kindle_books(csv):
-    pass
+def _save_kindle_books(df, csv=EBOOK_CSV):
+    columns = ['Author','Title','Shelf','Category','Language','Added','Author Id','Binding','Work','Words', 'Borrowed']
+
+    df = df[df.Shelf == 'kindle']
+
+    df.sort_index()[columns].to_csv(csv, float_format='%g')
 
 
 ################################################################################
@@ -146,8 +150,9 @@ class Collection():
 
 
     # save to disk.  FIXME must only apply to one file?
-    def save():
-        pass
+    def save(self):
+        _save_gr_books(self.df)
+        _save_kindle_books(self.df)
 
 
 if __name__ == "__main__":
