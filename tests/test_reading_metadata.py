@@ -61,16 +61,49 @@ def test__list_choices():
 #      https://www.goodreads.com/book/show/222401
 #'''.lstrip())
 
-    # books from goodreads title search
+    # it's both an author and a work that i have already.
     results = [
         {'Work': '3298883', 'AuthorId': '5144', 'BookId': '7588', 'Ratings': '109451', 'Published': '1916', 'Author': 'James Joyce', 'Title': 'A Portrait of the Artist as a Young Man'},
         {'Work': '47198830', 'AuthorId': '5144', 'BookId': '23296', 'Ratings': '5733', 'Published': '1914', 'Author': 'James Joyce', 'Title': 'A Portrait of the Artist as a Young Man / Dubliners'},
         {'Work': '7427316', 'AuthorId': '5144', 'BookId': '580717', 'Ratings': '113', 'Published': '1992', 'Author': 'James Joyce', 'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'},
         {'Work': '10692', 'AuthorId': '5677665', 'BookId': '7593', 'Ratings': '12', 'Published': '1964', 'Author': 'Valerie Zimbarro', 'Title': 'A Portrait of the Artist as a Young Man, Notes'},
     ]
-    print(reading.metadata._list_choices(results, author_ids=set([5144]), work_ids=set([3298883])))
     assert_multi_line_equal(reading.metadata._list_choices(results, author_ids=set([5144]), work_ids=set([3298883])), '''
 \033[1m 1.\033[0m\033[32m A Portrait of the Artist as a Young Man\033[0m\033[33m
+      James Joyce\033[0m
+      Published: 1916
+      Ratings: 109451
+      https://www.goodreads.com/book/show/7588
+      https://www.goodreads.com/author/show/5144
+ 2. A Portrait of the Artist as a Young Man / Dubliners\033[0m\033[33m
+      James Joyce\033[0m
+      Published: 1914
+      Ratings: 5733
+      https://www.goodreads.com/book/show/23296
+      https://www.goodreads.com/author/show/5144
+ 3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music\033[0m\033[33m
+      James Joyce\033[0m
+      Published: 1992
+      Ratings: 113
+      https://www.goodreads.com/book/show/580717
+      https://www.goodreads.com/author/show/5144
+ 4. A Portrait of the Artist as a Young Man, Notes\033[0m
+      Valerie Zimbarro\033[0m
+      Published: 1964
+      Ratings: 12
+      https://www.goodreads.com/book/show/7593
+      https://www.goodreads.com/author/show/5677665
+'''.lstrip())
+
+    # known author, but new book
+    results = [
+        {'Work': '3298883', 'AuthorId': '5144', 'BookId': '7588', 'Ratings': '109451', 'Published': '1916', 'Author': 'James Joyce', 'Title': 'A Portrait of the Artist as a Young Man'},
+        {'Work': '47198830', 'AuthorId': '5144', 'BookId': '23296', 'Ratings': '5733', 'Published': '1914', 'Author': 'James Joyce', 'Title': 'A Portrait of the Artist as a Young Man / Dubliners'},
+        {'Work': '7427316', 'AuthorId': '5144', 'BookId': '580717', 'Ratings': '113', 'Published': '1992', 'Author': 'James Joyce', 'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'},
+        {'Work': '10692', 'AuthorId': '5677665', 'BookId': '7593', 'Ratings': '12', 'Published': '1964', 'Author': 'Valerie Zimbarro', 'Title': 'A Portrait of the Artist as a Young Man, Notes'},
+    ]
+    assert_multi_line_equal(reading.metadata._list_choices(results, author_ids=set([5144]), work_ids=set()), '''
+\033[1m 1.\033[0m A Portrait of the Artist as a Young Man\033[0m\033[33m
       James Joyce\033[0m
       Published: 1916
       Ratings: 109451
