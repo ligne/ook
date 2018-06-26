@@ -30,7 +30,7 @@ def _get_gr_books(csv=GR_CSV):
     return df
 
 
-def _save_gr_books(csv, df):
+def _save_gr_books(df, csv=GR_CSV):
     pass
 
 
