@@ -93,7 +93,7 @@ def lookup_work_id(metadata, author_ids, work_ids):
     if len(results) > 10:
         results = results[:10]
 
-    print(_list_choices(results))
+    print(_list_choices(results, author_ids, work_ids))
     response = _read_choice(len(results))
 
     if response in 'sqQ':
