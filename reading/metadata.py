@@ -30,8 +30,12 @@ def _list_choices(results, author_ids, work_ids):
     {%- endif %}
     {%- if entry.QID %}
       https://www.wikidata.org/wiki/{{entry.QID}}
-    {%- elif entry.BookId %}
+    {%- endif %}
+    {%- if entry.BookId %}
       https://www.goodreads.com/book/show/{{entry.BookId}}
+    {%- endif %}
+    {%- if entry.AuthorId %}
+      https://www.goodreads.com/author/show/{{entry.AuthorId}}
     {%- endif %}
 {% endfor %}
 ''').render(results=results, authors=author_ids, works=work_ids)

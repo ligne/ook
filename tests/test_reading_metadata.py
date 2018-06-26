@@ -75,19 +75,23 @@ def test__list_choices():
       Published: 1916
       Ratings: 109451
       https://www.goodreads.com/book/show/7588
+      https://www.goodreads.com/author/show/5144
  2. A Portrait of the Artist as a Young Man / Dubliners\033[0m\033[33m
       James Joyce\033[0m
       Published: 1914
       Ratings: 5733
       https://www.goodreads.com/book/show/23296
+      https://www.goodreads.com/author/show/5144
  3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music\033[0m\033[33m
       James Joyce\033[0m
       Published: 1992
       Ratings: 113
       https://www.goodreads.com/book/show/580717
+      https://www.goodreads.com/author/show/5144
  4. A Portrait of the Artist as a Young Man, Notes\033[0m
       Valerie Zimbarro\033[0m
       Published: 1964
       Ratings: 12
       https://www.goodreads.com/book/show/7593
+      https://www.goodreads.com/author/show/5677665
 '''.lstrip())
