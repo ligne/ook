@@ -137,5 +137,6 @@ if __name__ == "__main__":
     old = Collection(gr_csv=sys.argv[1]).df.fillna('')
     new = Collection(gr_csv=sys.argv[2]).df.fillna('')
 
-    _changed(old, new)
+#    _changed(old, new)
+    compare(old, new)
 
