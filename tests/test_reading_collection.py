@@ -74,18 +74,20 @@ def test__get_kindle_books():
     # FIXME use a test csv
     df = reading.collection._get_kindle_books()
 
-    eq_(sorted(df.columns), sorted([
+    assert_list_equal(list(df.columns), [
         'Author',
-        'Binding',
-        'Borrowed',
-        'Category',
-        'Added',
-        'Shelf',
-        'Language',
-        'Pages',
         'Title',
+        'Shelf',
+        'Category',
+        'Language',
+        'Added',
+        'Author Id',
+        'Binding',
+        'Work',
         'Words',
-    ]))
+        'Borrowed',
+        'Pages',
+    ])
 
     eq_(df.Binding.unique(), ['ebook'])
     eq_(df.Borrowed.unique(), [False])

@@ -48,13 +48,6 @@ def _get_kindle_books(csv=EBOOK_CSV):
     # calculate page count
     df['Pages'] = df.Words / words_per_page
 
-    # set missing columns
-    df = df.assign(
-        Binding='ebook',
-        Borrowed=False,
-        Shelf='kindle',
-    )
-
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
