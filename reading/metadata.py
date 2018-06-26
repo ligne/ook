@@ -87,6 +87,7 @@ def lookup_work_id(metadata, author_ids, work_ids):
     if not results:
         # halp!
         print("No books found with the title '{}'".format(title))
+        print()
         return 's'
 
     # page these?
