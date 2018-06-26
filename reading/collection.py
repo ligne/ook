@@ -115,9 +115,9 @@ class Collection():
                 ):
 
         # just wrap it
-        if df:
+        if df is not None:
             self.df = df.copy()
-            return self
+            return
 
         # otherwise load and concatenate the CSV files
         df = pd.concat([
