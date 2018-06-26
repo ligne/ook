@@ -173,8 +173,8 @@ Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Languag
 
     assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
 Finished The Bridge by Iain Banks
-  2016-07-19 → 2016-08-10 (22 days)
-  288 pages, 13 pages/day
-  Rating: 4
+  * 2016-07-19 → 2016-08-10 (22 days)
+  * 288 pages, 13 pages/day
+  * Rating: 4
 """.strip())
 
