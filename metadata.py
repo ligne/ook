@@ -25,11 +25,9 @@ def add():
     work_ids |= set([v['Work'] for v in works.values()])
 
     # search doesn't work at all well with non-english books...
-    for ix, book in df[df.Language == 'en'].fillna('').sample(frac=1).iterrows():
-        m = book.to_dict()
-
-        if not m['Work']:
-            print("Searching for '{}' by '{}'".format(m['Title'], m['Author']))
+    for m in df[df.Language == 'en'].fillna('').sample(frac=1).itertuples():
+        if not m.Work:
+            print("Searching for '{}' by '{}'".format(m.Title, m.Author))
             resp = lookup_work_id(m, author_ids, work_ids)
             if resp == 's':
                 # on to the next one
@@ -44,7 +42,7 @@ def add():
                 author_ids.add(resp['AuthorId'])
                 work_ids.add(resp['Work'])
 
-                works[ix] = {k:v for k,v in m.items() if k in [
+                works[m.Index] = {k:v for k,v in resp.items() if k in [
                     'BookId',
                     'Work',
                 ]}
