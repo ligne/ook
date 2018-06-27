@@ -23,8 +23,8 @@ import reading.cache
 works = reading.cache.load_yaml('works')
 
 # search doesn't work at all well with non-english books...
-for ix, book in df[df.Language == 'en'].sample(frac=1).iterrows():
-    m = book.fillna('').to_dict()
+for ix, book in df[df.Language == 'en'].fillna('').sample(frac=1).iterrows():
+    m = book.to_dict()
 
     if not m['Work']:
         print("Searching for '{}' by '{}'".format(m['Title'], m['Author']))
@@ -43,14 +43,12 @@ for ix, book in df[df.Language == 'en'].sample(frac=1).iterrows():
             author_ids.add(int(m['AuthorId']))
             work_ids.add(int(m['Work']))
 
-        df.loc[ix,'Work'] = m['Work']
-        works[int(m['Work'])] = {k:v for k,v in m.items() if k in [
+        works[ix] = {k:v for k,v in m.items() if k in [
             'Author',
             'AuthorId',
             'BookId'
         ]}
 
 reading.cache.dump_yaml('works', works)
-Collection(df=df).save()
 
 # vim: ts=4 : sw=4 : et
