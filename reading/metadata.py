@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import sys
+import shutil
 from jinja2 import Template
 
 from .wikidata import wd_search
@@ -11,10 +12,11 @@ import reading.collection
 
 # formats a list of search results
 def _list_choices(results, author_ids, work_ids):
+    (width,_) = shutil.get_terminal_size()
     return Template('''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
-  {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title}}\033[0m
+  {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title|truncate(width-4)}}\033[0m
     {%- if entry.Author %}
       {%- if entry.AuthorId|int in authors %}\033[33m{% endif %}
       {{entry.Author}}\033[0m
@@ -38,7 +40,7 @@ def _list_choices(results, author_ids, work_ids):
       https://www.goodreads.com/author/show/{{entry.AuthorId}}
     {%- endif %}
 {% endfor %}
-''').render(results=results, authors=author_ids, works=work_ids)
+''').render(results=results, authors=author_ids, works=work_ids, width=width)
 
 
 # prompts the user for a selection or other decision.
