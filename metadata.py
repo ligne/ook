@@ -39,15 +39,13 @@ for ix, book in df[df.Language == 'en'].fillna('').sample(frac=1).iterrows():
             # no save
             sys.exit()
         else:
-            print(m['AuthorId'], m['Work'])
             author_ids.add(int(m['AuthorId']))
             work_ids.add(int(m['Work']))
 
-        works[ix] = {k:v for k,v in m.items() if k in [
-            'Author',
-            'AuthorId',
-            'BookId'
-        ]}
+            works[ix] = {k:int(v) for k,v in m.items() if k in [
+                'BookId',
+                'Work',
+            ]}
 
 reading.cache.dump_yaml('works', works)
 
