@@ -4,6 +4,7 @@
 import sys
 import datetime
 import yaml
+import pandas as pd
 
 import reading
 from reading.collection import Collection
@@ -131,6 +132,41 @@ def lint_needs_returning():
     c = Collection(shelves=['read'], borrowed=True)
     return c.df
 
+
+# find unnecessary fixes
+def lint_fixes():
+    c = Collection(fixes=None)
+
+    with open('data/fixes.yml') as fh:
+        fixes = yaml.load(fh)
+
+    for f in fixes:
+        book = f['Book Id']
+        if book not in c.df.index:
+            print('{} does not exist'.format(book))
+            continue
+
+        for k,v in f.items():
+            if k == 'Book Id':
+                continue
+            elif k in ['Date Added', 'Date Started', 'Date Read']:
+                k = k[5:]
+                v = pd.Timestamp(v)
+            elif k =='Original Publication Year':
+                k = 'Published'
+            elif k == 'Entry':
+                v = format(v, '.0f')
+            elif k not in c.df.columns:
+                print('!!!', k)
+                continue
+
+            if c.df.loc[book,k] == v:
+                print("Unnecessary entry [{},{}]".format(book, k))
+
+    return
+
+
+################################################################################
 
 # run them all
 n = __import__(__name__)
