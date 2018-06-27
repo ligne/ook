@@ -101,8 +101,7 @@ def lookup_work_id(metadata, author_ids, work_ids):
 
     if response in 'sqQ':
         return response
-    metadata.update(results[int(response)-1])
-    return
+    return results[int(response)-1]
 
 
 def lookup_author(name, grid=None):

@@ -41,10 +41,10 @@ def add():
                 # no save
                 sys.exit()
             else:
-                author_ids.add(int(m['AuthorId']))
-                work_ids.add(int(m['Work']))
+                author_ids.add(resp['AuthorId'])
+                work_ids.add(resp['Work'])
 
-                works[ix] = {k:int(v) for k,v in m.items() if k in [
+                works[ix] = {k:v for k,v in m.items() if k in [
                     'BookId',
                     'Work',
                 ]}
