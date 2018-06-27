@@ -19,19 +19,18 @@ df = c.df.copy()
 author_ids = set(df[df['Author Id'].notnull()]['Author Id'].astype(int).values)
 work_ids = set(df[df.Work.notnull()].Work.astype(int).values)
 
-authors = {}
-
-fixes = {}
+import reading.cache
+works = reading.cache.load_yaml('works')
 
 # search doesn't work at all well with non-english books...
 for ix, book in df[df.Language == 'en'].sample(frac=1).iterrows():
-    metadata = book.rename({
+    m = book.rename({
         'Author Id': 'AuthorId',
     }).fillna('').to_dict()
 
-    if not metadata['Work']:
-        print("Searching for '{}' by '{}'".format(metadata['Title'], metadata['Author']))
-        resp = lookup_work_id(metadata, author_ids, work_ids)
+    if not m['Work']:
+        print("Searching for '{}' by '{}'".format(m['Title'], m['Author']))
+        resp = lookup_work_id(m, author_ids, work_ids)
         if resp == 's':
             # on to the next one
             continue
@@ -42,19 +41,18 @@ for ix, book in df[df.Language == 'en'].sample(frac=1).iterrows():
             # no save
             sys.exit()
         else:
-            print(metadata['AuthorId'], metadata['Work'])
-            author_ids.add(int(metadata['AuthorId']))
-            work_ids.add(int(metadata['Work']))
+            print(m['AuthorId'], m['Work'])
+            author_ids.add(int(m['AuthorId']))
+            work_ids.add(int(m['Work']))
 
-    df.loc[ix,'Work'] = metadata['Work']
-    df.loc[ix,'Author Id'] = metadata['AuthorId']
-    authors[metadata['AuthorId']] = metadata['Author']
+        df.loc[ix,'Work'] = m['Work']
+        works[int(m['Work'])] = {k:v for k,v in m.items() if k in [
+            'Author',
+            'AuthorId',
+            'BookId'
+        ]}
 
-    # save the caches
-
-
+reading.cache.dump_yaml('works', works)
 Collection(df=df).save()
-
-print(authors)
 
 # vim: ts=4 : sw=4 : et
