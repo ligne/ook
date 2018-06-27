@@ -107,7 +107,7 @@ def process(df, force=False):
     for (category, path, name) in get_ebooks(kindle_dir):
         if not force and name in df.index:
             ebook = df.loc[name].to_dict()
-            ebook['Book Id'] = name
+            ebook['BookId'] = name
             ebooks.append(ebook)
             continue
 
@@ -116,21 +116,21 @@ def process(df, force=False):
         words = wordcount(path)
 
         ebooks.append({
-            'Book Id': name,
+            'BookId': name,
             'Author': author,
             'Title': title,
             'Shelf': 'kindle',
             'Category': category,
             'Language': language,
             'Added': pd.Timestamp(datetime.date.fromtimestamp(path.stat().st_mtime)),
-            'Author Id': None,
+            'AuthorId': None,
             'Binding': 'ebook',
             'Work': None,
             'Words': words,
             'Borrowed': False,
         })
 
-    return pd.DataFrame(ebooks).set_index('Book Id')
+    return pd.DataFrame(ebooks).set_index('BookId')
 
 
 if __name__ == "__main__":

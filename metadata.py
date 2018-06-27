@@ -16,7 +16,7 @@ with open('data/config.yml') as fh:
 c = Collection()
 df = c.df.copy()
 
-author_ids = set(df[df['Author Id'].notnull()]['Author Id'].astype(int).values)
+author_ids = set(df[df['AuthorId'].notnull()]['AuthorId'].astype(int).values)
 work_ids = set(df[df.Work.notnull()].Work.astype(int).values)
 
 import reading.cache
@@ -24,9 +24,7 @@ works = reading.cache.load_yaml('works')
 
 # search doesn't work at all well with non-english books...
 for ix, book in df[df.Language == 'en'].sample(frac=1).iterrows():
-    m = book.rename({
-        'Author Id': 'AuthorId',
-    }).fillna('').to_dict()
+    m = book.fillna('').to_dict()
 
     if not m['Work']:
         print("Searching for '{}' by '{}'".format(m['Title'], m['Author']))

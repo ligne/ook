@@ -28,8 +28,8 @@ def test__get_gr_books():
         'Started',
         'Read',
 
-        'Author Id',
-        'Series Id',
+        'AuthorId',
+        'SeriesId',
 
         'Binding',
         'Published',
@@ -81,7 +81,7 @@ def test__get_kindle_books():
         'Category',
         'Language',
         'Added',
-        'Author Id',
+        'AuthorId',
         'Binding',
         'Work',
         'Words',

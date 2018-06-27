@@ -12,11 +12,11 @@ import reading.goodreads
 def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
     eq_(reading.goodreads.process_review(r), {
-        'Author Id': 12476,
+        'AuthorId': 12476,
         'Author': 'Joe Haldeman',
         'AvgRating': 4.15,
         'Binding': 'Paperback',
-        'Book Id': 13629345,
+        'BookId': 13629345,
         'Borrowed': False,
         'Added': pd.Timestamp('2016-05-04'),
         'Read': pd.Timestamp(None),
@@ -31,11 +31,11 @@ def test_process_review():
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
     eq_(reading.goodreads.process_review(r), {
-        'Author Id': 9121,
+        'AuthorId': 9121,
         'Author': 'James Fenimore Cooper',
         'AvgRating': 3.37,
         'Binding': 'Paperback',
-        'Book Id': 38290,
+        'BookId': 38290,
         'Borrowed': False,
         'Added': pd.Timestamp('2017-02-27'),
         'Read': pd.Timestamp(None),
@@ -50,11 +50,11 @@ def test_process_review():
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
     nose.tools.eq_(reading.goodreads.process_review(r), {
-        'Author Id': 143840,
+        'AuthorId': 143840,
         'Author': u'Françoise Mallet-Joris',
         'AvgRating': 3.51,
         'Binding': 'Mass Market Paperback',
-        'Book Id': 34910673,
+        'BookId': 34910673,
         'Borrowed': True,
         'Added': pd.Timestamp('2017-04-20'),
         'Read': pd.Timestamp(None),
@@ -71,10 +71,10 @@ def test_process_review():
 def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
-        'Author Id': 4750,
+        'AuthorId': 4750,
         'Language': 'fr',
         'Published': 1891,
-        'Series Id': 40441,
+        'SeriesId': 40441,
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
         'Category': 'novels',
@@ -83,10 +83,10 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/3602116.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
-        'Author Id': 6819578,
+        'AuthorId': 6819578,
         'Language': 'en',
         'Published': 397,
-        'Series Id': None,
+        'SeriesId': None,
         'Series': None,
         'Entry': None,
         'Category': 'non-fiction',
@@ -95,10 +95,10 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/38290.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
-        'Author Id': 9121,
+        'AuthorId': 9121,
         'Language': None,
         'Published': 1823,
-        'Series Id': 81550,
+        'SeriesId': 81550,
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
         'Category': 'novels',
@@ -107,10 +107,10 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/17999159.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
-        'Author Id': 6984726,
+        'AuthorId': 6984726,
         'Language': 'en',
         'Published': 2013,
-        'Series Id': None,
+        'SeriesId': None,
         'Series': None,
         'Entry': None,
         'Category': 'non-fiction',  # FIXME should be 'graphic'

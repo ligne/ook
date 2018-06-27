@@ -10,7 +10,7 @@ import reading.compare
 
 # converts a CSV fragment into books
 def _to_books(csv):
-    header = "Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,Series Id,Shelf,Started,Title,Work\n"
+    header = "BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work\n"
     c = Collection(gr_csv=StringIO(header + csv))
     return (x.fillna('') for x in (c.df.iloc[0], c.df.iloc[1]))
 
@@ -46,7 +46,7 @@ Added Ancillary Mercy by Ann Leckie to shelf 'pending'
 
 def test__removed():
     c = Collection(gr_csv=StringIO("""
-Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,Series Id,Shelf,Started,Title,Work
+BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
 26570162,2017-07-27,Matthew Lewis,7798465,3.8,Paperback,False,novels,,en,339,1796,0,,,,,pending,,The Monk,3095060
 """))
 
@@ -155,7 +155,7 @@ Alice Munro, Selected Stories
 
 def test__started():
     c = Collection(gr_csv=StringIO("""
-Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,Series Id,Shelf,Started,Title,Work
+BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
 8899970,2018-02-24,Graham Greene,2533,3.66,Paperback,False,novels,,en,190,1936,4,,,,,currently-reading,2018-03-05,A Gun for Sale,151810
 """))
 
@@ -167,7 +167,7 @@ Started A Gun for Sale by Graham Greene
 
 def test__finished():
     c = Collection(gr_csv=StringIO("""
-Book Id,Added,Author,Author Id,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,Series Id,Shelf,Started,Title,Work
+BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
 491030,2016-04-18,Iain Banks,7628,3.84,Paperback,False,novels,,en,288,1986,4,2016-08-10,,,,read,2016-07-19,The Bridge,1494168
 """))
 

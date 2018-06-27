@@ -33,7 +33,7 @@ def get_books():
 
         for r in x.findall('reviews/'):
             book = process_review(r)
-            book.update(fetch_book(book['Book Id']))
+            book.update(fetch_book(book['BookId']))
             books.append(book)
 
         r = x.find('reviews')
@@ -44,7 +44,7 @@ def get_books():
 
         reading.cache.dump_yaml('series', reading.series.cache)
 
-    df = pd.DataFrame(data=books).set_index('Book Id')
+    df = pd.DataFrame(data=books).set_index('BookId')
     return df[~(df['Read'] < config['goodreads']['ignore_before'])]
 
 
@@ -60,10 +60,10 @@ def process_review(r):
     scheduled = pd.Timestamp(len(sched) and min(sched) or None)
 
     row = {
-        'Book Id': int(r.find('book/id').text),
+        'BookId': int(r.find('book/id').text),
         'Work': int(r.find('book/work/id').text),
         'Author': re.sub(' +', ' ', r.find('book/authors/author').find('name').text),
-        'Author Id': int(r.find('book/authors/author/id').text),
+        'AuthorId': int(r.find('book/authors/author/id').text),
         'Title': r.find('book/title_without_series').text,
         'Added': _get_date(r, 'date_added'),
         'Started': _get_date(r, 'started_at'),
@@ -88,7 +88,7 @@ def fetch_book(book_id):
         book.update(_parse_book_html(_fetch_book_html(book_id)))
 
     # fetch series
-    series_id = book['Series Id']
+    series_id = book['SeriesId']
     if series_id:
         series = _parse_series(_fetch_series(series_id))
         reading.series.cache[series_id] = series
@@ -96,7 +96,7 @@ def fetch_book(book_id):
         if not reading.series.interesting(book['Entry'], series):
             # remove the series information
             book.update({
-                'Series Id': None,
+                'SeriesId': None,
                 'Series': None,
                 'Entry': None,
             })
@@ -139,11 +139,11 @@ def _parse_book_api(xml):
           for s in xml.findall('book/authors/author')]
 
     return {
-        'Author Id': int(xml.find('book/authors/author/id').text),
+        'AuthorId': int(xml.find('book/authors/author/id').text),
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Series': series,
-        'Series Id': series_id,
+        'SeriesId': series_id,
         'Entry': entry,
         'Category': _get_category(shelves),
     }

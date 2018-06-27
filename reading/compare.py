@@ -81,7 +81,7 @@ def _changed(old, new):
         # just generally changed fields
 		# FIXME really need a more elegant way of arranging the columns :-/
         return Template('''{{new.Author}}, {{new.Title}}
-{%- for col in ( 'Author', 'Title', 'Shelf', 'Category', 'Series', 'Entry', 'Language', 'Pages', 'Scheduled', 'Added', 'Started', 'Read', 'Author Id', 'Series Id', 'Binding', 'Published', 'Work', 'Rating', 'AvgRating', 'Borrowed') -%}
+{%- for col in ( 'Author', 'Title', 'Shelf', 'Category', 'Series', 'Entry', 'Language', 'Pages', 'Scheduled', 'Added', 'Started', 'Read', 'AuthorId', 'SeriesId', 'Binding', 'Published', 'Work', 'Rating', 'AvgRating', 'Borrowed') -%}
   {%- if old[col] != new[col] %}
 
       {%- if old[col] and not new[col] %}
