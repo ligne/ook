@@ -230,8 +230,8 @@ def search_title(term):
     xml = ElementTree.fromstring(r.content)
     return [{
         'Title': x.find('best_book/title').text,
-        'BookId': x.find('best_book/id').text,
-        'Work': x.find('id').text,
+        'BookId': int(x.find('best_book/id').text),
+        'Work': int(x.find('id').text),
         'AuthorId': x.find('best_book/author/id').text,
         'Author': x.find('best_book/author/name').text,
         'Published': x.find('original_publication_year').text,
