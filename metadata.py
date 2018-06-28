@@ -14,7 +14,7 @@ with open('data/config.yml') as fh:
     config = yaml.load(fh)
 
 
-def add():
+def find():
     c = Collection()
     df = c.df
 
@@ -72,6 +72,6 @@ def rebuild():
 
 
 if __name__ == '__main__':
-    add()
+    find()
 
 # vim: ts=4 : sw=4 : et
