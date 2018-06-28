@@ -16,7 +16,7 @@ def _list_choices(results, author_ids, work_ids):
     return Template('''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
-  {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title|truncate(width-4)}}\033[0m
+  {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title|truncate(width-5)}}\033[0m
     {%- if entry.Author %}
       {%- if entry.AuthorId|int in authors %}\033[33m{% endif %}
       {{entry.Author}}\033[0m
