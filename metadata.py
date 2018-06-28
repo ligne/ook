@@ -28,7 +28,7 @@ def add():
 
     # search doesn't work at all well with non-english books...
     for m in df[df.Language == 'en'].fillna('').sample(frac=1).itertuples():
-        if not m.Work:
+        if not m.Work and not m.Index in works:
             print("\033[1mSearching for '{}' by '{}'\033[0m".format(m.Title, m.Author))
             resp = lookup_work_id(m, author_ids, work_ids)
             if resp == 's':
