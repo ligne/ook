@@ -57,9 +57,6 @@ def _read_choice(n):
 {} - select
 
 s - skip to the next author
-  - load more information
-  - load more results (?)
-  - search harder
 q - save and exit
 Q - exit without saving
 ? - print help
