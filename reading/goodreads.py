@@ -139,6 +139,7 @@ def _parse_book_api(xml):
           for s in xml.findall('book/authors/author')]
 
     return {
+        'Author': re.sub(' +', ' ', xml.find('book/authors/author/name').text),
         'AuthorId': int(xml.find('book/authors/author/id').text),
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
