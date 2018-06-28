@@ -47,6 +47,8 @@ def add():
                     'Work',
                 ]}
 
+                works[m.Index].update(reading.goodreads.fetch_book(resp['BookId']))
+
     reading.cache.dump_yaml('works', works)
 
 
