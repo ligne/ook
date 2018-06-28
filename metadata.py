@@ -21,6 +21,8 @@ def add():
     works = reading.cache.load_yaml('works')
 
     author_ids = set(df[df['AuthorId'].notnull()]['AuthorId'].astype(int).values)
+    author_ids |= set([v['AuthorId'] for v in works.values() if 'AuthorId' in v])
+
     work_ids = set(df[df.Work.notnull()].Work.astype(int).values)
     work_ids |= set([v['Work'] for v in works.values()])
 
