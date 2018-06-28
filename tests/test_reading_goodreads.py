@@ -71,6 +71,7 @@ def test_process_review():
 def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author': 'Émile Zola',
         'AuthorId': 4750,
         'Language': 'fr',
         'Published': 1891,
@@ -83,6 +84,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/3602116.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author': 'Augustine of Hippo',
         'AuthorId': 6819578,
         'Language': 'en',
         'Published': 397,
@@ -95,6 +97,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/38290.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author': 'James Fenimore Cooper',
         'AuthorId': 9121,
         'Language': None,
         'Published': 1823,
@@ -107,6 +110,7 @@ def test__parse_book_api():
 
     r = ElementTree.parse('tests/data/book/17999159.xml')
     nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+        'Author': 'Allie Brosh',
         'AuthorId': 6984726,
         'Language': 'en',
         'Published': 2013,
