@@ -236,7 +236,7 @@ def search_title(term):
         'AuthorId': x.find('best_book/author/id').text,
         'Author': x.find('best_book/author/name').text,
         'Published': x.find('original_publication_year').text,
-        'Ratings': x.find('ratings_count').text,
+        'Ratings': int(x.find('ratings_count').text),
     } for x in xml.findall('search/results/work')]
 
 

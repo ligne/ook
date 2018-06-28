@@ -82,7 +82,7 @@ Q - exit without saving
 
 def lookup_work_id(metadata, author_ids, work_ids):
     title = reading.collection._ebook_parse_title(metadata.Title)
-    results = sorted(search_title(title), key=lambda x: -int(x['Ratings']))
+    results = sorted(search_title(title), key=lambda x: -x['Ratings'])
     if not results:
         # halp!
         print("No books found with the title '{}'".format(title))
