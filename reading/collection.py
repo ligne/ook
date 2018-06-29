@@ -107,7 +107,8 @@ class Collection():
 
     def __init__(self, df=None,
                  gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
-                 dedup=False, merge=False, fixes='data/fixes.yml',
+                 dedup=False, merge=False,
+                 fixes='data/fixes.yml', metadata='data/metadata.yml',
                  shelves=None, categories=None, languages=None, borrowed=None
                 ):
 
