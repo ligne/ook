@@ -33,7 +33,9 @@ def get_books():
 
         for r in x.findall('reviews/'):
             book = process_review(r)
-            book.update(fetch_book(book['BookId']))
+            api_book = fetch_book(book['BookId'])
+            del api_book['Title']
+            book.update(api_book)
             books.append(book)
 
         r = x.find('reviews')
@@ -141,6 +143,7 @@ def _parse_book_api(xml):
     return {
         'Author': re.sub(' +', ' ', xml.find('book/authors/author/name').text),
         'AuthorId': int(xml.find('book/authors/author/id').text),
+        'Title': xml.find('book/title').text,
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Series': series,
