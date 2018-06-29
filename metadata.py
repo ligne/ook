@@ -2,11 +2,14 @@
 
 import sys
 import argparse
+from collections import ChainMap
 
 import reading.goodreads
 import reading.cache
 from reading.collection import Collection
 from reading.metadata import *
+from reading.compare import compare
+
 
 # load the config to get the GR API key.
 import yaml
@@ -61,17 +64,45 @@ def update():
     for f,w in works.items():
         book = reading.goodreads.fetch_book(w['BookId'])
         # FIXME need to merge?
-#         works[f] = book
+        works[f].update(book)
 
     reading.cache.dump_yaml('works', works)
 
 
 # regenerates the metadata based on what has been gathered.
 def rebuild():
-    NotImplemented
+    c = Collection(metadata=None)
+
+    works = reading.cache.load_yaml('works')
+    metadata = []
+
+    for book_id, book in c.df.to_dict('index').items():
+        if book_id not in works:
+            continue
+        work = works[book_id]
+
+        work_first = ChainMap(work, book)
+        book_first = ChainMap(book, work)
+
+        metadata.append({
+            'BookId': book_id,
+            'Work': None,
+            'Author': work_first['Author'],
+            'Title': work_first['Title'],
+            'Language': book_first['Language'],
+        })
+
+    reading.cache.dump_yaml('metadata', metadata)
+
+    new = Collection()
+    compare(c.df, new.df)
+
 
 
 if __name__ == '__main__':
-    find()
+#    find()
+    update()
+    rebuild()
+
 
 # vim: ts=4 : sw=4 : et
