@@ -2,6 +2,7 @@
 
 import pandas as pd
 import re
+import yaml
 
 
 GR_CSV    = 'data/goodreads.csv'
@@ -122,6 +123,10 @@ class Collection():
             _get_gr_books(gr_csv),
             _get_kindle_books(ebook_csv),
         ])
+
+        if metadata:
+            with open(metadata) as fh:
+                df.update(pd.DataFrame(yaml.load(fh)).set_index(['BookId']))
 
         # apply filters on shelf, language, category.
         if categories:
