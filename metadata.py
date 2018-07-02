@@ -70,7 +70,7 @@ def update():
 
 
 # regenerates the metadata based on what has been gathered.
-def rebuild():
+def rebuild(args):
     c = Collection(metadata=None)
 
     works = reading.cache.load_yaml('works')
@@ -92,7 +92,8 @@ def rebuild():
             'Language': book_first['Language'],
         })
 
-    reading.cache.dump_yaml('metadata', metadata)
+    if not args.ignore_changes:
+        reading.cache.dump_yaml('metadata', metadata)
 
     new = Collection()
     compare(c.df, new.df)
@@ -100,9 +101,13 @@ def rebuild():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--ignore-changes', action='store_true')
+    args = parser.parse_args()
+
 #    find()
     update()
-    rebuild()
+    rebuild(args)
 
 
 # vim: ts=4 : sw=4 : et
