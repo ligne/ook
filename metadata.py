@@ -71,7 +71,7 @@ def update():
 
 # regenerates the metadata based on what has been gathered.
 def rebuild(args):
-    c = Collection(metadata=None)
+    c = Collection()
 
     works = reading.cache.load_yaml('works')
     metadata = []
