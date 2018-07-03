@@ -82,6 +82,10 @@ def rebuild(args):
             continue
         work = works[book_id]
 
+        similar = c.df[c.df.Work == work['Work']]
+        if len(similar):
+            work = similar.iloc[0].to_dict()
+
         work_first = ChainMap(work, book)
         book_first = ChainMap(book, work)
 
@@ -104,7 +108,6 @@ def rebuild(args):
     new = Collection()
     new.df.update(pd.DataFrame(metadata).set_index(['BookId']))
     compare(c.df, new.df)
-
 
 
 if __name__ == '__main__':
