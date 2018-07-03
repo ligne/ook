@@ -3,6 +3,7 @@
 import sys
 import argparse
 import pandas as pd
+import re
 from collections import ChainMap
 
 import reading.goodreads
@@ -93,7 +94,7 @@ def rebuild(args):
             'BookId': book_id,
             'Work': work['Work'],
             'Author': work_first['Author'],
-            'Title': work_first['Title'],
+            'Title': re.sub(' \(.+?\)$', '', work_first['Title']),
             'Language': book_first['Language'],
             'Series': work_first['Series'],
             'SeriesId': work_first['SeriesId'],
