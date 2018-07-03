@@ -87,7 +87,7 @@ def rebuild(args):
 
         metadata.append({
             'BookId': book_id,
-            'Work': None,
+            'Work': work['Work'],
             'Author': work_first['Author'],
             'Title': work_first['Title'],
             'Language': book_first['Language'],
