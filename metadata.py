@@ -91,6 +91,9 @@ def rebuild(args):
             'Author': work_first['Author'],
             'Title': work_first['Title'],
             'Language': book_first['Language'],
+            'Series': work_first['Series'],
+            'SeriesId': work_first['SeriesId'],
+            'Entry': work_first['Entry'],
         })
 
     if not args.ignore_changes:
