@@ -2,6 +2,7 @@
 
 import sys
 import argparse
+import pandas as pd
 from collections import ChainMap
 
 import reading.goodreads
@@ -96,6 +97,7 @@ def rebuild(args):
         reading.cache.dump_yaml('metadata', metadata)
 
     new = Collection()
+    new.df.update(pd.DataFrame(metadata).set_index(['BookId']))
     compare(c.df, new.df)
 
 
