@@ -92,15 +92,15 @@ def rebuild(args):
 
         metadata.append({
             'BookId': book_id,
-            'Work': work['Work'],
+            'Work': int(work['Work']),
             'Author': work_first['Author'],
             'Title': re.sub(' \(.+?\)$', '', work_first['Title']),
             'Language': book_first['Language'],
             'Series': work_first['Series'],
-            'SeriesId': work_first['SeriesId'],
+            'SeriesId': float(work_first['SeriesId']),
             'Entry': work_first['Entry'],
-            'Published': work_first['Published'],
-            'Pages': work_first['Pages'],
+            'Published': float(work_first['Published']),
+            'Pages': float(work_first['Pages']),
         })
 
     if not args.ignore_changes:
