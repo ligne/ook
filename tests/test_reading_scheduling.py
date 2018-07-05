@@ -132,6 +132,14 @@ BookId,Author,AuthorId,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started
         ('2019-01-01', 'L\'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié'),
     ])
 
+    eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'author': 'Honoré de Balzac',
+        'start': 2020,
+    }, date=datetime.date(2018, 6, 4))], [
+        ('2020-01-01', 'Le Colonel Chabert : suivi de trois nouvelles'),
+        ('2021-01-01', 'L\'illustre Gaudissart / Z. Marcas / Gaudissart II / Les comédiens sans le savoir / Melmoth réconcilié'),
+    ])
+
 
     df = Collection(gr_csv=StringIO("""
 BookId,Author,AuthorId,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started,Entry,Shelf,Language,Rating,Pages,Published,Scheduled,Series,SeriesId,Title,Work

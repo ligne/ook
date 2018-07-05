@@ -71,16 +71,17 @@ def _schedule(df, settings, date=datetime.date.today()):
         series=settings.get('series'),
         df=df,
     )
+    start = settings.get('start', date.year)
     per_year = settings.get('per_year', 1)
 
     if settings.get('force') == date.year:
         skip = 0
     else:
-        skip = min(series.read_in_year(date.year), per_year)
+        skip = min(series.read_in_year(start), per_year)
 
     return _allocate(
         series.remaining(),
-        start=date.year,
+        start=start,
         per_year=per_year,
         offset=settings.get('offset', 1),
         skip=skip,
