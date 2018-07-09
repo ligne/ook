@@ -1,65 +1,26 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import sys
-import datetime
-
-import pandas as pd
+from jinja2 import Template
 
 import reading
+from reading.collection import Collection
 
-# FIXME also books that i want to buy. and books that i have ebooks of?
 
-df = reading.get_books(shelves=[
-    'pending',
-    'elsewhere',
-])
+def display(df):
+    g = df.sort_values(['Author', 'Title']).groupby('Author')
+    print(Template('''
+{%- for author, books in groups %}
+{{author}}
+  {%- for book in books.itertuples() %}
+* {{book.Title}}
+  {%- endfor %}
+{% endfor %}
+----
+''').render(groups=g))
 
-# deduplicate multiple volumes
-df = df.drop_duplicates(['Author', 'Title'])
-
-g = df.sort_values(['Author', 'Title']).groupby('Author')
-
-for author in sorted(g.groups.keys()):
-    print('{}'.format(author))
-    for ix, row in g.get_group(author).iterrows():
-        print('* {Title}'.format(**row))
-    print()
-
-print('----')
-print('Ebooks')
-
-df = reading.get_books(shelves=[
-    'kindle',
-])
-
-# deduplicate multiple volumes
-df = df.drop_duplicates(['Author', 'Title'])
-
-g = df.sort_values(['Author', 'Title']).groupby('Author')
-
-for author in sorted(g.groups.keys()):
-    print('{}'.format(author))
-    for ix, row in g.get_group(author).iterrows():
-        print('* {Title}'.format(**row))
-    print()
-
-print('----')
-print('To read')
-
-df = reading.get_books(shelves=[
-    'to-read',
-])
-
-# deduplicate multiple volumes
-df = df.drop_duplicates(['Author', 'Title'])
-
-g = df.sort_values(['Author', 'Title']).groupby('Author')
-
-for author in sorted(g.groups.keys()):
-    print('{}'.format(author))
-    for ix, row in g.get_group(author).iterrows():
-        print('* {Title}'.format(**row))
-    print()
+display(Collection(shelves=['pending', 'elsewhere', 'library']).df)
+display(Collection(shelves=['kindle']).df)
+display(Collection(shelves=['to-read']).df)
 
 # vim: ts=4 : sw=4 : et
