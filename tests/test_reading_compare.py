@@ -183,6 +183,7 @@ def test__finished():
     c = Collection(gr_csv=StringIO("""
 BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
 491030,2016-04-18,Iain Banks,7628,3.84,Paperback,False,novels,,en,288,1986,4,2016-08-10,,,,read,2016-07-19,The Bridge,1494168
+159435,2016-05-23,Honoré de Balzac,228089,3.95,Mass Market Paperback,True,short-stories,,fr,,1832,3,2018-07-11,,,,read,2018-06-25,Le Colonel Chabert : suivi de trois nouvelles,23642267
 """))
 
     assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
@@ -190,5 +191,11 @@ Finished The Bridge by Iain Banks
   * 2016-07-19 → 2016-08-10 (22 days)
   * 288 pages, 13 pages/day
   * Rating: 4
+""".strip())
+
+    assert_multi_line_equal(reading.compare._finished(c.df.iloc[1]), """
+Finished Le Colonel Chabert : suivi de trois nouvelles by Honoré de Balzac
+  * 2018-06-25 → 2018-07-11 (16 days)
+  * Rating: 3
 """.strip())
 
