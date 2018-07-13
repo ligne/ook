@@ -101,6 +101,9 @@ def _changed(old, new):
         {%- elif col in ('Title', 'Author') %}
   * {{col}} changed from '{{old[col]}}'
 
+        {%- elif col in ('Scheduled') %}
+  * {{col}}: {{old[col].year}} → {{new[col].year}}
+
         {%- elif new[col] is number %}
   * {{col}}: {{old[col]|int}} → {{new[col]|int}}
 

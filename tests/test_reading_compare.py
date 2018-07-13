@@ -163,7 +163,7 @@ Alice Munro, Selected Stories
 
     assert_multi_line_equal(reading.compare._changed(old, new), '''
 James Fenimore Cooper, The Pioneers
-  * Scheduled: 2018-01-01 00:00:00 → 2019-01-01 00:00:00
+  * Scheduled: 2018 → 2019
 '''.strip())
 
 
