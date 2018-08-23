@@ -34,17 +34,45 @@ def print_entries(df, desc, additional=[]):
 
 def lint_missing_pagecount():
     c = Collection(fixes=None)
-    return c.df[c.df.Pages.isnull()]
+    return {
+        'title': 'Missing a pagecount',
+        'df': c.df[c.df.Pages.isnull()],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 def lint_missing_published_date():
     c = Collection(shelves=['pending', 'ebooks', 'elsewhere', 'read'])
-    return c.df[c.df.Published.isnull()]
+    return {
+        'title': 'Missing a published date',
+        'df': c.df[c.df.Published.isnull()],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 def lint_scheduled_misshelved():
     c = Collection(shelves=['read', 'currently-reading', 'to-read'])
-    return c.df[c.df.Scheduled.notnull()]
+    return {
+        'title': 'Scheduled books on wrong shelves',
+        'df': c.df[c.df.Scheduled.notnull()],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+    {{entry.Shelf}}
+{%- endfor %}
+
+""",
+    }
 
 
 # FIXME no longer possible.
@@ -110,9 +138,19 @@ def lint_binding():
         'elsewhere',
         'library',
         'ebooks',
-#        'to-read',
+        'to-read',
     ])
-    return c.df[~c.df.Binding.isin(good_bindings)]
+    return {
+        'title': 'Bad binding',
+        'df': c.df[~(c.df.Binding.isin(good_bindings)|c.df.Binding.isnull())],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+    {{entry.Binding}}
+{%- endfor %}
+
+""",
+    }
 
 
 def check_read_author_metadata(df):
@@ -124,13 +162,31 @@ def check_read_author_metadata(df):
 # books on elsewhere shelf that are not marked as borrowed.
 def lint_missing_borrowed():
     c = Collection(shelves=['elsewhere'], borrowed=False)
-    return c.df
+    return {
+        'title': 'Elsewhere but not marked as borrowed',
+        'df': c.df,
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 # books i've borrowed that need to be returned.
 def lint_needs_returning():
     c = Collection(shelves=['read'], borrowed=True)
-    return c.df
+    return {
+        'title': 'Borrowed books to return',
+        'df': c.df,
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 # find unnecessary fixes
@@ -185,7 +241,23 @@ print('='*80)
 print()
 
 for f in [x for x in dir(n) if x.startswith('lint_')]:
-    print(getattr(n, f)())
+    report = getattr(n, f)()
+
+    # FIXME
+    if report is None or not 'df' in report:
+        print(report)
+        continue
+
+    if not len(report['df']):
+        continue
+
+    print('=== {} ==='.format(report['title']))
+    from jinja2 import Template
+
+    if not 'template' in report:
+        continue
+
+    print(Template(report['template']).render(df=report['df'].sort_values(['Author', 'Title'])))
 
 
 # vim: ts=4 : sw=4 : et
