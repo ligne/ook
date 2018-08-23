@@ -121,7 +121,12 @@ def _changed(old, new):
 
 def _started(book):
     return Template('''Started {{ b.Title }} by {{b.Author}}
+{%- if b.Series %}
+  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
+{%- endif %}
+  * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {{b.Pages|int}} pages
+  * Language: {{b.Language}}
 ''').render(b=book)
 
 

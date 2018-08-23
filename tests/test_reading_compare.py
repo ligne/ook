@@ -175,7 +175,9 @@ BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,
 
     assert_multi_line_equal(reading.compare._started(c.df.iloc[0]), """
 Started A Gun for Sale by Graham Greene
+  * novels
   * 190 pages
+  * Language: en
 """.strip())
 
 
