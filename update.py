@@ -9,7 +9,7 @@ import re
 import reading.ebooks
 
 
-kindle_dir = '/run/media/mlb/Kindle/'
+kindle_dir = '/media/mlb/Kindle/'
 backup_dir = '/home/local/mlb/.kindle/'
 exclude_file = os.environ['HOME'] + '/.kindle-excludes'
 
