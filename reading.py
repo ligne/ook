@@ -145,6 +145,39 @@ def increase():
     save_image(p, 'increase')
 
 
+def increase1():
+    p = pd.DataFrame({
+        'elsewhere': added_pages('elsewhere'),
+        'ebooks': added_pages('ebooks'),
+        'library': added_pages('library'),
+        'pending':   added_pages('currently-reading') + added_pages('pending'),
+        'read':      added_pages('read') - completed_pages('read'),
+    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
+
+    # work out how much to shift each column down by
+    shift = p.where(p < 0, 0).sum(axis=1)
+    # stack the columns, with any negatives set to zero
+    heights = p.where(p > 0, 0).cumsum(axis=1)
+
+    # shift everything down
+    p = heights.add(shift, axis='index')
+
+    p = (p - p.shift(365)).rolling(window=30).mean().ix['2018']
+
+    p.plot()
+
+    # force the bottom of the graph to zero
+    ylim = plt.ylim()
+    plt.ylim([min(ylim[0], 0), ylim[1]])
+
+    # prettify and save
+    name = 'increase1'
+    plt.grid(True)
+    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 # plot average scores as a histogram
 def draw_rating_histogram(df):
     ax = df['Average Rating'].plot(kind='hist', bins=100, title='Average Ratings')
@@ -511,6 +544,7 @@ if __name__ == "__main__":
     scheduled()
     backlog()
     increase()
+    increase1()
     new_authors(df)
     #draw_rating_histogram(df)
     reading_rate()
