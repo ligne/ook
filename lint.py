@@ -46,6 +46,20 @@ def lint_missing_pagecount():
     }
 
 
+def lint_missing_category():
+    c = Collection(fixes=None)
+    return {
+        'title': 'Missing a category',
+        'df': c.df[c.df.Category.isnull()],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
+
+
 def lint_missing_published_date():
     c = Collection(shelves=['pending', 'ebooks', 'elsewhere', 'read'])
     return {
