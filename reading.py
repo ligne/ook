@@ -162,7 +162,7 @@ def increase1():
     # shift everything down
     p = heights.add(shift, axis='index')
 
-    p = (p - p.shift(365)).rolling(window=30).mean().ix['2018']
+    p = (p - p.shift(365)).ix['2018']
 
     p.plot()
 
