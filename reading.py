@@ -150,8 +150,8 @@ def increase1():
         'elsewhere': added_pages('elsewhere'),
         'ebooks': added_pages('ebooks'),
         'library': added_pages('library'),
-        'pending':   added_pages('currently-reading') + added_pages('pending'),
-        'read':      added_pages('read') - completed_pages('read'),
+        'pending': added_pages('currently-reading') + added_pages('pending'),
+        'read': -completed_pages('read'),
     }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
 
     # work out how much to shift each column down by
