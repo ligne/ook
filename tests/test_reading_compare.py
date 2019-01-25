@@ -184,8 +184,6 @@ James Fenimore Cooper, The Pioneers
 '''.strip())
 
 
-
-
 def test__started():
     c = Collection(gr_csv=StringIO("""
 BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
@@ -205,6 +203,7 @@ def test__finished():
 BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
 491030,2016-04-18,Iain Banks,7628,3.84,Paperback,False,novels,,en,288,1986,4,2016-08-10,,,,read,2016-07-19,The Bridge,1494168
 159435,2016-05-23,Honoré de Balzac,228089,3.95,Mass Market Paperback,True,short-stories,,fr,,1832,3,2018-07-11,,,,read,2018-06-25,Le Colonel Chabert : suivi de trois nouvelles,23642267
+40942297,2018-07-28,Ronald Hugh Morrieson,1245777,3.83,Paperback,False,novels,,en,211,1963,4,2018-07-29,,,,read,2018-07-29,The Scarecrow,3898884
 """))
 
     assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
@@ -218,5 +217,13 @@ Finished The Bridge by Iain Banks
 Finished Le Colonel Chabert : suivi de trois nouvelles by Honoré de Balzac
   * 2018-06-25 → 2018-07-11 (16 days)
   * Rating: 3
+""".strip())
+
+    # read in one day
+    assert_multi_line_equal(reading.compare._finished(c.df.iloc[2]), """
+Finished The Scarecrow by Ronald Hugh Morrieson
+  * 2018-07-29 → 2018-07-29 (0 days)
+  * 211 pages, 211 pages/day
+  * Rating: 4
 """.strip())
 

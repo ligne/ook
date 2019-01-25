@@ -140,7 +140,7 @@ def _finished(book):
     return Template('''Finished {{b.Title}} by {{b.Author}}
   * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)
   {%- if b.Pages|int %}
-  * {{b.Pages|int}} pages, {{(b.Pages / (b.Read - b.Started).days)|round|int}} pages/day
+  * {{b.Pages|int}} pages, {{(b.Pages / ((b.Read - b.Started).days + 1))|round|int}} pages/day
   {%- endif %}
   * Rating: {{b.Rating|int}}
 ''').render(b=book)
