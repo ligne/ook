@@ -166,9 +166,7 @@ def increase1():
 
     p.plot()
 
-    # force the bottom of the graph to zero
-    ylim = plt.ylim()
-    plt.ylim([min(ylim[0], 0), ylim[1]])
+    plt.axhline(0, color='k', alpha=0.5)
 
     # prettify and save
     name = 'increase1'
