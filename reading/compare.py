@@ -85,10 +85,16 @@ def _changed(old, new):
   {%- if old[col] != new[col] %}
 
       {%- if old[col] and not new[col] %}
+        {%- if col in ('Scheduled') %}
+  * Unscheduled for {{old[col].year}}
+        {%- else %}
   * {{col}} unset (previously {{old[col]}})
+        {%- endif %}
 
       {%- elif new[col] and not old[col] %}
-        {%- if new[col] is number %}
+        {%- if col in ('Scheduled') %}
+  * {{col}} for {{new[col].year}}
+        {%- elif new[col] is number %}
   * {{col}} set to {{new[col]|int}}
         {%- else %}
   * {{col}} set to {{new[col]}}

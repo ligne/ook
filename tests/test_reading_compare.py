@@ -166,6 +166,25 @@ James Fenimore Cooper, The Pioneers
   * Scheduled: 2018 → 2019
 '''.strip())
 
+    # scheduled and unscheduled
+    scheduled, unscheduled = _to_books(
+"""
+38290,2017-02-27,James Fenimore Cooper,9121,3.37,Paperback,False,novels,1,,496,1823,0,,2019-01-01,The Leatherstocking Tales,81550,pending,,The Pioneers,443966
+38290,2017-02-27,James Fenimore Cooper,9121,3.37,Paperback,False,novels,1,,496,1823,0,,,The Leatherstocking Tales,81550,pending,,The Pioneers,443966
+""")
+
+    assert_multi_line_equal(reading.compare._changed(scheduled, unscheduled), '''
+James Fenimore Cooper, The Pioneers
+  * Unscheduled for 2019
+'''.strip())
+
+    assert_multi_line_equal(reading.compare._changed(unscheduled, scheduled), '''
+James Fenimore Cooper, The Pioneers
+  * Scheduled for 2019
+'''.strip())
+
+
+
 
 def test__started():
     c = Collection(gr_csv=StringIO("""
