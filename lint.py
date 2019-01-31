@@ -160,10 +160,12 @@ def lint_binding():
         'title': 'Bad binding',
         'df': c.df[~(c.df.Binding.isin(good_bindings)|c.df.Binding.isnull())],
         'template': """
-{%- for entry in df.itertuples() %}
-{{entry.Author}}, {{entry.Title}}
-    {{entry.Binding}}
-{%- endfor %}
+{%- for binding, books in df.groupby('Binding') %}
+{{binding}}:
+  {%- for entry in books.itertuples() %}
+  * {{entry.Author}}, {{entry.Title}}
+  {%- endfor %}
+{%-endfor %}
 
 """,
     }
