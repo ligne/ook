@@ -144,6 +144,8 @@ def lint_binding():
         'Kindle Edition',
         'ebook',
         'Poche',
+        'Broché',
+        'Relié',
     ]
     c = Collection(shelves=[
         'read',
