@@ -258,32 +258,25 @@ def oldness(df):
     plt.close()
 
 
-# plot the gender ratio
 def gender(df):
-    df = df.dropna(subset=['Gender'])
+    df.Gender = df.Gender.fillna('unknown')
 
-    df = pd.DataFrame({
-        'thresh': df['Gender'].apply(lambda x: (x == 'male' and 1 or 0)),
-        'total':  df['Gender'].apply(lambda x: 1),
-        'Date Read': df['Date Read'],
-    }, index=df.index).set_index('Date Read')    \
-                      .resample('D')  \
-                      .sum()  \
-                      .reindex(ix)               \
-                      .fillna(0)
-
-    df = df.rolling(window=365,min_periods=0).sum()
-    (df.thresh / df.total).rolling(window=10,min_periods=0).mean().plot()
+    df = df.pivot_table(
+        values='Number of Pages',
+        index='Date Read',
+        columns='Gender',
+        aggfunc=np.sum,
+        fill_value=0
+    ).rolling('365d').sum()
+    df.divide(df.sum(axis='columns'), axis='rows').plot.area()
 
     # set to the full range
     plt.ylim([0, 1])
 
-    plt.axhline(0.5, color='k', alpha=0.5)
-
     # prettify and save
     name = 'gender'
     plt.grid(True)
-    plt.title('Gender ratio')
+    plt.title('Gender')
     plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
     plt.close()
 
