@@ -135,19 +135,6 @@ def backlog():
 def increase():
     p = pd.DataFrame({
         'elsewhere': added_pages('elsewhere'),
-        'library': added_pages('library'),
-        'pending':   added_pages('currently-reading') + added_pages('pending'),
-        'read':      -(added_pages('read') - completed_pages('read')),
-    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
-
-    p = (p - p.shift(365)).rolling(window=30).mean().ix['2018']
-
-    save_image(p, 'increase')
-
-
-def increase1():
-    p = pd.DataFrame({
-        'elsewhere': added_pages('elsewhere'),
         'ebooks': added_pages('ebooks'),
         'library': added_pages('library'),
         'pending': added_pages('currently-reading') + added_pages('pending'),
@@ -542,7 +529,6 @@ if __name__ == "__main__":
     scheduled()
     backlog()
     increase()
-    increase1()
     new_authors(df)
     #draw_rating_histogram(df)
     reading_rate()
