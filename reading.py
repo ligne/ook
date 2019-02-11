@@ -15,6 +15,8 @@ import numpy as np
 import reading
 import reading.ebooks
 
+from reading.collection import Collection
+
 
 EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
 
@@ -281,6 +283,52 @@ def gender(df):
     plt.close()
 
 
+def language():
+    df = Collection(shelves=['read']).df
+
+    df.Language = df.Language.fillna('unknown')
+    df = df.pivot_table(
+        values='Pages',
+        index='Read',
+        columns='Language',
+        aggfunc=np.sum,
+        fill_value=0
+    ).rolling('365d').sum()
+    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
+
+    plt.ylim([0, 1])
+
+    # prettify and save
+    name = 'language'
+    plt.grid(True)
+    plt.title('Languages')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
+def category():
+    df = Collection(shelves=['read']).df
+
+    df.Category = df.Category.fillna('unknown')
+    df = df.pivot_table(
+        values='Pages',
+        index='Read',
+        columns='Category',
+        aggfunc=np.sum,
+        fill_value=0
+    ).rolling('365d').sum()
+    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
+
+    plt.ylim([0, 1])
+
+    # prettify and save
+    name = 'category'
+    plt.grid(True)
+    plt.title('Categories')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 # plot total/new nationalities over the preceding year
 def nationality(df):
     authors = reading.read_since(df, '2013').sort_values(['Date Read'])
@@ -516,6 +564,8 @@ if __name__ == "__main__":
 #     phase_space(df)
     nationality(df)
     gender(df)
+    language()
+    category()
     rate_area(df)
     oldness(df)
     median_date(df)
