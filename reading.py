@@ -270,7 +270,7 @@ def gender(df):
         aggfunc=np.sum,
         fill_value=0
     ).rolling('365d').sum()
-    df.divide(df.sum(axis='columns'), axis='rows').plot.area()
+    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
 
     # set to the full range
     plt.ylim([0, 1])
