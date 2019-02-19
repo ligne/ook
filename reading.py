@@ -158,7 +158,7 @@ def increase():
     plt.axhline(0, color='k', alpha=0.5)
 
     # prettify and save
-    name = 'increase1'
+    name = 'increase'
     plt.grid(True)
     plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
     plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
