@@ -100,6 +100,7 @@ def lint_scheduled_misshelved():
 def check_scheduled_but_already_read(df):
     ignore_authors = [
         'Terry Pratchett',
+        'Iain Banks',
     ]
 
     # has been scheduled
