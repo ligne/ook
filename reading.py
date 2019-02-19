@@ -419,6 +419,30 @@ def rate_area(df):
     plt.close()
 
 
+def doy(df):
+#    df = Collection(shelves=['read']).df
+
+    df['Year'] = df['Date Read'].dt.year
+    df['Day of Year'] = df['Date Read'].dt.dayofyear
+
+    ax = df.pivot_table(
+        values='Number of Pages',
+        index='Day of Year',
+        columns='Year',
+        aggfunc=np.sum,
+        fill_value=0
+    ).reindex(range(1,367), fill_value=0).cumsum().plot()
+
+    # prettify and save
+    name = 'doy'
+    plt.grid(True)
+    # the legend doesn't help
+    plt.legend().set_visible(False)
+    plt.title('Progress')
+    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.close()
+
+
 def phase_space(df):
     dimensions = [
         'Gender',
@@ -561,6 +585,7 @@ def rating_scatter():
 #################################################################################
 
 if __name__ == "__main__":
+    doy(df)
 #     phase_space(df)
     nationality(df)
     gender(df)
