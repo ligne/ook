@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import glob
 import pipes  # used for shell escapes
@@ -29,7 +29,7 @@ def clean_files(d):
                 cruft = False
 
         if cruft:
-            print 'rm -r {}'.format(pipes.quote(item))
+            print('rm -r {}'.format(pipes.quote(item)))
 
 for d in dirs:
     clean_files(kindle_dir + d)
