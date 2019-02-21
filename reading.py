@@ -445,30 +445,6 @@ def doy(df):
     plt.close()
 
 
-def phase_space(df):
-    dimensions = [
-        'Gender',
-        'Nationality',
-#         'Old',
-    ]
-
-    df = reading.read_since(df, 2016)
-    df = reading.on_shelves(df, ['read'])
-
-    import functools
-    import operator
-
-#     print [ (x, len(set(df[x].values))) for x in dimensions ]
-    size = reduce(operator.mul, [ len(set(df[x].values)) for x in dimensions ], 1)
-#     print size
-
-    df = df.dropna(subset=dimensions)
-
-    print(df[dimensions].apply(lambda x: '|'.join(x), axis=1))
-    distinct = df[dimensions].apply(lambda x: '|'.join(x), axis=1).unique()
-    print(distinct)
-    print('{:.1f}%'.format(100*len(df[dimensions].apply(lambda x: '|'.join(x), axis=1).unique())/size))
-
 ################################################################################
 
 def is_current_year(year):
@@ -588,7 +564,6 @@ def rating_scatter():
 
 if __name__ == "__main__":
     doy(df)
-#     phase_space(df)
     nationality(df)
     gender(df)
     language()
