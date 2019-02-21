@@ -74,6 +74,21 @@ def lint_missing_published_date():
     }
 
 
+def lint_missing_language():
+    #c = Collection(fixes=None)
+    c = Collection(shelves=['read'], fixes=None)
+    return {
+        'title': 'Missing a language',
+        'df': c.df[c.df.Language.isnull()],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}} https://www.goodreads.com/book/show/{{entry.Index}}
+{%- endfor %}
+
+""",
+    }
+
+
 def lint_scheduled_misshelved():
     c = Collection(shelves=['read', 'currently-reading', 'to-read'])
     return {
