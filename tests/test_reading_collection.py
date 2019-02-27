@@ -11,7 +11,7 @@ import reading.collection
 
 def test__get_gr_books():
     # FIXME use a test csv
-    df = reading.collection._get_gr_books()
+    df = reading.collection._get_gr_books('tests/data/goodreads-2019-02-27.csv')
 
     assert_equals(sorted(df.columns), sorted([
         'Author',
@@ -60,10 +60,10 @@ def test__get_gr_books():
     eq_(b.Read.strftime('%F'), '2016-11-06')
     eq_(b.Published, 1829.)  # FIXME pandas can't do very old dates...
 
-    b = df.loc[8861500]  # The Dain Curse
+    b = df.loc[290566]  # Canal Dreams
     # scheduled is a datetime
-    eq_(b.Scheduled.year, 2018)
-    eq_(b.Scheduled.strftime('%F'), '2018-01-01')
+    eq_(b.Scheduled.year, 2019)
+    eq_(b.Scheduled.strftime('%F'), '2019-01-01')
 
     b = df.loc[28595808]  # The McCabe Reader
     # missing publication year

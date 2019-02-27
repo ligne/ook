@@ -74,5 +74,5 @@ def test_interesting():
 
 def test_ignore():
     eq_(reading.series.ignore(1), False)
-    eq_(reading.series.ignore(123), True)
+    eq_(reading.series.ignore(55486), True)
 
