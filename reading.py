@@ -423,7 +423,7 @@ def doy(df):
     df['Year'] = df['Date Read'].dt.year
     df['Day of Year'] = df['Date Read'].dt.dayofyear
 
-    ax = df.pivot_table(
+    df.pivot_table(
         values='Number of Pages',
         index='Day of Year',
         columns='Year',
