@@ -260,8 +260,8 @@ def search_author(term):
     print(author_ids)
 
     return [{
-        'Author': a.find('name').text,
-        'AuthorId': a.find('id').text,
+        'Author': x.find('name').text,
+        'AuthorId': x.find('id').text,
     } for x in xml.findall('search/results/work/best_book/author')]
 
 
