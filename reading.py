@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import glob
 import datetime
-import re
 
 import matplotlib
 matplotlib.use('Agg')

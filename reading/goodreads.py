@@ -1,7 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
 import sys
-import time
 import yaml
 import requests
 import re

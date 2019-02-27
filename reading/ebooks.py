@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import sys
-import glob
-
 import pandas as pd
 
 from reading.author import Author

@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
-import sys
 from jinja2 import Template
 
-import reading
 from reading.collection import Collection
 
 
