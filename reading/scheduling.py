@@ -39,16 +39,16 @@ def scheduled(df):
 
 
 # fix up df with the scheduled dates
-def _set_schedules(df, scheduled=None, col='Scheduled'):
+def _set_schedules(df, scheduled=None, date=datetime.date.today(), col='Scheduled'):
     for settings in scheduled or config['scheduled']:
-        for d, book in _schedule(df, settings):
+        for d, book in _schedule(df, settings, date):
             df.loc[book,col] = parse(d)
 
 
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
 def scheduled_at(df, date=datetime.date.today(), scheduled=None):
-    _set_schedules(df, scheduled)
+    _set_schedules(df, scheduled, date)
     return df[(df.Scheduled.dt.year == date.year)&(df.Scheduled <= date)].sort_values('Title')
 
 
