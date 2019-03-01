@@ -50,7 +50,7 @@ def _save_gr_books(df, csv=GR_CSV):
 ################################################################################
 
 def _get_kindle_books(csv=EBOOK_CSV, merge=False):
-    df = pd.read_csv(csv, index_col=0, parse_dates=[
+    df = pd.read_csv(csv, parse_dates=[
         'Added',
     ])
 
@@ -61,10 +61,22 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
     # calculate page count
     df['Pages'] = df.Words / words_per_page
 
+    if merge:
+        s = df.Title.apply(_ebook_parse_title)
+        print(s)
+        df = df.drop('Title', axis=1).join(s)
+        df = pd.concat([
+            df[df.Volume.isnull()],
+            df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
+                **{ col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume') },
+                **{'Pages': 'sum', 'Words': 'sum',},
+            }),
+        ])
+
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
-    return df
+    return df.set_index('BookId')
 
 
 # FIXME maybe want this to not require pandas?
