@@ -96,7 +96,7 @@ def _ebook_parse_title(title):
     title = re.sub('\s+', ' ', title.strip())
 
     t = title
-    s = v = ''
+    s = v = None
 
     m = re.search('(?: / |\s?[;:] )', title)
     if m:
