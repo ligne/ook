@@ -103,7 +103,7 @@ def _ebook_parse_title(title):
             v = m.group(grp)
             break
 
-    return t
+    return pd.Series([t, v], index=['Title', 'Volume'])
 
 
 ################################################################################
