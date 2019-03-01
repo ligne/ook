@@ -18,17 +18,29 @@ pd.options.display.width = None
 
 ################################################################################
 
-def _get_gr_books(csv=GR_CSV):
+def _get_gr_books(csv=GR_CSV, merge=False):
     # FIXME Published as a date would be nice too, except pandas doesn't
     # support very old dates.
-    df = pd.read_csv(csv, index_col=0, parse_dates=[
+    df = pd.read_csv(csv, parse_dates=[
         'Added',
         'Started',
         'Read',
         'Scheduled'
     ])
 
-    return df
+    if merge:
+        s = df.Title.str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?$', expand=True)
+
+        df = df.drop('Title', axis=1).join(s)
+        df = pd.concat([
+            df[df.Volume.isnull()],
+            df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
+                **{ col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume') },
+                **{'Pages': 'sum'},
+            }),
+        ])
+
+    return df.set_index('BookId')
 
 
 def _save_gr_books(df, csv=GR_CSV):
@@ -37,7 +49,7 @@ def _save_gr_books(df, csv=GR_CSV):
 
 ################################################################################
 
-def _get_kindle_books(csv=EBOOK_CSV):
+def _get_kindle_books(csv=EBOOK_CSV, merge=False):
     df = pd.read_csv(csv, index_col=0, parse_dates=[
         'Added',
     ])
@@ -120,8 +132,8 @@ class Collection():
 
         # otherwise load and concatenate the CSV files
         df = pd.concat([
-            _get_gr_books(gr_csv),
-            _get_kindle_books(ebook_csv),
+            _get_gr_books(gr_csv, merge),
+            _get_kindle_books(ebook_csv, merge),
         ])
 
         if metadata:
