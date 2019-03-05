@@ -139,7 +139,11 @@ if __name__ == "__main__":
     parser.add_argument('-f', '--force', action='store_true')
     args = parser.parse_args()
 
-    old = Collection(shelves=['kindle']).df
+    old = Collection(
+        shelves=['kindle'],
+        categories=['novels', 'short-stories', 'non-fiction', 'articles'],  # FIXME
+        metadata=False,
+    ).df
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
