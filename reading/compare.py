@@ -13,9 +13,18 @@ ignore_columns = [
 
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
-def compare(old, new):
+def compare(old, new, use_work=True):
     (old, new) = [df.fillna('') for df in (old, new)]
 
+    if use_work:
+        _compare_with_work(old, new)
+    else:
+        _compare_without_work(old, new)
+
+    return
+
+
+def _compare_with_work(old, new):
     # changed
     for ix in old.index.intersection(new.index):
         changed = _changed(old.loc[ix], new.loc[ix])
@@ -41,6 +50,19 @@ def compare(old, new):
             print(_added(_n.iloc[0]))
         else:
             print(_removed(_o.iloc[0]))
+
+
+def _compare_without_work(old, new):
+#    for ix in old.index.intersection(new.index):
+#        changed = _changed(old.loc[ix], new.loc[ix])
+#        if changed:
+#            print(changed)
+
+    idcs = old.index.symmetric_difference(new.index)
+    for ix in new.index.intersection(idcs):
+        print(_added(new.loc[ix]))
+    for ix in old.index.intersection(idcs):
+        print(_removed(old.loc[ix]))
 
 
 ################################################################################

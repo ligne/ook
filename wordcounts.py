@@ -151,6 +151,6 @@ if __name__ == "__main__":
 
     new = new.assign(Work=None, Shelf='kindle')
 
-#     compare(old, new)
+    compare(old, new, use_work=False)
 
 # vim: ts=4 : sw=4 : et
