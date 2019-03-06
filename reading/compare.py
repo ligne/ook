@@ -53,10 +53,10 @@ def _compare_with_work(old, new):
 
 
 def _compare_without_work(old, new):
-#    for ix in old.index.intersection(new.index):
-#        changed = _changed(old.loc[ix], new.loc[ix])
-#        if changed:
-#            print(changed)
+    for ix in old.index.intersection(new.index):
+        changed = _changed(old.loc[ix], new.loc[ix])
+        if changed:
+            print(changed)
 
     idcs = old.index.symmetric_difference(new.index)
     for ix in new.index.intersection(idcs):
