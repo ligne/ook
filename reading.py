@@ -203,7 +203,6 @@ def new_authors(df):
     plt.close()
 
 
-# median publication date of books read in the previous year
 def median_date(df):
     read = df.dropna(subset=['Date Read', 'Original Publication Year'])
 

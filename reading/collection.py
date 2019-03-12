@@ -63,7 +63,6 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
 
     if merge:
         s = df.Title.apply(_ebook_parse_title)
-        print(s)
         df = df.drop('Title', axis=1).join(s)
         df = pd.concat([
             df[df.Volume.isnull()],
