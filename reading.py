@@ -431,6 +431,7 @@ def doy(df):
     ).reindex(range(1,367), fill_value=0).cumsum().plot()
 
     plt.axvline(today.dayofyear, color='k', alpha=0.5)
+    plt.axhline((12000/365*today.dayofyear), color='k', alpha=0.5)
 
     # prettify and save
     name = 'doy'
