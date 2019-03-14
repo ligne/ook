@@ -81,9 +81,7 @@ def test__get_kindle_books():
         'Category',
         'Language',
         'Added',
-        'AuthorId',
         'Binding',
-        'Work',
         'Words',
         'Borrowed',
         'Pages',
@@ -112,4 +110,5 @@ def test__get_kindle_books():
     # filenames as the index
     # FIXME
     #eq_(list(df.index[0:3]), ['_0', '_1', '_2'])
+
 
