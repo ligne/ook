@@ -179,7 +179,7 @@ def _parse_book_html(html):
         r_pages = html.find(class_='num_pages').div.text
         m = re.search('[\d,]+', r_pages)
         return {
-            'Pages': m.group(0).replace(',', ''),
+            'Pages': float(m.group(0).replace(',', '')),
         }
     except AttributeError:
         return {
