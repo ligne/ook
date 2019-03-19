@@ -17,8 +17,8 @@ def display(df):
 ----
 ''').render(groups=g))
 
-display(Collection(shelves=['pending', 'elsewhere', 'library']).df)
-display(Collection(shelves=['kindle']).df)
-display(Collection(shelves=['to-read']).df)
+display(Collection(shelves=['pending', 'elsewhere', 'library'], merge=True).df)
+display(Collection(shelves=['kindle'], merge=True).df)
+display(Collection(shelves=['to-read'], merge=True).df)
 
 # vim: ts=4 : sw=4 : et
