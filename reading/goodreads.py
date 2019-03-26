@@ -171,7 +171,7 @@ def _fetch_book_html(book_id):
 
             s[int(bid)] = review
 
-    return s[book_id]
+    return s.get(book_id)
 
 
 def _parse_book_html(html):
