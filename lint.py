@@ -162,6 +162,7 @@ def lint_binding():
         'Poche',
         'Broché',
         'Relié',
+        'Board book',
     ]
     c = Collection(shelves=[
         'read',
