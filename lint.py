@@ -196,7 +196,7 @@ def check_read_author_metadata(df):
 
 # books on elsewhere shelf that are not marked as borrowed.
 def lint_missing_borrowed():
-    c = Collection(shelves=['elsewhere'], borrowed=False)
+    c = Collection(shelves=['elsewhere', 'library'], borrowed=False)
     return {
         'title': 'Elsewhere but not marked as borrowed',
         'df': c.df,
