@@ -56,7 +56,7 @@ def scheduled_at(df, date=datetime.date.today(), scheduled=None):
 def lint(df):
     horizon = str(datetime.date.today().year + 3)
 
-    _set_schedules(df, config['scheduled'], 'Sched')
+    _set_schedules(df, config['scheduled'], col='Sched')
     df = df[df.Sched.notnull()]  # ignore unscheduled or manually-scheduled books
     df = df[(df.Sched < horizon)&(df.Scheduled.dt.year != df.Sched.dt.year)]
     for ix, book in df.sort_values('Sched').iterrows():
