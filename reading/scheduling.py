@@ -77,7 +77,9 @@ def _schedule(df, settings, date=datetime.date.today()):
     if settings.get('force') == date.year:
         skip = 0
     else:
-        skip = min(series.read_in_year(start), per_year)
+        # "slots" count even if no book was read in that time
+        passed = int(date.timetuple().tm_yday / 365 * per_year)
+        skip = min(max(series.read_in_year(start), passed), per_year)
 
     return _allocate(
         series.remaining(),

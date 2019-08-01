@@ -117,6 +117,19 @@ BookId,Author,AuthorId,AvgRating,Binding,Bookshelves,Borrowed,Added,Read,Started
         ('2019-10-01', 'Hogfather'),
     ])
 
+    # didn't read one in the last window
+    eq_([ (date, df.loc[ix].Title) for date, ix in reading.scheduling._schedule(df, {
+        'series': 'Discworld$',
+        'per_year': 4,
+    }, date=datetime.date(2018, 11, 4))], [
+        ('2018-10-01', 'Reaper Man'),
+        ('2019-01-01', 'Witches Abroad'),
+        ('2019-04-01', 'Soul Music'),
+        ('2019-07-01', 'Maskerade'),
+        ('2019-10-01', 'Feet of Clay'),
+        ('2020-01-01', 'Hogfather')
+    ])
+
 
     # missing publication year
     df = Collection(gr_csv=StringIO("""
