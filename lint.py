@@ -74,6 +74,20 @@ def lint_missing_published_date():
     }
 
 
+def lint_dates():
+    c = Collection(shelves=['read'])
+    return {
+        'title': 'Finished before starting',
+        'df': c.df[c.df.Read < c.df.Started],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}: {{entry.Started.date()}} - {{entry.Read.date()}}
+{%- endfor %}
+
+""",
+    }
+
+
 def lint_missing_language():
     #c = Collection(fixes=None)
     c = Collection(shelves=['read'], fixes=None)
