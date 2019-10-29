@@ -89,8 +89,7 @@ def lint_dates():
 
 
 def lint_missing_language():
-    #c = Collection(fixes=None)
-    c = Collection(shelves=['read'], fixes=None)
+    c = Collection()
     return {
         'title': 'Missing a language',
         'df': c.df[c.df.Language.isnull()],
