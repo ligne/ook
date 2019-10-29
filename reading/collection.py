@@ -166,7 +166,17 @@ class Collection():
         if borrowed is not None:
             df = df[df['Borrowed'] == borrowed]
 
-        # load information about the authors
+        # FIXME load information about the authors
+
+        # FIXME clean this up
+        if fixes:
+            with open('data/grfixes.yml') as fh:
+                for col, data in yaml.load(fh).items():
+                    for value, books in data.items():
+                        a = []
+                        for b in books:
+                            a.append((b, value))
+                        df.update(pd.DataFrame(a, columns=['BookId', col]).set_index(['BookId']))
 
         self.df = df
 
