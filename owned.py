@@ -6,6 +6,9 @@ from reading.collection import Collection
 
 
 def display(df):
+    df = df[~df.Series.str.contains('Spirou', na=False)]
+    df = df[~df.Author.str.contains('Georges Simenon')]
+
     g = df.sort_values(['Author', 'Title']).groupby('Author')
     print(Template('''
 {%- for author, books in groups %}
