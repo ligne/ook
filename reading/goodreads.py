@@ -10,11 +10,7 @@ from dateutil.parser import parse
 from math import isnan
 
 import reading.series
-
-
-# load the config to get the GR API key.
-with open('data/config.yml') as fh:
-    config = yaml.load(fh)
+from reading.config import config
 
 
 # get all the books on the goodread shelves.
@@ -24,7 +20,7 @@ def get_books():
 
     while True:
         r = requests.get('https://www.goodreads.com/review/list/10052745.xml', params={
-            'key': config['goodreads']['key'],
+            'key': config('goodreads.key'),
             'v': 2,
             'per_page': 200,
             'page': page,
@@ -47,7 +43,7 @@ def get_books():
         reading.cache.dump_yaml('series', reading.series.cache)
 
     df = pd.DataFrame(data=books).set_index('BookId')
-    return df[~(df['Read'] < config['goodreads']['ignore_before'])]
+    return df[~(df['Read'] < config('goodreads.ignore_before'))]
 
 
 # extract a (possibly missing) date.
@@ -112,7 +108,7 @@ def _fetch_book_api(book_id):
             xml = fh.read()
     except FileNotFoundError:
         xml = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
-            'key': config['goodreads']['key'],
+            'key': config('goodreads.key'),
         }).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
@@ -128,7 +124,7 @@ def _parse_book_api(xml):
 
     series = entry = series_id = None
     for s in xml.findall('book/series_works/series_work'):
-        if int(s.find('series/id').text) not in config['series']['ignore']:
+        if int(s.find('series/id').text) not in config('series.ignore'):
             series_id = int(s.find('series/id').text)
             series = s.find('series/title').text.strip()
             entry = s.find('user_position').text
@@ -160,7 +156,7 @@ def _fetch_book_html(book_id):
     if not s:
         from bs4 import BeautifulSoup
 
-        with open(config['goodreads']['html']) as fh:
+        with open(config('goodreads.html')) as fh:
             soup = BeautifulSoup(fh, 'html5lib')
 
         for review in soup.find_all(id=re.compile("^review_\d+")):
@@ -194,7 +190,7 @@ def _fetch_series(series_id):
             xml = fh.read()
     except FileNotFoundError:
         xml = requests.get('https://www.goodreads.com/series/show/{}.xml'.format(series_id), params={
-            'key': config['goodreads']['key'],
+            'key': config('goodreads.key'),
         }).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
@@ -251,7 +247,7 @@ def _get_category(shelves):
 # search by title
 def search_title(term):
     r = requests.get('https://www.goodreads.com/search/index.xml', params={
-        'key': config['goodreads']['key'],
+        'key': config('goodreads.key'),
         'search[field]': 'title',
         'q': term,
     })
@@ -274,7 +270,7 @@ def search_author(term):
     print("searching for {}".format(term))
 
     r = requests.get('https://www.goodreads.com/search/index.xml', params={
-        'key': config['goodreads']['key'],
+        'key': config('goodreads.key'),
         'search[field]': 'author',
         'q': term,
     })
