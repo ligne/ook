@@ -120,6 +120,7 @@ if __name__ == "__main__":
     for ix, row in scheduled_at(df, datetime.date(2018, 10, 2)).sort_values('Title').iterrows():
         print(row.Title)
     print('----')
+    print('CURRENT:\n')
     for ix, row in scheduled_at(df, datetime.date.today()).sort_values('Title').iterrows():
         print(row.Title)
 
