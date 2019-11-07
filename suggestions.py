@@ -139,10 +139,6 @@ def print_rows(df):
 #       next in series
 #       not read in the last 6 months (same year is fine).
 #           less than that is ok for authors i expect to read more of?  how many scheduled and read by that author this year, divide into equal chunks.
-#   bump
-#       scheduled for next year
-#       not already scheduled for this year
-#       not read recently
 #   suggest
 #       not scheduled
 #       not read recently
@@ -170,7 +166,6 @@ if __name__ == "__main__":
 
     # mode
     parser.add_argument('--scheduled', action="store_true")
-    parser.add_argument('--bump', action="store_true")
 
     # filter
     parser.add_argument('--shelves', nargs='+')
