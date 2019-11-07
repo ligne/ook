@@ -456,38 +456,31 @@ def _days_remaining(year):
         return 365  # FIXME
 
 
-# returns then number of pages scheduled for $year
-def scheduled_pages(df, year):
-    p = reading.on_shelves(df, others=[year])
-    if is_current_year(year):
-        p = p.append(reading.on_shelves(df, ['currently-reading']))
-
-    return p['Number of Pages'].sum()
-
-
 def scheduled_years(df):
-    years = df['Scheduled'].dropna()
-    return sorted(list(set(years) | {str(today.year)}))
+    # FIXME
+    years = set(df.Scheduled.dt.year.tolist())
+    return sorted(list(years | {today.year}))
 
 
 # plot reading schedule against time left, with warnings.
 def scheduled():
     rate = current_reading_rate()
+    df = Collection().df
+
+    df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
+    df = df.dropna(subset=['Scheduled'])
 
     years = scheduled_years(df)
 
+    # FIXME
+    completed = pd.read_csv('data/completed.csv', index_col=0)
+
     fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
-    sp = 0
 
-    for year in years:
-        pages_remaining = scheduled_pages(df, year)
-        p = reading.on_shelves(df, others=[year])
-        if is_current_year(year):
-            p = p.append(reading.on_shelves(df, ['currently-reading']))
-            p = p.drop_duplicates()
+    for year, ax in zip(years, axes):
+        p = df[df.Scheduled.dt.year == year].Pages
 
-        pages = p['Number of Pages'].sort_values().values
-
+        pages_remaining = p.sum()
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
 
@@ -504,14 +497,12 @@ def scheduled():
             print("    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate))
             print()
 
-        ax = axes[sp]
-        #pd.Series({ year: pages_remaining }).plot(kind='bar', ax=ax, rot=0)
-        pd.DataFrame([pages], index=[year]).plot(kind='bar', stacked=True, ax=ax, rot=0, legend=False)
+        pages = p.sort_values().values
+        pd.DataFrame([pages], index=[year]).plot.bar(stacked=True, ax=ax, rot=0, legend=False)
+
         ax.axhline(_days_remaining(year) * rate)
         if is_current_year(year):
             ax.axhspan(_days_remaining(year) * rate, _days_remaining(year) * rate * 1.1, color='k', alpha=0.1)
-
-        sp += 1
 
     # set the right-hand ticks.  no labels except on final column.  do this
     # after all the graphs are drawn, so the y-axis scaling is correct.
