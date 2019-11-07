@@ -23,7 +23,7 @@ old = Collection(shelves=[
     'library',
     'ebooks',
     'to-read',
-])
+], fixes=False)
 
 if not args.ignore_changes:
     df.sort_index().to_csv('data/goodreads.csv', float_format='%g')
