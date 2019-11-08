@@ -4,18 +4,16 @@ import time
 import yaml
 from xml.etree import ElementTree
 
+from .config import config
 
 # basic operations on a GR xml entity
 class GRTree():
-    # load the config to get the GR API key.
-    with open('data/config.yml') as fh:
-        config = yaml.load(fh)
 
     def __init__(self, grid, entity='book'):
         import requests
 
         r = requests.get('https://www.goodreads.com/{}/show/{}.xml'.format(entity, grid), params={
-            'key': self.config['GR Key'],
+            'key': config('goodreads.key'),
         })
         time.sleep(1)
         self._tree = ElementTree.fromstring(r.content)
