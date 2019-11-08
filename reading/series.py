@@ -32,10 +32,6 @@ from functools import reduce
 #   linting for missing books?
 #   hiding blocked books
 
-# FIXME this is horrible.
-from .cache import load_yaml
-cache = load_yaml('series')
-
 import yaml
 with open('data/config.yml') as fh:
     config = yaml.load(fh)
