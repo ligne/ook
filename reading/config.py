@@ -9,12 +9,11 @@ def config(key):
         config = yaml.load(fh)
 
     for key in key.split('.'):
-        print(key)
         try:
             config = config[key]
         except KeyError:
             # use defaults and/or emit warning
-            config = None
+            return None
 
     return config
 
