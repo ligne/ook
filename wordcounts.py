@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
-import sys
 from subprocess import check_output, call, DEVNULL
 import datetime
 from pathlib import Path
-import tempfile
 import yaml
 import argparse
 import pandas as pd

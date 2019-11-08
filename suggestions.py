@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import math
-import sys
 import datetime
 import argparse
 
@@ -77,16 +76,11 @@ def new_nationalities(df):
 
 
 def merge_volumes(df):
-    pages = df.groupby(['Author', 'Title'], as_index=False)['Number of Pages'].sum()
-#     df.ix[pages.index,'Number of Pages'] = pages
-
     return df.groupby(['Author', 'Title'], as_index=False).aggregate({
         'Number of Pages': 'sum',
         'Series': 'first',
         'Entry': 'first',
     })
-
-    return df
 
 
 # pick (FIXME approximately) $size rows from around the median and mean of the
