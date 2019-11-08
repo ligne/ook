@@ -6,11 +6,8 @@ import itertools
 from dateutil.parser import parse
 
 from .series import Series
+from .config import config
 
-
-import yaml
-with open('data/config.yml') as fh:
-    config = yaml.load(fh)
 
 # use cases:
 #   reading through an author (Haruki Murakami)
@@ -30,7 +27,7 @@ with open('data/config.yml') as fh:
 
 
 def scheduled(df):
-    for settings in config['scheduled']:
+    for settings in config('scheduled'):
         print(settings.get('author', settings.get('series')))
         for date, book in _schedule(df, settings):
             book = df.loc[book]
@@ -40,7 +37,7 @@ def scheduled(df):
 
 # fix up df with the scheduled dates
 def _set_schedules(df, scheduled=None, date=datetime.date.today(), col='Scheduled'):
-    for settings in scheduled or config['scheduled']:
+    for settings in scheduled or config('scheduled'):
         for d, book in _schedule(df, settings, date):
             df.loc[book,col] = parse(d)
 
@@ -56,7 +53,7 @@ def scheduled_at(df, date=datetime.date.today(), scheduled=None):
 def lint(df):
     horizon = str(datetime.date.today().year + 3)
 
-    _set_schedules(df, config['scheduled'], col='Sched')
+    _set_schedules(df, config('scheduled'), col='Sched')
     df = df[df.Sched.notnull()]  # ignore unscheduled or manually-scheduled books
     df = df[(df.Sched < horizon)&(df.Scheduled.dt.year != df.Sched.dt.year)]
     for ix, book in df.sort_values('Sched').iterrows():
