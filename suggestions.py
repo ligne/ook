@@ -52,12 +52,6 @@ def scheduled(df):
     return _scheduled_for_year(df, today.year)
 
 
-# Scheduled for next year but not by already read author
-def bump(df):
-    df = df[~df['Author'].isin(_scheduled_authors(df))]
-    return _scheduled_for_year(df, today.year + 1)
-
-
 # books by authors that i've read before
 def old_authors(df):
     authors = reading.get_books(shelves=['read']).Author.values
@@ -210,8 +204,6 @@ if __name__ == "__main__":
     if args.scheduled:
         df = scheduled(df)
         df = merge_volumes(df)
-    elif args.bump:
-        df = bump(df)
     else:
         # remove books if there's already an earlier one in the series
         #
