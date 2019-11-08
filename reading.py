@@ -392,17 +392,17 @@ def reading_rate():
     plt.close()
 
 
-def rate_area(df):
-    df = df[df['Date Read'].dt.year >= 2016].copy()
+def rate_area():
+    df = Collection(shelves=['read']).df
 
-    df['ppd'] = df['Number of Pages'] / ((df['Date Read'] - df['Date Started']).dt.days + 1)
+    df['ppd'] = df.Pages / ((df.Read - df.Started).dt.days + 1)
 
     g = pd.DataFrame(index=ix)
 
-    for ii, row in df.sort_values(['Date Started']).iterrows():
+    for ii, row in df.sort_values(['Started']).iterrows():
         g[ii] = pd.Series({
-            row['Date Started']: row['ppd'],
-            row['Date Read']: 0,
+            row.Started: row['ppd'],
+            row.Read: 0,
         }, index=ix).ffill()
 
     g = g.plot(title='Reading rate', kind='area', lw=0)
@@ -557,7 +557,7 @@ if __name__ == "__main__":
     gender(df)
     language()
     category()
-    rate_area(df)
+    rate_area()
     oldness(df)
     median_date(df)
     scheduled()
