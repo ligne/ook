@@ -11,9 +11,7 @@ import pandas as pd
 
 from reading.collection import Collection
 from reading.compare import compare
-
-with open('data/config.yml') as fh:
-    config = yaml.load(fh)
+from reading.config import config
 
 
 # returns the wordcount for a document.
@@ -100,7 +98,7 @@ def get_ebooks(kindle_dir):
 
 
 def process(df, force=False):
-    kindle_dir = Path(config['kindle']['directory'])
+    kindle_dir = Path(config('kindle.directory'))
 
     ebooks = []
 

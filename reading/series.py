@@ -5,6 +5,8 @@ import operator
 import re
 from functools import reduce
 
+from .config import config
+
 # configuration:
 #   series information cache.  build it from the series extracted from books.
 #   series configuration.
@@ -31,10 +33,6 @@ from functools import reduce
 #   handling book data
 #   linting for missing books?
 #   hiding blocked books
-
-import yaml
-with open('data/config.yml') as fh:
-    config = yaml.load(fh)
 
 
 # books that should be hidden (because they're not the next in series or
@@ -94,7 +92,7 @@ def _get_series_settings(series):
 
 # whether to ignore the series.
 def ignore(series_id):
-    return int(series_id) in config['series']['ignore']
+    return int(series_id) in config('series.ignore')
 
 
 class Series():
