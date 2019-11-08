@@ -40,8 +40,6 @@ def get_books():
 
         page += 1
 
-        reading.cache.dump_yaml('series', reading.series.cache)
-
     df = pd.DataFrame(data=books).set_index('BookId')
     return df[~(df['Read'] < config('goodreads.ignore_before'))]
 
@@ -88,7 +86,6 @@ def fetch_book(book_id):
     series_id = book['SeriesId']
     if series_id:
         series = _parse_series(_fetch_series(series_id))
-        reading.series.cache[series_id] = series
 
         if not reading.series.interesting(book['Entry'], series):
             # remove the series information
