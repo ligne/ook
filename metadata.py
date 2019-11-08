@@ -13,16 +13,11 @@ from reading.metadata import *
 from reading.compare import compare
 
 
-# load the config to get the GR API key.
-import yaml
-with open('data/config.yml') as fh:
-    config = yaml.load(fh)
-
-
 def find():
     c = Collection()
     df = c.df
 
+    # FIXME
     works = reading.cache.load_yaml('works')
 
     author_ids = set(df[df['AuthorId'].notnull()]['AuthorId'].astype(int).values)
