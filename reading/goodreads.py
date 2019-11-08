@@ -41,7 +41,7 @@ def get_books():
         page += 1
 
     df = pd.DataFrame(data=books).set_index('BookId')
-    return df[~(df['Read'] < config('goodreads.ignore_before'))]
+    return df[~(df.Read < config('goodreads.start'))]
 
 
 # extract a (possibly missing) date.
