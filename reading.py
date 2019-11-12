@@ -474,11 +474,12 @@ def scheduled():
         pages_remaining = p.sum()
         days_remaining = _days_remaining(year)
         days_required = pages_remaining / rate
+        page_limit = days_remaining * rate
 
-        # give a 10% margin before the warnings start.
+        # give a margin before the warnings start.
         if days_required > 1.1 * days_remaining:
             days_over = days_required - days_remaining
-            pages_over = pages_remaining - (days_remaining * rate)
+            pages_over = pages_remaining - page_limit
             needed_rate = pages_remaining / days_remaining
 
             print("Too many books for {}:".format(year))
@@ -491,9 +492,9 @@ def scheduled():
         pages = p.sort_values().values
         pd.DataFrame([pages], index=[year]).plot.bar(stacked=True, ax=ax, rot=0, legend=False)
 
-        ax.axhline(_days_remaining(year) * rate)
+        ax.axhline(page_limit)
         if is_current_year(year):
-            ax.axhspan(_days_remaining(year) * rate, _days_remaining(year) * rate * 1.1, color='k', alpha=0.1)
+            ax.axhspan(page_limit, page_limit * 1.1, color='k', alpha=0.1)
 
     # set the right-hand ticks.  no labels except on final column.  do this
     # after all the graphs are drawn, so the y-axis scaling is correct.
