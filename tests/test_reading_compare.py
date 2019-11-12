@@ -215,15 +215,15 @@ Finished The Bridge by Iain Banks
 
     assert_multi_line_equal(reading.compare._finished(c.df.iloc[1]), """
 Finished Le Colonel Chabert : suivi de trois nouvelles by Honoré de Balzac
-  * 2018-06-25 → 2018-07-11 (16 days)
+  * 2018-06-25 → 2018-07-08 (13 days)
   * Rating: 3
 """.strip())
 
     # read in one day
     assert_multi_line_equal(reading.compare._finished(c.df.iloc[2]), """
 Finished The Scarecrow by Ronald Hugh Morrieson
-  * 2018-07-29 → 2018-07-29 (0 days)
-  * 211 pages, 211 pages/day
+  * 2018-07-29 → 2018-08-10 (12 days)
+  * 211 pages, 16 pages/day
   * Rating: 4
 """.strip())
 
