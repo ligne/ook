@@ -19,7 +19,8 @@ def get_books():
     books = []
 
     while True:
-        r = requests.get('https://www.goodreads.com/review/list/10052745.xml', params={
+        url = 'https://www.goodreads.com/review/list/{}.xml'.format(config('goodreads.user'))
+        r = requests.get(url, params={
             'key': config('goodreads.key'),
             'v': 2,
             'per_page': 200,
