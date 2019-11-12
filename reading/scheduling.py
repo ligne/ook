@@ -1,7 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
 import datetime
-import sys
 import itertools
 from dateutil.parser import parse
 

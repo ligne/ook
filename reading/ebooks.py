@@ -2,8 +2,6 @@
 
 import pandas as pd
 
-from reading.author import Author
-
 
 # FIXME get additional data: clean title, original publication date
 # FIXME drop entries that already exist on ebooks shelf?

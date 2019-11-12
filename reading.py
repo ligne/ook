@@ -118,7 +118,8 @@ def backlog():
         'read':      added_pages('read') - completed_pages('read'),
     }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
 
-    # truncate to the interesting bit (after i'd added my books and those from home)
+    # truncate to the interesting bit (after i'd added my books and those from
+    # home)
     p = p.ix['2016-05-13':].cumsum(axis=1)
 
     rate = annual_reading_rate().reindex(p.index)
@@ -240,8 +241,8 @@ def oldness(df):
                       .reindex(ix)               \
                       .fillna(0)
 
-    df = df.rolling(window=365,min_periods=0).sum()
-    (df.thresh / df.total).rolling(window=10,min_periods=0).mean().plot()
+    df = df.rolling(window=365, min_periods=0).sum()
+    (df.thresh / df.total).rolling(window=10, min_periods=0).mean().plot()
 
     # set to the full range
     plt.ylim([0, 1])
@@ -386,7 +387,6 @@ def reading_rate():
     # prettify and save
     name = 'rate'
     plt.grid(True)
-    #plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
     plt.savefig('images/{}.png'.format(name))
     plt.close()
 
@@ -548,7 +548,7 @@ def rating_scatter():
     _make_rating_scatterplot(scoring, 'scatter.png',   x_estimator=np.mean)
 
 
-#################################################################################
+################################################################################
 
 if __name__ == "__main__":
     doy(df)

@@ -94,7 +94,6 @@ def get_ebooks(kindle_dir):
         yield ('articles', f, str(Path('articles', f.parts[-1])))
 
 
-
 def process(df, force=False):
     kindle_dir = Path(config('kindle.directory'))
 

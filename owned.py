@@ -20,6 +20,7 @@ def display(df):
 ----
 ''').render(groups=g))
 
+
 display(Collection(shelves=['pending', 'elsewhere', 'library'], merge=True).df)
 display(Collection(shelves=['kindle'], merge=True).df)
 display(Collection(shelves=['to-read'], merge=True).df)
