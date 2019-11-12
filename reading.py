@@ -163,14 +163,6 @@ def increase():
     plt.close()
 
 
-# plot average scores as a histogram
-def draw_rating_histogram(df):
-    ax = df['Average Rating'].plot(kind='hist', bins=100, title='Average Ratings')
-    ax.set_xlim(1, 5)
-    plt.savefig('images/average_scores.png')
-    plt.close()
-
-
 # number of new authors a year
 def new_authors(df):
     authors = df.dropna(subset=['Date Read']).sort_values(['Date Read'])
@@ -563,7 +555,6 @@ if __name__ == "__main__":
     backlog()
     increase()
     new_authors(df)
-    #draw_rating_histogram(df)
     reading_rate()
     rating_scatter()
 
