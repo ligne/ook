@@ -7,9 +7,9 @@ from reading.metadata import *
 import reading.wikidata
 
 
-def test__list_choices():
+def test__list_book_choices():
     # nothing
-    assert_multi_line_equal(reading.metadata._list_choices([], set(), set()), '')
+    assert_multi_line_equal(reading.metadata._list_book_choices([], set(), set()), '')
 
 #    # a couple of authors
 #    assert_multi_line_equal(reading.metadata._list_choices([
@@ -27,7 +27,7 @@ def test__list_choices():
     assert_multi_line_equal.__self__.maxDiff = None
 
     # books from goodreads title search
-    assert_multi_line_equal(reading.metadata._list_choices([
+    assert_multi_line_equal(reading.metadata._list_book_choices([
         {'Ratings': '31583', 'Published': '1853', 'BookId': '182381', 'Work': '1016559', 'Author': 'Elizabeth Gaskell', 'AuthorId': '1413437', 'Title': 'Cranford'},
         {'Ratings': '1515', 'Published': '1859', 'BookId': '2141817', 'Work': '21949576', 'Author': 'Elizabeth Gaskell', 'AuthorId': '1413437', 'Title': 'The Cranford Chronicles'},
         {'Ratings': '74', 'Published': '2009', 'BookId': '7329542', 'Work': '8965360', 'Author': 'Elizabeth Gaskell', 'AuthorId': '1413437', 'Title': 'Return to Cranford: Cranford and other stories'},
@@ -73,7 +73,7 @@ def test__list_choices():
         {'Work': '7427316', 'AuthorId': '5144', 'BookId': '580717', 'Ratings': '113', 'Published': '1992', 'Author': 'James Joyce', 'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'},
         {'Work': '10692', 'AuthorId': '5677665', 'BookId': '7593', 'Ratings': '12', 'Published': '1964', 'Author': 'Valerie Zimbarro', 'Title': 'A Portrait of the Artist as a Young Man, Notes'},
     ]
-    assert_multi_line_equal(reading.metadata._list_choices(results, author_ids=set([5144]), work_ids=set([3298883])), '''
+    assert_multi_line_equal(reading.metadata._list_book_choices(results, author_ids=set([5144]), work_ids=set([3298883])), '''
 \033[1m 1.\033[0m\033[32m A Portrait of the Artist as a Young Man\033[0m\033[33m
       James Joyce\033[0m
       Published: 1916
@@ -107,7 +107,7 @@ def test__list_choices():
         {'Work': '7427316', 'AuthorId': '5144', 'BookId': '580717', 'Ratings': '113', 'Published': '1992', 'Author': 'James Joyce', 'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'},
         {'Work': '10692', 'AuthorId': '5677665', 'BookId': '7593', 'Ratings': '12', 'Published': '1964', 'Author': 'Valerie Zimbarro', 'Title': 'A Portrait of the Artist as a Young Man, Notes'},
     ]
-    assert_multi_line_equal(reading.metadata._list_choices(results, author_ids=set([5144]), work_ids=set()), '''
+    assert_multi_line_equal(reading.metadata._list_book_choices(results, author_ids=set([5144]), work_ids=set()), '''
 \033[1m 1.\033[0m A Portrait of the Artist as a Young Man\033[0m\033[33m
       James Joyce\033[0m
       Published: 1916
