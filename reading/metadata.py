@@ -166,7 +166,14 @@ def find_authors():
     })
 
     for (author_id, author) in g.iterrows():
-        choice = lookup_author(author_id, author)
+        try:
+            resp = lookup_author(author_id, author)
+            if not resp:
+                continue
+        except (SaveExit):
+            break
+        except (FullExit):
+            sys.exit()
 
 
 ################################################################################

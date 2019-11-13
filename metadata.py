@@ -41,17 +41,12 @@ def find_books():
 
             try:
                 resp = lookup_work_id(m, author_ids, work_ids)
+                if not resp:
+                    continue
             except (SaveExit):
-                # save and exit
-                print('Saving and exiting')
                 break
             except (FullExit):
-                # no save
-                print('Exiting')
                 sys.exit()
-
-            if not resp:
-                continue
 
             author_ids.add(resp['AuthorId'])
             work_ids.add(resp['Work'])
