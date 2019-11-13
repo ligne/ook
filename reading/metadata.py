@@ -30,9 +30,6 @@ def _list_choices(results, author_ids, work_ids):
     {%- if entry.Ratings %}
       Ratings: {{entry.Ratings}}
     {%- endif %}
-    {%- if entry.QID %}
-      https://www.wikidata.org/wiki/{{entry.QID}}
-    {%- endif %}
     {%- if entry.BookId %}
       https://www.goodreads.com/book/show/{{entry.BookId}}
     {%- endif %}
