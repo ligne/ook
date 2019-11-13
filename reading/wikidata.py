@@ -14,7 +14,7 @@ def wd_search(term):
     })
 
     return [{
-        'Title': res['label'],
+        'Label': res['label'],
         'QID': res['id'],
         'Description': res.get('description', ''),
     } for res in r.json()['search']]
