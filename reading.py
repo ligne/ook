@@ -476,8 +476,10 @@ def scheduled():
         days_required = pages_remaining / rate
         page_limit = days_remaining * rate
 
+        margin = 1.1
+
         # give a margin before the warnings start.
-        if days_required > 1.1 * days_remaining:
+        if days_required > margin * days_remaining:
             days_over = days_required - days_remaining
             pages_over = pages_remaining - page_limit
             needed_rate = pages_remaining / days_remaining
@@ -494,7 +496,7 @@ def scheduled():
 
         ax.axhline(page_limit)
         if is_current_year(year):
-            ax.axhspan(page_limit, page_limit * 1.1, color='k', alpha=0.1)
+            ax.axhspan(page_limit, page_limit * margin, color='k', alpha=0.1)
 
     # set the right-hand ticks.  no labels except on final column.  do this
     # after all the graphs are drawn, so the y-axis scaling is correct.
