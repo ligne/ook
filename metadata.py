@@ -9,11 +9,19 @@ from collections import ChainMap
 import reading.goodreads
 import reading.cache
 from reading.collection import Collection
-from reading.metadata import *
+from reading.metadata import lookup_work_id
+from reading.metadata import find_authors
 from reading.compare import compare
 
 
-def find():
+def find(args):
+    if 'books' in args:
+        find_books()
+    if 'authors' in args:
+        find_authors()
+
+
+def find_books():
     c = Collection()
     df = c.df
 
@@ -109,11 +117,17 @@ def rebuild(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--ignore-changes', action='store_true')
+
+    parser.add_argument('--find', nargs='?', default='books')
+    parser.add_argument('--update', action='store_true')
     args = parser.parse_args()
 
-#    find()
-    update()
-    rebuild(args)
+    if args.find:
+        find(args.find)
+    elif args.update:
+        update()
+    else:
+        rebuild(args)
 
 
 # vim: ts=4 : sw=4 : et

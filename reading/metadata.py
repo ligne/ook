@@ -3,15 +3,17 @@
 import sys
 import shutil
 from jinja2 import Template
+import pandas as pd
 
+from .collection import Collection
 from .wikidata import wd_search
 from .goodreads import search_title, fetch_book
 
-import reading.collection
+from .collection import _ebook_parse_title
 
 
-# formats a list of search results
-def _list_choices(results, author_ids, work_ids):
+# formats a list of book search results
+def _list_book_choices(results, author_ids, work_ids):
     (width,_) = shutil.get_terminal_size()
     return Template('''
 {%- for entry in results %}
@@ -38,6 +40,20 @@ def _list_choices(results, author_ids, work_ids):
     {%- endif %}
 {% endfor %}
 ''').render(results=results, authors=author_ids, works=work_ids, width=width)
+
+
+# formats a list of author search results
+def _list_author_choices(results):
+    (width,_) = shutil.get_terminal_size()
+    return Template('''
+{%- for entry in results %}
+  {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
+ {%- if True %} {{entry.Label}}{% endif %}
+    {%- if entry.Description %}
+    {{entry.Description[0]|upper}}{{entry.Description[1:]}}
+    {%- endif %}
+{% endfor %}
+''').render(results=results, width=width)
 
 
 # prompts the user for a selection or other decision.
@@ -78,7 +94,7 @@ Q - exit without saving
 ################################################################################
 
 def lookup_work_id(metadata, author_ids, work_ids):
-    title = reading.collection._ebook_parse_title(metadata.Title).Title
+    title = _ebook_parse_title(metadata.Title).Title
     results = sorted(search_title(title), key=lambda x: -x['Ratings'])
     if not results:
         # halp!
@@ -90,7 +106,7 @@ def lookup_work_id(metadata, author_ids, work_ids):
     if len(results) > 10:
         results = results[:10]
 
-    print(_list_choices(results, author_ids, work_ids))
+    print(_list_book_choices(results, author_ids, work_ids))
     response = _read_choice(len(results))
 
     if response in 'sqQ':
@@ -98,21 +114,47 @@ def lookup_work_id(metadata, author_ids, work_ids):
     return results[int(response)-1]
 
 
-def lookup_author(name, grid=None):
-    results = reading.wikidata.search(name)
+# associates an AuthorId with a Wikidata QID
+def lookup_author(author_id, author):
+    (width,_) = shutil.get_terminal_size()
+    print(Template('''
+\033[1mSearching for '{{author}}'\033[0m
+{{titles|join(', ')|truncate(width)}}\033[0m
+'''.lstrip()).render(author=author.Author, titles=author.Title, width=width))
+
+    results = wd_search(author.Author)
     if not results:
         print("Unable to find '{}' through wikidata search".format(name))
         # TODO search harder
         return
 
-    print(_list_choices(results))
+    print(_list_author_choices(results))
     response = _read_choice(len(results))
+
+    # FIXME: check the author data looks reasonable; allow editing otherwise
 
     if response in 'sqQ':
         return response
     else:
         #reading.wikidata.get_entity(qid)
         return results[int(response)-1]['QID']
+
+
+################################################################################
+
+# associate Wikidata QIDs with AuthorIds
+def find_authors():
+    df = Collection().df
+    authors = pd.DataFrame()
+
+    # FIXME need to filter out authors who have already been done
+    g = df.groupby('AuthorId').aggregate({
+        'Author': 'first',
+        'Title': lambda x: list(x),
+    })
+
+    for (author_id, author) in g.iterrows():
+        choice = lookup_author(author_id, author)
 
 
 ################################################################################
