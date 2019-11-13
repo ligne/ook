@@ -178,6 +178,14 @@ class Collection():
                             a.append((b, value))
                         df.update(pd.DataFrame(a, columns=['BookId', col]).set_index(['BookId']))
 
+        # apply fixes. FIXME
+        if fixes:
+            with open('data/fixes1.yml') as fh:
+                d = pd.DataFrame(yaml.load(fh)).set_index(['BookId'])
+                for column in ['Read', 'Started']:
+                    d[column] = pd.to_datetime(d[column])
+                df.update(d)
+
         self.df = df
 
 
