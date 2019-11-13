@@ -12,6 +12,13 @@ from .goodreads import search_title, fetch_book
 from .collection import _ebook_parse_title
 
 
+class SaveExit(Exception):
+    pass
+
+class FullExit(Exception):
+    pass
+
+
 # formats a list of book search results
 def _list_book_choices(results, author_ids, work_ids):
     (width,_) = shutil.get_terminal_size()
@@ -63,7 +70,6 @@ def _read_choice(n):
 
     selections = n == 1 and '1' or '1-{}'.format(n)
 
-    opts = entries + others
     prompt = '\033[94m[{},?]?\033[0m '.format(','.join([selections] + others))
 
     help_msg = '\033[91m' +  '''
@@ -78,15 +84,21 @@ Q - exit without saving
     try:
         while True:
             c = input(prompt) or '1'
-            if c in opts:
+            if c == 'q':
+                raise SaveExit
+            elif c == 'Q':
+                raise FullExit
+            elif c == 's':
+                return
+            elif c in entries:
                 break
             print(help_msg)
-    except EOFError:
-        c = 'q'
-        print()
+#    except EOFError:
+#        print()
+#        raise SaveExit
     except KeyboardInterrupt:
-        c = 'Q'
         print()
+        raise FullExit
 
     return c
 
@@ -100,7 +112,7 @@ def lookup_work_id(metadata, author_ids, work_ids):
         # halp!
         print("No books found with the title '{}'".format(title))
         print()
-        return 's'
+        return
 
     # page these?
     if len(results) > 10:
@@ -109,8 +121,8 @@ def lookup_work_id(metadata, author_ids, work_ids):
     print(_list_book_choices(results, author_ids, work_ids))
     response = _read_choice(len(results))
 
-    if response in 'sqQ':
-        return response
+    if not response:
+        return
     return results[int(response)-1]
 
 
@@ -131,13 +143,13 @@ def lookup_author(author_id, author):
     print(_list_author_choices(results))
     response = _read_choice(len(results))
 
-    # FIXME: check the author data looks reasonable; allow editing otherwise
+    if not response:
+        return
 
-    if response in 'sqQ':
-        return response
-    else:
-        #reading.wikidata.get_entity(qid)
-        return results[int(response)-1]['QID']
+    # FIXME: check the author data looks reasonable; allow editing otherwise
+    qid = results[int(response)-1]['QID']
+
+    return qid
 
 
 ################################################################################

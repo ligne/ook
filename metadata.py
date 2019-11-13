@@ -10,7 +10,7 @@ import reading.goodreads
 import reading.cache
 from reading.collection import Collection
 from reading.metadata import lookup_work_id
-from reading.metadata import find_authors
+from reading.metadata import find_authors, SaveExit, FullExit
 from reading.compare import compare
 
 
@@ -38,26 +38,30 @@ def find_books():
     for m in df[df.Language == 'en'].fillna('').sample(frac=1).itertuples():
         if not m.Work and not m.Index in works:
             print("\033[1mSearching for '{}' by '{}'\033[0m".format(m.Title, m.Author))
-            resp = lookup_work_id(m, author_ids, work_ids)
-            if resp == 's':
-                # on to the next one
-                continue
-            elif resp == 'q':
+
+            try:
+                resp = lookup_work_id(m, author_ids, work_ids)
+            except (SaveExit):
                 # save and exit
+                print('Saving and exiting')
                 break
-            elif resp == 'Q':
+            except (FullExit):
                 # no save
+                print('Exiting')
                 sys.exit()
-            else:
-                author_ids.add(resp['AuthorId'])
-                work_ids.add(resp['Work'])
 
-                works[m.Index] = {k:v for k,v in resp.items() if k in [
-                    'BookId',
-                    'Work',
-                ]}
+            if not resp:
+                continue
 
-                works[m.Index].update(reading.goodreads.fetch_book(resp['BookId']))
+            author_ids.add(resp['AuthorId'])
+            work_ids.add(resp['Work'])
+
+            works[m.Index] = {k:v for k,v in resp.items() if k in [
+                'BookId',
+                'Work',
+            ]}
+
+            works[m.Index].update(reading.goodreads.fetch_book(resp['BookId']))
 
     reading.cache.dump_yaml('works', works)
 
