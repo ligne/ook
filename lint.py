@@ -9,11 +9,6 @@ import reading
 from reading.collection import Collection
 
 
-# TODO check there aren't any unwanted entries in fixes.yml
-
-today = datetime.date.today()
-
-
 def print_entries(df, desc, additional=[]):
     if not len(df):
         return
@@ -122,6 +117,8 @@ def check_scheduled_but_already_read(df):
         'Terry Pratchett',
         'Iain Banks',
     ]
+
+    today = datetime.date.today()
 
     # has been scheduled
     scheduled = df.Scheduled.notnull()
