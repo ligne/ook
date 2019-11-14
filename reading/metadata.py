@@ -93,9 +93,10 @@ Q - exit without saving
             elif c in entries:
                 break
             print(help_msg)
-#    except EOFError:
-#        print()
-#        raise SaveExit
+    except EOFError:
+        # Ctrl-D
+        print()
+        raise SaveExit
     except KeyboardInterrupt:
         print()
         raise FullExit
