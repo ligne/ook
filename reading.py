@@ -308,18 +308,18 @@ def nationality(df):
 
 
 # plot reading rate so far.
-def reading_rate(df):
-    pending = df.dropna(subset=['Date Read'])
-    completed = changed_pages(pending, 'read', 'Date Read')
+def reading_rate():
+    df = Collection().df
+    completed = _pages_changed(df, 'read', 'Read')
 
-    current_pages = df[df['Exclusive Shelf'] == 'currently-reading']['Number of Pages'].sum()
+    current_pages = df[df.Shelf == 'currently-reading'].Pages.sum()
 
     reading = completed.copy()
-    reading.ix[tomorrow] = current_pages
+    reading.loc[tomorrow] = current_pages
 
     p = pd.DataFrame({
         'Completed': completed.expanding().mean(),
-        'Reading': reading.expanding().mean().ix[-2:],
+        'Reading': reading.expanding().mean().iloc[-2:],
     }, index=reading.index)
 
     p.plot(title='Pages read per day')
@@ -503,7 +503,7 @@ if __name__ == "__main__":
     backlog()
     increase()
     new_authors()
-    reading_rate(df)
+    reading_rate()
     rating_scatter()
 
 # vim: ts=4 : sw=4 : et
