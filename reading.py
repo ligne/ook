@@ -359,11 +359,13 @@ def doy():
     ).reindex(range(1,367), fill_value=0).cumsum().plot()
 
     plt.axvline(today.dayofyear, color='k', alpha=0.5)
-    plt.axhline((12000/365*today.dayofyear), color='k', alpha=0.5)
+
+#    plt.grid(True)
+    for m in np.cumsum([0,31,28,31,30,31,30,31,31,30,31,30,31])[:12]:
+        plt.plot([m, 366], [0, 12000 * (1 - m / 366)], color='k', alpha=.2)
 
     # prettify and save
     name = 'doy'
-    plt.grid(True)
     # the legend doesn't help
     plt.legend().set_visible(False)
     plt.title('Progress')
