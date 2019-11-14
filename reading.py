@@ -344,14 +344,14 @@ def rate_area():
     plt.close()
 
 
-def doy(df):
-#    df = Collection(shelves=['read']).df
+def doy():
+    df = Collection(shelves=['read']).df
 
-    df['Year'] = df['Date Read'].dt.year
-    df['Day of Year'] = df['Date Read'].dt.dayofyear
+    df['Year'] = df.Read.dt.year
+    df['Day of Year'] = df.Read.dt.dayofyear
 
     df.pivot_table(
-        values='Number of Pages',
+        values='Pages',
         index='Day of Year',
         columns='Year',
         aggfunc=np.sum,
@@ -480,7 +480,7 @@ def rating_scatter():
 if __name__ == "__main__":
     df = reading.get_books()
 
-    doy(df)
+    doy()
     nationality(df)
     gender(df)
     language()
