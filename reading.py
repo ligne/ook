@@ -469,7 +469,7 @@ def scheduled(df):
 def _make_rating_scatterplot(data, name, **args):
     import seaborn as sns
 
-    g = sns.JointGrid(x="My Rating", y="Average Rating", data=data)
+    g = sns.JointGrid(x="Rating", y="AvgRating", data=data)
     g = g.plot_joint(sns.regplot, **args)
     g = g.plot_marginals(sns.distplot, kde=False, bins=np.arange(1, 6, 0.05))
 
@@ -483,17 +483,11 @@ def _make_rating_scatterplot(data, name, **args):
     plt.close()
 
 
-def rating_scatter(df):
-    # select only books i've read where all of these columns are set
-    scoring = df[df['Exclusive Shelf'] == 'read']  \
-                .dropna(subset=['My Rating'])       \
-                .dropna(subset=['Average Rating'])
+def rating_scatter():
+    df = Collection(shelves=['read']).df
 
-    scoring['year'] = scoring['Date Read'].dt.year
-    scoring = scoring[(scoring['year'].isnull()) | (scoring['year'] > 2014)]
-
-    _make_rating_scatterplot(scoring, 'scatter_2.png', x_jitter=.1)
-    _make_rating_scatterplot(scoring, 'scatter.png',   x_estimator=np.mean)
+    _make_rating_scatterplot(df, 'scatter_2.png', x_jitter=.1)
+    _make_rating_scatterplot(df, 'scatter.png',   x_estimator=np.mean)
 
 
 ################################################################################
@@ -514,6 +508,6 @@ if __name__ == "__main__":
     increase()
     new_authors()
     reading_rate(df)
-    rating_scatter(df)
+    rating_scatter()
 
 # vim: ts=4 : sw=4 : et
