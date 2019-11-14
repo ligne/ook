@@ -89,30 +89,7 @@ def get_gr_books(filename=GR_HISTORY, no_fixes=False, fix_names=True):
         'Year Published'
     ], axis=1)
 
-
     return df.dropna(axis='columns', how='all')
-
-
-### filtering ##################################################################
-
-# returns books on all of the shelves
-def on_shelves(df, shelves=[], others=[]):
-    if shelves:
-        df = df[df['Exclusive Shelf'].isin(shelves)]
-    for shelf in others:
-        df = df[df['Bookshelves'].str.contains(r'\b{}\b'.format(shelf))]
-
-    return df
-
-
-# books added since $date
-def added_since(df, date):
-    return df[df['Date Added'] >= str(date)]
-
-
-# books finished since $date
-def read_since(df, date):
-    return df[df['Date Read'] >= str(date)]
 
 
 # vim: ts=4 : sw=4 : et
