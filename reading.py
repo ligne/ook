@@ -56,11 +56,6 @@ def _pages_read(df):
     return _pages_changed(df, 'read', 'Read').cumsum()
 
 
-# daily reading rate right now.
-def current_reading_rate(df):
-    return changed_pages(df, 'read', 'Date Read').mean()
-
-
 def save_image(df, name, start=None):
     df = df.loc[start:]
 
@@ -407,9 +402,10 @@ def scheduled_years(df):
 
 
 # plot reading schedule against time left, with warnings.
-def scheduled(df):
-    rate = current_reading_rate(df)
+def scheduled():
     df = Collection().df
+
+    rate = _pages_changed(df, 'read', 'Read').mean()
 
     df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
     df = df.dropna(subset=['Scheduled'])
@@ -503,7 +499,7 @@ if __name__ == "__main__":
     rate_area()
     oldness()
     median_date()
-    scheduled(df)
+    scheduled()
     backlog()
     increase()
     new_authors()
