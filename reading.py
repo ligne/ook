@@ -93,7 +93,9 @@ def current_reading_rate():
     return changed_pages(df, 'read', 'Date Read').mean()
 
 
-def save_image(df, name):
+def save_image(df, name, start=None):
+    df = df.loc[start:]
+
     df.plot()
 
     # force the bottom of the graph to zero
