@@ -273,7 +273,7 @@ def category():
 
 # plot total/new nationalities over the preceding year
 def nationality(df):
-    authors = reading.read_since(df, '2013').sort_values(['Date Read'])
+    authors = df[df['Date Read'] >= '2013'].sort_values(['Date Read'])
     authors = authors.dropna(subset=['Nationality'])
 
     # how many new nationalities a year

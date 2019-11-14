@@ -178,7 +178,7 @@ if __name__ == "__main__":
     )
 
     # only books i've yet to read
-    df = reading.on_shelves(df, default_shelves)
+    df = df[df['Exclusive Shelf'].isin(default_shelves)]
 
     # filter
     if args.old_authors:
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         df = new_nationalities(df)
 
     if args.borrowed:
-        df = reading.on_shelves(df, others=['borrowed'])
+        df = df[df['Bookshelves'].str.contains(r'\b{}\b'.format('borrowed'))]
 
     # mode
     if args.scheduled:

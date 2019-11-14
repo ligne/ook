@@ -191,7 +191,7 @@ def lint_binding():
 
 
 def check_read_author_metadata(df):
-    df = reading.read_since(df, '2016')
+    df = df[df['Date Read'] >= '2016']
     df = df[df[['Nationality', 'Gender']].isnull().any(axis='columns')]
     print_entries(df, 'Missing author metadata', ['Nationality', 'Gender'])
 
