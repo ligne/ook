@@ -15,8 +15,6 @@ import reading.ebooks
 from reading.collection import Collection
 
 
-EBOOK_WORDCOUNTS = 'data/ebook_wordcounts.csv'
-
 # the cutoff year before which books are considered "old".
 thresh = 1940
 
@@ -33,37 +31,23 @@ df = reading.get_books()
 # from shelf, in direction = date added/read.
 def changed_pages(df, shelf, direction):
     return df[df['Exclusive Shelf'] == shelf] \
-                  .set_index([direction])  \
-                   ['Number of Pages']  \
-                  .resample('D')  \
-                  .sum()  \
-                  .reindex(index=ix)  \
-                  .fillna(0)
-
-
-# number of pages added by day
-def added_pages(shelf):
-    pending = df
-    # ignore read books where no end date is set
-    if shelf == 'read':
-        pending = df.dropna(subset=['Date Read'])
-    return changed_pages(pending, shelf, 'Date Added').cumsum()
-
-
-# number of pages removed by day
-def completed_pages(shelf):
-    return changed_pages(df, shelf, 'Date Read').cumsum()
+        .set_index([direction])  \
+         ['Number of Pages']  \
+        .resample('D')  \
+        .sum()  \
+        .reindex(index=ix)  \
+        .fillna(0)
 
 
 # from shelf, in direction = date added/read.
 def _pages_changed(df, shelf, direction):
     return df[df.Shelf == shelf] \
-                  .set_index([direction])  \
-                  .Pages  \
-                  .resample('D')  \
-                  .sum()  \
-                  .reindex(index=ix)  \
-                  .fillna(0)
+        .set_index([direction])  \
+        .Pages  \
+        .resample('D')  \
+        .sum()  \
+        .reindex(index=ix)  \
+        .fillna(0)
 
 
 # number of pages added by day
@@ -74,39 +58,6 @@ def _pages_added(df, shelf):
 # number of pages read by day
 def _pages_read(df):
     return _pages_changed(df, 'read', 'Read').cumsum()
-
-
-# total number of pages of ebooks by day
-def ebook_pages():
-    # get current value from actual files
-    current_words = get_ebook_words()
-
-    # read local data cache, and update if necessary
-    df = pd.read_csv(EBOOK_WORDCOUNTS, index_col=0, header=None, parse_dates=True, squeeze=True)
-    if df.ix[-1] != current_words:
-        df.ix[pd.to_datetime('today')] = current_words
-        df.to_csv(EBOOK_WORDCOUNTS)
-
-    # fill out the missing values
-    s = df.reindex(index=ix).fillna(method='ffill')
-
-    # return, converted to pages
-    return s / 390
-
-
-# returns the current wordcount for all books
-def get_ebook_words():
-    return int(reading.get_books(shelves=['kindle']).Words.sum())
-
-
-# in pages per day...
-def daily_reading_rate():
-    return changed_pages(df, 'read', 'Date Read').expanding().mean()
-
-
-# ...or pages per year
-def annual_reading_rate():
-    return daily_reading_rate() * 365.2425
 
 
 # daily reading rate right now.
