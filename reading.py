@@ -55,6 +55,27 @@ def completed_pages(shelf):
     return changed_pages(df, shelf, 'Date Read').cumsum()
 
 
+# from shelf, in direction = date added/read.
+def _pages_changed(df, shelf, direction):
+    return df[df.Shelf == shelf] \
+                  .set_index([direction])  \
+                  .Pages  \
+                  .resample('D')  \
+                  .sum()  \
+                  .reindex(index=ix)  \
+                  .fillna(0)
+
+
+# number of pages added by day
+def _pages_added(df, shelf):
+    return _pages_changed(df, shelf, 'Added').cumsum()
+
+
+# number of pages read by day
+def _pages_read(df):
+    return _pages_changed(df, 'read', 'Read').cumsum()
+
+
 # total number of pages of ebooks by day
 def ebook_pages():
     # get current value from actual files
@@ -112,79 +133,64 @@ def save_image(df, name, start=None):
 # draw graphs of my backlog over time, both as a number of pages and scaled by
 # reading rate.
 def backlog():
+    df = Collection().df
+
+    # FIXME _pages_added() can't see books added before 2016 without this
+    df.loc[df.Added <'2016','Added'] = pd.Timestamp('2016-01-01')
+
     p = pd.DataFrame({
-        'elsewhere': added_pages('elsewhere'),
-        'ebooks':    ebook_pages(),
-        'library':   added_pages('library'),
-        'pending':   added_pages('currently-reading') + added_pages('pending'),
-        'read':      added_pages('read') - completed_pages('read'),
+        'elsewhere': _pages_added(df, 'elsewhere'),
+        'ebooks':    _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
+        'library':   _pages_added(df, 'library'),
+        'pending':   _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
+        'read':      _pages_added(df, 'read') - _pages_read(df),
     }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
+
+    p = p.cumsum(axis=1)
 
     # truncate to the interesting bit (after i'd added my books and those from
     # home)
-    p = p.ix['2016-05-13':].cumsum(axis=1)
-
-    rate = annual_reading_rate().reindex(p.index)
+    start = '2016-05-13'
 
     # number of pages
-    save_image(p, 'pages')
+    save_image(p, 'pages', start=start)
 
     # scale by the reading rate at that time
-    p = p.divide(rate, axis=0)
-    save_image(p, 'backlog')
+    rate = _pages_changed(df, 'read', 'Read').expanding().mean() * 365.2425
+    save_image(p.divide(rate, axis=0), 'backlog', start=start)
 
 
 def increase():
+    df = Collection().df
+
     p = pd.DataFrame({
-        'elsewhere': added_pages('elsewhere'),
-        'ebooks': added_pages('ebooks'),
-        'library': added_pages('library'),
-        'pending': added_pages('currently-reading') + added_pages('pending'),
-        'read': -completed_pages('read'),
+        'elsewhere': _pages_added(df, 'elsewhere'),
+        'ebooks':    _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
+        'library':   _pages_added(df, 'library'),
+        'pending':   _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
+        'read':     -_pages_read(df),
     }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
 
     # work out how much to shift each column down by
     shift = p.where(p < 0, 0).sum(axis=1)
     # stack the columns, with any negatives set to zero
     heights = p.where(p > 0, 0).cumsum(axis=1)
-
     # shift everything down
     p = heights.add(shift, axis='index')
 
-    p = (p - p.shift(365)).ix['2018':]
-
-    p.plot()
-
-    plt.axhline(0, color='k', alpha=0.5)
-
-    # prettify and save
-    name = 'increase'
-    plt.grid(True)
-    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
-    plt.close()
+    save_image((p - p.shift(365)), 'increase', start='2018')
 
 
 # number of new authors a year
-def new_authors(df):
-    authors = df.dropna(subset=['Date Read']).sort_values(['Date Read'])
+def new_authors():
+    authors = Collection(shelves=['read']).df#.dropna(subset=['Read'])
+    first = authors.set_index('Read').sort_index().Author.drop_duplicates()
+    first = first.resample('D').count().reindex(ix).fillna(0)
+    first.rolling(window=365, min_periods=0).sum().plot()
 
-    next_year = today + pd.Timedelta('365 days')
-
-    # how many new authors a year
-    first = authors.drop_duplicates(['Author'])  \
-                 .set_index('Date Read')  \
-                 ['Author']  \
-                 .resample('D')  \
-                 .count()  \
-                 .reindex(pd.DatetimeIndex(start='2015-01-01', end=next_year, freq='D'))  \
-                 .fillna(0)
-
-    first.rolling(window=365).sum().ffill().ix['2016':].plot()
-
-    # force the bottom of the graph to zero and make sure the top doesn't clip.
+    # force the bottom of the graph to zero
     ylim = plt.ylim()
-    plt.ylim([min(ylim[0], 0), ylim[1] + 1])
+    plt.ylim([min(ylim[0], 0), ylim[1]])
 
     plt.axhline(12, color='k', alpha=0.5)
 
@@ -197,12 +203,10 @@ def new_authors(df):
     plt.close()
 
 
-def median_date(df):
-    read = df.dropna(subset=['Date Read', 'Original Publication Year'])
+def median_date():
+    read = Collection(shelves=['read']).df.dropna(subset=['Published'])
 
-    read = read.set_index('Date Read')  \
-                ['Original Publication Year']  \
-                .resample('D').mean()
+    read = read.set_index('Read').Published.resample('D').mean()
 
     read.rolling(window=365, min_periods=0).median()  \
         .rolling(window=30).mean()  \
@@ -222,17 +226,17 @@ def median_date(df):
 
 
 # ratio of old/new books
-def oldness(df):
-    df = df.dropna(subset=['Date Read', 'Original Publication Year'])
+def oldness():
+    df = Collection(shelves=['read']).df.dropna(subset=['Published'])
 
     df = pd.DataFrame({
-        'thresh': df['Original Publication Year'].apply(lambda x: (x < thresh and 1 or 0)),
-        'total':  df['Original Publication Year'].apply(lambda x: 1),
-        'Date Read': df['Date Read'],
-    }, index=df.index).set_index('Date Read')    \
-                      .resample('D')  \
-                      .sum()  \
-                      .reindex(ix)               \
+        'thresh': df.Published.apply(lambda x: (x < thresh and 1 or 0)),
+        'total':  df.Published.apply(lambda x: 1),
+        'Read': df.Read,
+    }, index=df.index).set_index('Read')  \
+                      .resample('D')      \
+                      .sum()              \
+                      .reindex(ix)        \
                       .fillna(0)
 
     df = df.rolling(window=365, min_periods=0).sum()
@@ -554,12 +558,12 @@ if __name__ == "__main__":
     language()
     category()
     rate_area()
-    oldness(df)
-    median_date(df)
+    oldness()
+    median_date()
     scheduled()
     backlog()
     increase()
-    new_authors(df)
+    new_authors()
     reading_rate()
     rating_scatter()
 
