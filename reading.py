@@ -25,17 +25,6 @@ tomorrow = today + pd.Timedelta('1 day')
 ################################################################################
 
 # from shelf, in direction = date added/read.
-def changed_pages(df, shelf, direction):
-    return df[df['Exclusive Shelf'] == shelf] \
-        .set_index([direction])  \
-         ['Number of Pages']  \
-        .resample('D')  \
-        .sum()  \
-        .reindex(index=ix)  \
-        .fillna(0)
-
-
-# from shelf, in direction = date added/read.
 def _pages_changed(df, shelf, direction):
     return df[df.Shelf == shelf] \
         .set_index([direction])  \
