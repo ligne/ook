@@ -157,7 +157,7 @@ def median_date():
 
     read.rolling(window=365, min_periods=0).median()  \
         .rolling(window=30).mean()  \
-        .reindex(ix).ffill().ix['2016':].plot()
+        .reindex(ix).ffill().loc['2016':].plot()
 
     # set the top of the graph to the current year
     plt.ylim([plt.ylim()[0], today.year])
