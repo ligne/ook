@@ -10,7 +10,6 @@ import pandas as pd
 import numpy as np
 
 import reading
-import reading.ebooks
 
 from reading.collection import Collection
 
@@ -21,9 +20,6 @@ thresh = 1940
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
 today = pd.to_datetime('today')
 tomorrow = today + pd.Timedelta('1 day')
-
-
-df = reading.get_books()
 
 
 ################################################################################
@@ -61,7 +57,7 @@ def _pages_read(df):
 
 
 # daily reading rate right now.
-def current_reading_rate():
+def current_reading_rate(df):
     return changed_pages(df, 'read', 'Date Read').mean()
 
 
@@ -317,7 +313,7 @@ def nationality(df):
 
 
 # plot reading rate so far.
-def reading_rate():
+def reading_rate(df):
     pending = df.dropna(subset=['Date Read'])
     completed = changed_pages(pending, 'read', 'Date Read')
 
@@ -411,8 +407,8 @@ def scheduled_years(df):
 
 
 # plot reading schedule against time left, with warnings.
-def scheduled():
-    rate = current_reading_rate()
+def scheduled(df):
+    rate = current_reading_rate(df)
     df = Collection().df
 
     df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
@@ -487,7 +483,7 @@ def _make_rating_scatterplot(data, name, **args):
     plt.close()
 
 
-def rating_scatter():
+def rating_scatter(df):
     # select only books i've read where all of these columns are set
     scoring = df[df['Exclusive Shelf'] == 'read']  \
                 .dropna(subset=['My Rating'])       \
@@ -503,6 +499,8 @@ def rating_scatter():
 ################################################################################
 
 if __name__ == "__main__":
+    df = reading.get_books()
+
     doy(df)
     nationality(df)
     gender(df)
@@ -511,11 +509,11 @@ if __name__ == "__main__":
     rate_area()
     oldness()
     median_date()
-    scheduled()
+    scheduled(df)
     backlog()
     increase()
     new_authors()
-    reading_rate()
-    rating_scatter()
+    reading_rate(df)
+    rating_scatter(df)
 
 # vim: ts=4 : sw=4 : et
