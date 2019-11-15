@@ -65,7 +65,7 @@ def _list_author_choices(results):
 
 # prompts the user for a selection or other decision.
 def _read_choice(n):
-    entries = [str(x) for x in range(1, n+1)]
+    entries = [str(x + 1) for x in range(n)]
     others = list('sqQ')
 
     selections = n == 1 and '1' or '1-{}'.format(n)
