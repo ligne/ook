@@ -4,6 +4,11 @@ import sys
 import requests
 
 
+# uppercases the first character of $s *only*
+def _uc_first(s):
+    return s[:1].upper() + s[1:]
+
+
 # use the basic wikidata search.
 def wd_search(term):
     r = requests.get('https://www.wikidata.org/w/api.php', params={
@@ -16,7 +21,7 @@ def wd_search(term):
     return [{
         'Label': res['label'],
         'QID': res['id'],
-        'Description': res.get('description', ''),
+        'Description': _uc_first(res.get('description', '')),
     } for res in r.json()['search']]
 
 
