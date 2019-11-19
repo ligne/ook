@@ -57,7 +57,7 @@ def _list_author_choices(results):
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
  {%- if True %} {{entry.Label}}{% endif %}
     {%- if entry.Description %}
-    {{entry.Description[0]|upper}}{{entry.Description[1:]}}
+    {{entry.Description}}
     {%- endif %}
 {% endfor %}
 ''').render(results=results, width=width)
