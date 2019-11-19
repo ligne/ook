@@ -396,7 +396,7 @@ def scheduled_years(df):
 def scheduled():
     df = Collection().df
 
-    rate = _pages_changed(df, 'read', 'Read').mean()
+    rate = _pages_changed(df, 'read', 'Read').rolling(365).mean().iloc[-1]
 
     df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
     df = df.dropna(subset=['Scheduled'])
