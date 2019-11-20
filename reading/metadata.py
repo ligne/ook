@@ -7,6 +7,7 @@ import pandas as pd
 
 from .collection import Collection
 from .wikidata import wd_search
+from .wikidata import Entity
 from .goodreads import search_title, fetch_book
 
 from .collection import _ebook_parse_title
@@ -147,10 +148,22 @@ def lookup_author(author_id, author):
     if not response:
         return
 
-    # FIXME: check the author data looks reasonable; allow editing otherwise
-    qid = results[int(response)-1]['QID']
+    return results[int(response)-1]
 
-    return qid
+
+# check the author data looks reasonable
+# FIXME Do This Properly, and allow editing
+def confirm_author(author):
+    entity = Entity(author['QID'])
+
+    author['Gender']      = entity.gender()
+    author['Nationality'] = entity.nationality()
+
+    print('\n\033[32m{Label}: {Gender}, {Nationality}\033[0m'.format(**author))
+    c = input('Is this correct? [Y/n] ')
+    print()
+
+    return None if c == 'n' else author
 
 
 ################################################################################
@@ -171,6 +184,8 @@ def find_authors():
             resp = lookup_author(author_id, author)
             if not resp:
                 continue
+
+            confirm_author(resp)
         except (SaveExit):
             break
         except (FullExit):
