@@ -2,6 +2,7 @@
 
 import sys
 import requests
+import json
 
 
 # uppercases the first character of $s *only*
@@ -42,10 +43,58 @@ def search_harder(term):
 
 ###############################################################################
 
-# fetches an entity by its QID
-def get_entity(qid):
-    r = requests.get('https://www.wikidata.org/wiki/Special:EntityData/{}.json'.format(qid))
-    return r.json()['entities'][qid]
+# basic operations on an entity.
+class Entity():
+
+    # fetches an entity by its QID
+    def __init__(self, qid):
+        fname = 'data/cache/wikidata/{}.json'.format(qid)
+        try:
+            with open(fname) as fh:
+                j = json.load(fh)
+        except FileNotFoundError:
+            url = 'https://www.wikidata.org/wiki/Special:EntityData/{}.json'.format(qid)
+            r = requests.get(url)
+            with open(fname, 'wb') as fh:
+                fh.write(r.content)
+            j = r.json()
+        self.entity = j['entities'][qid]
+
+
+    def gender(self):
+        return self.property('P21').label()
+
+
+    def nationality(self):
+        e = self.property('P27')
+
+        # use the name by default
+        nat = e.label()
+
+        if e.has_property('P297'):
+            nat = e.property('P297').lower()
+        # TODO: try a bit harder
+
+        return nat
+
+
+    def has_property(self, prop):
+        return prop in self.entity['claims']
+
+
+    def property(self, prop):
+        p = self.entity['claims'][prop][0]['mainsnak']['datavalue']
+
+        if p['type'] == 'string':
+            return p['value'].lower()
+        elif p['type'] == 'wikibase-entityid':
+            return Entity(p['value']['id'])
+
+        return p['value']
+
+
+    def label(self):
+        return self.entity['labels']['en']['value']
 
 
 ################################################################################
