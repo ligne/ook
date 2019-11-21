@@ -171,7 +171,7 @@ def confirm_author(author):
 # associate Wikidata QIDs with AuthorIds
 def find_authors():
     try:
-        authors = pd.read_csv('data/authors.csv')
+        authors = pd.read_csv('data/authors.csv', index_col=0)
     except (FileNotFoundError):
         authors = pd.DataFrame(columns=[
             'QID',
@@ -181,13 +181,13 @@ def find_authors():
             'Description'
         ])
 
-    # FIXME need to filter out authors who have already been done
-    g = Collection().df.groupby('AuthorId').aggregate({
+    df = Collection().df
+    df = df[~df.AuthorId.isin(authors.index)].groupby('AuthorId').aggregate({
         'Author': 'first',
         'Title': lambda x: list(x),
     })
 
-    for (author_id, author) in g.iterrows():
+    for (author_id, author) in df.iterrows():
         try:
             resp = lookup_author(author_id, author)
             if not resp:
