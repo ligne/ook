@@ -9,15 +9,8 @@ from collections import ChainMap
 import reading.goodreads
 import reading.cache
 from reading.collection import Collection
-from reading.metadata import find_authors, find_books
+from reading.metadata import find
 from reading.compare import compare
-
-
-def find(args):
-    if 'books' in args:
-        find_books()
-    if 'authors' in args:
-        find_authors()
 
 
 # fetch all the information about the books
@@ -76,12 +69,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--ignore-changes', action='store_true')
 
-    parser.add_argument('--find', nargs='?', default='books')
+    parser.add_argument('--find', action='store_true')
     parser.add_argument('--update', action='store_true')
     args = parser.parse_args()
 
     if args.find:
-        find(args.find)
+        find()
     elif args.update:
         update()
     else:

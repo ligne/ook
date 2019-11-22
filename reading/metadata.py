@@ -170,6 +170,14 @@ def confirm_author(author):
 
 ################################################################################
 
+
+def find():
+    # FIXME load books.csv and authors.csv
+    # handle exit/saving
+    find_books()
+    find_authors()
+
+
 # associate WorkIds with book IDs
 def find_books():
     books_csv = 'data/books.csv'
