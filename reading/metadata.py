@@ -201,8 +201,16 @@ def find():
     ])
 
     # FIXME handle exit/saving
-    find_books()
-    find_authors()
+    try:
+        find_books(books)
+        find_authors(authors)
+    except (SaveExit):
+        pass
+    except (FullExit):
+        return
+
+    books.to_csv(books_csv,     float_format='%.20g')
+    authors.to_csv(authors_csv, float_format='%.20g')
 
 
 # associate WorkIds with book IDs
@@ -216,23 +224,18 @@ def find_books(books):
     df = df[df.Language == 'en']  # search doesn't work well with non-english books
 
     for (book_id, book) in df.sample(frac=1).iterrows():
-        try:
-            resp = lookup_work_id(book, author_ids, work_ids)
-            if not resp:
-                continue
+        resp = lookup_work_id(book, author_ids, work_ids)
+        if not resp:
+            continue
 
-            author_ids.add(resp['AuthorId'])
-            work_ids.add(resp['Work'])
+        author_ids.add(resp['AuthorId'])
+        work_ids.add(resp['Work'])
 
-            books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
-            books.loc[book_id,'Work']   = resp['Work']
-            books.loc[book_id,'BookId'] = resp['BookId']
-        except (SaveExit):
-            break
-        except (FullExit):
-            sys.exit()
+        books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
+        books.loc[book_id,'Work']   = resp['Work']
+        books.loc[book_id,'BookId'] = resp['BookId']
 
-    books.to_csv(books_csv, float_format='%.20g')
+    return
 
 
 # associate Wikidata QIDs with AuthorIds
@@ -244,23 +247,18 @@ def find_authors(authors):
     })
 
     for (author_id, author) in df.iterrows():
-        try:
-            resp = lookup_author(author_id, author)
-            if not resp:
-                continue
+        resp = lookup_author(author_id, author)
+        if not resp:
+            continue
 
-            resp = confirm_author(resp)
-            if not resp:
-                continue
+        resp = confirm_author(resp)
+        if not resp:
+            continue
 
-            resp['Author'] = resp.pop('Label')  # FIXME
-            authors.loc[int(author_id)] = pd.Series(resp)
-        except (SaveExit):
-            break
-        except (FullExit):
-            sys.exit()
+        resp['Author'] = resp.pop('Label')  # FIXME
+        authors.loc[int(author_id)] = pd.Series(resp)
 
-    authors.to_csv('data/authors.csv', float_format='%g')
+    return
 
 
 ################################################################################
