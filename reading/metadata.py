@@ -107,8 +107,10 @@ Q - exit without saving
 
 ################################################################################
 
-def lookup_work_id(metadata, author_ids, work_ids):
-    title = _ebook_parse_title(metadata.Title).Title
+def lookup_work_id(book, author_ids, work_ids):
+    print("\033[1mSearching for '{}' by '{}'\033[0m".format(book.Title, book.Author))
+
+    title = _ebook_parse_title(book.Title).Title
     results = sorted(search_title(title), key=lambda x: -x['Ratings'])
     if not results:
         # halp!
@@ -167,6 +169,52 @@ def confirm_author(author):
 
 
 ################################################################################
+
+# associate WorkIds with book IDs
+def find_books():
+    books_csv = 'data/books.csv'
+    try:
+        books = pd.read_csv(books_csv, index_col=0)
+    except (FileNotFoundError):
+        books = pd.DataFrame(columns=[
+            'Author',
+            'AuthorId',
+            'Published',
+            'Title',
+            'Pages',
+            'Category',
+            'Series',
+            'SeriesId',
+            'Entry',
+        ])
+
+    df = Collection().df  # include metadata
+
+    author_ids = set(list(df.AuthorId.dropna().astype(int)))
+    work_ids   = set(list(df.Work.dropna().astype(int)))
+
+    df = df[df.Work.isnull()]
+    df = df[df.Language == 'en']  # search doesn't work well with non-english books
+
+    for (book_id, book) in df.sample(frac=1).iterrows():
+        try:
+            resp = lookup_work_id(book, author_ids, work_ids)
+            if not resp:
+                continue
+
+            author_ids.add(resp['AuthorId'])
+            work_ids.add(resp['Work'])
+
+            books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
+            books.loc[book_id,'Work']   = resp['Work']
+            books.loc[book_id,'BookId'] = resp['BookId']
+        except (SaveExit):
+            break
+        except (FullExit):
+            sys.exit()
+
+    books.to_csv(books_csv, float_format='%.20g')
+
 
 # associate Wikidata QIDs with AuthorIds
 def find_authors():

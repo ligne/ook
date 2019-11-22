@@ -9,8 +9,7 @@ from collections import ChainMap
 import reading.goodreads
 import reading.cache
 from reading.collection import Collection
-from reading.metadata import lookup_work_id
-from reading.metadata import find_authors, SaveExit, FullExit
+from reading.metadata import find_authors, find_books
 from reading.compare import compare
 
 
@@ -19,46 +18,6 @@ def find(args):
         find_books()
     if 'authors' in args:
         find_authors()
-
-
-def find_books():
-    c = Collection()
-    df = c.df
-
-    # FIXME
-    works = reading.cache.load_yaml('works')
-
-    author_ids = set(df[df['AuthorId'].notnull()]['AuthorId'].astype(int).values)
-    author_ids |= set([v['AuthorId'] for v in works.values() if 'AuthorId' in v])
-
-    work_ids = set(df[df.Work.notnull()].Work.astype(int).values)
-    work_ids |= set([v['Work'] for v in works.values()])
-
-    # search doesn't work at all well with non-english books...
-    for m in df[df.Language == 'en'].fillna('').sample(frac=1).itertuples():
-        if not m.Work and not m.Index in works:
-            print("\033[1mSearching for '{}' by '{}'\033[0m".format(m.Title, m.Author))
-
-            try:
-                resp = lookup_work_id(m, author_ids, work_ids)
-                if not resp:
-                    continue
-            except (SaveExit):
-                break
-            except (FullExit):
-                sys.exit()
-
-            author_ids.add(resp['AuthorId'])
-            work_ids.add(resp['Work'])
-
-            works[m.Index] = {k:v for k,v in resp.items() if k in [
-                'BookId',
-                'Work',
-            ]}
-
-            works[m.Index].update(reading.goodreads.fetch_book(resp['BookId']))
-
-    reading.cache.dump_yaml('works', works)
 
 
 # fetch all the information about the books
