@@ -170,32 +170,43 @@ def confirm_author(author):
 
 ################################################################################
 
+def _load_csv(name, columns):
+    try:
+        return pd.read_csv(name, index_col=0)
+    except (FileNotFoundError):
+        return pd.DataFrame(columns=columns)
+
 
 def find():
-    # FIXME load books.csv and authors.csv
-    # handle exit/saving
+    books_csv   = 'data/books.csv'
+    authors_csv = 'data/authors.csv'
+
+    books = _load_csv(books_csv, [
+        'Author',
+        'AuthorId',
+        'Published',
+        'Title',
+        'Pages',
+        'Category',
+        'Series',
+        'SeriesId',
+        'Entry',
+    ])
+    authors = _load_csv(authors_csv, [
+        'QID',
+        'Author',
+        'Gender',
+        'Nationality',
+        'Description'
+    ])
+
+    # FIXME handle exit/saving
     find_books()
     find_authors()
 
 
 # associate WorkIds with book IDs
-def find_books():
-    books_csv = 'data/books.csv'
-    try:
-        books = pd.read_csv(books_csv, index_col=0)
-    except (FileNotFoundError):
-        books = pd.DataFrame(columns=[
-            'Author',
-            'AuthorId',
-            'Published',
-            'Title',
-            'Pages',
-            'Category',
-            'Series',
-            'SeriesId',
-            'Entry',
-        ])
-
+def find_books(books):
     df = Collection().df  # include metadata
 
     author_ids = set(list(df.AuthorId.dropna().astype(int)))
@@ -225,18 +236,7 @@ def find_books():
 
 
 # associate Wikidata QIDs with AuthorIds
-def find_authors():
-    try:
-        authors = pd.read_csv('data/authors.csv', index_col=0)
-    except (FileNotFoundError):
-        authors = pd.DataFrame(columns=[
-            'QID',
-            'Author',
-            'Gender',
-            'Nationality',
-            'Description'
-        ])
-
+def find_authors(authors):
     df = Collection().df
     df = df[~df.AuthorId.isin(authors.index)].groupby('AuthorId').aggregate({
         'Author': 'first',
