@@ -187,6 +187,7 @@ def find():
         'Published',
         'Title',
         'Pages',
+        'Language',
         'Category',
         'Series',
         'SeriesId',
@@ -259,6 +260,37 @@ def find_authors(authors):
         authors.loc[int(author_id)] = pd.Series(resp)
 
     return
+
+
+################################################################################
+
+# regenerates the metadata based on what has been gathered.
+def rebuild():
+    books = Collection(metadata=False).df
+    works = pd.read_csv('data/books.csv', index_col=0)
+
+    prefer_work_cols = ['Work', 'Author', 'Title', 'Series', 'SeriesId', 'Entry', 'Published', 'Pages']
+    prefer_book_cols = ['Language']
+
+    books_mask = pd.concat([
+        books.notnull()[prefer_book_cols],
+        works.isnull()[prefer_work_cols],
+    ], axis=1)
+
+    works_mask = pd.concat([
+        works.notnull()[prefer_work_cols],
+        books.isnull()[prefer_book_cols],
+    ], axis=1)
+
+    metadata = pd.concat([
+        works.where(works_mask),
+        books.where(books_mask),
+    ])
+
+    # filter out no-op changes and empty bits
+    return metadata[books.loc[metadata.index, metadata.columns] != metadata] \
+        .dropna(how='all') \
+        .dropna(axis='columns', how='all')
 
 
 ################################################################################

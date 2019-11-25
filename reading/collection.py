@@ -132,7 +132,7 @@ class Collection():
     def __init__(self, df=None,
                  gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
                  dedup=False, merge=False,
-                 fixes='data/fixes.yml', metadata='data/metadata.yml',
+                 fixes='data/fixes.yml', metadata='data/metadata.csv',
                  shelves=None, categories=None, languages=None, borrowed=None
                 ):
 
@@ -148,8 +148,7 @@ class Collection():
         ])
 
         if metadata:
-            with open(metadata) as fh:
-                df.update(pd.DataFrame(yaml.load(fh)).set_index(['BookId']))
+            df.update(pd.read_csv(metadata, index_col=0))
 
         # apply filters on shelf, language, category.
         if categories:
