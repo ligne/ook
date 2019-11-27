@@ -140,7 +140,8 @@ def lookup_author(author_id, author):
 
     results = wd_search(author.Author)
     if not results:
-        print("Unable to find '{}' through wikidata search".format(name))
+        print("Unable to find '{}' in Wikidata".format(author.Author))
+        print()
         # TODO search harder
         return
 
