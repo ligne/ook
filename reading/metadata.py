@@ -159,14 +159,19 @@ def lookup_author(author_id, author):
 def confirm_author(author):
     entity = Entity(author['QID'])
 
-    author['Gender']      = entity.gender()
-    author['Nationality'] = entity.nationality()
+    try:
+        author['Gender']      = entity.gender()
+        author['Nationality'] = entity.nationality()
+    except:
+        print('\033[91mError fetching data\033[0m')
+        print()
+        return
 
     print('\n\033[32m{Label}: {Gender}, {Nationality}\033[0m'.format(**author))
     c = input('Is this correct? [Y/n] ')
     print()
 
-    return None if c == 'n' else author
+    return None if (c and c != 'y') else author
 
 
 ################################################################################
