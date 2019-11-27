@@ -275,7 +275,7 @@ def rebuild():
     books = Collection(metadata=False).df
     works = pd.read_csv('data/books.csv', index_col=0)
 
-    prefer_work_cols = ['Work', 'Author', 'Title', 'Series', 'SeriesId', 'Entry', 'Published', 'Pages']
+    prefer_work_cols = ['Work', 'Author', 'Title', 'Series', 'SeriesId', 'Entry', 'Published', 'Pages', 'AuthorId']
     prefer_book_cols = ['Language']
 
     books_mask = pd.concat([
