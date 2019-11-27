@@ -9,23 +9,6 @@ import reading
 from reading.collection import Collection
 
 
-def print_entries(df, desc, additional=[]):
-    if not len(df):
-        return
-
-    fmt = "{Author}, '{Title}'"
-    for field in additional:
-        fmt += '\n  {0}:\t{{{0}}}'.format(field)
-
-    print('=== {} ==='.format(desc))
-    print()
-    for ix, row in df.iterrows():
-        print(fmt.format(**row))
-        print()
-
-
-################################################################################
-
 def lint_missing_pagecount():
     c = Collection(fixes=None)
     return {
@@ -112,6 +95,7 @@ def lint_scheduled_misshelved():
 
 
 # scheduled books by authors i've already read this year
+# FIXME rewrite this too
 def check_scheduled_but_already_read(df):
     ignore_authors = [
         'Terry Pratchett',
@@ -136,21 +120,30 @@ def check_scheduled_but_already_read(df):
     print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
 
 
-# duplicate books
-def check_duplicate_books(df):
-    # FIXME may still want this to remove any stray descriptions?
-#     df['Clean Title'] = df['Title'].str.replace(r' \(.+?\)$', '')
+def lint_duplicates():
+    df = Collection(merge=True).df
 
-    # duplicates here are expected.
-    df = df[~(df['Exclusive Shelf'].isin(['ebooks', 'currently-reading']))]
+    # FIXME move this into the Collection and make it non-manky
+    df = df.groupby('Work').filter(lambda x: len(x) > 1)
+    df = df.groupby('Work').aggregate({
+        'Author': 'first',
+        'Title': 'first',
+        'Work': 'first',
+        'Shelf': lambda x: ', '.join(list(x)),
+    })
+    df = df.groupby('Work').filter(lambda x: x.Shelf != 'ebooks, kindle')
 
-    # ignore books that i've got scheduled
-    # FIXME only if one is on Kindle?
-    df = df[df.Scheduled.isnull()]
+    return {
+        'title': 'Duplicate books',
+        'df': df,
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+    {{entry.Shelf}}
+{%- endfor %}
 
-    # FIXME case-insensitive?
-    df = df[df.duplicated(subset=['Title', 'Author', 'Volume'])]
-    print_entries(df, 'Duplicate books')
+""",
+    }
 
 
 # books in dubious formats
@@ -190,10 +183,19 @@ def lint_binding():
     }
 
 
-def check_read_author_metadata(df):
-    df = df[df['Date Read'] >= '2016']
-    df = df[df[['Nationality', 'Gender']].isnull().any(axis='columns')]
-    print_entries(df, 'Missing author metadata', ['Nationality', 'Gender'])
+def lint_author_metadata():
+    df = Collection(shelves=['read']).df  # FIXME
+
+    return {
+        'title': 'Missing author metadata',
+        'df': df[df[['Nationality', 'Gender']].isnull().any(axis='columns')],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 # books on elsewhere shelf that are not marked as borrowed.
@@ -262,21 +264,6 @@ def lint_fixes():
 ################################################################################
 
 # run them all
-n = __import__(__name__)
-for f in [x for x in dir(n) if x.startswith('check_')]:
-    func = getattr(n, f)
-    # FIXME push this down into the funtions
-    doc = func.__doc__
-    if doc and doc == 'no_fixes':
-        df = reading.get_books(no_fixes=True)
-    else:
-        df = reading.get_books()
-
-    func(df)
-
-print('='*80)
-print()
-
 for f in [x for x in dir(n) if x.startswith('lint_')]:
     report = getattr(n, f)()
 
