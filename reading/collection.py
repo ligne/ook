@@ -54,10 +54,6 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
         'Added',
     ])
 
-    # fix author from metadata?
-    # split title, subtitle, volume
-    # fix up title (and subtitle?)
-
     # calculate page count
     df['Pages'] = df.Words / words_per_page
 
@@ -149,6 +145,13 @@ class Collection():
 
         if metadata:
             df.update(pd.read_csv(metadata, index_col=0))
+            # load author information FIXME ugh what a mess
+            authors = pd.read_csv('data/authors.csv', index_col=0)
+            a = df[df.AuthorId.isin(authors.index)].AuthorId
+            df = pd.concat([
+                df,
+                a.apply(lambda x: authors.loc[x,['Gender', 'Nationality']]),
+            ], axis='columns')
 
         # apply filters on shelf, language, category.
         if categories:
