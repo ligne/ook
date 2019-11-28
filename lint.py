@@ -229,6 +229,7 @@ def lint_needs_returning():
 
 
 # find unnecessary fixes
+# FIXME update
 def lint_fixes():
     c = Collection(fixes=None)
 
