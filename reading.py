@@ -9,8 +9,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-import reading
-
 from reading.collection import Collection
 
 
@@ -186,12 +184,13 @@ def oldness():
     plt.close()
 
 
-def gender(df):
+def gender():
+    df = Collection(shelves=['read']).df
     df.Gender = df.Gender.fillna('unknown')
 
     df = df.pivot_table(
-        values='Number of Pages',
-        index='Date Read',
+        values='Pages',
+        index='Read',
         columns='Gender',
         aggfunc=np.sum,
         fill_value=0
@@ -256,32 +255,26 @@ def category():
 
 
 # plot total/new nationalities over the preceding year
-def nationality(df):
-    authors = df[df['Date Read'] >= '2013'].sort_values(['Date Read'])
-    authors = authors.dropna(subset=['Nationality'])
+def nationality():
+    df = Collection(shelves=['read']).df
 
     # how many new nationalities a year
-    first = authors.drop_duplicates(['Nationality'])  \
-                 .set_index('Date Read')  \
-                 ['Nationality']  \
-                 .resample('D')  \
-                 .count()  \
-                 .reindex(pd.DatetimeIndex(start='2015-01-01', end='today', freq='D'))  \
-                 .fillna(0)
+    authors = df.set_index('Read').sort_index()
+    first = authors.Nationality.drop_duplicates()
+    first = first.resample('D').count().reindex(ix, fill_value=0)
 
     # total number of distinct nationalities
-    authors = authors.set_index('Date Read')
+    # FIXME use rolling apply?
     values = []
     for date in ix:
         start = (date - pd.Timedelta('365 days')).strftime('%F')
         end = date.strftime('%F')
-        values.append(len(set(authors.ix[start:end].Nationality.values)))
+        values.append(len(set(authors.loc[start:end].Nationality.values)))
 
-    df_ = pd.DataFrame({
-        'Distinct': pd.Series(data=values, index=ix, name='Nationalities'),
+    pd.DataFrame({
+        'Distinct': pd.Series(data=values, index=ix),
         'New': first.rolling(window=365).sum(),
-    }).ix['2016':]
-    df_.plot()
+    }).plot()
 
     # force the bottom of the graph to zero and make sure the top doesn't clip.
     ylim = plt.ylim()
@@ -480,11 +473,9 @@ def rating_scatter():
 ################################################################################
 
 if __name__ == "__main__":
-    df = reading.get_books()
-
     doy()
-    nationality(df)
-    gender(df)
+    nationality()
+    gender()
     language()
     category()
     rate_area()
