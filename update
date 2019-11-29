@@ -26,6 +26,8 @@ rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindl
 
 tmpdir=`mktemp -d`
 
+OPTS="--width 50 --size 15"
+
 # update suggestions
 (
   echo Scheduled
@@ -34,64 +36,66 @@ tmpdir=`mktemp -d`
   echo ----
   echo All novels
   echo
-  ./suggestions.py --shelves kindle --categories books --size 15
+  ./suggestions.py $OPTS --categories books
   echo ----
   echo All short stories
   echo
-  ./suggestions.py --shelves kindle --categories short-stories --size 15
+  ./suggestions.py $OPTS --categories short-stories
   echo ----
   echo French books
   echo
-  ./suggestions.py --shelves kindle --languages fr --size 15
+  ./suggestions.py $OPTS --languages fr
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py --shelves kindle --categories non-fiction --size 15
-) | cut -c-50 > $tmpdir/00\ Suggestions.txt
+  ./suggestions.py $OPTS --categories non-fiction
+) > $tmpdir/00\ Suggestions.txt
+
+OPTS="--width 50 --shelves kindle"
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
 (
   echo Articles
   echo
-  sort -nr wordcounts/articles-*-lengths.txt
+  ./suggestions.py $OPTS --categories articles --words
   echo ----
   echo Novels
   echo
-  sort -nr wordcounts/books-*-lengths.txt
+  ./suggestions.py $OPTS --categories novels
   echo ----
   echo Short stories
   echo
-  sort -nr wordcounts/short-stories-*-lengths.txt
+  ./suggestions.py $OPTS --categories short-stories
   echo ----
   echo French books
   echo
-  sort -nr wordcounts/*-fr-lengths.txt
+  ./suggestions.py $OPTS --language fr
   echo ----
   echo Non-fiction
   echo
-  sort -nr wordcounts/non-fiction-*-lengths.txt
-) | cut -c-50 > $tmpdir/00\ Numeric.txt
+  ./suggestions.py $OPTS --categories non-fiction
+) > $tmpdir/00\ Numeric.txt
 (
   echo Articles
   echo
-  sort -k2 wordcounts/articles-*-lengths.txt
+  ./suggestions.py $OPTS --alpha --categories articles --words
   echo ----
   echo Novels
   echo
-  sort -k2 wordcounts/books-*-lengths.txt
+  ./suggestions.py $OPTS --alpha --categories novels
   echo ----
   echo Short stories
   echo
-  sort -k2 wordcounts/short-stories-*-lengths.txt
+  ./suggestions.py $OPTS --alpha --categories short-stories
   echo ----
   echo French books
   echo
-  sort -k2 wordcounts/*-fr-lengths.txt
+  ./suggestions.py $OPTS --alpha --language fr
   echo ----
   echo Non-fiction
   echo
-  sort -k2 wordcounts/non-fiction-*-lengths.txt
-) | cut -c-50 > $tmpdir/00\ Alphabetical.txt
+  ./suggestions.py $OPTS --alpha --categories non-fiction
+) > $tmpdir/00\ Alphabetical.txt
 
 diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
 rsync -ha --delete $tmpdir/ $kindle_dir/documents/wordcounts/
