@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 import math
 import datetime
 import argparse
 
-import pandas as pd
-
-import reading
+import reading.scheduling
+from reading.collection import Collection
 
 
 today = datetime.date.today()
@@ -37,18 +35,9 @@ def ignore_authors(df):
     return df[~df['Author'].isin(recent_authors(reading.get_books()))]
 
 
-def _scheduled_for_year(df, year):
-    return df[df.Scheduled == str(year)]
-
-
 # authors whose books are still scheduled for this year
 def _scheduled_authors(df):
     return _scheduled_for_year(df, today.year)['Author'].values
-
-
-# books scheduled for the current year
-def scheduled(df):
-    return _scheduled_for_year(df, today.year)
 
 
 # books by authors that i've read before
@@ -83,78 +72,33 @@ def merge_volumes(df):
     })
 
 
-# pick (FIXME approximately) $size rows from around the median and mean of the
-# list.
-def limit_rows(df, size):
-    df = df.sort_values(['Number of Pages']).reset_index(drop=True)
-
-    if not len(df):
-        return df
-
-    median_ix = int(math.floor(len(df.index) / 2))
-    mean_ix = df[df['Number of Pages'] >= df.mean()['Number of Pages']].index[0]
-
-    suggestions = pd.concat([
-        show_nearby(df, median_ix, size),
-        show_nearby(df, mean_ix, size),
-    ], ignore_index=True).drop_duplicates()
-
-    suggestion_median = int(math.floor(len(suggestions.index) / 2))
-
-    return show_nearby(suggestions, suggestion_median, size)
-
-
-# selects $size rows from $df, centred around $index
-def show_nearby(df, index, size):
-    s = size / 2
-    return df.iloc[int(max(0, index - s)):int(index + s)]
-
-
-# prints it out.
-def print_rows(df):
-    for ix, row in df.sort_values(['Number of Pages', 'Title']).iterrows():
-        fmt = '{Number of Pages:4.0f}  {Title}'
-        if row['Author']:
-            fmt += ' ({Author})'
-        print(fmt.format(**row))
-
-
 ################################################################################
 
 # modes:
 #   scheduled
 #       scheduled for this year.
-#       next in series
 #       not read in the last 6 months (same year is fine).
-#           less than that is ok for authors i expect to read more of?  how many scheduled and read by that author this year, divide into equal chunks.
 #   suggest
 #       not scheduled
 #       not read recently
 #       next in series
-#   schedule next
-#       set year
-#       not authors scheduled in that year
-#       by authors i've got scheduled, or read recently, or where i've got a lot of their books
 #
 # filter:
 #   number of suggestions.  don't limit if listing scheduled books
 #
-# output:
-#   by word count
-#   by author
-#   by shelf
-#
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    # miscellaneous
-    parser.add_argument('--date', type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'))
-    parser.add_argument('--size', type=int, default=10)
+    # FIXME compatibility
+    parser.add_argument('--new', action="store_true")
 
+    # miscellaneous
+    parser.add_argument('--date',
+        type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'),
+        default=datetime.date.today(),
+    )
     # mode
     parser.add_argument('--scheduled', action="store_true")
-
     # filter
     parser.add_argument('--shelves', nargs='+')
     parser.add_argument('--languages', nargs='+')
@@ -163,57 +107,72 @@ if __name__ == "__main__":
     parser.add_argument('--old-authors', action="store_true")
     parser.add_argument('--new-nationalities', action="store_true")
     parser.add_argument('--old-nationalities', action="store_true")
-    parser.add_argument('--borrowed', action='store_true')
+    parser.add_argument('--borrowed', action='store_true', default=None)
     # FIXME also gender, genre
+    # sort
+    parser.add_argument('--alpha', action='store_true')
+    # display
+    parser.add_argument('--size', type=int, default=10)
+    parser.add_argument('--all', action="store_true")
+    parser.add_argument('--width', type=int, default=None)
+    parser.add_argument('--words', action="store_true")
 
     args = parser.parse_args()
 
-    if args.date:
-        today = args.date
+    shelves = args.shelves or default_shelves
 
-    df = reading.get_books(
-        shelves=args.shelves,
+    df = Collection(
+        shelves=shelves,
         languages=args.languages,
         categories=args.categories,
-    )
+        borrowed=args.borrowed,
+        merge=True,
+    ).df
 
-    # only books i've yet to read
-    df = df[df['Exclusive Shelf'].isin(default_shelves)]
+    if args.scheduled:
+        # FIXME not quite the right thing...
+        #df = reading.scheduling.scheduled_at(df, args.date)
+        df = df[df.Scheduled.dt.year == args.date.year]
+        args.all = True  # no display limit on scheduled books
+    else:
+        # otherwise suggestion mode
+        # filter out recently-read, scheduled, etc
+        # FIXME need to do that *before* filtering shelves etc?
+        # eventually filter out "blocked" books
+        pass
 
     # filter
-    if args.old_authors:
-        df = old_authors(df)
-    elif args.new_authors:
-        df = new_authors(df)
+#    if args.old_authors:
+#        df = old_authors(df)
+#    elif args.new_authors:
+#        df = new_authors(df)
+#
+#    if args.old_nationalities:
+#        df = old_nationalities(df)
+#    elif args.new_nationalities:
+#        df = new_nationalities(df)
 
-    if args.old_nationalities:
-        df = old_nationalities(df)
-    elif args.new_nationalities:
-        df = new_nationalities(df)
-
-    if args.borrowed:
-        df = df[df['Bookshelves'].str.contains(r'\b{}\b'.format('borrowed'))]
-
-    # mode
-    if args.scheduled:
-        df = scheduled(df)
-        df = merge_volumes(df)
+    # sort
+    if args.alpha:
+        # FIXME use a more sortable version of the title
+        df = df.sort_values(['Title', 'Author'])
     else:
-        # remove books if there's already an earlier one in the series
-        #
-        # drop_duplicates() treats NaNs as being the same, so need to be more
-        # circuitous.
-        df = df.sort_values(['Entry'])
-        df = df[(~df.duplicated(subset=['Author', 'Series']))|(df['Series'].isnull())]
+        df = df.sort_values(['Pages', 'Title', 'Author'])
 
-        df = df[df.Scheduled.isnull()]
-        df = limit_rows(df, args.size)
 
-    # remove authors i've read recently
-    df = ignore_authors(df)
+    # reduce
+    if not args.all:
+        index = int(math.floor(len(df.index) / 2))
+        s = args.size / 2
+        df = df.iloc[int(max(0, index - s)):int(index + s)]
 
-    # output
-    print_rows(df)
+    # display
+    if args.words:
+        fmt = '{Words:4.0f}  {Title} ({Author})'
+    else:
+        fmt = '{Pages:4.0f}  {Title} ({Author})'
 
+    for (_, book) in df.iterrows():
+        print(fmt.format(**book)[:args.width])
 
 # vim: ts=4 : sw=4 : et
