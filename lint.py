@@ -265,6 +265,7 @@ def lint_fixes():
 ################################################################################
 
 # run them all
+n = __import__(__name__)
 for f in [x for x in dir(n) if x.startswith('lint_')]:
     report = getattr(n, f)()
 
