@@ -8,9 +8,6 @@ import reading.scheduling
 from reading.collection import Collection
 
 
-today = datetime.date.today()
-
-
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
 #
@@ -29,24 +26,6 @@ def _read_author_ids():
 
 def _read_nationalities():
     return list(Collection(shelves=['read']).df.Nationality)
-
-
-# filter out authors from the list
-def ignore_authors(df):
-    return df[~df['Author'].isin(recent_authors(reading.get_books()))]
-
-
-# authors whose books are still scheduled for this year
-def _scheduled_authors(df):
-    return _scheduled_for_year(df, today.year)['Author'].values
-
-
-def merge_volumes(df):
-    return df.groupby(['Author', 'Title'], as_index=False).aggregate({
-        'Number of Pages': 'sum',
-        'Series': 'first',
-        'Entry': 'first',
-    })
 
 
 ################################################################################
