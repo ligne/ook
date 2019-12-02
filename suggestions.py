@@ -10,14 +10,14 @@ from reading.collection import Collection
 
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
-#
-# FIXME also books that are read but don't have a date?
-def recent_authors(df):
-    this_year = df['Date Read'].dt.year == today.year
-    recent = (today - df['Date Read']) < '180 days'
-    current = df['Exclusive Shelf'] == 'currently-reading'
+def _recent_author_ids(date):
+    df = Collection().df  # want to consider *all* books
 
-    return df[this_year | recent | current].Author.values
+    return list(df[
+        (df.Read.dt.year == date.year)
+        |((date - df.Read) < '180 days')
+        |(df.Shelf == 'currently-reading')
+    ].AuthorId)
 
 
 def _read_author_ids():
@@ -95,9 +95,9 @@ if __name__ == "__main__":
     else:
         # otherwise suggestion mode
         # filter out recently-read, scheduled, etc
-        # FIXME need to do that *before* filtering shelves etc?
-        # eventually filter out "blocked" books
-        pass
+        df = df[~df.AuthorId.isin(_recent_author_ids(args.date))]
+        df = df[df.Scheduled.isnull()]  # FIXME should be *all* scheduled
+        # FIXME eventually filter out "blocked" books
 
     # filter
     if args.old_authors:
