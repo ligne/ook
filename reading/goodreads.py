@@ -261,34 +261,6 @@ def search_title(term):
     } for x in xml.findall('search/results/work')]
 
 
-# search by author name.  note that this still returns a list of books!
-def search_author(term):
-    term = re.sub(' [\d?-]+$', '', term)
-    print("searching for {}".format(term))
-
-    r = requests.get('https://www.goodreads.com/search/index.xml', params={
-        'key': config('goodreads.key'),
-        'search[field]': 'author',
-        'q': term,
-    })
-
-    xml = ElementTree.fromstring(r.content)
-    authors = [(a.find('name').text, a.find('id').text) for a in xml.findall('search/results/work/best_book/author')]
-
-    author_ids = uniq(authors)
-    print(author_ids)
-
-    return [{
-        'Author': x.find('name').text,
-        'AuthorId': x.find('id').text,
-    } for x in xml.findall('search/results/work/best_book/author')]
-
-
-def uniq(seq):
-    seen = set()
-    return [x for x in seq if x not in seen and not seen.add(x)]
-
-
 ################################################################################
 
 if __name__ == "__main__":
