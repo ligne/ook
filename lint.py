@@ -5,7 +5,6 @@ import datetime
 import yaml
 import pandas as pd
 
-import reading
 from reading.collection import Collection
 
 
@@ -117,7 +116,7 @@ def check_scheduled_but_already_read(df):
     read_this_year = df.Author.isin(authors)
 
     df = df[scheduled & ~ignored & (duplicated | (this_year & read_this_year))]
-    print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
+    #print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
 
 
 def lint_duplicates():
