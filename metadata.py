@@ -1,24 +1,10 @@
 #!/usr/bin/python3
 
-import sys
 import argparse
 
-import reading.cache
 from reading.collection import Collection
 from reading.metadata import find, rebuild
 from reading.compare import compare
-
-
-# fetch all the information about the books
-def update():
-    works = reading.cache.load_yaml('works')
-
-    for f,w in works.items():
-        book = reading.goodreads.fetch_book(w['BookId'])
-        # FIXME need to merge?
-        works[f].update(book)
-
-    reading.cache.dump_yaml('works', works)
 
 
 if __name__ == '__main__':
@@ -34,7 +20,7 @@ if __name__ == '__main__':
     if args.find:
         find()
     elif args.update:
-        update()
+        pass
 
     new = old.copy()
     metadata = rebuild()
