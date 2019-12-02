@@ -10,13 +10,6 @@ from reading.collection import Collection
 
 today = datetime.date.today()
 
-default_shelves = [
-    'pending',
-    'elsewhere',
-    'ebooks',
-    'kindle',
-]
-
 
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
@@ -89,18 +82,21 @@ def merge_volumes(df):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    # FIXME compatibility
-    parser.add_argument('--new', action="store_true")
-
     # miscellaneous
-    parser.add_argument('--date',
+    parser.add_argument(
+        '--date',
         type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'),
         default=datetime.date.today(),
     )
     # mode
     parser.add_argument('--scheduled', action="store_true")
     # filter
-    parser.add_argument('--shelves', nargs='+')
+    parser.add_argument('--shelves', nargs='+', default=[
+        'pending',
+        'elsewhere',
+        'ebooks',
+        'kindle',
+    ])
     parser.add_argument('--languages', nargs='+')
     parser.add_argument('--categories', nargs='+')
     parser.add_argument('--new-authors', action="store_true")
@@ -119,10 +115,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    shelves = args.shelves or default_shelves
-
     df = Collection(
-        shelves=shelves,
+        shelves=args.shelves,
         languages=args.languages,
         categories=args.categories,
         borrowed=args.borrowed,
