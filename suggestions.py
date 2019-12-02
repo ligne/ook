@@ -23,6 +23,14 @@ def recent_authors(df):
     return df[this_year | recent | current].Author.values
 
 
+def _read_author_ids():
+    return list(Collection(shelves=['read']).df.AuthorId)
+
+
+def _read_nationalities():
+    return list(Collection(shelves=['read']).df.Nationality)
+
+
 # filter out authors from the list
 def ignore_authors(df):
     return df[~df['Author'].isin(recent_authors(reading.get_books()))]
@@ -31,30 +39,6 @@ def ignore_authors(df):
 # authors whose books are still scheduled for this year
 def _scheduled_authors(df):
     return _scheduled_for_year(df, today.year)['Author'].values
-
-
-# books by authors that i've read before
-def old_authors(df):
-    authors = reading.get_books(shelves=['read']).Author.values
-    return df[df['Author'].isin(authors)]
-
-
-# books by authors i've not read before
-def new_authors(df):
-    authors = reading.get_books(shelves=['read']).Author.values
-    return df[~df['Author'].isin(authors)]
-
-
-# books by nationalities that i've read before
-def old_nationalities(df):
-    nationalities = reading.get_books(shelves=['read']).Nationality.values
-    return df[df['Nationality'].isin(nationalities)]
-
-
-# books by nationalities i've not read before
-def new_nationalities(df):
-    nationalities = reading.get_books(shelves=['read']).Nationality.values
-    return df[~df['Nationality'].isin(nationalities)]
 
 
 def merge_volumes(df):
@@ -123,6 +107,7 @@ if __name__ == "__main__":
         merge=True,
     ).df
 
+    # mode
     if args.scheduled:
         # FIXME not quite the right thing...
         #df = reading.scheduling.scheduled_at(df, args.date)
@@ -136,15 +121,15 @@ if __name__ == "__main__":
         pass
 
     # filter
-#    if args.old_authors:
-#        df = old_authors(df)
-#    elif args.new_authors:
-#        df = new_authors(df)
-#
-#    if args.old_nationalities:
-#        df = old_nationalities(df)
-#    elif args.new_nationalities:
-#        df = new_nationalities(df)
+    if args.old_authors:
+        df = df[df.AuthorId.isin(_read_author_ids())]
+    elif args.new_authors:
+        df = df[~df.AuthorId.isin(_read_author_ids())]
+
+    if args.old_nationalities:
+        df = df[df.Nationality.isin(_read_nationalities())]
+    elif args.new_nationalities:
+        df = df[~df.Nationality.isin(_read_nationalities())]
 
     # sort
     if args.alpha:
