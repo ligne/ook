@@ -1,9 +1,4 @@
 #!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
-import datetime
-import yaml
-import pandas as pd
 
 from reading.collection import Collection
 
@@ -100,6 +95,8 @@ def check_scheduled_but_already_read(df):
         'Terry Pratchett',
         'Iain Banks',
     ]
+
+    import datetime
 
     today = datetime.date.today()
 
@@ -231,6 +228,9 @@ def lint_needs_returning():
 # FIXME update
 def lint_fixes():
     c = Collection(fixes=None)
+
+    import yaml
+    import pandas as pd
 
     with open('data/fixes.yml') as fh:
         fixes = yaml.load(fh)
