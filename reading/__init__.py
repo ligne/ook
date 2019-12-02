@@ -2,11 +2,9 @@
 
 import sys
 import yaml
-
 import pandas as pd
 
 import reading.ebooks
-from reading.author import Author
 
 
 GR_HISTORY = 'data/goodreads_library_export.csv'
@@ -31,14 +29,6 @@ def get_books(shelves=None, categories=None, languages=None, no_fixes=False, fix
         df = df[df['Language'].isin(languages)]
     if shelves:
         df = df[df['Exclusive Shelf'].isin(shelves)]
-
-    # standardise the author name.  FIXME use the QID instead?
-    if fix_names:
-        df['Author'] = df['Author'].apply(lambda x: Author(x).get('Name', x))
-
-    # load information about the authors
-    for col in ['Gender', 'Nationality']:
-        df[col] = df['Author'].apply(lambda x: Author(x).get(col))
 
     return df
 
