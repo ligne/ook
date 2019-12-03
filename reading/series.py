@@ -136,8 +136,7 @@ class Series():
 
     # books in the series that still need to be read
     def remaining(self):
-        sort_col = self.order == 'series' and 'Entry' or 'Published'
-        return self.df[~self.df['Shelf'].isin(['read', 'currently-reading'])].sort_values(sort_col)
+        return self.sort().df[~self.df.Shelf.isin(['read', 'currently-reading'])]
 
 
     # return readable ones in order (for scheduling)
@@ -152,6 +151,19 @@ class Series():
     def read_in_year(self, year):
         return len(self.df[self.df['Read'].dt.year == year]) \
              + len(self.df[self.df['Shelf'] == 'currently-reading'])
+
+
+    # sort the books according to preference
+    def sort(self):
+        if self.order == 'series':
+            self.df = self.df.sort_values('Entry')
+        elif self.order == 'published':
+            self.df = self.df.sort_values('Published')
+        elif self.order == 'random':
+            self.df = self.df.loc[
+                self.df.Title.apply(lambda x: x.__hash__()).sort_values().index
+            ]
+        return self
 
 
 if __name__ == "__main__":
