@@ -4,6 +4,8 @@ import pandas as pd
 import re
 import yaml
 
+from reading.config import config
+
 
 GR_CSV    = 'data/goodreads.csv'
 EBOOK_CSV = 'data/ebooks.csv'
@@ -113,6 +115,35 @@ def _ebook_parse_title(title):
     return pd.Series([t, v], index=['Title', 'Volume'])
 
 
+# rearranges the fixes into something that DataFrame.update() can handle.
+# FIXME clean up this mess
+def _process_fixes(fixes):
+    if not fixes:
+        return
+
+    f = {}
+    for fix in fixes.get('general', []):
+        book_id = fix.pop('BookId')
+        f[book_id] = fix
+
+    for col, data in fixes.get('columns', {}).items():
+        for val, ids in data.items():
+            for book_id in ids:
+                if book_id not in f:
+                    f[book_id] = {}
+                f[book_id][col] = val
+
+    d = pd.DataFrame(f).T
+
+    # FIXME looks like an upstream bug...
+    for column in ['Read', 'Started']:
+        if column not in d.columns:
+            continue
+        d[column] = pd.to_datetime(d[column])
+
+    return d
+
+
 ################################################################################
 
 class Collection():
@@ -128,7 +159,7 @@ class Collection():
     def __init__(self, df=None,
                  gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
                  dedup=False, merge=False,
-                 fixes='data/fixes.yml', metadata='data/metadata.csv',
+                 fixes=True, metadata='data/metadata.csv',
                  shelves=None, categories=None, languages=None, borrowed=None
                 ):
 
@@ -168,24 +199,10 @@ class Collection():
         if borrowed is not None:
             df = df[df['Borrowed'] == borrowed]
 
-        # FIXME load information about the authors
-
-        # FIXME clean this up
+        # apply fixes.
         if fixes:
-            with open('data/grfixes.yml') as fh:
-                for col, data in yaml.load(fh).items():
-                    for value, books in data.items():
-                        a = []
-                        for b in books:
-                            a.append((b, value))
-                        df.update(pd.DataFrame(a, columns=['BookId', col]).set_index(['BookId']))
-
-        # apply fixes. FIXME
-        if fixes:
-            with open('data/fixes1.yml') as fh:
-                d = pd.DataFrame(yaml.load(fh)).set_index(['BookId'])
-                for column in ['Read', 'Started']:
-                    d[column] = pd.to_datetime(d[column])
+            d = _process_fixes(config('fixes'))
+            if d is not None:
                 df.update(d)
 
         self.df = df
