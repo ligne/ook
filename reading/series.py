@@ -107,9 +107,6 @@ class Series():
         if not settings:
             settings = _get_series_settings(series)
 
-        # FIXME dedup
-        df = df.drop_duplicates(['Work'])
-
         if author:
             # just work through in order
             self.label = author
@@ -132,6 +129,9 @@ class Series():
             self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
         else:
             raise ValueError("Must provide author, series or series ID.")
+
+        if self.df.duplicated('Work').any():
+            print('Duplicate works in series {}'.format(self.label))
 
 
     # books in the series that still need to be read
