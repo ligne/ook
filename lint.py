@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
+import reading.collection
 from reading.collection import Collection
+from reading.config import config
 
 
 def lint_missing_pagecount():
@@ -229,36 +231,27 @@ def lint_needs_returning():
 def lint_fixes():
     c = Collection(fixes=None)
 
-    import yaml
-    import pandas as pd
+    fixes = reading.collection._process_fixes(config('fixes'))
+    errors = []
 
-    with open('data/fixes.yml') as fh:
-        fixes = yaml.load(fh)
-
-    for f in fixes:
-        book = f['Book Id']
-        if book not in c.df.index:
-            print('{} does not exist'.format(book))
+    for book_id, fix in fixes.iterrows():
+        if book_id not in c.df.index:
+            errors.append('Book {} does not exist'.format(book_id))
             continue
+        for col, value in fix[fix.notnull()].items():
+            if c.df.loc[book_id, col] == value:
+                errors.append("Unnecessary entry [{},{}]".format(book_id, col))
 
-        for k,v in f.items():
-            if k == 'Book Id':
-                continue
-            elif k in ['Date Added', 'Date Started', 'Date Read']:
-                k = k[5:]
-                v = pd.Timestamp(v)
-            elif k =='Original Publication Year':
-                k = 'Published'
-            elif k == 'Entry':
-                v = format(v, '.0f')
-            elif k not in c.df.columns:
-                print('!!!', k)
-                continue
+    return {
+        'title': 'Fixes',
+        'df': errors,
+        'template': """
+{%- for entry in df %}
+{{entry}}
+{%- endfor %}
 
-            if c.df.loc[book,k] == v:
-                print("Unnecessary entry [{},{}]".format(book, k))
-
-    return
+"""
+    }
 
 
 ################################################################################
@@ -282,7 +275,7 @@ for f in [x for x in dir(n) if x.startswith('lint_')]:
     if not 'template' in report:
         continue
 
-    print(Template(report['template']).render(df=report['df'].sort_values(['Author', 'Title'])))
+    print(Template(report['template']).render(df=report['df']))
 
 
 # vim: ts=4 : sw=4 : et
