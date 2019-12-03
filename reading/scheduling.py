@@ -2,6 +2,7 @@
 
 import datetime
 import itertools
+import pandas as pd
 from dateutil.parser import parse
 
 from .series import Series
@@ -32,6 +33,19 @@ def scheduled(df):
             book = df.loc[book]
             print('{} {} ({:0.0f})'.format(date, book.Title, book['Published']))
         print()
+
+
+def scheduled_books(df):
+    s = pd.Series(False, df.index)
+
+    for settings in config('scheduled'):
+        s.loc[Series(
+            author=settings.get('author'),
+            series=settings.get('series'),
+            df=df,
+        ).df.index] = True
+
+    return s
 
 
 # fix up df with the scheduled dates

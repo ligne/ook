@@ -4,7 +4,7 @@ import math
 import datetime
 import argparse
 
-import reading.scheduling
+from reading.scheduling import scheduled_books
 from reading.collection import Collection
 
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
         # otherwise suggestion mode
         # filter out recently-read, scheduled, etc
         df = df[~df.AuthorId.isin(_recent_author_ids(args.date))]
-        df = df[df.Scheduled.isnull()]  # FIXME should be *all* scheduled
+        df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
         # FIXME eventually filter out "blocked" books
 
     # filter
