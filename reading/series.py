@@ -85,6 +85,11 @@ def interesting(entry, series):
     return True
 
 
+# sort Entry strings
+def _sort_entries(df):
+    return df.loc[df.Entry.apply(lambda x: _parse_entries(x)).sort_values().index]
+
+
 # return the information for the series
 # from cache and config?
 def _get_series_settings(series):
@@ -156,7 +161,7 @@ class Series():
     # sort the books according to preference
     def sort(self):
         if self.order == 'series':
-            self.df = self.df.sort_values('Entry')
+            self.df = _sort_entries(self.df)
         elif self.order == 'published':
             self.df = self.df.sort_values('Published')
         elif self.order == 'random':
