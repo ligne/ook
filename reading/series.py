@@ -123,15 +123,12 @@ class Series():
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
             self.df = df[df.Series.str.contains(series, na=False)].copy()
-            # FIXME add a sortable Entry column
-            self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
         elif series_id:
-            self.label = float(series_id)  # FIXME look this up
+            self.series_id = int(series_id)
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
-            self.df = df[df.SeriesId == self.label].copy()
-            # FIXME add a sortable Entry column
-            self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
+            self.df = df[df.SeriesId == self.series_id].copy()
+            self.label = self.info['Series']
         else:
             raise ValueError("Must provide author, series or series ID.")
 
