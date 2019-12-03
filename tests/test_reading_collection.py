@@ -1,12 +1,11 @@
 # vim: ts=4 : sw=4 : et
 
-from nose.tools import *
+from nose.tools import assert_equals, assert_list_equal, eq_, ok_
 
-import pandas as pd
 import numpy as np
-from io import StringIO
 
 import reading.collection
+from reading.collection import Collection
 
 
 def test__get_gr_books():
@@ -110,5 +109,14 @@ def test__get_kindle_books():
     # filenames as the index
     # FIXME
     #eq_(list(df.index[0:3]), ['_0', '_1', '_2'])
+
+
+def test_collection():
+    c = Collection()
+    ok_(c.df.equals(Collection().df), 'Same collection is the same')
+
+
+def test__process_fixes():
+    ok_(not reading.collection._process_fixes({}))
 
 
