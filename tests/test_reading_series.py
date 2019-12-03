@@ -35,6 +35,8 @@ def test__parse_entries():
 
     eq_(_parse_entries(None), [])
     eq_(_parse_entries(''), [])
+    eq_(_parse_entries(123), [])
+    eq_(_parse_entries(1.3), [])
 
     # extra cruft
     eq_(_parse_entries('1-3 omnibus'), [1,2,3])

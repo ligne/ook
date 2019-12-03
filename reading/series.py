@@ -55,7 +55,7 @@ def _get_entry(string):
 
 # converts an entries string into a list of integers
 def _parse_entries(entries):
-    if not entries:
+    if type(entries) != str:
         return []
 
     if re.search('[,&]', entries):
