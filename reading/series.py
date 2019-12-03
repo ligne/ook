@@ -6,6 +6,7 @@ import re
 from functools import reduce
 
 from .config import config
+from .collection import Collection
 
 # configuration:
 #   series information cache.  build it from the series extracted from books.
@@ -95,12 +96,13 @@ def ignore(series_id):
     return int(series_id) in config('series.ignore')
 
 
+################################################################################
+
 class Series():
 
-    from .collection import Collection
     _df = Collection().df
 
-    def __init__(self, author=None, series=None, settings=None, df=_df):
+    def __init__(self, author=None, series=None, series_id=None, settings=None, df=_df):
         # FIXME get settings for this series, and check
         if not settings:
             settings = _get_series_settings(series)
@@ -110,21 +112,26 @@ class Series():
 
         if author:
             # just work through in order
-            self.author = author
+            self.label = author
             self.order = settings.get('order', 'published')
             self.missing = 'ignore'
             self.df = df[df.Author.str.contains(author)]
         elif series:
-            self.series = series
+            self.label = series
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
             self.df = df[df.Series.str.contains(series, na=False)].copy()
             # FIXME add a sortable Entry column
             self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
+        elif series_id:
+            self.label = float(series_id)  # FIXME look this up
+            self.order = settings.get('order', 'series')
+            self.missing = settings.get('missing', 'ignore')
+            self.df = df[df.SeriesId == self.label].copy()
+            # FIXME add a sortable Entry column
+            self.df.loc[:,'Entry'] = self.df.Entry.astype(float)
         else:
-            # error
-            raise ValueError("Must provide either author or series.")
-            pass
+            raise ValueError("Must provide author, series or series ID.")
 
 
     # books in the series that still need to be read
@@ -153,6 +160,8 @@ if __name__ == "__main__":
         s = Series(author=n)
     elif t == 'series':
         s = Series(series=n)
+    elif t == 'sid':
+        s = Series(series_id=n)
     else:
         print("bad")
         sys.exit()
