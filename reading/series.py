@@ -147,10 +147,10 @@ class Series():
         # if 'break', return until the first blockage
 
 
-    # returns true if the series has been read this year
+    # returns the number of books from the series (being) read in $year
     def read_in_year(self, year):
-        return len(self.df[self.df['Read'].dt.year == year]) \
-             + len(self.df[self.df['Shelf'] == 'currently-reading'])
+        return len(self.df[self.df.Read.dt.year == year]) \
+             + len(self.df[self.df.Shelf == 'currently-reading'])
 
 
     # sort the books according to preference
