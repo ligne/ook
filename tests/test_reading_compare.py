@@ -11,7 +11,7 @@ import reading.compare
 # converts a CSV fragment into books
 def _to_books(csv):
     header = "BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work\n"
-    c = Collection(gr_csv=StringIO(header + csv))
+    c = Collection(gr_csv=StringIO(header + csv), metadata=None)
     return (x.fillna('') for x in (c.df.iloc[0], c.df.iloc[1]))
 
 ################################################################################
