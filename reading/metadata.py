@@ -207,9 +207,9 @@ def find():
         'Description'
     ])
 
-    # FIXME handle exit/saving
     try:
         find_books(books)
+        # FIXME want to reload so the authors of newly-associated books appear
         find_authors(authors)
     except (SaveExit):
         pass
@@ -258,6 +258,7 @@ def find_authors(authors):
         if not resp:
             continue
 
+        # FIXME save the QID?
         resp = confirm_author(resp)
         if not resp:
             continue

@@ -15,10 +15,11 @@ from .collection import Collection
 # what to select
 #   author
 #   series
+#   series ID
 # what order to use
 #   publication date
 #   series order
-#   random -- >>> df.loc[df.Title.apply(lambda x: x.__hash__()).sort_values().index].Title
+#   random?
 #   date added
 # missing books (for series only)
 #   strict -- all books must be there; warn and leave gaps
@@ -192,7 +193,7 @@ if __name__ == "__main__":
     elif t == 'series':
         s = Series(series=n)
     elif t == 'sid':
-        s = Series(series_id=n)
+        s = Series(series_id=int(n))
     else:
         print("bad")
         sys.exit()

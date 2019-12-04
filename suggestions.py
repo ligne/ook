@@ -38,10 +38,6 @@ def _read_nationalities():
 #       not scheduled
 #       not read recently
 #       next in series
-#
-# filter:
-#   number of suggestions.  don't limit if listing scheduled books
-#
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 

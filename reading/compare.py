@@ -158,6 +158,8 @@ def _started(book):
 ''').render(b=book)
 
 
+# FIXME display more information (including category and author
+# gender/nationality) for checking
 def _finished(book):
     return Template('''Finished {{b.Title}} by {{b.Author}}
   * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)

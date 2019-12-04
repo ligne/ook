@@ -61,10 +61,12 @@ class Entity():
         self.entity = j['entities'][qid]
 
 
+    # handle non-humans and collectives
     def gender(self):
         return self.property('P21').label()
 
 
+    # return a list if necessary
     def nationality(self):
         e = self.property('P27')
 
