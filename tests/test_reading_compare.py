@@ -206,14 +206,14 @@ BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,
 40942297,2018-07-28,Ronald Hugh Morrieson,1245777,3.83,Paperback,False,novels,,en,211,1963,4,2018-07-29,,,,read,2018-07-29,The Scarecrow,3898884
 """))
 
-    assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
+    assert_multi_line_equal(reading.compare._finished(c.df.iloc[1]), """
 Finished The Bridge by Iain Banks
   * 2016-07-19 → 2016-08-10 (22 days)
   * 288 pages, 13 pages/day
   * Rating: 4
 """.strip())
 
-    assert_multi_line_equal(reading.compare._finished(c.df.iloc[1]), """
+    assert_multi_line_equal(reading.compare._finished(c.df.iloc[0]), """
 Finished Le Colonel Chabert : suivi de trois nouvelles by Honoré de Balzac
   * 2018-06-25 → 2018-07-08 (13 days)
   * Rating: 3
