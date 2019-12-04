@@ -85,6 +85,22 @@ def interesting(entry, series):
     return True
 
 
+# finds the series ID matching $name. throws an exception if there isn't
+# exactly one.
+def _lookup_series_id(df, name):
+    series = df[df.Series.str.contains(name, na=False)]
+    names = set(series.Series)
+
+    if not len(names):
+        raise ValueError("Couldn't find series matching {}".format(name))
+    if len(names) > 1:
+        raise ValueError("Ambiguous series name {}: {}".format(
+            name, ', '.join(names)
+        ))
+
+    return int(series.SeriesId.iat[0])
+
+
 # sort Entry strings
 def _sort_entries(df):
     return df.loc[df.Entry.apply(lambda x: _parse_entries(x)).sort_values().index]
@@ -105,12 +121,17 @@ def ignore(series_id):
 
 class Series():
 
+    # FIXME need to filter out to-read books
     _df = Collection().df
 
     def __init__(self, author=None, series=None, series_id=None, settings=None, df=_df):
         # FIXME get settings for this series, and check
         if not settings:
-            settings = _get_series_settings(series)
+            settings = _get_series_settings(series_id)
+
+        if series and not series_id:
+            # look up the series ID
+            series_id = _lookup_series_id(df, series)
 
         if author:
             # just work through in order
@@ -118,13 +139,9 @@ class Series():
             self.order = settings.get('order', 'published')
             self.missing = 'ignore'
             self.df = df[df.Author.str.contains(author)]
-        elif series:
-            self.label = series
-            self.order = settings.get('order', 'series')
-            self.missing = settings.get('missing', 'ignore')
-            self.df = df[df.Series.str.contains(series, na=False)].copy()
         elif series_id:
-            self.series_id = int(series_id)
+            self.info = _get_series_info(series_id)
+            self.series_id = series_id
             self.order = settings.get('order', 'series')
             self.missing = settings.get('missing', 'ignore')
             self.df = df[df.SeriesId == self.series_id].copy()
