@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import argparse
+
 import reading.collection
 from reading.collection import Collection
 from reading.config import config
@@ -256,26 +258,36 @@ def lint_fixes():
 
 ################################################################################
 
-# run them all
-n = __import__(__name__)
-for f in [x for x in dir(n) if x.startswith('lint_')]:
-    report = getattr(n, f)()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
 
-    # FIXME
-    if report is None or not 'df' in report:
-        print(report)
-        continue
+    parser.add_argument("pattern", nargs='?')
 
-    if not len(report['df']):
-        continue
+    args = parser.parse_args()
 
-    print('=== {} ==='.format(report['title']))
-    from jinja2 import Template
+    # run them all
+    n = __import__(__name__)
+    for f in [x for x in dir(n) if x.startswith('lint_')]:
+        if args.pattern and args.pattern not in f:
+            continue
 
-    if not 'template' in report:
-        continue
+        report = getattr(n, f)()
 
-    print(Template(report['template']).render(df=report['df']))
+        # FIXME
+        if report is None or not 'df' in report:
+            print(report)
+            continue
+
+        if not len(report['df']):
+            continue
+
+        print('=== {} ==='.format(report['title']))
+        from jinja2 import Template
+
+        if not 'template' in report:
+            continue
+
+        print(Template(report['template']).render(df=report['df']))
 
 
 # vim: ts=4 : sw=4 : et
