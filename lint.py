@@ -120,6 +120,34 @@ def check_scheduled_but_already_read(df):
     #print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
 
 
+def lint_scheduling():
+    c = Collection()
+
+    df = c.df
+
+    from reading.scheduling import _set_schedules
+    import datetime
+
+    horizon = datetime.date.today().year + 3
+
+    _set_schedules(df, config('scheduled'), col='Expected')
+
+    df = df[df.Expected.notnull()]  # only automatically scheduled
+    df = df[df.Expected.dt.year < horizon]
+    df = df[df.Scheduled.dt.year != df.Expected.dt.year]
+
+    return {
+        'title': 'Mis-scheduled books',
+        'df': df,
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}:  {{entry.Expected.year}}, not {{entry.Scheduled.year}}
+{%- endfor %}
+
+""",
+    }
+
+
 def lint_duplicates():
     df = Collection(merge=True).df
 

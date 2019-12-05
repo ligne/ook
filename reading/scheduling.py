@@ -62,18 +62,6 @@ def scheduled_at(df, date=datetime.date.today(), scheduled=None):
     return df[(df.Scheduled.dt.year == date.year)&(df.Scheduled <= date)].sort_values('Title')
 
 
-# check the scheduled years are set correctly.
-def lint(df):
-    horizon = str(datetime.date.today().year + 3)
-
-    _set_schedules(df, config('scheduled'), col='Sched')
-    df = df[df.Sched.notnull()]  # ignore unscheduled or manually-scheduled books
-    df = df[(df.Sched < horizon)&(df.Scheduled.dt.year != df.Sched.dt.year)]
-    for ix, book in df.sort_values('Sched').iterrows():
-        print('{} {} {} - https://www.goodreads.com/book/show/{}'.format(book.Sched.year, book.Scheduled.year, book.Title, ix))
-    print('----')
-    return df
-
 
 def _schedule(df, settings, date=datetime.date.today()):
     series = Series(
@@ -120,8 +108,6 @@ if __name__ == "__main__":
     df = Collection(shelves=['read', 'currently-reading', 'pending', 'elsewhere', 'ebooks', 'library']).df
     df = df.drop_duplicates(['Work'])
 
-    lint(df)
-    print('----')
     scheduled(df)
     print('----')
     for ix, row in scheduled_at(df, datetime.date(2019, 12, 31)).sort_values('Title').iterrows():
