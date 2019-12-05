@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import math
 import datetime
 import argparse
 
@@ -116,7 +115,7 @@ if __name__ == "__main__":
 
     # reduce
     if not args.all:
-        index = int(math.floor(len(df.index) / 2))
+        index = len(df.index) // 2
         s = args.size / 2
         df = df.iloc[int(max(0, index - s)):int(index + s)]
 
