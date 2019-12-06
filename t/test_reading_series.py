@@ -1,11 +1,11 @@
 # vim: ts=4 : sw=4 : et
 
 import pytest
-
 from nose.tools import eq_, ok_
 
-from reading.collection import Collection
+import pandas as pd
 
+from reading.collection import Collection
 import reading.series
 from reading.series import _parse_entries, _get_entry, interesting
 from reading.series import Series
@@ -90,6 +90,8 @@ def _get_collection():
 
 
 def test_series():
+    c = _get_collection()
+
     # needs at least *something* to go on
     with pytest.raises(ValueError):
         Series()
@@ -133,4 +135,17 @@ def test_series():
     assert s.missing == 'ignore', 'By default ignore missing books from series'
 
     # FIXME also check .missing behaviour
+
+
+def test_series_last_read():
+    c = _get_collection()
+
+    s = Series(author='Hašek', df=c.df)
+    assert s.last_read() is None, 'Never read'
+
+    s = Series(author='Vonnegut', df=c.df)
+    assert s.last_read().date() == pd.Timestamp('today').date(), 'Currently reading'
+
+    s = Series(author='Murakami', df=c.df)
+    assert str(s.last_read().date()) == '2019-08-27', 'Previously read'
 

@@ -167,6 +167,18 @@ class Series():
         # if 'break', return until the first blockage
 
 
+    # date this series was last read (today if still reading)
+    def last_read(self):
+        read = self.df[self.df.Read.notnull()]
+
+        if len(self.df[self.df.Shelf == 'currently-reading']):
+            return pd.Timestamp('today')
+        elif len(read):
+            return read.Read.sort_values().iat[-1]
+        else:
+            return None
+
+
     # returns the number of books from the series (being) read in $year
     def read_in_year(self, year):
         return len(self.df[self.df.Read.dt.year == year]) \
