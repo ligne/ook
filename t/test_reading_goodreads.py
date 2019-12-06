@@ -1,17 +1,16 @@
 # vim: ts=4 : sw=4 : et
 
-import nose
-from nose.tools import *
-from xml.etree import ElementTree
-import datetime
+import pytest
 
+from xml.etree import ElementTree
 import pandas as pd
 
 import reading.goodreads
 
+
 def test_process_review():
     r = ElementTree.parse('tests/data/review/1629171100.xml')
-    eq_(reading.goodreads.process_review(r), {
+    assert reading.goodreads.process_review(r) == {
         'AuthorId': 12476,
         'Author': 'Joe Haldeman',
         'AvgRating': 4.15,
@@ -26,10 +25,10 @@ def test_process_review():
         'Scheduled': pd.Timestamp(None),
         'Title': 'The Forever War',
         'Work': 423,
-    })
+    }
 
     r = ElementTree.parse('tests/data/review/1926519212.xml')
-    eq_(reading.goodreads.process_review(r), {
+    assert reading.goodreads.process_review(r) == {
         'AuthorId': 9121,
         'Author': 'James Fenimore Cooper',
         'AvgRating': 3.37,
@@ -44,10 +43,10 @@ def test_process_review():
         'Scheduled': pd.Timestamp('2018'),
         'Title': 'The Pioneers',
         'Work': 443966,
-    })
+    }
 
     r = ElementTree.parse('tests/data/review/1977161022.xml')
-    nose.tools.eq_(reading.goodreads.process_review(r), {
+    assert reading.goodreads.process_review(r) == {
         'AuthorId': 143840,
         'Author': u'Françoise Mallet-Joris',
         'AvgRating': 3.51,
@@ -62,12 +61,12 @@ def test_process_review():
         'Scheduled': pd.Timestamp(None),
         'Title': u'Le rempart des béguines',
         'Work': 238317,
-    })
+    }
 
 
 def test__parse_book_api():
     r = ElementTree.parse('tests/data/book/115069.xml')
-    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+    assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Émile Zola',
         'AuthorId': 4750,
         'Title': "L'Argent",
@@ -78,11 +77,10 @@ def test__parse_book_api():
         'Series': 'Les Rougon-Macquart',
         'Entry': '18',
         'Category': 'novels',
-#        'Genres': '',
-    })
+    }
 
     r = ElementTree.parse('tests/data/book/3602116.xml')
-    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+    assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Augustine of Hippo',
         'AuthorId': 6819578,
         'Title': 'Confessions',
@@ -93,11 +91,10 @@ def test__parse_book_api():
         'Series': None,
         'Entry': None,
         'Category': 'non-fiction',
-#        'Genres': '',
-    })
+    }
 
     r = ElementTree.parse('tests/data/book/38290.xml')
-    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+    assert reading.goodreads._parse_book_api(r) == {
         'Author': 'James Fenimore Cooper',
         'AuthorId': 9121,
         'Title': 'The Pioneers (Leatherstocking Tales, #4)',
@@ -108,11 +105,10 @@ def test__parse_book_api():
         'Series': 'The Leatherstocking Tales',
         'Entry': '1',
         'Category': 'novels',
-#        'Genres': '',
-    })
+    }
 
     r = ElementTree.parse('tests/data/book/17999159.xml')
-    nose.tools.eq_(reading.goodreads._parse_book_api(r), {
+    assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Allie Brosh',
         'AuthorId': 6984726,
         'Title': 'Hyperbole and a Half: Unfortunate Situations, Flawed Coping Mechanisms, Mayhem, and Other Things That Happened',
@@ -123,53 +119,49 @@ def test__parse_book_api():
         'Series': None,
         'Entry': None,
         'Category': 'non-fiction',  # FIXME should be 'graphic'
-#        'Genres': '',
-    })
+    }
 
 
-def test__fetch_book_html():
-    ok_(reading.goodreads._fetch_book_html(819), 'Got output for an existing book')
-    eq_(reading.goodreads._fetch_book_html(1), None, "Nothing for a non-existing book, but it didn't explode")
+#def test__fetch_book_html():
+#    ok_(reading.goodreads._fetch_book_html(819), 'Got output for an existing book')
+#    eq_(reading.goodreads._fetch_book_html(1), None, "Nothing for a non-existing book, but it didn't explode")
 
 
 def test__get_authors():
-#    # one author
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('Agnes Owens', '108420', None)]
-    ), ('Agnes Owens', '108420'))
+    ) == ('Agnes Owens', '108420'), 'One author'
 
-    # with another role to ignore
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('Anton Chekhov', '5031025', None), ('Rosamund Bartlett', '121845', 'Translator')]
-    ), ('Anton Chekhov', '5031025'))
+    ) == ('Anton Chekhov', '5031025'), 'With a role to ignore'
 
-    # spaces get squashed
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('Wu  Ming', '191397', None)]
-    ), ('Wu Ming', '191397'))
+    ) == ('Wu Ming', '191397'), 'Spaces get squashed'
 
-    # two authors
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('Cory Doctorow', '12581', None), ('Charles Stross', '8794', None)]
-    ), ('Cory Doctorow, Charles Stross', '12581, 8794'))
+    ) == ('Cory Doctorow, Charles Stross', '12581, 8794'), 'Two authors'
 
-    # editors in an anthology
-    eq_(reading.goodreads._get_authors([
+    assert reading.goodreads._get_authors([
         ('John William Polidori', '26932', None),
         ('Robert  Morrison', '14558785', 'Editor'),
         ('Chris Baldick', '155911', 'Editor'),
         ('Letitia E. Landon', '2927201', None),
         ('J. Sheridan Le Fanu', '26930', None),
-    ]), ('John William Polidori, Letitia E. Landon, J. Sheridan Le Fanu', '26932, 2927201, 26930'))
+    ]) == (
+        'John William Polidori, Letitia E. Landon, J. Sheridan Le Fanu',
+        '26932, 2927201, 26930'
+    ), 'Ignores editors of an anthology'
 
-    # pseudonym as a separate name
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('V.E. Schwab', '7168230', 'Pseudonym'), ('Victoria Schwab', '3099544', None)]
-    ), ('Victoria Schwab', '3099544'))
+    ) == ('Victoria Schwab', '3099544'), 'Pseudonym as a separate name'
 
-    eq_(reading.goodreads._get_authors(
+    assert reading.goodreads._get_authors(
         [('Victoria Schwab', '3099544', None), ('V.E. Schwab', '7168230', 'Pseudonym')]
-    ), ('Victoria Schwab', '3099544'))
+    ) == ('Victoria Schwab', '3099544'), 'Pseudonyms listed afterwards'
 
     # FIXME editor(s)/translator but not other authors
     [('Ernst Zillekens', '675893', 'Editor')]
@@ -183,10 +175,10 @@ def test__get_authors():
 
 def test__parse_series():
     r = ElementTree.parse('tests/data/series/40441.xml')
-    nose.tools.eq_(reading.goodreads._parse_series(r), {
+    assert reading.goodreads._parse_series(r) == {
         'Series': 'Les Rougon-Macquart',
         'Count': '20',
         'Entries': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '1-4', '5-8'],
-    })
+    }, 'Parsed a normal series'
 
 
