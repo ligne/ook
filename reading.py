@@ -65,7 +65,7 @@ def backlog():
     df = Collection().df
 
     # FIXME _pages_added() can't see books added before 2016 without this
-    df.loc[df.Added <'2016','Added'] = pd.Timestamp('2016-01-01')
+    df.loc[df.Added < '2016', 'Added'] = pd.Timestamp('2016-01-01')
 
     p = pd.DataFrame({
         'elsewhere': _pages_added(df, 'elsewhere'),
@@ -112,7 +112,7 @@ def increase():
 
 # number of new authors a year
 def new_authors():
-    authors = Collection(shelves=['read']).df#.dropna(subset=['Read'])
+    authors = Collection(shelves=['read']).df
     first = authors.set_index('Read').sort_index().Author.drop_duplicates()
     first = first.resample('D').count().reindex(ix).fillna(0)
     first.rolling(window=365, min_periods=0).sum().plot()
@@ -349,7 +349,7 @@ def doy():
         columns='Year',
         aggfunc=np.sum,
         fill_value=0
-    ).reindex(range(1,367), fill_value=0).cumsum().plot()
+    ).reindex(range(1, 367), fill_value=0).cumsum().plot()
 
     plt.axvline(today.dayofyear, color='k', alpha=0.5)
 

@@ -14,8 +14,8 @@ def _recent_author_ids(date):
 
     return list(df[
         (df.Read.dt.year == date.year)
-        |((date - df.Read) < '180 days')
-        |(df.Shelf == 'currently-reading')
+        | ((date - df.Read) < '180 days')
+        | (df.Shelf == 'currently-reading')
     ].AuthorId)
 
 
@@ -37,7 +37,7 @@ def _read_nationalities():
 #       not scheduled
 #       not read recently
 #       next in series
-if __name__ == "__main__":
+def parse_args():
     parser = argparse.ArgumentParser()
 
     # miscellaneous
@@ -71,7 +71,13 @@ if __name__ == "__main__":
     parser.add_argument('--width', type=int, default=None)
     parser.add_argument('--words', action="store_true")
 
-    args = parser.parse_args()
+    return parser.parse_args()
+
+
+################################################################################
+
+if __name__ == "__main__":
+    args = parse_args()
 
     df = Collection(
         shelves=args.shelves,
@@ -111,7 +117,6 @@ if __name__ == "__main__":
         df = df.sort_values(['Title', 'Author'])
     else:
         df = df.sort_values(['Pages', 'Title', 'Author'])
-
 
     # reduce
     if not args.all:

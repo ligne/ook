@@ -31,6 +31,7 @@ def clean_files(d):
         if cruft:
             print('rm -r {}'.format(pipes.quote(item)))
 
+
 for d in dirs:
     clean_files(kindle_dir + d)
 

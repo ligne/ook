@@ -198,7 +198,7 @@ def lint_binding():
     ])
     return {
         'title': 'Bad binding',
-        'df': c.df[~(c.df.Binding.isin(good_bindings)|c.df.Binding.isnull())],
+        'df': c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
         'template': """
 {%- for binding, books in df.groupby('Binding') %}
 {{binding}}:
@@ -302,7 +302,7 @@ if __name__ == "__main__":
         report = getattr(n, f)()
 
         # FIXME
-        if report is None or not 'df' in report:
+        if report is None or 'df' not in report:
             print(report)
             continue
 
@@ -312,7 +312,7 @@ if __name__ == "__main__":
         print('=== {} ==='.format(report['title']))
         from jinja2 import Template
 
-        if not 'template' in report:
+        if 'template' not in report:
             continue
 
         print(Template(report['template']).render(df=report['df']))
