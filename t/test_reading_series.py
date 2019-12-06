@@ -1,7 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import pytest
-from nose.tools import eq_, ok_
+from nose.tools import eq_
 
 import pandas as pd
 
@@ -66,7 +66,7 @@ def test__parse_entries():
 
 def test_interesting():
     eq_(interesting('1', {
-        'Entries': [ '1', '2', '3' ]
+        'Entries': ['1', '2', '3']
     }), True)
 
     eq_(interesting('1', {
@@ -90,8 +90,6 @@ def _get_collection():
 
 
 def test_series():
-    c = _get_collection()
-
     # needs at least *something* to go on
     with pytest.raises(ValueError):
         Series()

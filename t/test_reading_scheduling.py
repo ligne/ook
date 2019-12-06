@@ -72,35 +72,33 @@ def test_allocate():
     df = pd.DataFrame(index=range(10))
 
     it = _allocate(df, 2018)
-    assert [ d for (d, ix) in itertools.islice(it, 5) ] == [
+    assert [d for (d, ix) in itertools.islice(it, 5)] == [
         '2018-01-01', '2019-01-01', '2020-01-01', '2021-01-01', '2022-01-01'
     ], 'Allocate with default options'
 
     it = _allocate(df, 2018, per_year=4)
-    assert [ d for (d, ix) in itertools.islice(it, 5) ] == [
+    assert [d for (d, ix) in itertools.islice(it, 5)] == [
         '2018-01-01', '2018-04-01', '2018-07-01', '2018-10-01', '2019-01-01'
     ], 'Several a year'
 
     it = _allocate(df, 2018, offset=4)
-    assert [ d for (d, ix) in itertools.islice(it, 5) ] == [
+    assert [d for (d, ix) in itertools.islice(it, 5)] == [
         '2018-04-01', '2019-04-01', '2020-04-01', '2021-04-01', '2022-04-01'
     ], 'Offset into the year'
 
     it = _allocate(df, 2018, skip=1)
-    assert [ d for (d, ix) in itertools.islice(it, 1) ] == [
+    assert [d for (d, ix) in itertools.islice(it, 1)] == [
         '2019-01-01'
     ], 'Skip one (already read)'
 
     it = _allocate(df, 2018, skip=1, last_read=pd.Timestamp('2018-09-04'))
-    assert [ d for (d, ix) in itertools.islice(it, 1) ] == [
+    assert [d for (d, ix) in itertools.islice(it, 1)] == [
         '2019-03-04'
     ], 'Postpone if read recently'
 
 
-
-
 def _format_schedule(df, sched):
-    return [ (date, df.loc[ix].Title) for date, ix in sched ]
+    return [(date, df.loc[ix].Title) for date, ix in sched]
 
 
 def test__schedule():

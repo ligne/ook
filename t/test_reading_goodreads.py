@@ -48,7 +48,7 @@ def test_process_review():
     r = ElementTree.parse('tests/data/review/1977161022.xml')
     assert reading.goodreads.process_review(r) == {
         'AuthorId': 143840,
-        'Author': u'Françoise Mallet-Joris',
+        'Author': 'Françoise Mallet-Joris',
         'AvgRating': 3.51,
         'Binding': 'Mass Market Paperback',
         'BookId': 34910673,
@@ -167,7 +167,12 @@ def test__get_authors():
     [('Ernst Zillekens', '675893', 'Editor')]
     [('Brian Davies', '91422', 'Editor'), ('Paul Kucharski', '14879133', 'Editor')]
     [('Helen Waddell', '132162', 'translator'), ('M. Basil Pennington', '30605', 'Introduction')]
-    [('Michael Cox', '39412', 'Editor'), ('R.A. Gilbert', '1952887', 'Editor'), ('Mrs. Henry Wood', '1779542', 'Contributor'), ('Mary Elizabeth Braddon', '45896', 'Contributor')]
+    [
+        ('Michael Cox', '39412', 'Editor'),
+        ('R.A. Gilbert', '1952887', 'Editor'),
+        ('Mrs. Henry Wood', '1779542', 'Contributor'),
+        ('Mary Elizabeth Braddon', '45896', 'Contributor')
+    ]
 
     # include the author for graphic novels?
     [('Fabien Vehlmann', '761380', None), ('Kerascoët', '752696', 'Illustrator')]
@@ -178,7 +183,7 @@ def test__parse_series():
     assert reading.goodreads._parse_series(r) == {
         'Series': 'Les Rougon-Macquart',
         'Count': '20',
-        'Entries': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '1-4', '5-8'],
+        'Entries': [str(x + 1) for x in range(20)] + ['1-4', '5-8'],
     }, 'Parsed a normal series'
 
 
