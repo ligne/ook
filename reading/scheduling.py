@@ -56,11 +56,12 @@ def _set_schedules(df, scheduled=None, date=datetime.date.today(), col='Schedule
 
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
-def scheduled_at(df, date=datetime.date.today(), scheduled=None):
-    _set_schedules(df, scheduled, date)
+def scheduled_at(df, date=datetime.date.today(), schedules=None):
+    _set_schedules(df, schedules, date)
     return df[(df.Scheduled.dt.year == date.year)&(df.Scheduled <= date)].sort_values('Title')
 
 
+################################################################################
 
 def _schedule(df, settings, date=datetime.date.today()):
     series = Series(
@@ -70,6 +71,8 @@ def _schedule(df, settings, date=datetime.date.today()):
     )
     start = settings.get('start', date.year)
     per_year = settings.get('per_year', 1)
+
+    last_read = series.last_read()
 
     if settings.get('force') == date.year:
         skip = 0
@@ -84,12 +87,29 @@ def _schedule(df, settings, date=datetime.date.today()):
         per_year=per_year,
         offset=settings.get('offset', 1),
         skip=skip,
+        last_read=last_read,
     )
 
 
 # takes a df of unread books, and sets start dates
-def _allocate(df, start, per_year=1, offset=1, skip=0):
-    dates = itertools.islice(_dates(start, per_year, offset), skip, None)
+def _allocate(df, start, per_year=1, offset=1, skip=0, last_read=None):
+    dates = _dates(start, per_year, offset)
+
+    if per_year == 1:
+        # skip if already read this year
+        dates = itertools.islice(_dates(start, per_year, offset), skip, None)
+        # fix up the first date
+        if last_read:
+            dates = itertools.chain([max(
+                str((last_read + pd.DateOffset(months=6)).date()),
+                next(dates)
+            )], dates)
+    else:
+        # drop leading ones
+        if last_read:
+            l = last_read.strftime('%F')
+            dates = itertools.dropwhile(lambda x: x < l, dates)
+
     return [ (date, ix) for date, ix in zip(dates, df.index) ]
 
 
