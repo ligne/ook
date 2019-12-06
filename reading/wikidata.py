@@ -102,7 +102,6 @@ class Entity():
 ################################################################################
 
 if __name__ == '__main__':
-#    print(search(sys.argv[1]))
     from pprint import pprint
-    print(pprint(get_entity(sys.argv[1])))
+    print(pprint(Entity(sys.argv[1])))
 

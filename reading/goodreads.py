@@ -18,7 +18,9 @@ def get_books():
     books = []
 
     while True:
-        url = 'https://www.goodreads.com/review/list/{}.xml'.format(config('goodreads.user'))
+        url = 'https://www.goodreads.com/review/list/{}.xml'.format(
+            config('goodreads.user')
+        )
         r = requests.get(url, params={
             'key': config('goodreads.key'),
             'v': 2,
@@ -52,7 +54,7 @@ def _get_date(xml, tag):
 
 # extract the interesting information from an xml review, as a hash.
 def process_review(r):
-    sched = [ s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name')) ]
+    sched = [s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name'))]
     scheduled = pd.Timestamp(len(sched) and min(sched) or None)
 
     row = {
@@ -198,7 +200,7 @@ def _parse_series(xml):
     return {
         'Series': xml.find('series/title').text.strip(),
         'Count': xml.find('series/primary_work_count').text,
-        'Entries': [ x.find('user_position').text for x in xml.find('series/series_works') ],
+        'Entries': [x.find('user_position').text for x in xml.find('series/series_works')],
     }
 
 
@@ -264,10 +266,5 @@ def search_title(term):
 ################################################################################
 
 if __name__ == "__main__":
-    r = ElementTree.parse('tests/data/review/1926519212.xml')
-    for f in sys.argv[1:]:
-        r = ElementTree.parse(f)
-        _parse_book_api(r)
-#         print(_parse_book_api(r))
-    #print(process_review(r))
+    pass
 

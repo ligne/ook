@@ -2,7 +2,6 @@
 
 import pandas as pd
 import re
-import yaml
 
 from reading.config import config
 
@@ -37,7 +36,7 @@ def _get_gr_books(csv=GR_CSV, merge=False):
         df = pd.concat([
             df[df.Volume.isnull()],
             df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
-                **{ col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume') },
+                **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
                 **{'Pages': 'sum'},
             }),
         ])
@@ -54,7 +53,7 @@ def _save_gr_books(df, csv=GR_CSV):
 def _get_kindle_books(csv=EBOOK_CSV, merge=False):
     df = pd.read_csv(csv, parse_dates=[
         'Added',
-    ])
+    ], index_col=0)
 
     # calculate page count
     df['Pages'] = df.Words / words_per_page
@@ -65,15 +64,15 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
         df = pd.concat([
             df[df.Volume.isnull()],
             df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
-                **{ col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume') },
-                **{'Pages': 'sum', 'Words': 'sum',},
+                **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
+                **{'Pages': 'sum', 'Words': 'sum'},
             }),
         ])
 
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
-    return df.set_index('BookId')
+    return df
 
 
 # FIXME maybe want this to not require pandas?
@@ -181,7 +180,7 @@ class Collection():
             a = df[df.AuthorId.isin(authors.index)].AuthorId
             df = pd.concat([
                 df,
-                a.apply(lambda x: authors.loc[x,['Gender', 'Nationality']]),
+                a.apply(lambda x: authors.loc[x, ['Gender', 'Nationality']]),
             ], axis='columns')
 
         # apply filters on shelf, language, category.

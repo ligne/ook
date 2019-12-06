@@ -66,7 +66,7 @@ def _parse_entries(entries):
     elif '-' in entries:
         start, end = map(lambda x: _get_entry(x), entries.split('-'))
         if None not in (start, end):
-            return list(range(start, end+1))
+            return list(range(start, end + 1))
         return []
     else:
         e = _get_entry(entries)

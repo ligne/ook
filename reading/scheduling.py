@@ -51,14 +51,14 @@ def scheduled_books(df):
 def _set_schedules(df, scheduled=None, date=datetime.date.today(), col='Scheduled'):
     for settings in scheduled or config('scheduled'):
         for d, book in _schedule(df, settings, date):
-            df.loc[book,col] = parse(d)
+            df.loc[book, col] = parse(d)
 
 
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
 def scheduled_at(df, date=datetime.date.today(), schedules=None):
     _set_schedules(df, schedules, date)
-    return df[(df.Scheduled.dt.year == date.year)&(df.Scheduled <= date)].sort_values('Title')
+    return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values('Title')
 
 
 ################################################################################
@@ -110,17 +110,19 @@ def _allocate(df, start, per_year=1, offset=1, skip=0, last_read=None):
             l = last_read.strftime('%F')
             dates = itertools.dropwhile(lambda x: x < l, dates)
 
-    return [ (date, ix) for date, ix in zip(dates, df.index) ]
+    return [(date, ix) for date, ix in zip(dates, df.index)]
 
 
 def _dates(start, per_year=1, offset=1):
     # work out which months to use
-    months = [x+offset for x in range(12) if not x % (12/per_year)]
+    months = [x + offset for x in range(12) if not x % (12 / per_year)]
 
     for year in itertools.count(start):
         for month in months:
             yield '{}-{:02d}-01'.format(year, month)
 
+
+################################################################################
 
 if __name__ == "__main__":
     from .collection import Collection

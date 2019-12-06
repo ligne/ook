@@ -13,16 +13,21 @@ from .goodreads import search_title, fetch_book
 from .collection import _ebook_parse_title
 
 
+################################################################################
+
 class SaveExit(Exception):
     pass
+
 
 class FullExit(Exception):
     pass
 
 
+################################################################################
+
 # formats a list of book search results
 def _list_book_choices(results, author_ids, work_ids):
-    (width,_) = shutil.get_terminal_size()
+    (width, _) = shutil.get_terminal_size()
     return Template('''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
@@ -52,7 +57,7 @@ def _list_book_choices(results, author_ids, work_ids):
 
 # formats a list of author search results
 def _list_author_choices(results):
-    (width,_) = shutil.get_terminal_size()
+    (width, _) = shutil.get_terminal_size()
     return Template('''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
@@ -73,7 +78,7 @@ def _read_choice(n):
 
     prompt = '\033[94m[{},?]?\033[0m '.format(','.join([selections] + others))
 
-    help_msg = '\033[91m' +  '''
+    help_msg = '\033[91m' + '''
 {} - select
 
 s - skip to the next author
@@ -127,12 +132,12 @@ def lookup_work_id(book, author_ids, work_ids):
 
     if not response:
         return
-    return results[int(response)-1]
+    return results[int(response) - 1]
 
 
 # associates an AuthorId with a Wikidata QID
 def lookup_author(author_id, author):
-    (width,_) = shutil.get_terminal_size()
+    (width, _) = shutil.get_terminal_size()
     print(Template('''
 \033[1mSearching for '{{author}}'\033[0m
 {{titles|join(', ')|truncate(width)}}\033[0m
@@ -151,7 +156,7 @@ def lookup_author(author_id, author):
     if not response:
         return
 
-    return results[int(response)-1]
+    return results[int(response) - 1]
 
 
 # check the author data looks reasonable
@@ -239,8 +244,8 @@ def find_books(books):
         work_ids.add(resp['Work'])
 
         books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
-        books.loc[book_id,'Work']   = resp['Work']
-        books.loc[book_id,'BookId'] = resp['BookId']
+        books.loc[book_id, 'Work']   = resp['Work']
+        books.loc[book_id, 'BookId'] = resp['BookId']
 
     return
 
@@ -303,5 +308,5 @@ def rebuild():
 ################################################################################
 
 if __name__ == '__main__':
-    print(lookup_author(sys.argv[1:]))
+    pass
 
