@@ -42,8 +42,7 @@ def scheduled_books(df):
         s.loc[Series(
             author=settings.get('author'),
             series=settings.get('series'),
-            df=df,
-        ).df.index] = True
+        ).df.index.intersection(df.index)] = True
 
     return s
 
