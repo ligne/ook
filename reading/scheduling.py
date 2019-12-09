@@ -141,15 +141,19 @@ if __name__ == "__main__":
     df = Collection(shelves=['read', 'currently-reading', 'pending', 'elsewhere', 'ebooks', 'library']).df
     df = df.drop_duplicates(['Work'])
 
+    date = datetime.date.today()
+
     scheduled(df)
     print('----')
-    for ix, row in scheduled_at(df, datetime.date(2019, 12, 31)).sort_values('Title').iterrows():
-        print(row.Title)
+    print('This year:')
+    for ix, row in scheduled_at(df, datetime.date(date.year, 12, 31)).sort_values('Title').iterrows():
+        print(' *', row.Title)
     print('----')
-    for ix, row in scheduled_at(df, datetime.date(2018, 10, 2)).sort_values('Title').iterrows():
-        print(row.Title)
+    print('Next year:')
+    for ix, row in scheduled_at(df, datetime.date(date.year + 1, 12, 31)).sort_values('Title').iterrows():
+        print(' *', row.Title)
     print('----')
-    print('CURRENT:\n')
+    print('CURRENT:')
     for ix, row in scheduled_at(df, datetime.date.today()).sort_values('Title').iterrows():
-        print(row.Title)
+        print(' *', row.Title)
 
