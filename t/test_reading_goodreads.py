@@ -1,7 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-import pytest
-
 from xml.etree import ElementTree
 import pandas as pd
 

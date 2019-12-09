@@ -1,6 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-import sys
 import shutil
 from jinja2 import Template
 import pandas as pd

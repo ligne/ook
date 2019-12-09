@@ -1,7 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-import pytest
-
 import pandas as pd
 
 from reading.collection import Collection
