@@ -1,7 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
 import datetime
-import itertools
 import pandas as pd
 from dateutil.parser import parse
 
@@ -26,15 +25,17 @@ from .config import config
 #       identifying books for each scheduled year
 
 
+# FIXME remove this
 def scheduled(df):
     for settings in config('scheduled'):
         print(settings.get('author', settings.get('series')))
-        for date, book in _schedule(df, settings):
+        for date, book in _schedule(df, **settings):
             book = df.loc[book]
             print('{} {} ({:0.0f})'.format(date, book.Title, book['Published']))
         print()
 
 
+# mark all books that are scheduled to be read
 def scheduled_books(df):
     s = pd.Series(False, df.index)
 
@@ -48,9 +49,9 @@ def scheduled_books(df):
 
 
 # fix up df with the scheduled dates
-def _set_schedules(df, scheduled=None, date=datetime.date.today(), col='Scheduled'):
-    for settings in scheduled or config('scheduled'):
-        for d, book in _schedule(df, settings, date):
+def _set_schedules(df, schedules=None, date=datetime.date.today(), col='Scheduled'):
+    for settings in schedules or config('scheduled'):
+        for d, book in _schedule(df, **settings, date=date):
             df.loc[book, col] = parse(d)
 
 
@@ -63,63 +64,74 @@ def scheduled_at(df, date=datetime.date.today(), schedules=None):
 
 ################################################################################
 
-def _schedule(df, settings, date=datetime.date.today()):
+def _schedule(df, author=None, series=None,
+              start=None, per_year=1, offset=0, force=False,
+              date=datetime.date.today()):
     series = Series(
-        author=settings.get('author'),
-        series=settings.get('series'),
+        author=author,
+        series=series,
         df=df,
     )
-    start = settings.get('start', date.year)
-    per_year = settings.get('per_year', 1)
 
-    last_read = series.last_read()
+    if not start:
+        start = date.year
 
-    if settings.get('force') == date.year:
-        skip = 0
-    else:
-        # "slots" count even if no book was read in that time
-        passed = int(date.timetuple().tm_yday / 365 * per_year)
-        skip = min(max(series.read_in_year(start), passed), per_year)
-
-    return _allocate(
-        series.remaining(),
-        start=start,
-        per_year=per_year,
-        offset=settings.get('offset', 1),
-        skip=skip,
-        last_read=last_read,
+    dates = _dates(
+        start, per_year, offset,
+        force,
+        last_read=series.last_read(),
+        date=date,
     )
 
+    return list(zip(dates, series.remaining().index))
 
-# takes a df of unread books, and sets start dates
-def _allocate(df, start, per_year=1, offset=1, skip=0, last_read=None):
-    dates = _dates(start, per_year, offset)
 
-    if per_year == 1:
-        # skip if already read this year
-        dates = itertools.islice(_dates(start, per_year, offset), skip, None)
-        # fix up the first date
+# converts a stream of windows into a stream of dates for scheduling
+def _dates(start, per_year=1, offset=1,
+           force=False, last_read=None,
+           date=datetime.date.today()):
+    windows = _windows(start, per_year, offset)
+
+    for start, end in windows:
+        # filter out windows that have passed
+        if end < str(date):
+            continue
+
+        # check if it's been read
         if last_read:
-            dates = itertools.chain([max(
-                str((last_read + pd.DateOffset(months=6)).date()),
-                next(dates)
-            )], dates)
-    else:
-        # drop leading ones
-        if last_read:
-            l = last_read.strftime('%F')
-            dates = itertools.dropwhile(lambda x: x < l, dates)
+            if str(last_read) > start and not force:
+                # skip to the next one. still might want to update it, however
+                start, end = next(windows)
 
-    return [(date, ix) for date, ix in zip(dates, df.index)]
+            next_read = last_read + pd.DateOffset(months=6)
+
+            # fix up the first one if necessary
+            if per_year == 1 and str(next_read) > start:
+                start = str(next_read.date())
+
+        yield start
+        break
+
+    # return the others
+    for start, end in windows:
+        yield start
 
 
-def _dates(start, per_year=1, offset=1):
-    # work out which months to use
-    months = [x + offset for x in range(12) if not x % (12 / per_year)]
+# returns a stream of (start, end) dates which may or may not want a book
+# allocating to them, starting at the beginning of year $start
+def _windows(start, per_year=1, offset=1):
+    start = pd.Timestamp(str(start))
 
-    for year in itertools.count(start):
-        for month in months:
-            yield '{}-{:02d}-01'.format(year, month)
+    interval = 12 // per_year  # FIXME use divmod and check?
+    interval = pd.DateOffset(months=interval)
+
+    if offset > 1:
+        start += pd.DateOffset(months=offset - 1)
+
+    while True:
+        end = start + interval
+        yield (str(start.date()), str(end.date()))
+        start = end
 
 
 ################################################################################
