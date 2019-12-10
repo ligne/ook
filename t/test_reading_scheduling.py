@@ -16,9 +16,13 @@ def _get_collection():
 
 ###############################################################################
 
+def _format_windows(it, count=5):
+    return list(itertools.islice(it, count))
+
+
 def test__windows():
     it = _windows(2018)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_windows(it, 5) == [
         ('2018-01-01', '2019-01-01'),
         ('2019-01-01', '2020-01-01'),
         ('2020-01-01', '2021-01-01'),
@@ -27,7 +31,7 @@ def test__windows():
     ], 'One per year'
 
     it = _windows(2018, per_year=4)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_windows(it) == [
         ('2018-01-01', '2018-04-01'),
         ('2018-04-01', '2018-07-01'),
         ('2018-07-01', '2018-10-01'),
@@ -36,7 +40,7 @@ def test__windows():
     ], 'Several per year'
 
     it = _windows(2018, per_year=3)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_windows(it) == [
         ('2018-01-01', '2018-05-01'),
         ('2018-05-01', '2018-09-01'),
         ('2018-09-01', '2019-01-01'),
@@ -45,7 +49,7 @@ def test__windows():
     ], 'A different number per year'
 
     it = _windows(2018, offset=10)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_windows(it) == [
         ('2018-10-01', '2019-10-01'),
         ('2019-10-01', '2020-10-01'),
         ('2020-10-01', '2021-10-01'),
@@ -54,13 +58,19 @@ def test__windows():
     ], 'Offset into the year'
 
     it = _windows(2018, per_year=2, offset=2)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_windows(it) == [
         ('2018-02-01', '2018-08-01'),
         ('2018-08-01', '2019-02-01'),
         ('2019-02-01', '2019-08-01'),
         ('2019-08-01', '2020-02-01'),
         ('2020-02-01', '2020-08-01'),
     ], 'Several a year, but offset'
+
+
+################################################################################
+
+def _format_dates(it, count=5):
+    return list(itertools.islice(it, count))
 
 
 # starting early in the year
@@ -71,7 +81,7 @@ def test__dates_early_year():
         start=date.year,
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-01-01',
         '2021-01-01',
         '2022-01-01',
@@ -84,7 +94,7 @@ def test__dates_early_year():
         per_year=4,
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-01-01',
         '2020-04-01',
         '2020-07-01',
@@ -97,7 +107,7 @@ def test__dates_early_year():
         last_read=pd.Timestamp('2020-01-04'),
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2021-01-01',
         '2022-01-01',
         '2023-01-01',
@@ -111,7 +121,7 @@ def test__dates_early_year():
         force=True,
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-07-04',  # first is delayed
         '2021-01-01',
         '2022-01-01',
@@ -124,7 +134,7 @@ def test__dates_early_year():
         last_read=pd.Timestamp('2019-12-04'),
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-06-04',  # first is delayed
         '2021-01-01',
         '2022-01-01',
@@ -138,7 +148,7 @@ def test__dates_early_year():
         last_read=pd.Timestamp('2019-12-04'),
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-01-01',
         '2020-04-01',
         '2020-07-01',
@@ -156,7 +166,7 @@ def test__dates_mid_year():
         per_year=4,
         date=date,
     )
-    assert list(itertools.islice(it, 1)) == [
+    assert _format_dates(it, 1) == [
         '2020-04-01',
     ], 'Skipped a window'
 
@@ -169,7 +179,7 @@ def test__dates_late_year():
         start=date.year,
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2019-01-01',
         '2020-01-01',
         '2021-01-01',
@@ -182,7 +192,7 @@ def test__dates_late_year():
         per_year=4,
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2019-10-01',
         '2020-01-01',
         '2020-04-01',
@@ -195,7 +205,7 @@ def test__dates_late_year():
         last_read=pd.Timestamp('2019-04-04'),
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-01-01',
         '2021-01-01',
         '2022-01-01',
@@ -208,7 +218,7 @@ def test__dates_late_year():
         last_read=pd.Timestamp('2019-08-26'),
         date=date,
     )
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2020-02-26',
         '2021-01-01',
         '2022-01-01',
@@ -221,7 +231,7 @@ def test__dates_late_year():
         per_year=4,
         date=date,
     )
-    assert list(itertools.islice(it, 1)) == [
+    assert _format_dates(it, 1) == [
         '2019-10-01',
     ], 'Skipped several windows'
 
@@ -231,7 +241,7 @@ def test__dates_future():
     date = datetime.date(2019, 12, 4)
 
     it = _dates(start=2021, date=date)
-    assert list(itertools.islice(it, 5)) == [
+    assert _format_dates(it) == [
         '2021-01-01',
         '2022-01-01',
         '2023-01-01',
@@ -239,6 +249,8 @@ def test__dates_future():
         '2025-01-01',
     ], 'Starting in a future year'
 
+
+################################################################################
 
 def _format_schedule(df, sched):
     return [(date, df.loc[ix].Title) for date, ix in sched]
