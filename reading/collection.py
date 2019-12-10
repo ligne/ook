@@ -183,6 +183,9 @@ class Collection():
                 a.apply(lambda x: authors.loc[x, ['Gender', 'Nationality']]),
             ], axis='columns')
 
+        # take a clean copy before filtering
+        self.all = df.copy()
+
         # apply filters on shelf, language, category.
         if categories:
             df = df[df.Category.isin(categories)]

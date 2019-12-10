@@ -3,7 +3,7 @@
 import datetime
 import argparse
 
-from reading.scheduling import scheduled_books
+from reading.scheduling import scheduled_books, scheduled_at
 from reading.collection import Collection
 
 
@@ -79,18 +79,18 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
 
-    df = Collection(
+    c = Collection(
         shelves=args.shelves,
         languages=args.languages,
         categories=args.categories,
         borrowed=args.borrowed,
         merge=True,
-    ).df
+    )
+    df = c.df
 
     # mode
     if args.scheduled:
-        # FIXME not quite the right thing...
-        #df = reading.scheduling.scheduled_at(df, args.date)
+        df = df.loc[scheduled_at(c.all, args.date).index.intersection(df.index)]
         df = df[df.Scheduled.dt.year == args.date.year]
         args.all = True  # no display limit on scheduled books
     else:
