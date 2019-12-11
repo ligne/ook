@@ -2,7 +2,6 @@
 
 import datetime
 import pandas as pd
-from dateutil.parser import parse
 
 from .series import Series
 from .config import config
@@ -52,7 +51,7 @@ def scheduled_books(df):
 def _set_schedules(df, schedules=None, date=datetime.date.today(), col='Scheduled'):
     for settings in schedules or config('scheduled'):
         for d, book in _schedule(df, **settings, date=date):
-            df.loc[book, col] = parse(d)
+            df.loc[book, col] = d
 
 
 # books ready to be read
@@ -90,24 +89,24 @@ def _schedule(df, author=None, series=None,
 def _dates(start, per_year=1, offset=1,
            force=False, last_read=None,
            date=datetime.date.today()):
+    date = pd.Timestamp(date)
     windows = _windows(start, per_year, offset)
 
     for start, end in windows:
         # filter out windows that have passed
-        if end < str(date):
+        if end < date:
             continue
 
         # check if it's been read
         if last_read:
-            if str(last_read) > start and not force:
-                # skip to the next one. still might want to update it, however
+            if last_read > start and not force:
+                # skip to the next one.
                 start, end = next(windows)
 
-            next_read = last_read + pd.DateOffset(months=6)
-
             # fix up the first one if necessary
-            if per_year == 1 and str(next_read) > start:
-                start = str(next_read.date())
+            next_read = last_read + pd.DateOffset(months=6)
+            if per_year == 1 and next_read > start:
+                start = next_read
 
         yield start
         break
@@ -130,7 +129,7 @@ def _windows(start, per_year=1, offset=1):
 
     while True:
         end = start + interval
-        yield (str(start.date()), str(end.date()))
+        yield (start, end)
         start = end
 
 

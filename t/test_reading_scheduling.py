@@ -17,7 +17,10 @@ def _get_collection():
 ###############################################################################
 
 def _format_windows(it, count=5):
-    return list(itertools.islice(it, count))
+    formatted = []
+    for row in itertools.islice(it, count):
+        formatted.append(tuple(str(x.date()) for x in row))
+    return formatted
 
 
 def test__windows():
@@ -70,7 +73,7 @@ def test__windows():
 ################################################################################
 
 def _format_dates(it, count=5):
-    return list(itertools.islice(it, count))
+    return [str(x.date()) for x in itertools.islice(it, count)]
 
 
 # starting early in the year
@@ -253,7 +256,7 @@ def test__dates_future():
 ################################################################################
 
 def _format_schedule(df, sched):
-    return [(date, df.loc[ix].Title) for date, ix in sched]
+    return [(str(date.date()), df.loc[ix].Title) for date, ix in sched]
 
 
 def test__schedule():
