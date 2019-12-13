@@ -21,6 +21,25 @@ def lint_missing_pagecount():
     }
 
 
+def lint_words_per_page():
+    c = Collection(fixes=None, merge=True)
+
+    df = c.df
+    df['wpp'] = df.Words / df.Pages
+
+    return {
+        'title': 'Unusual words per page',
+        'df': df[(df.wpp < 150) | (df.wpp > 700) & (df.Pages > 10)],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+  {{entry.wpp | int}} words per page, {{entry.Pages | int}} pages
+{%- endfor %}
+
+""",
+    }
+
+
 def lint_missing_category():
     c = Collection(fixes=None)
     return {
