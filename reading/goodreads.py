@@ -5,7 +5,6 @@ import re
 import pandas as pd
 from xml.etree import ElementTree
 from dateutil.parser import parse
-from math import isnan
 
 import reading.series
 from reading.config import config
@@ -80,7 +79,7 @@ def process_review(r):
 def fetch_book(book_id):
     book = _parse_book_api(_fetch_book_api(book_id))
     # if the interesting information isn't there, fetch it via html
-    if isnan(book['Pages']):
+    if False:
         book.update(_parse_book_html(_fetch_book_html(book_id)))
 
     # fetch series
@@ -147,38 +146,13 @@ def _parse_book_api(xml):
     }
 
 
-s = {}
-
 # the edition language isn't accessible through the API for some books.
 def _fetch_book_html(book_id):
-    if not s:
-        from bs4 import BeautifulSoup
-
-        with open(config('goodreads.html')) as fh:
-            soup = BeautifulSoup(fh, 'html5lib')
-
-        for review in soup.find_all(id=re.compile("^review_\d+")):
-            bid = re.search(
-                '/book/show/(\d+)',
-                review.find_all(class_='title')[0].div.a['href']
-            ).group(1)
-
-            s[int(bid)] = review
-
-    return s.get(book_id)
+    pass
 
 
 def _parse_book_html(html):
-    try:
-        r_pages = html.find(class_='num_pages').div.text
-        m = re.search('[\d,]+', r_pages)
-        return {
-            'Pages': float(m.group(0).replace(',', '')),
-        }
-    except AttributeError:
-        return {
-            'Pages': None
-        }
+    pass
 
 
 def _fetch_series(series_id):

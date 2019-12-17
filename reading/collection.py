@@ -207,6 +207,15 @@ class Collection():
             if d is not None:
                 df.update(d)
 
+            try:
+                scraped = pd.read_csv('data/scraped.csv', index_col=0, parse_dates=[
+                    'Started',
+                    'Read',
+                ])
+            except (FileNotFoundError):
+                scraped = pd.DataFrame(columns=df.columns)
+            df.update(scraped)
+
         self.df = df
 
 
