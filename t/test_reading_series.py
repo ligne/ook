@@ -86,7 +86,7 @@ def test_ignore():
 ################################################################################
 
 def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv')
+    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False)
 
 
 def test_series():

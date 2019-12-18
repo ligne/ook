@@ -11,7 +11,7 @@ from reading.scheduling import scheduled_at
 
 # load a test Collection
 def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv')
+    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False)
 
 
 ###############################################################################
