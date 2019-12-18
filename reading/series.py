@@ -3,6 +3,7 @@
 import sys
 import operator
 import re
+from warnings import warn
 from functools import reduce
 import pandas as pd
 
@@ -160,7 +161,7 @@ class Series():
             raise ValueError("Must provide author, series or series ID.")
 
         if self.df.duplicated('Work').any():
-            print('Duplicate works in series {}'.format(self.label))
+            warn('Duplicate works in series {}'.format(self.label))
 
 
     # books in the series that still need to be read
