@@ -8,7 +8,7 @@ from reading.config import config
 
 
 def lint_missing_pagecount():
-    c = Collection(fixes=None)
+    c = Collection()
     return {
         'title': 'Missing a pagecount',
         'df': c.df[c.df.Pages.isnull()],
