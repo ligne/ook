@@ -4,9 +4,11 @@ import sys
 import operator
 import re
 from functools import reduce
+import pandas as pd
 
 from .config import config
 from .collection import Collection
+import reading.goodreads
 
 # configuration:
 #   series information cache.  build it from the series extracted from books.
@@ -111,6 +113,13 @@ def _sort_entries(df):
 # from cache and config?
 def _get_series_settings(series):
     return {}
+
+
+# return the series information (number of works and entry numbers)
+def _get_series_info(series_id):
+    return reading.goodreads._parse_series(
+        reading.goodreads._fetch_series(series_id)
+    ) or {}
 
 
 # whether to ignore the series.
