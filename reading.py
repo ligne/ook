@@ -446,32 +446,6 @@ def scheduled():
 
 ################################################################################
 
-def _make_rating_scatterplot(data, name, **args):
-    import seaborn as sns
-
-    g = sns.JointGrid(x="Rating", y="AvgRating", data=data)
-    g = g.plot_joint(sns.regplot, **args)
-    g = g.plot_marginals(sns.distplot, kde=False, bins=np.arange(1, 6, 0.05))
-
-    g.ax_marg_x.set_xticks(np.arange(1, 6))
-    g.ax_marg_y.set_yticks(np.arange(1, 6))
-
-    g.ax_marg_x.set_xlim(0.9, 5.1)
-    g.ax_marg_y.set_ylim(0.9, 5.1)
-
-    plt.savefig('images/' + name)
-    plt.close()
-
-
-def rating_scatter():
-    df = Collection(shelves=['read']).df
-
-    _make_rating_scatterplot(df, 'scatter_2.png', x_jitter=.1)
-    _make_rating_scatterplot(df, 'scatter.png',   x_estimator=np.mean)
-
-
-################################################################################
-
 if __name__ == "__main__":
     doy()
     nationality()
@@ -486,6 +460,5 @@ if __name__ == "__main__":
     increase()
     new_authors()
     reading_rate()
-    rating_scatter()
 
 # vim: ts=4 : sw=4 : et
