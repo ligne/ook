@@ -101,7 +101,7 @@ def rebuild(scraped, df):
     fixes = pd.concat([
         fixes.loc[fixes.index.difference(scraped.index)],
         scraped,
-    ])
+    ], sort=False)
 
     # trim off scraped books that aren't being tracked
     fixes = fixes.loc[fixes.index.intersection(df.index)]

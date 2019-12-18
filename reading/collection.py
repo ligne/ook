@@ -39,7 +39,7 @@ def _get_gr_books(csv=GR_CSV, merge=False):
                 **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
                 **{'Pages': 'sum'},
             }),
-        ])
+        ], sort=False)
 
     return df.set_index('BookId')
 
@@ -67,7 +67,7 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
                 **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
                 **{'Pages': 'sum', 'Words': 'sum'},
             }),
-        ])
+        ], sort=False)
 
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
@@ -171,7 +171,7 @@ class Collection():
         df = pd.concat([
             _get_gr_books(gr_csv, merge),
             _get_kindle_books(ebook_csv, merge),
-        ])
+        ], sort=False)
 
         if metadata:
             df.update(pd.read_csv(metadata, index_col=0))
@@ -181,7 +181,7 @@ class Collection():
             df = pd.concat([
                 df,
                 a.apply(lambda x: authors.loc[x, ['Gender', 'Nationality']]),
-            ], axis='columns')
+            ], axis='columns', sort=False)
 
         # take a clean copy before filtering
         self.all = df.copy()

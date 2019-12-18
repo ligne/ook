@@ -286,17 +286,17 @@ def rebuild():
     books_mask = pd.concat([
         books.notnull()[prefer_book_cols],
         works.isnull()[prefer_work_cols],
-    ], axis=1)
+    ], axis=1, sort=False)
 
     works_mask = pd.concat([
         works.notnull()[prefer_work_cols],
         books.isnull()[prefer_book_cols],
-    ], axis=1)
+    ], axis=1, sort=False)
 
     metadata = pd.concat([
         works.where(works_mask),
         books.where(books_mask),
-    ])
+    ], sort=False)
 
     # filter out no-op changes and empty bits
     return metadata[books.loc[metadata.index, metadata.columns] != metadata] \

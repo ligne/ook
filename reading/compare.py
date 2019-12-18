@@ -37,7 +37,7 @@ def _compare_with_work(old, new):
     wids = pd.concat([
         old.loc[old.index.intersection(idcs)],
         new.loc[new.index.intersection(idcs)],
-    ])['Work'].drop_duplicates().values
+    ], sort=False)['Work'].drop_duplicates().values
 
     for ix in wids:
         _o = old[old['Work'] == ix]
