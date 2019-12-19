@@ -6,7 +6,7 @@ import yaml
 # value = config('key.name')
 def config(key):
     with open('data/config.yml') as fh:
-        config = yaml.load(fh)
+        config = yaml.safe_load(fh)
 
     for key in key.split('.'):
         try:

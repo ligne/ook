@@ -35,7 +35,7 @@ def wordcount(path):
 # gathers metadata from the ebook.  annoyingly, calibre doesn't support
 # Python3, and there aren't many other easy options...
 def metadata(path):
-    mi = yaml.load(check_output(['python2', '-c', '''
+    mi = yaml.safe_load(check_output(['python2', '-c', '''
 import os, sys, yaml
 
 sys.path.insert(0, '/usr/lib/calibre')
