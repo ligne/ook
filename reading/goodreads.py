@@ -52,7 +52,7 @@ def _get_date(xml, tag):
 
 # extract the interesting information from an xml review, as a hash.
 def process_review(r):
-    sched = [s.get('name') for s in r.findall('shelves/') if re.match('^\d{4}$', s.get('name'))]
+    sched = [s.get('name') for s in r.findall('shelves/') if re.match(r'^\d{4}$', s.get('name'))]
     scheduled = pd.Timestamp(len(sched) and min(sched) or None)
 
     row = {
@@ -181,7 +181,7 @@ def _get_authors(authors):
     _authors = list(filter(lambda x: x[2] is None, authors))
     if len(_authors):
         return (
-            ', '.join([re.sub('\s+', ' ', a[0]) for a in _authors]),
+            ', '.join([re.sub(r'\s+', ' ', a[0]) for a in _authors]),
             ', '.join([a[1] for a in _authors]),
         )
 

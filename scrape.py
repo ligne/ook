@@ -16,7 +16,7 @@ from reading.compare import compare
 
 def book_id(review):
     return int(re.search(
-        '/book/show/(\d+)',
+        r'/book/show/(\d+)',
         review.find_all(class_='title')[0].div.a['href']
     ).group(1))
 
@@ -24,7 +24,7 @@ def book_id(review):
 def pages(review):
     try:
         return int(re.search(
-            '[\d,]+',
+            r'[\d,]+',
             review.find(class_='num_pages').div.text,
         ).group(0).replace(',', ''))
     except AttributeError:
@@ -70,7 +70,7 @@ def scrape(fname):
     books = []
 
     # FIXME scrape: fixed start/read dates, page-count
-    for review in soup.find_all(id=re.compile("^review_\d+")):
+    for review in soup.find_all(id=re.compile(r'^review_\d+')):
         books.append({
             'BookId': book_id(review),
             'Started': started_date(review),

@@ -89,19 +89,19 @@ def _save_kindle_books(df, csv=EBOOK_CSV):
 # split ebook titles into title, subtitle and volume parts, since they tend to
 # be unusably messy
 def _ebook_parse_title(title):
-    title = re.sub('\s+', ' ', title.strip())
+    title = re.sub(r'\s+', ' ', title.strip())
 
     t = title
     s = v = None
 
-    m = re.search('(?: / |\s?[;:] )', title)
+    m = re.search(r'(?: / |\s?[;:] )', title)
     if m:
-        t, s = re.split('(?: / |\s?[;:] )', title, maxsplit=1)
+        t, s = re.split(r'(?: / |\s?[;:] )', title, maxsplit=1)
 
     patterns = (
-        (', Tome ([IV]+)\.', 1),
-        (', Volume (\d+)(?: \(.+\))', 1),
-        (', tome (\w+)', 1),
+        (r', Tome ([IV]+)\.', 1),
+        (r', Volume (\d+)(?: \(.+\))', 1),
+        (r', tome (\w+)', 1),
     )
 
     for pat, grp in patterns:

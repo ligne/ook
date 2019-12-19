@@ -51,7 +51,7 @@ def hidden(df):
 def _get_entry(string):
     # strip out the leading number and try and make it an int.
     try:
-        m = re.match('\s*([\d.]+)', string)
+        m = re.match(r'\s*([\d.]+)', string)
         return int(m.group(0))
     except (ValueError, AttributeError):
         return
