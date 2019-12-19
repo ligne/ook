@@ -163,11 +163,9 @@ class Series():
         if self.df.duplicated('Work').any():
             warn('Duplicate works in series {}'.format(self.label))
 
-
     # books in the series that still need to be read
     def remaining(self):
         return self.sort().df[~self.df.Shelf.isin(['read', 'currently-reading'])]
-
 
     # return readable ones in order (for scheduling)
     def readable(self):
@@ -175,7 +173,6 @@ class Series():
             return self.remaining()
         # if 'strict', return leaving gaps
         # if 'break', return until the first blockage
-
 
     # date this series was last read (today if still reading)
     def last_read(self):
@@ -188,12 +185,10 @@ class Series():
         else:
             return None
 
-
     # returns the number of books from the series (being) read in $year
     def read_in_year(self, year):
         return len(self.df[self.df.Read.dt.year == year]) \
              + len(self.df[self.df.Shelf == 'currently-reading'])
-
 
     # sort the books according to preference
     def sort(self):

@@ -218,7 +218,6 @@ class Collection():
 
         self.df = df
 
-
     # save to disk.  FIXME must only apply to one file?
     def save(self):
         _save_gr_books(self.df)

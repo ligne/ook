@@ -71,7 +71,7 @@ def test__changed():
     # FIXME should do nothing if they're both equal?
     assert _changed(b1, b1) is None, 'Nothing if the books are the same'
 
-
+    ###
     b2 = b1.copy()
     b2.Title = b2.Title.lower()
 
@@ -80,7 +80,7 @@ Matthew Lewis, the monk
   * Title changed from 'The Monk'
 """.strip(), 'Change in title is treated specially'
 
-
+    ###
     b2 = b1.copy()
     b2.Author = b2.Author.lower()
 
@@ -89,7 +89,7 @@ matthew lewis, The Monk
   * Author changed from 'Matthew Lewis'
 """.strip(), 'Change in author is treated specially'
 
-
+    ###
     b2 = b1.copy()
     b2.Shelf = 'elsewhere'
     b2.Pages = 426
@@ -100,7 +100,7 @@ Matthew Lewis, The Monk
   * Pages: 339 → 426
 """.strip(), 'Various other fields changed'
 
-
+    ###
     b2 = b1.copy()
     b2.Category = None
     b2.Added = pd.Timestamp('2017-12-25')
@@ -149,7 +149,7 @@ Matthew Lewis, The Monk
   * Scheduled: 2020 → 2021
 """.strip(), 'Scheduled year changed'
 
-
+    ###
     b2 = b1.copy()
     b2.AvgRating += 1.2
 

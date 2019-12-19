@@ -60,11 +60,9 @@ class Entity():
             j = r.json()
         self.entity = j['entities'][qid]
 
-
     # handle non-humans and collectives
     def gender(self):
         return self.property('P21').label()
-
 
     # return a list if necessary
     def nationality(self):
@@ -79,11 +77,11 @@ class Entity():
 
         return nat
 
-
+    # whether the entity has the given property
     def has_property(self, prop):
         return prop in self.entity['claims']
 
-
+    # returns the given property, in a hopefully useful form
     def property(self, prop):
         p = self.entity['claims'][prop][0]['mainsnak']['datavalue']
 
@@ -94,7 +92,7 @@ class Entity():
 
         return p['value']
 
-
+    # returns the entity's label
     def label(self):
         return self.entity['labels']['en']['value']
 
