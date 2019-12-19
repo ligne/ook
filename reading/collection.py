@@ -159,9 +159,7 @@ class Collection():
                  gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
                  dedup=False, merge=False,
                  fixes=True, metadata='data/metadata.csv',
-                 shelves=None, categories=None, languages=None, borrowed=None
-                ):
-
+                 shelves=None, categories=None, languages=None, borrowed=None):
         # just wrap it
         if df is not None:
             self.df = df.copy()

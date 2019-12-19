@@ -73,9 +73,9 @@ def _ignore_item(path):
 
     fname = path.parts[-1]
     return (not path.is_file()
-         or fname[0] == '.'
-         or fname in ignore_fname
-         or path.suffix in ignore_ext)
+            or fname[0] == '.'
+            or fname in ignore_fname
+            or path.suffix in ignore_ext)
 
 
 # returns all the interesting-looking files.
