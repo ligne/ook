@@ -61,7 +61,7 @@ print(yaml.dump({
 
     try:
         language = mi['Languages'][0][:2]
-    except:
+    except (KeyError, IndexError):
         language = 'en'
 
     return (author, title, language)

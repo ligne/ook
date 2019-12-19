@@ -166,7 +166,7 @@ def confirm_author(author):
     try:
         author['Gender']      = entity.gender()
         author['Nationality'] = entity.nationality()
-    except:
+    except Exception:  # FIXME
         print('\033[91mError fetching data\033[0m')
         print()
         return

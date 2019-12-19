@@ -116,7 +116,7 @@ def _parse_book_api(xml):
     lang = xml.find('book/language_code').text
     try:
         lang = lang[:2]
-    except:
+    except TypeError:
         pass
 
     series = entry = series_id = None
