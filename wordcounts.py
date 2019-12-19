@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from subprocess import check_output, call, DEVNULL
-import datetime
 from pathlib import Path
 import yaml
 import argparse
@@ -117,7 +116,7 @@ def process(df, force=False):
             'Shelf': 'kindle',
             'Category': category,
             'Language': language,
-            'Added': pd.Timestamp(datetime.date.fromtimestamp(path.stat().st_mtime)),
+            'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
             'AuthorId': None,
             'Binding': 'ebook',
             'Work': None,

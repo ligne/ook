@@ -16,7 +16,7 @@ from reading.collection import Collection
 thresh = 1940
 
 ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
-today = pd.to_datetime('today')
+today = pd.Timestamp('today')
 tomorrow = today + pd.Timedelta('1 day')
 
 

@@ -30,7 +30,7 @@ def scheduled(df):
         print(settings.get('author', settings.get('series')))
         for date, book in _schedule(df, **settings):
             book = df.loc[book]
-            print('{} {} ({:0.0f})'.format(date, book.Title, book['Published']))
+            print('{} {} ({:0.0f})'.format(date.date(), book.Title, book['Published']))
         print()
 
 
@@ -57,6 +57,7 @@ def _set_schedules(df, schedules=None, date=datetime.date.today(), col='Schedule
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
 def scheduled_at(df, date=datetime.date.today(), schedules=None):
+    date = pd.Timestamp(date)
     _set_schedules(df, schedules, date)
     return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values('Title')
 

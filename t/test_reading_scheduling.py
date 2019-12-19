@@ -1,7 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
 import itertools
-import datetime
 import pandas as pd
 
 from reading.collection import Collection
@@ -78,7 +77,7 @@ def _format_dates(it, count=5):
 
 # starting early in the year
 def test__dates_early_year():
-    date = datetime.date(2020, 2, 4)
+    date = pd.Timestamp('2020-02-04')
 
     it = _dates(
         start=date.year,
@@ -162,7 +161,7 @@ def test__dates_early_year():
 
 # starting part-way through the year
 def test__dates_mid_year():
-    date = datetime.date(2020, 5, 4)
+    date = pd.Timestamp('2020-05-04')
 
     it = _dates(
         start=date.year,
@@ -176,7 +175,7 @@ def test__dates_mid_year():
 
 # starting late in the year
 def test__dates_late_year():
-    date = datetime.date(2019, 12, 4)
+    date = pd.Timestamp('2019-12-04')
 
     it = _dates(
         start=date.year,
@@ -241,7 +240,7 @@ def test__dates_late_year():
 
 # starting in the future
 def test__dates_future():
-    date = datetime.date(2019, 12, 4)
+    date = pd.Timestamp('2019-12-04')
 
     it = _dates(start=2021, date=date)
     assert _format_dates(it) == [
@@ -260,7 +259,7 @@ def _format_schedule(df, sched):
 
 
 def test__schedule():
-    date = datetime.date(2019, 12, 4)
+    date = pd.Timestamp('2019-12-04')
 
     df = _get_collection().df
 

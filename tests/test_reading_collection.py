@@ -62,7 +62,7 @@ def test__get_gr_books():
     b = df.loc[290566]  # Canal Dreams
     # scheduled is a datetime
     eq_(b.Scheduled.year, 2019)
-    eq_(b.Scheduled.strftime('%F'), '2019-01-01')
+    eq_(str(b.Scheduled.date()), '2019-01-01')
 
     b = df.loc[28595808]  # The McCabe Reader
     # missing publication year
@@ -100,7 +100,7 @@ def test__get_kindle_books():
 #     eq_(list(zip(df.columns, df.dtypes)), [
 #     ])
 
-    eq_(df[df.Author == 'Edith Birkhead'].Added.dt.strftime('%F').values[0], '2013-02-06', 'Added is the correct datetime')
+    eq_(str(df[df.Author == 'Edith Birkhead'].Added.dt.values[0].date()), '2013-02-06', 'Added is the correct datetime')
 
     # author field is never null
     # FIXME do we actually care?

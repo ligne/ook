@@ -2,6 +2,7 @@
 
 import datetime
 import argparse
+import pandas as pd
 
 from reading.scheduling import scheduled_books, scheduled_at
 from reading.collection import Collection
@@ -44,7 +45,7 @@ def parse_args():
     parser.add_argument(
         '--date',
         type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'),
-        default=datetime.date.today(),
+        default=pd.Timestamp('today'),
     )
     # mode
     parser.add_argument('--scheduled', action="store_true")
