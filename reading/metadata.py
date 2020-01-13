@@ -183,7 +183,7 @@ def confirm_author(author):
 def _load_csv(name, columns):
     try:
         return pd.read_csv(name, index_col=0)
-    except (FileNotFoundError):
+    except FileNotFoundError:
         return pd.DataFrame(columns=columns)
 
 
@@ -215,9 +215,9 @@ def find():
         find_books(books)
         # FIXME want to reload so the authors of newly-associated books appear
         find_authors(authors)
-    except (SaveExit):
+    except SaveExit:
         pass
-    except (FullExit):
+    except FullExit:
         return
 
     books.to_csv(books_csv,     float_format='%.20g')

@@ -210,7 +210,7 @@ class Collection():
                     'Started',
                     'Read',
                 ])
-            except (FileNotFoundError):
+            except FileNotFoundError:
                 scraped = pd.DataFrame(columns=df.columns)
             df.update(scraped)
 

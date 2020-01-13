@@ -90,7 +90,7 @@ def rebuild(scraped, df):
             'Started',
             'Read',
         ])
-    except (FileNotFoundError):
+    except FileNotFoundError:
         fixes = pd.DataFrame(columns=df.columns)
 
     for col in ['Started', 'Read']:
