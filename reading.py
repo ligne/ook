@@ -354,7 +354,7 @@ def doy():
     plt.axvline(today.dayofyear, color='k', alpha=0.5)
 
 #    plt.grid(True)
-    for m in np.cumsum([0,31,28,31,30,31,30,31,31,30,31,30,31])[:12]:
+    for m in np.cumsum([0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])[:12]:
         plt.plot([m, 366], [0, 12000 * (1 - m / 366)], color='k', alpha=.2)
 
     # prettify and save

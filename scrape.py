@@ -107,7 +107,7 @@ def rebuild(scraped, df):
     fixes = fixes.loc[fixes.index.intersection(df.index)]
 
     # remove redundant fixes FIXME keeps throwing errors...
-    check = df.loc[fixes.index].loc[:,fixes.columns]
+    check = df.loc[fixes.index].loc[:, fixes.columns]
 #    fixes = fixes[check != fixes]
 
     return fixes.dropna(how='all').dropna(axis='columns', how='all').sort_index()
