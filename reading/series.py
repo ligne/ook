@@ -73,7 +73,7 @@ def _parse_entries(entries):
         return []
     else:
         e = _get_entry(entries)
-        return (e is not None) and [e] or []
+        return [e] if e is not None else []
 
 
 # returns False if the series is deemed uninteresting.

@@ -81,7 +81,7 @@ def _ignore_item(path):
 # returns all the interesting-looking files.
 def get_ebooks(kindle_dir):
     for d in 'articles', 'short-stories', 'books', 'non-fiction':
-        category = d == 'books' and 'novels' or d  # FIXME
+        category = 'novels' if d == 'books' else d
         for f in (kindle_dir / d).iterdir():
             if _ignore_item(f):
                 continue

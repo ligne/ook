@@ -73,7 +73,7 @@ def _read_choice(n):
     entries = [str(x + 1) for x in range(n)]
     others = list('sqQ')
 
-    selections = n == 1 and '1' or '1-{}'.format(n)
+    selections = '1' if n == 1 else '1-{}'.format(n)
 
     prompt = '\033[94m[{},?]?\033[0m '.format(','.join([selections] + others))
 
