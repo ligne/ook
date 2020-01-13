@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# flake8: noqa
+# pylint: skip-file
+
 import glob
 import pipes  # used for shell escapes
 
