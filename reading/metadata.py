@@ -246,8 +246,6 @@ def find_books(books):
         books.loc[book_id, 'Work']   = resp['Work']
         books.loc[book_id, 'BookId'] = resp['BookId']
 
-    return
-
 
 # associate Wikidata QIDs with AuthorIds
 def find_authors(authors):
@@ -269,8 +267,6 @@ def find_authors(authors):
 
         resp['Author'] = resp.pop('Label')  # FIXME
         authors.loc[int(author_id)] = pd.Series(resp)
-
-    return
 
 
 ################################################################################

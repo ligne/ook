@@ -22,8 +22,6 @@ def compare(old, new, use_work=True):
     else:
         _compare_without_work(old, new)
 
-    return
-
 
 def _compare_with_work(old, new):
     # changed
