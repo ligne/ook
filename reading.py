@@ -396,9 +396,6 @@ def scheduled():
 
     years = scheduled_years(df)
 
-    # FIXME
-    completed = pd.read_csv('data/completed.csv', index_col=0)
-
     fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
 
     for year, ax in zip(years, axes):

@@ -129,8 +129,8 @@ def _parse_book_api(xml):
 
     shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
-    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
-          for s in xml.findall('book/authors/author')]
+#    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
+#          for s in xml.findall('book/authors/author')]
 
     return {
         'Author': re.sub(' +', ' ', xml.find('book/authors/author/name').text),
