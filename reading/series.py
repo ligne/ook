@@ -67,7 +67,7 @@ def _parse_entries(entries):
             _parse_entries(x) for x in re.split('[,&]', entries)
         ])
     elif '-' in entries:
-        start, end = map(lambda x: _get_entry(x), entries.split('-'))
+        start, end = [_get_entry(x) for x in entries.split('-')]
         if None not in (start, end):
             return list(range(start, end + 1))
         return []
