@@ -95,7 +95,7 @@ def _lookup_series_id(df, name):
     series = df[df.Series.str.contains(name, na=False)]
     names = set(series.Series)
 
-    if not len(names):
+    if not names:
         raise ValueError("Couldn't find series matching {}".format(name))
     if len(names) > 1:
         raise ValueError("Ambiguous series name {}: {}".format(

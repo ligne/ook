@@ -179,7 +179,7 @@ def _parse_series(xml):
 
 def _get_authors(authors):
     _authors = list(filter(lambda x: x[2] is None, authors))
-    if len(_authors):
+    if _authors:
         return (
             ', '.join([re.sub(r'\s+', ' ', a[0]) for a in _authors]),
             ', '.join([a[1] for a in _authors]),
