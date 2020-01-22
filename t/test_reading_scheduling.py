@@ -351,11 +351,31 @@ def test_scheduled_at():
         {'series': 'Languedoc', 'force': 2019},  # force
     ]
 
-    assert _format_scheduled_df(scheduled_at(df, date=datetime.date(2019, 12, 4), schedules=s)) == [
+    # late this year
+    date = pd.Timestamp('2019-12-04')
+
+    assert _format_scheduled_df(scheduled_at(df, date=date, schedules=s)) == [
         'La Conquête de Plassans',
         'Sepulchre'
     ], 'One unread book, one forced'
 
-#    assert _format_scheduled_df(scheduled_at(df, date=datetime.date(2020, 1, 1), schedules=s)) == [
-#    ]
+    # early next year
+    date = pd.Timestamp('2020-01-04')
+
+    assert _format_scheduled_df(scheduled_at(df, date=date, schedules=s)) == [
+        'A History of Modern France, Volume 2: From the First Empire to the Second '
+        'Empire, 1799-1871',
+        'Feersum Endjinn',
+        "La Faute de l'abbé Mouret",
+        'La Tulipe Noire',
+        "Le Fantôme de l'Opéra",
+        'Le Médecin De Campagne',
+        'Let the Right One In',
+        'Maskerade',
+        'Sepulchre',
+        'The Pioneers',
+        'The Sirens of Titan',
+        "Winter's Bone",
+    ]
+
 
