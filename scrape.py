@@ -69,7 +69,6 @@ def scrape(fname):
 
     books = []
 
-    # FIXME scrape: fixed start/read dates, page-count
     for review in soup.find_all(id=re.compile(r'^review_\d+')):
         books.append({
             'BookId': book_id(review),
