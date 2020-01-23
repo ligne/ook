@@ -26,21 +26,6 @@ def wd_search(term):
     } for res in r.json()['search']]
 
 
-# use wikipedia full-text search.
-def search_harder(term):
-    r = requests.get('https://en.wikipedia.org/w/api.php', params={
-        'action': 'query',
-        'list': 'search',
-        'prop': 'pageprops',
-        'format': 'json',
-        'srsearch': term,
-    })
-    return r.content.decode('utf-8')
-    return [{
-
-    } for res in r.json()['query']['search']]
-
-
 ###############################################################################
 
 # basic operations on an entity.
