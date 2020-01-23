@@ -252,7 +252,7 @@ def find_authors(authors):
     df = Collection().df
     df = df[~df.AuthorId.isin(authors.index)].groupby('AuthorId').aggregate({
         'Author': 'first',
-        'Title': lambda x: list(x),
+        'Title': list,
     })
 
     for (author_id, author) in df.iterrows():

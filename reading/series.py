@@ -107,7 +107,7 @@ def _lookup_series_id(df, name):
 
 # sort Entry strings
 def _sort_entries(df):
-    return df.loc[df.Entry.apply(lambda x: _parse_entries(x)).sort_values().index]
+    return df.loc[df.Entry.apply(_parse_entries).sort_values().index]
 
 
 # return the information for the series
