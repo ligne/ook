@@ -7,7 +7,7 @@ import reading.goodreads
 
 
 def test_process_review():
-    r = ElementTree.parse('tests/data/review/1629171100.xml')
+    r = ElementTree.parse('t/data/review/1629171100.xml')
     assert reading.goodreads.process_review(r) == {
         'AuthorId': 12476,
         'Author': 'Joe Haldeman',
@@ -25,7 +25,7 @@ def test_process_review():
         'Work': 423,
     }
 
-    r = ElementTree.parse('tests/data/review/1926519212.xml')
+    r = ElementTree.parse('t/data/review/1926519212.xml')
     assert reading.goodreads.process_review(r) == {
         'AuthorId': 9121,
         'Author': 'James Fenimore Cooper',
@@ -43,7 +43,7 @@ def test_process_review():
         'Work': 443966,
     }
 
-    r = ElementTree.parse('tests/data/review/1977161022.xml')
+    r = ElementTree.parse('t/data/review/1977161022.xml')
     assert reading.goodreads.process_review(r) == {
         'AuthorId': 143840,
         'Author': 'Françoise Mallet-Joris',
@@ -63,7 +63,7 @@ def test_process_review():
 
 
 def test__parse_book_api():
-    r = ElementTree.parse('tests/data/book/115069.xml')
+    r = ElementTree.parse('t/data/book/115069.xml')
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Émile Zola',
         'AuthorId': 4750,
@@ -77,7 +77,7 @@ def test__parse_book_api():
         'Category': 'novels',
     }
 
-    r = ElementTree.parse('tests/data/book/3602116.xml')
+    r = ElementTree.parse('t/data/book/3602116.xml')
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Augustine of Hippo',
         'AuthorId': 6819578,
@@ -91,7 +91,7 @@ def test__parse_book_api():
         'Category': 'non-fiction',
     }
 
-    r = ElementTree.parse('tests/data/book/38290.xml')
+    r = ElementTree.parse('t/data/book/38290.xml')
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'James Fenimore Cooper',
         'AuthorId': 9121,
@@ -105,7 +105,7 @@ def test__parse_book_api():
         'Category': 'novels',
     }
 
-    r = ElementTree.parse('tests/data/book/17999159.xml')
+    r = ElementTree.parse('t/data/book/17999159.xml')
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Allie Brosh',
         'AuthorId': 6984726,
@@ -177,7 +177,7 @@ def test__get_authors():
 
 
 def test__parse_series():
-    r = ElementTree.parse('tests/data/series/40441.xml')
+    r = ElementTree.parse('t/data/series/40441.xml')
     assert reading.goodreads._parse_series(r) == {
         'Series': 'Les Rougon-Macquart',
         'Count': '20',
