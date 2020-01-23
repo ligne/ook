@@ -94,7 +94,7 @@ Q - exit without saving
             elif c == 'Q':
                 raise FullExit
             elif c == 's':
-                return
+                return None
             elif c in entries:
                 break
             print(help_msg)
@@ -120,7 +120,7 @@ def lookup_work_id(book, author_ids, work_ids):
         # halp!
         print("No books found with the title '{}'".format(title))
         print()
-        return
+        return None
 
     # page these?
     if len(results) > 10:
@@ -129,9 +129,7 @@ def lookup_work_id(book, author_ids, work_ids):
     print(_list_book_choices(results, author_ids, work_ids))
     response = _read_choice(len(results))
 
-    if not response:
-        return
-    return results[int(response) - 1]
+    return results[int(response) - 1] if response else None
 
 
 # associates an AuthorId with a Wikidata QID
@@ -147,15 +145,12 @@ def lookup_author(author_id, author):
         print("Unable to find '{}' in Wikidata".format(author.Author))
         print()
         # TODO search harder
-        return
+        return None
 
     print(_list_author_choices(results))
     response = _read_choice(len(results))
 
-    if not response:
-        return
-
-    return results[int(response) - 1]
+    return results[int(response) - 1] if response else None
 
 
 # check the author data looks reasonable
@@ -169,7 +164,7 @@ def confirm_author(author):
     except Exception:  # FIXME
         print('\033[91mError fetching data\033[0m')
         print()
-        return
+        return None
 
     print('\n\033[32m{Label}: {Gender}, {Nationality}\033[0m'.format(**author))
     c = input('Is this correct? [Y/n] ')

@@ -18,7 +18,7 @@ def wordcount(path):
     try:
         if call(['ebook-convert', str(path), '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
             print("something wrong counting words in", path)
-            return
+            return None
     except OSError:
         # ebook-convert probably doesn't exist
         return 0

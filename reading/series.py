@@ -54,7 +54,7 @@ def _get_entry(string):
         m = re.match(r'\s*([\d.]+)', string)
         return int(m.group(0))
     except (ValueError, AttributeError):
-        return
+        return None
 
 
 # converts an entries string into a list of integers
@@ -173,6 +173,7 @@ class Series():
             return self.remaining()
         # if 'strict', return leaving gaps
         # if 'break', return until the first blockage
+        return None
 
     # date this series was last read (today if still reading)
     def last_read(self):

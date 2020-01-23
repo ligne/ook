@@ -128,7 +128,7 @@ def _ebook_parse_title(title):
 # FIXME clean up this mess
 def _process_fixes(fixes):
     if not fixes:
-        return
+        return None
 
     f = {}
     for fix in fixes.get('general', []):

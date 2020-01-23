@@ -91,7 +91,7 @@ def _changed(old, new):
 
     if old.equals(new):
         # nothing changed
-        return
+        return None
     elif new['Shelf'] == 'currently-reading' != old['Shelf']:
         # started reading
         return _started(new)
