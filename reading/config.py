@@ -8,9 +8,9 @@ def config(key):
     with open('data/config.yml') as fh:
         config = yaml.safe_load(fh)
 
-    for key in key.split('.'):
+    for k in key.split('.'):
         try:
-            config = config[key]
+            config = config[k]
         except KeyError:
             # use defaults and/or emit warning
             return None
