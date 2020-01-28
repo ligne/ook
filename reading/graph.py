@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+# vim: ts=4 : sw=4 : et
 
 import datetime
 
@@ -458,4 +457,3 @@ def main(args):
     new_authors()
     reading_rate()
 
-# vim: ts=4 : sw=4 : et
