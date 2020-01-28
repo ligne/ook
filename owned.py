@@ -26,7 +26,7 @@ display(Collection(shelves=['kindle'], merge=True).df)
 display(Collection(shelves=['to-read'], merge=True).df)
 
 df = Collection(shelves=['to-read', 'kindle', 'library'], merge=True).df
-df = df[~df.Language.isnull() & (df.Language != 'en')]
+df = df[df.Language == 'fr']
 display(df)
 
 # vim: ts=4 : sw=4 : et
