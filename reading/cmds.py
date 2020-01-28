@@ -20,7 +20,7 @@ def arg_parser():
     lint = subparsers.add_parser('lint', help='report problems with the collection')
     lint.add_argument('pattern', nargs='?')
 
-    graph = subparsers.add_parser('graph')
+    graph = subparsers.add_parser('graph', help='draw graphs')
     graph.add_argument('pattern', nargs='?')
 
     return parser
