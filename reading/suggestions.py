@@ -1,11 +1,7 @@
-#!/usr/bin/python3
+# vim: ts=4 : sw=4 : et
 
-import datetime
-import argparse
-import pandas as pd
-
-from reading.scheduling import scheduled_books, scheduled_at
-from reading.collection import Collection
+from .scheduling import scheduled_books, scheduled_at
+from .collection import Collection
 
 
 # return a list of the authors i'm currently reading, or have read recently
@@ -30,6 +26,10 @@ def _read_nationalities():
 
 ################################################################################
 
+def scheduled(args):
+    return main(args)
+
+
 # modes:
 #   scheduled
 #       scheduled for this year.
@@ -38,48 +38,7 @@ def _read_nationalities():
 #       not scheduled
 #       not read recently
 #       next in series
-def parse_args():
-    parser = argparse.ArgumentParser()
-
-    # miscellaneous
-    parser.add_argument(
-        '--date',
-        type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'),
-        default=pd.Timestamp('today'),
-    )
-    # mode
-    parser.add_argument('--scheduled', action="store_true")
-    # filter
-    parser.add_argument('--shelves', nargs='+', default=[
-        'pending',
-        'elsewhere',
-        'ebooks',
-        'kindle',
-    ])
-    parser.add_argument('--languages', nargs='+')
-    parser.add_argument('--categories', nargs='+')
-    parser.add_argument('--new-authors', action="store_true")
-    parser.add_argument('--old-authors', action="store_true")
-    parser.add_argument('--new-nationalities', action="store_true")
-    parser.add_argument('--old-nationalities', action="store_true")
-    parser.add_argument('--borrowed', action='store_true', default=None)
-    # FIXME also gender, genre
-    # sort
-    parser.add_argument('--alpha', action='store_true')
-    # display
-    parser.add_argument('--size', type=int, default=10)
-    parser.add_argument('--all', action="store_true")
-    parser.add_argument('--width', type=int, default=None)
-    parser.add_argument('--words', action="store_true")
-
-    return parser.parse_args()
-
-
-################################################################################
-
-if __name__ == "__main__":
-    args = parse_args()
-
+def main(args):
     c = Collection(
         shelves=args.shelves,
         languages=args.languages,
@@ -90,7 +49,7 @@ if __name__ == "__main__":
     df = c.df
 
     # mode
-    if args.scheduled:
+    if args.mode == 'scheduled':
         df = df.loc[scheduled_at(c.all, args.date).index.intersection(df.index)]
         df = df[df.Scheduled.dt.year == args.date.year]
         args.all = True  # no display limit on scheduled books
@@ -101,7 +60,16 @@ if __name__ == "__main__":
         df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
         # FIXME eventually filter out "blocked" books
 
-    # filter
+    df = _filter(df, args)
+    df = _sort(df, args)
+    df = _reduce(df, args)
+    _display(df, args)
+
+    return 0
+
+
+# do more filtering
+def _filter(df, args):
     if args.old_authors:
         df = df[df.AuthorId.isin(_read_author_ids())]
     elif args.new_authors:
@@ -112,20 +80,32 @@ if __name__ == "__main__":
     elif args.new_nationalities:
         df = df[~df.Nationality.isin(_read_nationalities())]
 
-    # sort
+    return df
+
+
+# sort the suggestions
+def _sort(df, args):
     if args.alpha:
         # FIXME use a more sortable version of the title
         df = df.sort_values(['Title', 'Author'])
     else:
         df = df.sort_values(['Pages', 'Title', 'Author'])
 
-    # reduce
+    return df
+
+
+# reduce the number of rows
+def _reduce(df, args):
     if not args.all:
         index = len(df.index) // 2
         s = args.size / 2
         df = df.iloc[int(max(0, index - s)):int(index + s)]
 
-    # display
+    return df
+
+
+# print out the suggestions
+def _display(df, args):
     if args.words:
         fmt = '{Words:4.0f}  {Title} ({Author})'
     else:
@@ -134,4 +114,3 @@ if __name__ == "__main__":
     for (_, book) in df.iterrows():
         print(fmt.format(**book)[:args.width])
 
-# vim: ts=4 : sw=4 : et

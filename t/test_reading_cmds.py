@@ -30,3 +30,19 @@ def test_arg_parser():
     _parse_bad_cmdline('ook config')
     assert _parse_cmdline('ook config goodreads.user')
 
+    assert _parse_cmdline('ook scheduled')
+    assert _parse_cmdline('ook scheduled --shelves pending')
+#    _parse_bad_cmdline('ook scheduled --shelves badshelf')
+    assert _parse_cmdline('ook scheduled --borrowed')
+    assert _parse_cmdline('ook scheduled --categories novels')
+    assert _parse_cmdline('ook scheduled --categories novels short-stories')
+    assert _parse_cmdline('ook scheduled --languages en de')
+
+    assert _parse_cmdline('ook suggest')
+    assert _parse_cmdline('ook suggest --shelves pending')
+#    _parse_bad_cmdline('ook suggest --shelves badshelf')
+    assert _parse_cmdline('ook suggest --borrowed')
+    assert _parse_cmdline('ook suggest --categories novels')
+    assert _parse_cmdline('ook suggest --categories novels short-stories')
+    assert _parse_cmdline('ook suggest --languages en de')
+
