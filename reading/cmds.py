@@ -5,6 +5,7 @@ import argparse
 
 # returns a parser object
 def arg_parser():
+    # main parser
     parser = argparse.ArgumentParser()
 
     # common options
@@ -23,6 +24,9 @@ def arg_parser():
     graph = subparsers.add_parser('graph', help='draw graphs')
     graph.add_argument('pattern', nargs='?')
 
+    config = subparsers.add_parser('config', help='display configuration options')
+    config.add_argument('key')
+
     return parser
 
 
@@ -36,6 +40,9 @@ def main():
     if args.mode == 'graph':
         import reading.graph
         reading.graph.main(args)
+    if args.mode == 'config':
+        import reading.config
+        reading.config.main(args)
 
     return 0
 

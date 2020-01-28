@@ -27,3 +27,6 @@ def test_arg_parser():
     assert _parse_cmdline('ook lint')
     assert _parse_cmdline('ook lint borrowed')
 
+    _parse_bad_cmdline('ook config')
+    assert _parse_cmdline('ook config goodreads.user')
+
