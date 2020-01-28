@@ -15,3 +15,6 @@ def test_arg_parser():
     assert arg_parser().parse_args(_parse_cmdline('ook graph'))
     assert arg_parser().parse_args(_parse_cmdline('ook graph rate'))
 
+    assert arg_parser().parse_args(_parse_cmdline('ook lint'))
+    assert arg_parser().parse_args(_parse_cmdline('ook lint borrowed'))
+

@@ -1,10 +1,8 @@
-#!/usr/bin/python3
+# vim: ts=4 : sw=4 : et
 
-import argparse
-
-import reading.collection
-from reading.collection import Collection
-from reading.config import config
+from .collection import _process_fixes
+from .collection import Collection
+from .config import config
 
 
 def lint_missing_pagecount():
@@ -280,7 +278,7 @@ def lint_needs_returning():
 def lint_fixes():
     c = Collection(fixes=None)
 
-    fixes = reading.collection._process_fixes(config('fixes'))
+    fixes = _process_fixes(config('fixes'))
     errors = []
 
     for book_id, fix in fixes.iterrows():
@@ -305,20 +303,14 @@ def lint_fixes():
 
 ################################################################################
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("pattern", nargs='?')
-
-    args = parser.parse_args()
-
+def main(args):
     # run them all
     n = __import__(__name__)
-    for f in [x for x in dir(n) if x.startswith('lint_')]:
+    for f in [x for x in dir(n.lint) if x.startswith('lint_')]:
         if args.pattern and args.pattern not in f:
             continue
 
-        report = getattr(n, f)()
+        report = getattr(n.lint, f)()
 
         # FIXME
         if report is None or 'df' not in report:
@@ -336,5 +328,3 @@ if __name__ == "__main__":
 
         print(Template(report['template']).render(df=report['df']))
 
-
-# vim: ts=4 : sw=4 : et

@@ -17,6 +17,9 @@ def arg_parser():
     subparsers = parser.add_subparsers(title='subcommands', dest='mode')
     subparsers.required = True
 
+    lint = subparsers.add_parser('lint', help='report problems with the collection')
+    lint.add_argument('pattern', nargs='?')
+
     graph = subparsers.add_parser('graph')
     graph.add_argument('pattern', nargs='?')
 
@@ -27,6 +30,9 @@ def main():
     args = arg_parser().parse_args()
     print(args)
 
+    if args.mode == 'lint':
+        import reading.lint
+        reading.lint.main(args)
     if args.mode == 'graph':
         import reading.graph
         reading.graph.main(args)
