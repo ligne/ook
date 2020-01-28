@@ -27,17 +27,28 @@ def _read_nationalities():
 ################################################################################
 
 def scheduled(args):
-    return main(args)
+    c = Collection(
+        shelves=args.shelves,
+        languages=args.languages,
+        categories=args.categories,
+        borrowed=args.borrowed,
+        merge=True,
+    )
+    df = c.df
+
+    df = df.loc[scheduled_at(c.all, args.date).index.intersection(df.index)]
+    df = df[df.Scheduled.dt.year == args.date.year]
+    args.all = True  # no display limit on scheduled books
+
+    df = _filter(df, args)
+    df = _sort(df, args)
+    df = _reduce(df, args)
+    _display(df, args)
+
+    return 0
 
 
-# modes:
-#   scheduled
-#       scheduled for this year.
-#       not read in the last 6 months (same year is fine).
-#   suggest
-#       not scheduled
-#       not read recently
-#       next in series
+# suggestions
 def main(args):
     c = Collection(
         shelves=args.shelves,
@@ -48,17 +59,10 @@ def main(args):
     )
     df = c.df
 
-    # mode
-    if args.mode == 'scheduled':
-        df = df.loc[scheduled_at(c.all, args.date).index.intersection(df.index)]
-        df = df[df.Scheduled.dt.year == args.date.year]
-        args.all = True  # no display limit on scheduled books
-    else:
-        # otherwise suggestion mode
-        # filter out recently-read, scheduled, etc
-        df = df[~df.AuthorId.isin(_recent_author_ids(args.date))]
-        df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
-        # FIXME eventually filter out "blocked" books
+    # filter out recently-read, scheduled, etc
+    df = df[~df.AuthorId.isin(_recent_author_ids(args.date))]
+    df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
+    # FIXME eventually filter out "blocked" books
 
     df = _filter(df, args)
     df = _sort(df, args)
