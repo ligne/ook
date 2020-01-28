@@ -1,10 +1,17 @@
 # vim: ts=4 : sw=4 : et
 
+import pytest
+
 from reading.cmds import arg_parser
 
 
 def _parse_cmdline(line):
-    return line.split()[1:]
+    return arg_parser().parse_args(line.split()[1:])
+
+
+def _parse_bad_cmdline(line):
+    with pytest.raises(SystemExit):
+        _parse_cmdline(line)
 
 
 def test_arg_parser():
@@ -12,9 +19,11 @@ def test_arg_parser():
 
     # test various commands (a) parse, (b) look vaguely sensible
 
-    assert arg_parser().parse_args(_parse_cmdline('ook graph'))
-    assert arg_parser().parse_args(_parse_cmdline('ook graph rate'))
+    _parse_bad_cmdline('ook')
 
-    assert arg_parser().parse_args(_parse_cmdline('ook lint'))
-    assert arg_parser().parse_args(_parse_cmdline('ook lint borrowed'))
+    assert _parse_cmdline('ook graph')
+    assert _parse_cmdline('ook graph rate')
+
+    assert _parse_cmdline('ook lint')
+    assert _parse_cmdline('ook lint borrowed')
 
