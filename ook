@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+
+import sys
+
+from reading.cmds import main
+
+sys.exit(main())
+
+# vim: ts=4 : sw=4 : et
