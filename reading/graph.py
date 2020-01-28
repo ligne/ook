@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-from reading.collection import Collection
+from .collection import Collection
 
 
 # the cutoff year before which books are considered "old".
@@ -443,7 +443,7 @@ def scheduled():
 
 ################################################################################
 
-if __name__ == "__main__":
+def main(args):
     doy()
     nationality()
     gender()

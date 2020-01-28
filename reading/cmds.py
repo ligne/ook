@@ -17,12 +17,19 @@ def arg_parser():
     subparsers = parser.add_subparsers(title='subcommands', dest='mode')
     subparsers.required = True
 
+    graph = subparsers.add_parser('graph')
+    graph.add_argument('pattern', nargs='?')
+
     return parser
 
 
 def main():
     args = arg_parser().parse_args()
     print(args)
+
+    if args.mode == 'graph':
+        import reading.graph
+        reading.graph.main(args)
 
     return 0
 
