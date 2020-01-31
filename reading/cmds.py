@@ -75,6 +75,10 @@ def arg_parser():
     graph = subparsers.add_parser('graph', help='draw graphs')
     graph.add_argument('pattern', nargs='?')
 
+    reports = subparsers.add_parser('reports', help='generate lists of books')
+    reports.add_argument('names', nargs='*', help='the pre-configured report to generate')
+    # FIXME support custom reports
+
     config = subparsers.add_parser('config', help='display configuration options')
     config.add_argument('key')
 
@@ -100,6 +104,9 @@ def main():
     if args.mode == 'suggest':
         import reading.suggestions
         reading.suggestions.main(args)
+    if args.mode == 'reports':
+        import reading.reports
+        reading.reports.main(args)
 
     return 0
 
