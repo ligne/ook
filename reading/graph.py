@@ -2,6 +2,8 @@
 
 import datetime
 
+# pylint: disable=wrong-import-position
+
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -10,6 +12,7 @@ import numpy as np
 
 from .collection import Collection
 
+# pylint: enable=wrong-import-position
 
 # the cutoff year before which books are considered "old".
 thresh = 1940
