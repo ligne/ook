@@ -109,7 +109,8 @@ def test__parse_book_api():
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Allie Brosh',
         'AuthorId': 6984726,
-        'Title': 'Hyperbole and a Half: Unfortunate Situations, Flawed Coping Mechanisms, Mayhem, and Other Things That Happened',
+        'Title': 'Hyperbole and a Half: Unfortunate Situations, Flawed Coping '
+                 'Mechanisms, Mayhem, and Other Things That Happened',
         'Language': 'en',
         'Published': 2013,
         'Pages': 369,
