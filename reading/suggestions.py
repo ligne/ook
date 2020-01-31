@@ -45,8 +45,6 @@ def scheduled(args):
     df = _reduce(df, args)
     _display(df, args)
 
-    return 0
-
 
 # suggestions
 def main(args):
@@ -68,8 +66,6 @@ def main(args):
     df = _sort(df, args)
     df = _reduce(df, args)
     _display(df, args)
-
-    return 0
 
 
 # do more filtering
