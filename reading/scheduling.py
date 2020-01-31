@@ -93,28 +93,28 @@ def _dates(start, per_year=1, offset=1,
     date = pd.Timestamp(date)
     windows = _windows(start, per_year, offset)
 
-    for start, end in windows:
+    for window_start, window_end in windows:
         # filter out windows that have passed
-        if end < date:
+        if window_end < date:
             continue
 
         # check if it's been read
         if last_read:
-            if last_read > start and not force:
+            if last_read > window_start and not force:
                 # skip to the next one.
-                start, end = next(windows)
+                window_start, window_end = next(windows)
 
             # fix up the first one if necessary
             next_read = last_read + pd.DateOffset(months=6)
-            if per_year == 1 and next_read > start:
-                start = next_read
+            if per_year == 1 and next_read > window_start:
+                window_start = next_read
 
-        yield start
+        yield window_start
         break
 
     # return the others
-    for start, end in windows:
-        yield start
+    for window_start, window_end in windows:
+        yield window_start
 
 
 # returns a stream of (start, end) dates which may or may not want a book
