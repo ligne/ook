@@ -1,9 +1,10 @@
 # vim: ts=4 : sw=4 : et
 
-import requests
 import re
-import pandas as pd
 from xml.etree import ElementTree
+
+import pandas as pd
+import requests
 from dateutil.parser import parse
 
 import reading.series

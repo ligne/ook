@@ -1,7 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
-import pandas as pd
 import re
+
+import pandas as pd
 
 from reading.config import config
 

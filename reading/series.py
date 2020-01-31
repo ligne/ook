@@ -5,11 +5,12 @@ import operator
 import re
 from warnings import warn
 from functools import reduce
+
 import pandas as pd
 
+import reading.goodreads
 from .config import config
 from .collection import Collection
-import reading.goodreads
 
 # configuration:
 #   series information cache.  build it from the series extracted from books.

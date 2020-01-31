@@ -1,8 +1,9 @@
 # vim: ts=4 : sw=4 : et
 
-import sys
-import requests
 import json
+import sys
+
+import requests
 
 
 # uppercases the first character of $s *only*
