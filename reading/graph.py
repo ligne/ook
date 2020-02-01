@@ -398,7 +398,7 @@ def scheduled():
 
     years = scheduled_years(df)
 
-    fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
+    _fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
 
     for year, ax in zip(years, axes):
         p = df[df.Scheduled.dt.year == year].Pages
@@ -445,7 +445,7 @@ def scheduled():
 
 ################################################################################
 
-def main(args):
+def main(_args):
     doy()
     nationality()
     gender()

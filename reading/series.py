@@ -44,7 +44,7 @@ from .collection import Collection
 # books that should be hidden (because they're not the next in series or
 # they're blocked by missing books.  should return a boolean pandas.Series so
 # it can be used for slicing dataframes.
-def hidden(df):
+def hidden(_df):
     pass
 
 
@@ -113,7 +113,7 @@ def _sort_entries(df):
 
 # return the information for the series
 # from cache and config?
-def _get_series_settings(series):
+def _get_series_settings(_series):
     return {}
 
 

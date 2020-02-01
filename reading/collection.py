@@ -45,7 +45,7 @@ def _get_gr_books(csv=GR_CSV, merge=False):
     return df.set_index('BookId')
 
 
-def _save_gr_books(df, csv=GR_CSV):
+def _save_gr_books(_df, _csv=GR_CSV):
     pass
 
 
@@ -103,11 +103,11 @@ def _ebook_parse_title(title):
     title = re.sub(r'\s+', ' ', title.strip())
 
     t = title
-    s = v = None
+    _s = v = None
 
     m = re.search(r'(?: / |\s?[;:] )', title)
     if m:
-        t, s = re.split(r'(?: / |\s?[;:] )', title, maxsplit=1)
+        t, _s = re.split(r'(?: / |\s?[;:] )', title, maxsplit=1)
 
     patterns = (
         (r', Tome ([IV]+)\.', 1),
@@ -191,6 +191,10 @@ class Collection():
                 df,
                 a.apply(lambda x: authors.loc[x, ['Gender', 'Nationality']]),
             ], axis='columns', sort=False)
+
+        if dedup:
+            # FIXME to be implemented
+            pass
 
         # take a clean copy before filtering
         self.all = df.copy()

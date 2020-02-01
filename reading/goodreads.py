@@ -148,11 +148,11 @@ def _parse_book_api(xml):
 
 
 # the edition language isn't accessible through the API for some books.
-def _fetch_book_html(book_id):
+def _fetch_book_html(_book_id):
     pass
 
 
-def _parse_book_html(html):
+def _parse_book_html(_html):
     pass
 
 
