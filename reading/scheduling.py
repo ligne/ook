@@ -83,7 +83,7 @@ def _schedule(df, author=None, series=None,
         date=date,
     )
 
-    return list(zip(dates, series.remaining().index))
+    return zip(dates, series.remaining().index)
 
 
 # converts a stream of windows into a stream of dates for scheduling
