@@ -133,7 +133,7 @@ def lookup_work_id(book, author_ids, work_ids):
 
 
 # associates an AuthorId with a Wikidata QID
-def lookup_author(author_id, author):
+def lookup_author(author):
     (width, _) = shutil.get_terminal_size()
     print(Template('''
 \033[1mSearching for '{{author}}'\033[0m
@@ -251,7 +251,7 @@ def find_authors(authors):
     })
 
     for (author_id, author) in df.iterrows():
-        resp = lookup_author(author_id, author)
+        resp = lookup_author(author)
         if not resp:
             continue
 
