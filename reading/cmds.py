@@ -57,6 +57,9 @@ def arg_parser():
     subparsers = parser.add_subparsers(title='subcommands', dest='mode')
     subparsers.required = True
 
+    update = subparsers.add_parser('update', argument_default=[])
+    update.add_argument('--goodreads', dest='update', action='append_const', const='goodreads')
+
     subparsers.add_parser(
         'scheduled',
         parents=[filter_options],
@@ -89,6 +92,9 @@ def main():
     args = arg_parser().parse_args()
     print(args)
 
+    if args.mode == 'update':
+        import reading.update
+        reading.update.main(args)
     if args.mode == 'lint':
         import reading.lint
         reading.lint.main(args)

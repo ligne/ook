@@ -235,9 +235,3 @@ def search_title(term):
         'Ratings': int(x.find('ratings_count').text),
     } for x in xml.findall('search/results/work')]
 
-
-################################################################################
-
-if __name__ == "__main__":
-    pass
-
