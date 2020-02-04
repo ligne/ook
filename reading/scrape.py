@@ -1,15 +1,10 @@
-#!/usr/bin/python3
+# vim: ts=4 : sw=4 : et
 
-from bs4 import BeautifulSoup
-import argparse
 import datetime
-import dateutil
-import pandas as pd
 import re
-
-from reading.collection import Collection
-from reading.config import config
-from reading.compare import compare
+import dateutil
+from bs4 import BeautifulSoup
+import pandas as pd
 
 
 #################################################################################
@@ -110,33 +105,5 @@ def rebuild(scraped, df):
 #    fixes = fixes[check != fixes]
 
     return fixes.dropna(how='all').dropna(axis='columns', how='all').sort_index()
-
-
-#################################################################################
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--ignore-changes', action='store_true')
-    args = parser.parse_args()
-
-    c = Collection(fixes=None)
-    df = c.df
-
-    old = Collection().df
-
-    scraped = scrape(config('goodreads.html'))
-    fixes = rebuild(scraped, df)
-
-    if not args.ignore_changes:
-        fixes.to_csv('data/scraped.csv', float_format='%.20g')
-
-    new = Collection().df
-
-    compare(old, new)
-
-
-if __name__ == '__main__':
-    main()
-
 
 # vim: ts=4 : sw=4 : et

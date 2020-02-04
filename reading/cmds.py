@@ -59,6 +59,7 @@ def arg_parser():
 
     update = subparsers.add_parser('update', argument_default=[])
     update.add_argument('--goodreads', dest='update', action='append_const', const='goodreads')
+    update.add_argument('--scrape', dest='update', action='append_const', const='scrape')
 
     subparsers.add_parser(
         'scheduled',

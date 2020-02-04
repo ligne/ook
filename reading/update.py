@@ -2,6 +2,7 @@
 
 from .collection import Collection
 from .compare import compare
+from .config import config
 
 
 def goodreads(args):
@@ -28,10 +29,30 @@ def goodreads(args):
     # FIXME update series
 
 
+def scrape(args):
+    from .scrape import scrape as _scrape, rebuild
+
+    c = Collection(fixes=None)
+    df = c.df
+
+    old = Collection().df
+
+    fixes = rebuild(_scrape(config('goodreads.html')), df)
+
+    if not args.ignore_changes:
+        fixes.to_csv('data/scraped.csv', float_format='%.20g')
+
+    new = Collection().df
+
+    compare(old, new)
+
+
 ################################################################################
 
 def main(args):
     # dispatch to the update commands in a sensible order
     if 'goodreads' in args.update:
         goodreads(args)
+    if 'scrape' in args.update:
+        scrape(args)
 
