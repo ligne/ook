@@ -47,7 +47,7 @@ path = sys.argv[1]
 ext = os.path.splitext(path)[-1][1:]
 ext = ext in ['txt', 'pdf'] and ext or 'mobi'
 mi = get_metadata(open(path, 'r+b'), ext, force_read_metadata=True)
-print(yaml.dump({
+print(yaml.safe_dump({
     'Title':     mi.get('title'),
     'Authors':   mi.get('authors'),
     'Languages': mi.get('languages'),
