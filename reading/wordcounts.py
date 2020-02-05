@@ -1,14 +1,11 @@
-#!/usr/bin/python3
+# vim: ts=4 : sw=4 : et
 
 from subprocess import check_output, call, DEVNULL
 from pathlib import Path
 import yaml
-import argparse
 import pandas as pd
 
-from reading.collection import Collection
-from reading.compare import compare
-from reading.config import config
+from .config import config
 
 
 # returns the wordcount for a document.
@@ -126,25 +123,3 @@ def process(df, force=False):
 
     return pd.DataFrame(ebooks).set_index('BookId')
 
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--ignore-changes', action='store_true')
-    parser.add_argument('-f', '--force', action='store_true')
-    args = parser.parse_args()
-
-    old = Collection(
-        shelves=['kindle'],
-        categories=['novels', 'short-stories', 'non-fiction', 'articles'],  # FIXME
-        metadata=False,
-    ).df
-    new = process(old, force=args.force)
-
-    if not args.ignore_changes:
-        Collection(df=new).save()
-
-    new = new.assign(Work=None, Shelf='kindle')
-
-    compare(old, new, use_work=False)
-
-# vim: ts=4 : sw=4 : et

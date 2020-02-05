@@ -29,6 +29,24 @@ def goodreads(args):
     # FIXME update series
 
 
+def kindle(args):
+    from wordcounts import process
+    old = Collection(
+        shelves=['kindle'],
+        # FIXME Collection shouldn't ignore articles by default: let suggest do that.
+        categories=['novels', 'short-stories', 'non-fiction', 'articles'],
+        metadata=False,
+    ).df
+    new = process(old, force=args.force)
+
+    if not args.ignore_changes:
+        Collection(df=new).save()
+
+    new = new.assign(Work=None, Shelf='kindle')
+
+    compare(old, new, use_work=False)
+
+
 def scrape(args):
     from .scrape import scrape as _scrape, rebuild
 
@@ -53,6 +71,8 @@ def main(args):
     # dispatch to the update commands in a sensible order
     if 'goodreads' in args.update:
         goodreads(args)
+    if 'kindle' in args.update:
+        kindle(args)
     if 'scrape' in args.update:
         scrape(args)
 

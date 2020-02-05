@@ -59,6 +59,7 @@ def arg_parser():
 
     update = subparsers.add_parser('update', argument_default=[])
     update.add_argument('--goodreads', dest='update', action='append_const', const='goodreads')
+    update.add_argument('--kindle', dest='update', action='append_const', const='kindle')
     update.add_argument('--scrape', dest='update', action='append_const', const='scrape')
 
     metadata = subparsers.add_parser('metadata')
