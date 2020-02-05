@@ -61,6 +61,11 @@ def arg_parser():
     update.add_argument('--goodreads', dest='update', action='append_const', const='goodreads')
     update.add_argument('--scrape', dest='update', action='append_const', const='scrape')
 
+    metadata = subparsers.add_parser('metadata')
+    metadata_choices = ['books', 'authors']
+    metadata.add_argument('--find', nargs='?', const=metadata_choices, choices=metadata_choices)
+    # FIXME some way of selecting a particular BookId
+
     subparsers.add_parser(
         'scheduled',
         parents=[filter_options],
@@ -96,6 +101,9 @@ def main():
     if args.mode == 'update':
         import reading.update
         reading.update.main(args)
+    if args.mode == 'metadata':
+        import reading.metadata
+        reading.metadata.main(args)
     if args.mode == 'lint':
         import reading.lint
         reading.lint.main(args)

@@ -5,6 +5,7 @@ from jinja2 import Template
 import pandas as pd
 
 from .collection import Collection
+from .compare import compare
 from .wikidata import wd_search
 from .wikidata import Entity
 from .goodreads import search_title, fetch_book
@@ -182,7 +183,7 @@ def _load_csv(name, columns):
         return pd.DataFrame(columns=columns)
 
 
-def find():
+def find(what):
     books_csv   = 'data/books.csv'
     authors_csv = 'data/authors.csv'
 
@@ -207,9 +208,11 @@ def find():
     ])
 
     try:
-        find_books(books)
+        if 'books' in what:
+            find_books(books)
         # FIXME want to reload so the authors of newly-associated books appear
-        find_authors(authors)
+        if 'authors' in what:
+            find_authors(authors)
     except SaveExit:
         pass
     except FullExit:
@@ -297,6 +300,19 @@ def rebuild():
 
 ################################################################################
 
-if __name__ == '__main__':
-    pass
+def main(args):
+    old = Collection().df
+
+    if not args.find:
+        return
+
+    find(args.find)
+
+    new = old.copy()
+    metadata = rebuild()
+    new.update(metadata)
+    compare(old, new)
+
+    if not args.ignore_changes:
+        metadata.to_csv('data/metadata.csv', float_format='%.20g')
 

@@ -46,3 +46,11 @@ def test_arg_parser():
     assert _parse_cmdline('ook suggest --categories novels short-stories')
     assert _parse_cmdline('ook suggest --languages en de')
 
+    assert _parse_cmdline('ook metadata')
+    args = _parse_cmdline('ook metadata --find')
+    assert args.find == ['books', 'authors']
+    args = _parse_cmdline('ook metadata --find authors')
+    assert args.find == 'authors'
+    args = _parse_cmdline('ook metadata --find books')
+    assert args.find == 'books'
+
