@@ -100,10 +100,12 @@ def rebuild(scraped, df):
     # trim off scraped books that aren't being tracked
     fixes = fixes.loc[fixes.index.intersection(df.index)]
 
-    # remove redundant fixes FIXME keeps throwing errors...
-#    check = df.loc[fixes.index].loc[:, fixes.columns]
-#    fixes = fixes[check != fixes]
-
-    return fixes.dropna(how='all').dropna(axis='columns', how='all').sort_index()
+    # remove no-op changes and empty bits
+    return (
+        fixes[df.reindex_like(fixes) != fixes]
+        .dropna(how='all', axis='index')
+        .dropna(how='all', axis='columns')
+        .sort_index()
+    )
 
 # vim: ts=4 : sw=4 : et

@@ -293,9 +293,11 @@ def rebuild():
     ], sort=False)
 
     # filter out no-op changes and empty bits
-    return metadata[books.loc[metadata.index, metadata.columns] != metadata] \
-        .dropna(how='all') \
-        .dropna(axis='columns', how='all')
+    return (
+        metadata[books.reindex_like(metadata) != metadata]
+        .dropna(how='all', axis='index')
+        .dropna(how='all', axis='columns')
+    )
 
 
 ################################################################################
