@@ -38,6 +38,9 @@ def test_arg_parser():
     assert _parse_cmdline('ook scheduled --categories novels short-stories')
     assert _parse_cmdline('ook scheduled --languages en de')
 
+    assert _parse_cmdline('ook reports')  # should fail
+    assert _parse_cmdline('ook reports docs')  # check based on pre-defined ones?
+
     assert _parse_cmdline('ook suggest')
     assert _parse_cmdline('ook suggest --shelves pending')
 #    _parse_bad_cmdline('ook suggest --shelves badshelf')
@@ -45,6 +48,12 @@ def test_arg_parser():
     assert _parse_cmdline('ook suggest --categories novels')
     assert _parse_cmdline('ook suggest --categories novels short-stories')
     assert _parse_cmdline('ook suggest --languages en de')
+
+    assert _parse_cmdline('ook update'), "Doesn't do very much, but it works"
+    assert _parse_cmdline('ook update --goodreads')
+    assert _parse_cmdline('ook update --scrape')
+    assert _parse_cmdline('ook update --scrape --goodreads')
+    # FIXME check that the right variables are set?
 
     assert _parse_cmdline('ook metadata')
     args = _parse_cmdline('ook metadata --find')
