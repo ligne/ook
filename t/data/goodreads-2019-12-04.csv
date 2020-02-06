@@ -1,0 +1,140 @@
+BookId,Added,Author,AuthorId,AvgRating,Binding,Borrowed,Category,Entry,Language,Pages,Published,Rating,Read,Scheduled,Series,SeriesId,Shelf,Started,Title,Work
+9556,2016-04-18,Haruki Murakami,3354,3.86,Paperback,False,short-stories,,en,327,1993,0,,2020-01-01,,,pending,,The Elephant Vanishes,693417
+9557,2017-04-18,Haruki Murakami,3354,3.82,Paperback,False,novels,,en,229,1999,0,,,,,pending,,Sputnik Sweetheart,1813695
+9595,2017-07-03,Kurt Vonnegut,2778055,3.87,Paperback,False,novels,,en,288,1976,0,,,,,pending,,"Slapstick, or Lonesome No More!",815535
+10374,2016-04-18,Haruki Murakami,3354,4.15,Paperback,False,novels,,en,400,1985,5,2019-08-27,,,,read,2019-08-06,Hard-Boiled Wonderland and the End of the World,2531870
+12012,2016-04-18,Iain M. Banks,5807106,4.27,,False,novels,2,en,309,1988,4,2018-01-29,,Culture,49118,read,2018-01-15,The Player of Games,1494157
+12014,2018-04-05,Iain Banks,7628,3.85,Paperback,False,novels,,en,313,1993,0,,2021-01-01,,,pending,,Complicity,2132
+12021,2016-04-18,Iain Banks,7628,4.05,Paperback,False,novels,,en,501,1992,0,,2020-01-01,,,pending,,The Crow Road,950451
+28417,2016-05-22,Émile Zola,4750,4.06,Mass Market Paperback,True,novels,17,fr,462,1890,0,,,Les Rougon-Macquart,40441,elsewhere,,La Bête humaine,101404
+38290,2017-02-27,James Fenimore Cooper,9121,3.39,Paperback,False,novels,1,,496,1823,0,,,The Leatherstocking Tales,81550,pending,,The Pioneers,443966
+47989,2016-05-22,Terry Pratchett,1654,4.49,,False,novels,29,en,480,2002,0,,2021-01-01,Discworld,40650,pending,,Night Watch,1712283
+68041,2018-04-25,Ursula K. Le Guin,874602,4.27,Paperback,False,novels,1-4,en,691,1984,0,,,Earthsea Cycle,40909,pending,,The Earthsea Quartet,1112741
+70933,2016-04-18,Haruki Murakami,3354,4.17,Paperback,False,novels,,en,609,1994,0,,2021-01-01,,,pending,,The Wind-Up Bird Chronicle,2531376
+112525,2016-06-17,Daniel Woodrell,65135,3.91,Hardcover,True,novels,,en,193,2006,0,,2020-01-01,,,library,,Winter's Bone,1693257
+115069,2016-11-24,Émile Zola,4750,3.93,Mass Market Paperback,False,novels,18,fr,542,1891,0,,,Les Rougon-Macquart,40441,ebooks,,L'Argent,417025
+116296,2016-05-22,Terry Pratchett,1654,4.24,Hardcover,True,novels,36,en,394,2007,0,,2021-01-01,Discworld,40650,elsewhere,,Making Money,144656
+129135,2016-04-18,Iain M. Banks,5807106,4.2,Paperback,False,novels,7,en,403,2000,0,,,Culture,49118,pending,,Look to Windward,124371
+168663,2016-04-18,Kurt Vonnegut,2778055,3.88,Paperback,False,novels,,en,237,1985,0,,,,,pending,,Galápagos,517654
+172325,2016-04-18,Iain M. Banks,5807106,3.82,,False,novels,,en,279,1994,0,,2020-01-01,,,pending,,Feersum Endjinn,851516
+246245,2016-11-08,James Fenimore Cooper,9121,3.69,Paperback,False,novels,5,en,576,1841,0,,,The Leatherstocking Tales,81550,ebooks,,The Deerslayer,15188375
+254471,2016-11-24,Émile Zola,4750,4,Mass Market Paperback,False,novels,19,fr,608,1892,0,,,Les Rougon-Macquart,40441,ebooks,,La Débâcle,3522286
+288680,2016-05-12,Terry Pratchett,1654,4.27,Mass Market Paperback,True,novels,25,en,444,2000,0,,2020-01-01,Discworld,40650,elsewhere,,The Truth,280092
+290566,2017-09-26,Iain Banks,7628,3.22,Paperback,False,novels,,en,198,1989,3,2019-08-12,,,,read,2019-05-11,Canal Dreams,1494165
+290574,2017-02-07,Iain M. Banks,5807106,3.92,Paperback,False,novels,6,en,405,1998,0,,2021-01-01,Culture,49118,pending,,Inversions,21864462
+347245,2016-11-08,James Fenimore Cooper,9121,3.88,Paperback,False,novels,4,en,528,1840,0,,,The Leatherstocking Tales,81550,ebooks,,The Pathfinder,3063028
+366649,2017-06-20,Émile Zola,4750,3.91,Paperback,False,novels,3,fr,384,1873,0,2018-09-19,,Les Rougon-Macquart,40441,read,2018-08-11,Le Ventre de Paris,10242
+386373,2016-05-12,Terry Pratchett,1654,3.91,Paperback,False,novels,7,en,380,1989,5,2017-01-17,,Discworld,40650,read,2017-01-07,Pyramids,968512
+395949,2016-12-19,Terry Pratchett,1654,4.38,Paperback,True,novels,33,en,474,2004,0,,2021-01-01,Discworld,40650,elsewhere,,Going Postal,1636617
+411181,2017-07-27,Kurt Vonnegut,2778055,3.82,Paperback,False,novels,,en,288,1990,0,,,,,pending,,Hocus Pocus,1683551
+491030,2016-04-18,Iain Banks,7628,3.84,Paperback,False,novels,,en,288,1986,4,2016-08-10,,,,read,2016-07-19,The Bridge,1494168
+525878,2016-04-18,Kurt Vonnegut,2778055,4.07,Paperback,False,novels,,en,296,1973,0,,,,,pending,,Breakfast of Champions,2859378
+535061,2016-04-18,Iain Banks,7628,3.81,,False,novels,,en,455,1995,0,,,,,pending,,Whit,2133
+567700,2016-04-18,Iain M. Banks,5807106,3.84,,False,short-stories,4,en,216,1991,3,2018-12-27,,Culture,49118,read,2018-12-13,The State of the Art,1280581
+567798,2016-05-20,Iain M. Banks,5807106,4.02,Paperback,False,novels,,en,534,2004,0,,,,,pending,,The Algebraist,2465248
+578703,2016-04-18,Kate Mosse,9343,3.57,Paperback,False,novels,1,en,694,2005,3,2019-02-07,,Languedoc,43807,read,2019-01-20,Labyrinth,1225097
+597033,2016-05-12,Terry Pratchett,1654,4.04,Mass Market Paperback,False,novels,16,en,378,1994,4,2019-01-20,,Discworld,40650,read,2019-01-06,Soul Music,1107935
+601238,2016-01-11,Terry Pratchett,1654,3.99,Mass Market Paperback,False,novels,1,en,285,1983,3,2016-01-16,,Discworld,40650,read,2016-01-11,The Colour of Magic,194190
+601239,2016-04-04,Terry Pratchett,1654,3.97,Mass Market Paperback,False,novels,2,en,285,1986,4,2016-04-17,,Discworld,40650,read,2016-04-04,The Light Fantastic,592532
+618207,2016-05-13,Terry Pratchett,1654,3.89,Paperback,False,novels,5,en,270,1988,3,2016-07-17,,Discworld,40650,read,2016-07-05,Sourcery,62360
+618221,2016-05-12,Terry Pratchett,1654,3.93,Paperback,False,novels,10,en,332,1990,5,2017-12-23,,Discworld,40650,read,2017-09-10,Moving Pictures,1229354
+621017,2016-11-08,James Fenimore Cooper,9121,3.55,Hardcover,False,novels,3,,566,1827,0,,2021-01-01,The Leatherstocking Tales,81550,ebooks,,The Prairie,337544
+797189,2016-05-12,Terry Pratchett,1654,4.23,Paperback,True,novels,20,en,445,1996,0,,2020-01-01,Discworld,40650,elsewhere,,Hogfather,583655
+802929,2016-05-12,Terry Pratchett,1654,4.08,Paperback,True,novels,18,en,381,1995,0,,2020-01-01,Discworld,40650,pending,,Maskerade,968513
+816920,2016-11-24,Émile Zola,4750,3.83,Mass Market Paperback,False,novels,9,,518,1880,0,,,Les Rougon-Macquart,40441,ebooks,,Nana,89633
+816921,2016-05-22,Émile Zola,4750,4.02,Mass Market Paperback,True,novels,7,fr,517,1876,0,,,Les Rougon-Macquart,40441,elsewhere,,L'Assommoir,741363
+816926,2016-05-20,Émile Zola,4750,3.71,Mass Market Paperback,False,novels,,fr,317,1867,0,,,,,pending,,Thérèse Raquin,1656117
+818108,2016-04-18,Haruki Murakami,3354,4.03,Paperback,False,novels,,en,389,1987,2,2018-05-17,,,,read,2018-04-27,Norwegian Wood,2956680
+818109,2016-05-20,Haruki Murakami,3354,4.13,Paperback,False,novels,,en,505,2002,0,,,,,pending,,Kafka on the Shore,6191072
+827620,2016-10-31,Iain Banks,7628,3.7,Paperback,False,novels,,en,239,1985,4,2017-04-21,,,,read,2017-04-17,Walking On Glass,813340
+833420,2016-12-25,Terry Pratchett,1654,4.27,Paperback,True,novels,30,en,320,2003,0,,2021-01-01,Discworld,40650,elsewhere,,The Wee Free Men,62580
+833422,2017-09-26,Terry Pratchett,1654,4.03,Mass Market Paperback,False,novels,3,en,283,1987,4,2018-04-27,,Discworld,40650,read,2018-04-22,Equal Rites,583611
+833424,2016-05-12,Terry Pratchett,1654,4.28,Paperback,False,novels,11,en,287,1991,5,2019-09-17,,Discworld,40650,read,2019-09-08,Reaper Man,1796454
+833426,2016-05-22,Terry Pratchett,1654,4.28,Paperback,False,novels,19,,416,1996,4,2019-10-30,,Discworld,40650,read,2019-10-22,Feet of Clay,3312754
+833427,2016-01-18,Terry Pratchett,1654,4.22,Paperback,False,novels,12,en,288,1991,4,2018-07-24,,Discworld,40650,read,2018-07-01,Witches Abroad,929672
+833436,2016-05-12,Terry Pratchett,1654,4.14,Paperback,True,novels,21,en,414,1997,0,,2020-01-01,Discworld,40650,elsewhere,,Jingo,1128623
+833444,2017-05-24,Terry Pratchett,1654,4.23,Paperback,False,novels,4,,320,1987,5,2018-01-14,,Discworld,40650,read,2018-01-05,Mort,1857065
+854442,2019-07-03,Émile Zola,4750,3.99,Mass Market Paperback,False,novels,11,,525,1883,0,,,Les Rougon-Macquart,40441,pending,,Au Bonheur des Dames,1540214
+873150,2018-11-15,Kurt Vonnegut,2778055,3.96,,False,novels,,en,221,1965,0,,,,,pending,,"God Bless You, Mr. Rosewater",4076
+881962,2018-05-05,Kurt Vonnegut,2778055,3.82,Mass Market Paperback,False,novels,,en,236,1979,0,,,,,pending,,Jailbird,1384043
+886123,2016-04-18,Iain Banks,7628,3.17,Paperback,False,novels,,en,280,1997,0,,,,,pending,,A Song Of Stone,1418638
+886124,2019-01-25,Iain Banks,7628,3.46,Paperback,True,novels,,en,393,1999,0,,,,,elsewhere,,The Business,1418704
+886126,2016-04-18,Iain Banks,7628,3.67,Paperback,False,novels,,,390,2005,0,,,,,pending,,The Steep Approach to Garbadale,1280612
+945456,2016-05-29,Kurt Vonnegut,2778055,4.03,Paperback,False,novels,,en,256,1987,4,2016-09-07,,,,read,2016-09-05,Bluebeard,6582745
+956320,2016-07-11,Alexandre Dumas,4785,4.52,Mass Market Paperback,False,novels,2 of 2,fr,674,1844,4,2017-06-02,,Le Comte de Monte-Cristo,225265,read,2017-04-22,Le Comte de Monte-Cristo II,19052285
+956321,2016-04-21,Alexandre Dumas,4785,4.07,Mass Market Paperback,False,novels,1,fr,896,1844,5,2016-05-30,,The d'Artagnan Romances,55138,read,2016-04-21,Les Trois Mousquetaires,1263212
+956323,2016-07-11,Alexandre Dumas,4785,4.51,Mass Market Paperback,False,novels,1 of 2,fr,703,1844,5,2017-04-02,,Le Comte de Monte-Cristo,225265,read,2017-02-19,Le Comte de Monte-Cristo I,41399325
+956325,2016-11-08,Alexandre Dumas,4785,4.03,Paperback,False,novels,2,fr,904,1845,3,2018-12-31,,The d'Artagnan Romances,55138,read,2018-10-04,Vingt ans après,666376
+956343,2016-11-29,Alexandre Dumas,4785,4.14,Paperback,False,novels,1,,897,1850,0,,,Le vicomte de Bragelonne,261589,ebooks,,Le Vicomte de Bragelonne I,67441433
+956690,2016-11-24,Émile Zola,4750,3.96,Mass Market Paperback,False,novels,14,fr,408,1886,0,,,Les Rougon-Macquart,40441,ebooks,,L'Œuvre,28958
+956700,2016-11-24,Émile Zola,4750,4.13,Mass Market Paperback,False,novels,13,fr,608,1885,0,,,Les Rougon-Macquart,40441,ebooks,,Germinal,941651
+956702,2016-11-24,Émile Zola,4750,3.77,Mass Market Paperback,False,novels,20,,471,1893,0,,,Les Rougon-Macquart,40441,ebooks,,Le Docteur Pascal,1356866
+956703,2016-11-24,Émile Zola,4750,3.94,Paperback,False,novels,10,fr,510,1882,0,,,Les Rougon-Macquart,40441,ebooks,,Pot-Bouille,110658
+1002666,2016-11-29,Alexandre Dumas,4785,4.1,Paperback,False,novels,2,fr,893,1849,0,,,Le vicomte de Bragelonne,261589,ebooks,,Le Vicomte de Bragelonne II,26588634
+1002667,2016-11-29,Alexandre Dumas,4785,4.2,Paperback,False,novels,3,fr,906,1850,0,,,Le vicomte de Bragelonne,261589,ebooks,,Le Vicomte de Bragelonne III,26588974
+1031449,2016-04-18,Gaston Leroux,9057,3.97,Mass Market Paperback,False,novels,,fr,498,1910,0,,2020-01-01,,,pending,,Le Fantôme de l'Opéra,2259720
+1041744,2017-02-16,James Fenimore Cooper,9121,3.7,Paperback,False,novels,2,,433,1826,0,,2020-01-01,The Leatherstocking Tales,81550,pending,,The Last of the Mohicans,2064030
+1291492,2016-10-31,Iain Banks,7628,3.87,,False,novels,,,249,1987,3,2018-04-19,,,,read,2018-04-14,Espedair Street,554751
+1367032,2016-11-24,Émile Zola,4750,3.57,Paperback,False,novels,16,fr,286,1888,0,,,Les Rougon-Macquart,40441,ebooks,,Le Rêve,1504240
+1367034,2016-06-19,Émile Zola,4750,3.81,Paperback,False,novels,1,fr,457,1870,4,2016-09-04,,Les Rougon-Macquart,40441,read,2016-08-10,La Fortune des Rougon,303087
+1367035,2016-11-24,Émile Zola,4750,3.61,Mass Market Paperback,False,novels,8,fr,370,1877,0,,,Les Rougon-Macquart,40441,ebooks,,Une Page d'amour,1776975
+1367038,2016-11-24,Émile Zola,4750,3.85,Mass Market Paperback,False,novels,12,fr,508,1883,0,,,Les Rougon-Macquart,40441,ebooks,,La Joie de vivre,941672
+1367052,2016-11-24,Émile Zola,4750,4.08,Mass Market Paperback,False,novels,15,fr,510,1887,0,,,Les Rougon-Macquart,40441,ebooks,,La Terre,1810722
+1367070,2016-11-24,Émile Zola,4750,3.7,Paperback,False,novels,6,fr,453,1876,0,,2021-01-01,Les Rougon-Macquart,40441,ebooks,,Son Excellence Eugène Rougon,1356899
+1367083,2019-09-14,Émile Zola,4750,3.89,Mass Market Paperback,False,novels,4,fr,508,1874,0,,2019-01-01,Les Rougon-Macquart,40441,pending,,La Conquête de Plassans,803050
+1424361,2016-05-23,Honoré de Balzac,228089,3.66,Paperback,True,novels,65,,383,1833,0,,2020-01-01,La Comédie Humaine,56707,elsewhere,,Le Médecin De Campagne,2373173
+1992920,2017-08-31,Kate Mosse,9343,3.76,Paperback,False,novels,2,,739,2007,0,,2020-01-01,Languedoc,43807,pending,,Sepulchre,1027521
+2104289,2017-08-10,Ursula K. Le Guin,874602,3.96,,False,novels,5,,128,1972,0,,,Hainish Cycle,49359,pending,,The Word For World Is Forest,3256815
+2205702,2017-06-01,Kurt Vonnegut,2778055,3.87,,False,novels,,en,320,1952,0,,,,,currently-reading,2019-11-29,Player Piano,1005005
+2366570,2016-04-18,Honoré de Balzac,228089,3.55,Paperback,False,novels,62,fr,412,1829,4,2016-11-06,,La Comédie Humaine,56707,read,2016-09-08,Les Chouans,2373155
+2800693,2018-04-04,Georges Simenon,9693,3.69,,False,novels,11,fr,183,1931,3,2019-09-20,,Inspector Maigret,67800,read,2019-09-19,Le Guinguette A Deux Sous,135491
+2855034,2016-05-22,Terry Pratchett,1654,4.07,Hardcover,False,novels,,en,367,2008,0,,,,,pending,,Nation,34491
+3071647,2017-08-31,Émile Zola,4750,3.63,Mass Market Paperback,False,novels,5,,512,1875,0,,2020-01-01,Les Rougon-Macquart,40441,pending,,La Faute de l'abbé Mouret,941617
+3091710,2017-04-03,Iain M. Banks,5807106,4.07,Paperback,False,novels,8,en,593,2008,0,,,Culture,49118,pending,,Matter,871329
+3110594,2017-04-06,Colette Becker,60014,0,Paperback,False,non-fiction,,fr,341,,0,,,,,pending,,Zola: Le saut dans les étoiles,3141872
+6250169,2016-01-18,Terry Pratchett,1654,3.99,Hardcover,False,novels,37,en,417,2009,0,,2021-01-01,Discworld,40650,pending,,Unseen Academicals,6432996
+6370766,2016-04-18,Kurt Vonnegut,2778055,3.94,Paperback,False,short-stories,,en,256,2008,0,,,,,pending,,Armageddon in Retrospect,2891580
+6388919,2016-06-17,Fabien Vehlmann,761380,3.87,Hardcover,False,graphic,,fr,96,2009,0,,,,,to-read,,Jolies ténèbres,6577216
+6731148,2016-12-19,Terry Pratchett,1654,3.98,Paperback,True,non-fiction,,en,469,2008,0,,,,,elsewhere,,The Folklore of Discworld,2436219
+7022275,2016-05-21,Thomas Love Peacock,76177,4.5,Paperback,False,,,,378,1948,0,,,,,pending,,Novels,6508315
+7576115,2016-05-22,Terry Pratchett,1654,4.35,Hardcover,True,novels,38,en,349,2010,0,,,Discworld,40650,elsewhere,,I Shall Wear Midnight,9934116
+7828637,2016-08-15,Iain Banks,7628,3.85,Paperback,False,novels,,en,469,2009,0,,,,,pending,,Transition,6626240
+7886744,2016-10-29,Chinua Achebe,8051,3.84,Paperback,True,novels,2,en,136,1960,0,,,The African Trilogy,168203,elsewhere,,No Longer at Ease,2568065
+8310983,2016-10-29,Chinua Achebe,8051,3.81,Paperback,True,novels,3,en,232,1964,0,,,The African Trilogy,168203,elsewhere,,Arrow of God,630178
+8852037,2019-04-22,Fabien Vehlmann,761380,3.45,Hardcover,True,graphic,51,fr,56,2010,0,,,Spirou et Fantasio,63180,elsewhere,,Alerte aux Zorkons,13727103
+8882740,2016-07-16,Chinua Achebe,8051,3.65,Paperback,True,novels,1,en,152,1959,0,,,The African Trilogy,168203,elsewhere,,Things Fall Apart,825843
+8935689,2016-05-29,Iain M. Banks,5807106,3.86,Paperback,False,novels,1,en,471,1987,3,2016-12-11,,Culture,49118,read,2016-11-19,Consider Phlebas,14366
+9543421,2016-08-18,Iain M. Banks,5807106,4.25,Paperback,False,novels,9,en,627,2010,0,,,Culture,49118,pending,,Surface Detail,11345814
+12640243,2016-12-19,Kate Mosse,9343,3.93,Paperback,True,novels,3,en,957,2011,0,,2021-01-01,Languedoc,43807,elsewhere,,Citadel,7703139
+13069502,2019-04-22,Fabien Vehlmann,761380,3.48,Hardcover,True,graphic,52,fr,48,2011,0,,,Spirou et Fantasio,63180,elsewhere,,La Face Cachée Du Z,18235593
+13499942,2016-04-20,Alexandre Dumas,4785,3.81,Paperback,False,short-stories,,fr,432,1849,4,2019-09-17,,,,read,2019-08-15,"Les Mille et Un Fantômes, précédé de La Femme au collier de velours",244749
+15788554,2017-04-29,Ursula K. Le Guin,874602,4.06,Mass Market Paperback,False,novels,4,en,205,1969,0,,,Hainish Cycle,49359,pending,,The Left Hand of Darkness,817527
+15995616,2019-04-10,Kurt Vonnegut,2778055,4.22,Paperback,True,novels,,en,176,1961,0,,2021-01-01,,,elsewhere,,Mother Night,1222244
+16156698,2016-07-02,Iain M. Banks,5807106,4.11,Paperback,False,novels,,en,487,1993,4,2019-10-17,,,,read,2019-10-03,Against a Dark Background,809748
+17119440,2016-04-18,Iain Banks,7628,3.78,Paperback,False,novels,,en,434,2012,0,,,,,pending,,Stonemouth,16252574
+17242485,2017-08-23,Iain Banks,7628,4.05,,False,novels,,,512,1992,0,,,,,pending,,The Crow Road,950451
+17280942,2019-04-22,Fabien Vehlmann,761380,3.44,Hardcover,True,graphic,53,fr,48,2012,0,,,Spirou et Fantasio,63180,elsewhere,,Dans les griffes de la vipère,23896775
+17735116,2016-04-18,Kurt Vonnegut,2778055,4.16,Paperback,False,novels,,en,224,1959,0,,2020-01-01,,,pending,,The Sirens of Titan,905970
+18109791,2016-07-05,Ursula K. Le Guin,874602,4.21,Paperback,False,novels,6,en,319,1974,4,2017-12-28,,Hainish Cycle,49359,read,2017-12-23,The Dispossessed,2684122
+18131144,2016-01-18,Terry Pratchett,1654,4.33,Paperback,False,novels,8,en,412,1989,5,2017-04-07,,Discworld,40650,read,2017-04-02,Guards! Guards!,1128601
+18231105,2016-04-18,Iain Banks,7628,3.51,Paperback,False,novels,,en,448,2002,0,,,,,pending,,Dead Air,919765
+18363319,2018-02-26,Émile Zola,4750,3.16,Mass Market Paperback,True,novels,,fr,312,1865,0,,,,,library,,La Confession de Claude,13840022
+18591321,2017-09-26,Ann Leckie,3365457,3.98,Paperback,False,novels,1,en,386,2013,0,,,Imperial Radch,113751,pending,,Ancillary Justice,24064628
+20493713,2016-10-07,Terry Pratchett,1654,4.25,Hardcover,False,novels,,en,424,1990,0,,,,,pending,,Good Omens,4110990
+20555440,2017-05-04,Terry Pratchett,1654,3.97,Paperback,False,novels,40,en,480,2013,0,,,Discworld,40650,pending,,Raising Steam,16202400
+20618571,2016-04-20,Alexandre Dumas,4785,3.8,Paperback,True,novels,,fr,316,1850,0,,2020-01-01,,,pending,,La Tulipe Noire,2024166
+20636970,2017-02-07,Émile Zola,4750,3.84,Paperback,False,novels,2,fr,380,1886,3,2018-03-14,,Les Rougon-Macquart,40441,read,2017-12-28,La Curée,839934
+21044813,2017-09-07,Iain Banks,7628,3.6,,False,novels,,en,374,2013,0,,,,,pending,,The Quarry,25093214
+21091693,2016-10-31,Ann Leckie,3365457,4.06,,False,novels,2,en,356,2014,0,,,Imperial Radch,113751,pending,,Ancillary Sword,40026175
+23533039,2016-10-31,Ann Leckie,3365457,4.21,Paperback,False,novels,3,en,330,2015,0,,,Imperial Radch,113751,pending,,Ancillary Mercy,43134689
+23653503,2019-04-22,Fabien Vehlmann,761380,3.45,Board book,True,graphic,54,fr,48,2014,0,,,Spirou et Fantasio,63180,elsewhere,,Le groom de Sniper Alley,43260822
+25965499,2016-01-19,Iain M. Banks,5807106,4.47,ebook,False,non-fiction,,en,17,1994,4,2018-12-31,,,,read,2018-12-31,A Few Notes on the Culture,45871652
+26570162,2017-07-27,Matthew Lewis,7798465,3.8,Paperback,False,novels,,en,339,1796,0,,,,,pending,,The Monk,3095060
+27281602,2019-09-25,Alexandre Dumas,4785,3.53,Paperback,False,novels,,fr,400,1843,0,,,,,to-read,,Le Château d'Eppstein,189388
+28595808,2018-02-06,Brian Davies,91422,4.83,Paperback,False,non-fiction,,,384,,0,,,,,to-read,,The McCabe Reader,48765728
+29418262,2019-04-22,Fabien Vehlmann,761380,3.3,Hardcover,True,graphic,55,fr,64,2016,0,,,Spirou et Fantasio,63180,elsewhere,,La colère du Marsupilami,47869357
+31226479,2016-05-13,Terry Pratchett,1654,4.12,Mass Market Paperback,False,novels,6,en,252,1988,5,2016-11-14,,Discworld,40650,read,2016-11-03,Wyrd Sisters,1494222
+32828220,2018-03-12,Paul Kincaid,550793,3.77,Paperback,False,non-fiction,,,200,,0,,,,,to-read,,Modern Masters of Science Fiction: Iain M. Banks,53429417
+35476010,2018-12-25,Ursula K. Le Guin,874602,4.11,Paperback,True,short-stories,,en,560,,0,,,,,elsewhere,,Orsinia,48207822
+35679776,2018-01-04,Eileen Horne,14705416,3.88,Paperback,False,non-fiction,,en,320,,0,,,,,pending,,Zola and the Victorians: Censorship in the Age of Hypocrisy,47972209
+39073893,2018-03-07,Alexandre Dumas,4785,4.2,Paperback,False,novels,,fr,991,1847,0,,,,,pending,,La Dame de Monsoreau,2369834
