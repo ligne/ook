@@ -346,7 +346,7 @@ def test_scheduled_at():
     s = [
         {'author': 'Haruki Murakami'},  # just an author
         {'author': 'Iain Banks', 'offset': 4},  # offset
-        {'series': 'Discworld$', 'per_year': 4},  # multiple
+        {'series': 'Discworld', 'per_year': 4},  # multiple
         {'series': 'Leatherstocking Tales', 'start': 2020},  # start later
         {'series': 'Languedoc', 'force': 2019},  # force
     ]
@@ -363,19 +363,15 @@ def test_scheduled_at():
     date = pd.Timestamp('2020-01-04')
 
     assert _format_scheduled_df(scheduled_at(df, date=date, schedules=s)) == [
-        'A History of Modern France, Volume 2: From the First Empire to the Second '
-        'Empire, 1799-1871',
         'Feersum Endjinn',
         "La Faute de l'abbé Mouret",
         'La Tulipe Noire',
         "Le Fantôme de l'Opéra",
         'Le Médecin De Campagne',
-        'Let the Right One In',
         'Maskerade',
         'Sepulchre',
         'The Pioneers',
         'The Sirens of Titan',
         "Winter's Bone",
     ]
-
 
