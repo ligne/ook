@@ -1,0 +1,75 @@
+# vim: ft=cfg : ts=4 : sw=4 : et
+
+[MASTER]
+
+# Add files or directories to the blacklist. They should be base names, not
+# paths.
+ignore=.git,data,old
+
+
+[MESSAGES CONTROL]
+
+enable=all
+disable=
+        len-as-condition,
+        protected-access,
+        too-few-public-methods,
+        locally-disabled,
+        cyclic-import,
+        using-constant-test,
+        #
+        #
+        # possibly false positives?
+        stop-iteration-return,
+        useless-suppression,
+        # eventually:
+        bad-whitespace,
+        invalid-name,
+        redefined-outer-name,
+        # checked by flake8
+        broad-except,
+        # don't care
+        fixme,
+        missing-docstring,
+        no-else-return,
+        trailing-newlines
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+max-line-length=121
+
+# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
+expected-line-ending-format=LF
+
+
+[BASIC]
+
+# Good variable names which should always be accepted, separated by a comma
+good-names=df,c,it,m,ii,fh,g
+
+# Bad variable names which should always be refused, separated by a comma
+bad-names=foo,bar,blah,bla,blabla
+
+# Include a hint for the correct naming format with invalid-name
+include-naming-hint=yes
+
+
+[IMPORTS]
+
+# Create a graph of every (i.e. internal and external) dependencies in the
+# given file (report RP0402 must not be disabled)
+import-graph=imports.png
+
+
+[DESIGN]
+
+# FIXME try and reduce these
+
+# Maximum number of arguments for function / method.
+max-args=12
+
+# Maximum number of locals for function / method body.
+max-locals=19
+
