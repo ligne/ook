@@ -62,4 +62,5 @@ def test_arg_parser():
     assert args.find == 'authors'
     args = _parse_cmdline('ook metadata --find books')
     assert args.find == 'books'
+    _parse_bad_cmdline('ook metadata --find blah')
 
