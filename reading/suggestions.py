@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+from textwrap import fill
+
 from .scheduling import scheduled_books, scheduled_at
 from .collection import Collection
 
@@ -112,5 +114,8 @@ def _display(df, args):
         fmt = '{Pages:4.0f}  {Title} ({Author})'
 
     for (_, book) in df.iterrows():
-        print(fmt.format(**book)[:args.width])
+        out = fmt.format(**book)
+        if args.width:
+            out = fill(out, width=args.width, subsequent_indent='      ')
+        print(out)
 
