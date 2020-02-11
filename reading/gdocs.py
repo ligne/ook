@@ -106,21 +106,10 @@ def _para_offsets(element):
 
 ################################################################################
 
-def _del(offset_range, current):
-    to_del = (offset_range[0][0], offset_range[-1][1])
-    print('delete from {} to {}: {!r}'.format(*to_del, ''.join(current)))
-    return _delete_content_request(offset_range[0][0], offset_range[-1][1])
-
-
-def _ins(at, new):
-    print('insert at {}: {!r:}'.format(at[0], ''.join(new)))
-    return _insert_text_request(at[0], ''.join(new))
-
-
-def _insert_text_request(start, text):
+def _insert_text_request(start, lines):
     return {
         "insertText": {
-            "text": text,
+            "text": ''.join(lines),
             "location": {
                 "index": start,
             }
@@ -128,12 +117,12 @@ def _insert_text_request(start, text):
     }
 
 
-def _delete_content_request(start, end):
+def _delete_content_request(offset_range):
     return {
         "deleteContentRange": {
             "range": {
-                "startIndex": start,
-                "endIndex": end,
+                "startIndex": offset_range[0][0],
+                "endIndex": offset_range[-1][1],
             }
         }
     }
@@ -148,12 +137,12 @@ def changes(rev_id, got, offsets, expected):
         if tag == 'equal':
             continue
         elif tag == 'delete':
-            requests.append(_del(offsets[got1:got2], got[got1:got2]))
+            requests.append(_delete_content_request(offsets[got1:got2]))
         elif tag == 'insert':
-            requests.append(_ins(offsets[got1], expected[exp1:exp2]))
+            requests.append(_insert_text_request(offsets[got1], expected[exp1:exp2]))
         elif tag == 'replace':
-            requests.append(_del(offsets[got1:got2], got[got1:got2]))
-            requests.append(_ins(offsets[got1], expected[exp1:exp2]))
+            requests.append(_delete_content_request(offsets[got1:got2]))
+            requests.append(_insert_text_request(offsets[got1], expected[exp1:exp2]))
 
     return {
         "requests": requests,
