@@ -64,3 +64,11 @@ def test_arg_parser():
     assert args.find == 'books'
     _parse_bad_cmdline('ook metadata --find blah')
 
+    # general options
+
+    args = _parse_cmdline('ook --date 2020-01-01 suggest')
+    assert str(args.date.date()) == '2020-01-01'
+
+    args = _parse_cmdline('ook --date 2022-10-10 suggest')
+    assert str(args.date.date()) == '2022-10-10'
+

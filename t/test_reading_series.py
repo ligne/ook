@@ -7,6 +7,7 @@ import pandas as pd
 from reading.collection import Collection
 import reading.series
 from reading.series import _parse_entries, _get_entry, interesting
+from reading.series import _lookup_series_id
 from reading.series import Series
 
 
@@ -75,6 +76,17 @@ def test_interesting():
     assert not interesting('1-2', {
         'Entries': ['1', '2']
     })
+
+
+def test__lookup_series_id():
+    c = _get_collection()
+
+    # FIXME check the exception message?
+    with pytest.raises(ValueError):
+        _lookup_series_id(c.df, ('_' * 100))
+
+    with pytest.raises(ValueError):
+        _lookup_series_id(c.df, 'e')
 
 
 def test_ignore():
