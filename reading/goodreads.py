@@ -31,9 +31,7 @@ def get_books():
         for r in x.findall('reviews/'):
             book = process_review(r)
             api_book = fetch_book(book['BookId'])
-            del api_book['Title']
-            book.update(api_book)
-            books.append(book)
+            books.append({**api_book, **book})
 
         r = x.find('reviews')
         if r.get('end') >= r.get('total'):
@@ -75,6 +73,8 @@ def process_review(r):
 
     return row
 
+
+################################################################################
 
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id):
@@ -156,6 +156,8 @@ def _parse_book_html(_html):
     pass
 
 
+################################################################################
+
 def _fetch_series(series_id):
     fname = 'data/cache/series/{}.xml'.format(series_id)
     try:
@@ -177,6 +179,8 @@ def _parse_series(xml):
         'Entries': [x.find('user_position').text for x in xml.find('series/series_works')],
     }
 
+
+################################################################################
 
 def _get_authors(authors):
     _authors = list(filter(lambda x: x[2] is None, authors))
