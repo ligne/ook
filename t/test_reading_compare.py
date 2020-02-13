@@ -114,21 +114,7 @@ Matthew Lewis, The Monk
   * Binding set to Paperback
 """.strip(), 'Fields set and unset'
 
-
-#    # acquired a book
-#    old, new = _to_books(
-#"""
-#14281,2016-08-25,Alice Munro,6410,4.29,Paperback,False,short-stories,,en,688,1985,0,,,,,to-read,,Selected Stories,351589
-#25689,2018-06-12,Alice Munro,6410,4.29,Paperback,False,short-stories,,en,412,1985,0,,,,,pending,,Selected Stories,351589
-#""")
-#
-#    assert_multi_line_equal(reading.compare._changed(old, new), '''
-#Alice Munro, Selected Stories
-#  * Shelf: to-read → pending
-#  * Pages: 688 → 412
-#  * Added: 2016-08-25 → 2018-06-12
-#'''.strip())
-
+    ###
     b2 = b1.copy()
     b2.Scheduled = pd.Timestamp('2021-01-01')
     b1a = b1.copy()
