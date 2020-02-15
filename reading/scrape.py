@@ -87,10 +87,6 @@ def rebuild(scraped, df):
     except FileNotFoundError:
         fixes = pd.DataFrame(columns=df.columns)
 
-    for col in ['Started', 'Read']:
-        if col in scraped:
-            scraped[col] = pd.to_datetime(scraped[col])
-
     # merge in the new data
     fixes = pd.concat([
         fixes.loc[fixes.index.difference(scraped.index)],
