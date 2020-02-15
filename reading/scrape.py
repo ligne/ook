@@ -101,11 +101,12 @@ def rebuild(scraped, df):
     fixes = fixes.loc[fixes.index.intersection(df.index)]
 
     # remove no-op changes and empty bits
+    #
+    # FIXME just want df.isnull() for non-date columns? otherwise can
+    # overwrite changes from the API
     return (
         fixes[df.reindex_like(fixes) != fixes]
         .dropna(how='all', axis='index')
         .dropna(how='all', axis='columns')
         .sort_index()
     )
-
-# vim: ts=4 : sw=4 : et
