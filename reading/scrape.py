@@ -60,7 +60,7 @@ def _get_date(review, field):
 
 def scrape(fname):
     with open(fname) as fh:
-        soup = BeautifulSoup(fh, 'html5lib')
+        soup = BeautifulSoup(fh, "lxml")
 
     books = []
 
