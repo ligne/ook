@@ -30,7 +30,8 @@ def goodreads(args):
 
 
 def kindle(args):
-    from wordcounts import process
+    from .wordcounts import process
+
     old = Collection(
         shelves=['kindle'],
         # FIXME Collection shouldn't ignore articles by default: let suggest do that.
