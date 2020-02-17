@@ -226,8 +226,8 @@ def find(what):
 def find_books(books):
     df = Collection().df  # include metadata
 
-    author_ids = set(list(df.AuthorId.dropna().astype(int)))
-    work_ids   = set(list(df.Work.dropna().astype(int)))
+    author_ids = set(df.AuthorId.dropna().astype(int))
+    work_ids = set(df.Work.dropna().astype(int))
 
     df = df[df.Work.isnull()]
     df = df[df.Language == 'en']  # search doesn't work well with non-english books

@@ -384,7 +384,7 @@ def _days_remaining(year):
 def scheduled_years(df):
     # FIXME
     years = set(df.Scheduled.dt.year.tolist())
-    return sorted(list(years | {today.year}))
+    return sorted(years | {today.year})
 
 
 # plot reading schedule against time left, with warnings.

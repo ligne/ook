@@ -46,13 +46,13 @@ def test__get_gr_books():
         'Borrowed',
     ])
 
-    assert set(df.Category) == set([
+    assert set(df.Category) == {
         'novels',
         'short-stories',
         'non-fiction',
         'graphic',
         np.nan
-    ])
+    }
 
 #     eq_(list(zip(df.columns, df.dtypes)), [
 #     ])
@@ -94,12 +94,12 @@ def test__get_kindle_books():
     assert set(df.Borrowed) == {False}, 'ebooks are never borrowed'
     assert set(df.Shelf) == {'kindle'}, 'ebook shelf is always kindle'
 
-    assert set(df.Category) == set([
+    assert set(df.Category) == {
         'articles',
         'non-fiction',
         'novels',
         'short-stories',
-    ])
+    }
 
 #     eq_(list(zip(df.columns, df.dtypes)), [
 #     ])
