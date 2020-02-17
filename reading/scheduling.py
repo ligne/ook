@@ -7,6 +7,8 @@ from .series import Series
 from .config import config
 
 
+TODAY = datetime.date.today()
+
 # use cases:
 #   reading through an author (Haruki Murakami)
 #   with an offset into the year (Iain M. Banks)
@@ -48,7 +50,7 @@ def scheduled_books(df):
 
 
 # fix up df with the scheduled dates
-def _set_schedules(df, schedules=None, date=datetime.date.today(), col='Scheduled'):
+def _set_schedules(df, schedules=None, date=TODAY, col='Scheduled'):
     for settings in schedules or config('scheduled'):
         for d, book in _schedule(df, **settings, date=date):
             df.loc[book, col] = d
@@ -56,7 +58,7 @@ def _set_schedules(df, schedules=None, date=datetime.date.today(), col='Schedule
 
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
-def scheduled_at(df, date=datetime.date.today(), schedules=None):
+def scheduled_at(df, date=TODAY, schedules=None):
     date = pd.Timestamp(date)
     _set_schedules(df, schedules, date)
     return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values('Title')
@@ -66,7 +68,7 @@ def scheduled_at(df, date=datetime.date.today(), schedules=None):
 
 def _schedule(df, author=None, series=None,
               start=None, per_year=1, offset=0, force=False,
-              date=datetime.date.today()):
+              date=TODAY):
     series = Series(
         author=author,
         series=series,
@@ -89,7 +91,7 @@ def _schedule(df, author=None, series=None,
 # converts a stream of windows into a stream of dates for scheduling
 def _dates(start, per_year=1, offset=1,
            force=False, last_read=None,
-           date=datetime.date.today()):
+           date=TODAY):
     date = pd.Timestamp(date)
     windows = _windows(start, per_year, offset)
 
