@@ -112,9 +112,8 @@ def _dates(start, per_year=1, offset=1,
         yield window_start
         break
 
-    # return the others
-    for window_start, window_end in windows:
-        yield window_start
+    # return the start of remaining windows
+    yield from (ii[0] for ii in windows)
 
 
 # returns a stream of (start, end) dates which may or may not want a book
