@@ -213,6 +213,33 @@ class Collection():
 
         self.df = df
 
+    # filter by shelf
+    def shelves(self, include=None, exclude=None):
+        if include:
+            self.df = self.df[self.df.Shelf.isin(include)]
+        elif exclude:
+            self.df = self.df[~self.df.Shelf.isin(exclude)]
+
+        return self
+
+    # filter by language
+    def languages(self, include=None, exclude=None):
+        if include:
+            self.df = self.df[self.df.Language.isin(include)]
+        elif exclude:
+            self.df = self.df[~self.df.Language.isin(exclude)]
+
+        return self
+
+    # filter by category
+    def categories(self, include=None, exclude=None):
+        if include:
+            self.df = self.df[self.df.Category.isin(include)]
+        elif exclude:
+            self.df = self.df[~self.df.Category.isin(exclude)]
+
+        return self
+
     # save to disk.  FIXME must only apply to one file?
     def save(self):
         _save_gr_books(self.df)
