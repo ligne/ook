@@ -5,6 +5,7 @@ import re
 import dateutil
 from bs4 import BeautifulSoup
 import pandas as pd
+from .storage import load_df
 
 
 #################################################################################
@@ -78,14 +79,8 @@ def scrape(fname):
 
 
 def rebuild(scraped, df):
-    # load the fixes file
-    try:
-        fixes = pd.read_csv('data/scraped.csv', index_col=0, parse_dates=[
-            'Started',
-            'Read',
-        ])
-    except FileNotFoundError:
-        fixes = pd.DataFrame(columns=df.columns)
+    # load the existing fixes
+    fixes = load_df("scraped")
 
     # merge in the new data
     fixes = pd.concat([

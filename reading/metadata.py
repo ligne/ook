@@ -9,6 +9,7 @@ from .compare import compare
 from .wikidata import wd_search
 from .wikidata import Entity
 from .goodreads import search_title, fetch_book
+from .storage import load_df
 
 from .collection import _ebook_parse_title
 
@@ -176,36 +177,9 @@ def confirm_author(author):
 
 ################################################################################
 
-def _load_csv(name, columns):
-    try:
-        return pd.read_csv(name, index_col=0)
-    except FileNotFoundError:
-        return pd.DataFrame(columns=columns)
-
-
 def find(what):
-    books_csv   = 'data/books.csv'
-    authors_csv = 'data/authors.csv'
-
-    books = _load_csv(books_csv, [
-        'Author',
-        'AuthorId',
-        'Published',
-        'Title',
-        'Pages',
-        'Language',
-        'Category',
-        'Series',
-        'SeriesId',
-        'Entry',
-    ])
-    authors = _load_csv(authors_csv, [
-        'QID',
-        'Author',
-        'Gender',
-        'Nationality',
-        'Description'
-    ])
+    books = load_df("books")
+    authors = load_df("authors")
 
     try:
         if 'books' in what:
@@ -218,8 +192,8 @@ def find(what):
     except FullExit:
         return
 
-    books.to_csv(books_csv,     float_format='%.20g')
-    authors.to_csv(authors_csv, float_format='%.20g')
+    books.to_csv("data/books.csv", float_format="%.20g")
+    authors.to_csv("data/authors.csv", float_format="%.20g")
 
 
 # associate WorkIds with book IDs
@@ -272,7 +246,7 @@ def find_authors(authors):
 # regenerates the metadata based on what has been gathered.
 def rebuild():
     books = Collection(metadata=False).df
-    works = pd.read_csv('data/books.csv', index_col=0)
+    works = load_df("books")
 
     prefer_work_cols = ['Work', 'Author', 'Title', 'Series', 'SeriesId', 'Entry', 'Published', 'Pages', 'AuthorId']
     prefer_book_cols = ['Language']

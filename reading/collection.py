@@ -4,11 +4,9 @@ import re
 
 import pandas as pd
 
-from reading.config import config
+from .config import config
+from .storage import load_df
 
-
-GR_CSV    = 'data/goodreads.csv'
-EBOOK_CSV = 'data/ebooks.csv'
 
 words_per_page = 390
 
@@ -18,15 +16,8 @@ pd.options.display.width = None
 
 ################################################################################
 
-def _get_gr_books(csv=GR_CSV, merge=False):
-    # FIXME Published as a date would be nice too, except pandas doesn't
-    # support very old dates.
-    df = pd.read_csv(csv, parse_dates=[
-        'Added',
-        'Started',
-        'Read',
-        'Scheduled'
-    ])
+def _get_gr_books(csv=None, merge=False):
+    df = load_df("goodreads", csv)
 
     if merge:
         s = df.Title.str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?$', expand=True)
@@ -40,19 +31,17 @@ def _get_gr_books(csv=GR_CSV, merge=False):
             }),
         ], sort=False)
 
-    return df.set_index('BookId')
+    return df
 
 
-def _save_gr_books(_df, _csv=GR_CSV):
+def _save_gr_books(_df):
     pass
 
 
 ################################################################################
 
-def _get_kindle_books(csv=EBOOK_CSV, merge=False):
-    df = pd.read_csv(csv, parse_dates=[
-        'Added',
-    ], index_col=0)
+def _get_kindle_books(csv=None, merge=False):
+    df = load_df("ebooks", csv)
 
     # calculate page count
     df['Pages'] = df.Words / words_per_page
@@ -75,7 +64,7 @@ def _get_kindle_books(csv=EBOOK_CSV, merge=False):
 
 
 # FIXME maybe want this to not require pandas?
-def _save_kindle_books(df, csv=EBOOK_CSV):
+def _save_kindle_books(df, csv="data/ebooks.csv"):
     columns = [
         'Author',
         'Title',
@@ -165,9 +154,9 @@ class Collection():
     #   control visibility of later books in series
 
     def __init__(self, df=None,
-                 gr_csv=GR_CSV, ebook_csv=EBOOK_CSV,
+                 gr_csv=None, ebook_csv=None,
                  dedup=False, merge=False,
-                 fixes=True, metadata='data/metadata.csv',
+                 fixes=True, metadata=True,
                  shelves=None, categories=None, languages=None, borrowed=None):
         # just wrap it
         if df is not None:
@@ -181,9 +170,9 @@ class Collection():
         ], sort=False)
 
         if metadata:
-            df.update(pd.read_csv(metadata, index_col=0))
+            df.update(load_df("metadata"))
             # load author information FIXME ugh what a mess
-            authors = pd.read_csv('data/authors.csv', index_col=0)
+            authors = load_df("authors")
             a = df[df.AuthorId.isin(authors.index)].AuthorId
             df = pd.concat([
                 df,
@@ -217,15 +206,7 @@ class Collection():
             d = _process_fixes(config('fixes'))
             if d is not None:
                 df.update(d)
-
-            try:
-                scraped = pd.read_csv('data/scraped.csv', index_col=0, parse_dates=[
-                    'Started',
-                    'Read',
-                ])
-            except FileNotFoundError:
-                scraped = pd.DataFrame(columns=df.columns)
-            df.update(scraped)
+            df.update(load_df("scraped"))
 
         self.df = df
 

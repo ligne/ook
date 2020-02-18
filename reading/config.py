@@ -3,6 +3,126 @@
 import yaml
 
 
+_COLUMNS = [
+    {
+        "name": "QID",
+        "store": ["authors"],
+    },
+    {
+        "name": "Author",
+        "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
+    },
+    {
+        "name": "AuthorId",
+        "store": ["goodreads", "books", "metadata"],
+    },
+    {
+        "name": "Title",
+        "store": ["goodreads", "ebooks", "books", "metadata"],
+    },
+    {
+        "name": "Work",
+        "store": ["goodreads", "metadata"],
+    },
+    {
+        "name": "Shelf",
+        "store": ["goodreads"],
+    },
+    {
+        "name": "Category",
+        "store": ["goodreads", "ebooks", "books"],
+    },
+    {
+        "name": "Scheduled",
+        "store": ["goodreads"],
+        "type": "date",
+    },
+    {
+        "name": "Borrowed",
+        "store": ["goodreads"],
+    },
+    {
+        "name": "Series",
+        "store": ["goodreads", "books", "metadata"],
+    },
+    {
+        "name": "SeriesId",
+        "store": ["goodreads", "books", "metadata"],
+    },
+    {
+        "name": "Entry",
+        "store": ["goodreads", "books", "metadata"],
+    },
+    {
+        "name": "Binding",
+        "store": ["goodreads", "ebooks"],
+    },
+    {
+        "name": "Published",
+        "store": ["goodreads", "books"],
+        # Can't convert Published to a date as pandas' range isn't big enough
+    },
+    {
+        "name": "Language",
+        "store": ["goodreads", "ebooks", "books"],
+    },
+    {
+        "name": "Pages",
+        "store": ["goodreads", "books", "scraped", "metadata"],
+    },
+    {
+        "name": "Words",
+        "store": ["ebooks"],
+    },
+    {
+        "name": "Added",
+        "store": ["goodreads", "ebooks"],
+        "type": "date",
+    },
+    {
+        "name": "Started",
+        "store": ["goodreads", "scraped"],
+        "type": "date",
+    },
+    {
+        "name": "Read",
+        "store": ["goodreads", "scraped"],
+        "type": "date",
+    },
+    {
+        "name": "Rating",
+        "store": ["goodreads"],
+    },
+    {
+        "name": "AvgRating",
+        "store": ["goodreads"],
+    },
+    {
+        "name": "Gender",
+        "store": ["authors"],
+    },
+    {
+        "name": "Nationality",
+        "store": ["authors"],
+    },
+    {
+        "name": "Description",
+        "store": ["authors"],
+    },
+]
+
+
+# columns for various CSVs (eg goodreads, ebooks)
+def df_columns(store):
+    return [col["name"] for col in _COLUMNS if store in col["store"]]
+
+
+def date_columns(store):
+    return [col["name"] for col in _COLUMNS if store in col["store"] and col.get("type") == "date"]
+
+
+################################################################################
+
 # value = config('key.name')
 def config(key):
     with open('data/config.yml') as fh:
