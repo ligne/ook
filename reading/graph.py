@@ -340,31 +340,29 @@ def rate_area():
 
 
 def doy():
-    df = Collection(shelves=['read']).df
+    df = Collection(shelves=["read"]).df.dropna(subset=["Read"])
 
-    df['Year'] = df.Read.dt.year
-    df['Day of Year'] = df.Read.dt.dayofyear
+    df["Year"] = df.Read.dt.year
+    df["Day of Year"] = df.Read.dt.dayofyear
 
-    df.pivot_table(
-        values='Pages',
-        index='Day of Year',
-        columns='Year',
+    df = df.pivot_table(
+        values="Pages",
+        index="Day of Year",
+        columns="Year",
         aggfunc=np.sum,
         fill_value=0
-    ).reindex(range(1, 367), fill_value=0).cumsum().plot()
+    ).reindex(range(366), fill_value=0).cumsum()
 
-    plt.axvline(today.dayofyear, color='k', alpha=0.5)
+    target = pd.Series({0: 0, 365: 12000}, index=range(366)).interpolate()
+    df.sub(target, axis="index").plot()
 
-#    plt.grid(True)
-    for m in np.cumsum([0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31])[:12]:
-        plt.plot([m, 366], [0, 12000 * (1 - m / 366)], color='k', alpha=.2)
+    plt.axvline(today.dayofyear, color="k", alpha=0.5)
 
     # prettify and save
-    name = 'doy'
-    # the legend doesn't help
-    plt.legend().set_visible(False)
-    plt.title('Progress')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    name = "doy"
+    plt.grid(True)
+    plt.title("Progress")
+    plt.savefig(f"images/{name}.png", bbox_inches="tight")
     plt.close()
 
 
