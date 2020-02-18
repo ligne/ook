@@ -121,11 +121,6 @@ def test__parse_book_api():
     }
 
 
-#def test__fetch_book_html():
-#    ok_(reading.goodreads._fetch_book_html(819), 'Got output for an existing book')
-#    eq_(reading.goodreads._fetch_book_html(1), None, "Nothing for a non-existing book, but it didn't explode")
-
-
 def test__get_authors():
     assert reading.goodreads._get_authors(
         [('Agnes Owens', '108420', None)]
