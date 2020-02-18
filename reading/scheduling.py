@@ -139,7 +139,7 @@ def _windows(start, per_year=1, offset=1):
 
 if __name__ == "__main__":
     from .collection import Collection
-    df = Collection(shelves=['read', 'currently-reading', 'pending', 'elsewhere', 'ebooks', 'library']).df
+    df = Collection().shelves(exclude=["kindle", "to-read"]).df
     df = df.drop_duplicates(['Work'])
 
     scheduled(df)

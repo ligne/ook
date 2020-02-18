@@ -10,16 +10,7 @@ def goodreads(args):
 
     df = get_books()
 
-    # FIXME shortcut for this, please!
-    old = Collection(shelves=[
-        'read',
-        'currently-reading',
-        'pending',
-        'elsewhere',
-        'library',
-        'ebooks',
-        'to-read',
-    ], fixes=False)
+    old = Collection(fixes=False).shelves(exclude=["kindle"])
 
     if not args.ignore_changes:
         df.sort_index().to_csv("data/goodreads.csv", float_format="%.20g")
