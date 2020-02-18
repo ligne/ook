@@ -22,7 +22,7 @@ def goodreads(args):
     ], fixes=False)
 
     if not args.ignore_changes:
-        df.sort_index().to_csv('data/goodreads.csv', float_format='%g')
+        df.sort_index().to_csv("data/goodreads.csv", float_format="%.20g")
 
     compare(old.df, df)
 

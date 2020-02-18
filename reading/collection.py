@@ -79,7 +79,7 @@ def _save_kindle_books(df, csv="data/ebooks.csv"):
 
     df = df[df.Shelf == 'kindle']
 
-    df.sort_index()[columns].to_csv(csv, float_format='%g')
+    df.sort_index()[columns].to_csv(csv, float_format="%.20g")
 
 
 ################################################################################
