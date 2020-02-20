@@ -3,7 +3,7 @@
 import numpy as np
 
 import reading.collection
-from reading.collection import Collection
+from reading.collection import Collection, _get_gr_books, _get_kindle_books
 
 
 def _get_collection():
@@ -72,6 +72,45 @@ def test__get_gr_books():
     # missing publication year
     assert np.isnan(b.Published)
 
+    ############################################################################
+    # actual tests of _get_gr_books()
+
+    unmerged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=False)
+    assert len(unmerged) == 139
+    assert not unmerged.index.hasnans
+
+    merged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=True)
+    assert len(merged) == 136
+    assert not merged.index.hasnans
+
+
+def test_goodreads_merge():
+    unmerged = reading.collection._get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
+    merged = reading.collection._get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=True)
+
+    assert not unmerged.index.equals(merged.index), "Merging goodreads books had some effect"
+    assert len(unmerged.index) > len(merged.index), "Merging goodreads books had some effect"
+
+    assert not unmerged.index.hasnans, "No NaNs in unmerged goodreads index"
+    assert not merged.index.hasnans, "No NaNs in merged goodreads index"
+
+    assert 0 not in merged.index, "Index should be BookIds"
+    assert 3 not in merged.index, "Check it's searching by ID not index"
+
+
+def test_kindle_merge():
+    unmerged = reading.collection._get_kindle_books()
+    merged = reading.collection._get_kindle_books(merge=True)
+
+    assert not unmerged.index.equals(merged.index), "Merging kindle books had some effect"
+    assert len(unmerged.index) > len(merged.index), "Merging kindle books had some effect"
+
+    assert not unmerged.index.hasnans, "No NaNs in unmerged kindle index"
+    assert not merged.index.hasnans, "No NaNs in merged kindle index"
+
+    assert 0 not in merged.index, "Index should be BookIds"
+    assert 3 not in merged.index, "Check it's searching by ID not index"
+
 
 def test__get_kindle_books():
     # FIXME use a test csv
@@ -122,6 +161,8 @@ def test_collection():
     assert Collection(dedup=True, merge=True)
     assert Collection(fixes=False)
     assert Collection(metadata=False)
+
+    assert len(Collection(merge=True, metadata=True).df) == 1129, "collection is a sensible length"
 
 
 def test__process_fixes():

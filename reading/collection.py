@@ -20,16 +20,17 @@ def _get_gr_books(csv=None, merge=False):
     df = load_df("goodreads", csv)
 
     if merge:
-        s = df.Title.str.extract('(?P<Title>.+?)(?: (?P<Volume>I+))?$', expand=True)
+        df = df.drop("Title", axis=1).join(
+            df.Title.str.extract("(?P<Title>.+?)(?: (?P<Volume>I+))?$", expand=True)
+        ).reset_index()
 
-        df = df.drop('Title', axis=1).join(s)
         df = pd.concat([
             df[df.Volume.isnull()],
             df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
                 **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
-                **{'Pages': 'sum'},
+                **{'Pages': 'sum', "BookId": "first"},
             }),
-        ], sort=False)
+        ], sort=False).set_index("BookId")
 
     return df
 
@@ -47,15 +48,17 @@ def _get_kindle_books(csv=None, merge=False):
     df['Pages'] = df.Words / words_per_page
 
     if merge:
-        s = df.Title.apply(_ebook_parse_title)
-        df = df.drop('Title', axis=1).join(s)
+        df = df.drop('Title', axis=1).join(
+            df.Title.apply(_ebook_parse_title)
+        ).reset_index()
+
         df = pd.concat([
             df[df.Volume.isnull()],
             df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
                 **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
-                **{'Pages': 'sum', 'Words': 'sum'},
+                **{'Pages': 'sum', 'Words': 'sum', "BookId": "first"},
             }),
-        ], sort=False)
+        ], sort=False).set_index("BookId")
 
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
