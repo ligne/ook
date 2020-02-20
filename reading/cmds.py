@@ -15,7 +15,12 @@ def _filter_parser():
         'kindle',
     ])
     parser.add_argument('--languages', nargs='+')
-    parser.add_argument('--categories', nargs='+')
+    parser.add_argument(
+        "--categories",
+        nargs="+",
+        choices=["novels", "short-stories", "non-fiction", "graphic", "articles"],
+        default=["novels", "short-stories", "non-fiction", "graphic"],
+    )
     parser.add_argument('--new-authors', action="store_true")
     parser.add_argument('--old-authors', action="store_true")
     parser.add_argument('--new-nationalities', action="store_true")

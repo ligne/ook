@@ -52,6 +52,7 @@ def test__get_gr_books():
         'novels',
         'short-stories',
         'non-fiction',
+        'articles',
         'graphic',
         np.nan
     }
@@ -164,7 +165,7 @@ def test_collection():
     assert Collection(fixes=False)
     assert Collection(metadata=False)
 
-    assert len(Collection(merge=True, metadata=True).df) == 1129, "collection is a sensible length"
+    assert len(Collection(merge=True, metadata=True).df) == 1164, "collection is a sensible length"
 
 
 def test_collection_shelves():

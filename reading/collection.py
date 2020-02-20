@@ -192,15 +192,10 @@ class Collection():
         # apply filters on shelf, language, category.
         if categories:
             df = df[df.Category.isin(categories)]
-        else:
-            # ignore articles unless explicitly requested
-            df = df[~df.Category.isin(['articles'])]
-
         if languages:
             df = df[df['Language'].isin(languages)]
         if shelves:
             df = df[df['Shelf'].isin(shelves)]
-
         if borrowed is not None:
             df = df[df['Borrowed'] == borrowed]
 

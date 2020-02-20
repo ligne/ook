@@ -23,12 +23,7 @@ def goodreads(args):
 def kindle(args):
     from .wordcounts import process
 
-    old = Collection(
-        shelves=['kindle'],
-        # FIXME Collection shouldn't ignore articles by default: let suggest do that.
-        categories=['novels', 'short-stories', 'non-fiction', 'articles'],
-        metadata=False,
-    ).df
+    old = Collection(metadata=False).shelves(['kindle']).df
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
