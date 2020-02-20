@@ -171,13 +171,13 @@ class Collection():
 
         if metadata:
             df.update(load_df("metadata"))
-            # load author information FIXME ugh what a mess
+            # load author information
             authors = load_df("authors")
-            a = df[df.AuthorId.isin(authors.index)].AuthorId
-            df = pd.concat([
-                df,
-                a.apply(lambda x: authors.loc[x, ['Gender', 'Nationality']]),
-            ], axis='columns', sort=False)
+            df = df.join(
+                df[df.AuthorId.isin(authors.index)]
+                .AuthorId
+                .apply(lambda x: authors.loc[x, ["Gender", "Nationality"]])
+            )
 
         if dedup:
             # FIXME to be implemented

@@ -116,6 +116,13 @@ def test_collection():
     c = Collection()
     assert c.df.equals(Collection().df), 'Same collection is the same'
 
+    assert Collection(merge=True, metadata=False)
+    assert Collection(merge=True, metadata=True)
+    assert Collection(dedup=True)
+    assert Collection(dedup=True, merge=True)
+    assert Collection(fixes=False)
+    assert Collection(metadata=False)
+
 
 def test__process_fixes():
     assert not reading.collection._process_fixes({}), 'No fixes to apply'
