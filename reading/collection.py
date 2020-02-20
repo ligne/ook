@@ -233,6 +233,11 @@ class Collection():
     def categories(self, include=None, exclude=None):
         return self._filter_list("Category", include, exclude)
 
+    def borrowed(self, state=None):
+        if state is not None:
+            self.df = self.df[self.df.Borrowed == state]
+        return self
+
     # save to disk.  FIXME must only apply to one file?
     def save(self):
         _save_gr_books(self.df)

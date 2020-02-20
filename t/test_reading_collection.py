@@ -224,6 +224,12 @@ def test_collection_categories():
 #    assert set(df.index) == set(_get_collection().df.index)
 
 
+def test_collection_borrowed():
+    assert set(_get_collection().borrowed().df.Borrowed) == {True, False}
+    assert set(_get_collection().borrowed(True).df.Borrowed) == {True}
+    assert set(_get_collection().borrowed(False).df.Borrowed) == {False}
+
+
 def test__process_fixes():
     assert not reading.collection._process_fixes({}), 'No fixes to apply'
 
