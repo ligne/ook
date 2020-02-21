@@ -3,6 +3,10 @@
 import yaml
 
 
+SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle"}
+CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
+
+
 _COLUMNS = [
     {
         "name": "QID",

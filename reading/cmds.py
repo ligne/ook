@@ -4,18 +4,20 @@ import argparse
 import datetime
 import pandas as pd
 
+from .config import CATEGORIES, SHELVES
+
 
 def _filter_parser():
     parser = argparse.ArgumentParser(add_help=False)
-    # FIXME validate choices
-    parser.add_argument('--shelves', nargs='+', default=[
-        'pending',
-        'elsewhere',
-        'ebooks',
-        'kindle',
-    ])
-    parser.add_argument('--languages', nargs='+')
-    parser.add_argument('--categories', nargs='+')
+
+    parser.add_argument("--shelves", nargs="+", choices=SHELVES, default=SHELVES)
+    parser.add_argument("--languages", nargs="+")
+    parser.add_argument(
+        "--categories",
+        nargs="+",
+        choices=CATEGORIES,
+        default=(CATEGORIES - {"articles"}),
+    )
     parser.add_argument('--new-authors', action="store_true")
     parser.add_argument('--old-authors', action="store_true")
     parser.add_argument('--new-nationalities', action="store_true")

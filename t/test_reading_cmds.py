@@ -32,22 +32,32 @@ def test_arg_parser():
 
     assert _parse_cmdline('ook scheduled')
     assert _parse_cmdline('ook scheduled --shelves pending')
-#    _parse_bad_cmdline('ook scheduled --shelves badshelf')
+    assert _parse_cmdline("ook scheduled --shelves elsewhere library")
+    _parse_bad_cmdline("ook scheduled --shelves badshelf")
     assert _parse_cmdline('ook scheduled --borrowed')
     assert _parse_cmdline('ook scheduled --categories novels')
     assert _parse_cmdline('ook scheduled --categories novels short-stories')
+    _parse_bad_cmdline("ook scheduled --categories blah")
     assert _parse_cmdline('ook scheduled --languages en de')
+
+    args = _parse_cmdline("ook scheduled")
+    assert "articles" not in args.categories
 
     assert _parse_cmdline('ook reports')  # should fail
     assert _parse_cmdline('ook reports docs')  # check based on pre-defined ones?
 
     assert _parse_cmdline('ook suggest')
     assert _parse_cmdline('ook suggest --shelves pending')
-#    _parse_bad_cmdline('ook suggest --shelves badshelf')
+    assert _parse_cmdline("ook suggest --shelves elsewhere library")
+    _parse_bad_cmdline("ook suggest --shelves badshelf")
     assert _parse_cmdline('ook suggest --borrowed')
     assert _parse_cmdline('ook suggest --categories novels')
     assert _parse_cmdline('ook suggest --categories novels short-stories')
+    _parse_bad_cmdline("ook suggest --categories blah")
     assert _parse_cmdline('ook suggest --languages en de')
+
+    args = _parse_cmdline("ook suggest")
+    assert "articles" not in args.categories
 
     assert _parse_cmdline('ook update'), "Doesn't do very much, but it works"
     assert _parse_cmdline('ook update --goodreads')
