@@ -1,6 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
-from reading.config import config, df_columns, date_columns, category_patterns
+from reading.config import (
+    category_patterns, config, date_columns,
+    df_columns, metadata_prefer)
 
 
 def test_df_colums():
@@ -96,6 +98,24 @@ def test_category_patterns():
         ["non-fiction", "education", "theology", "linguistics"],
         ["novels", "fiction"],
     ]
+
+
+################################################################################
+
+def test_metadata_prefer():
+    assert metadata_prefer("work") == [
+        "Author",
+        "AuthorId",
+        "Title",
+        "Work",
+        "Series",
+        "SeriesId",
+        "Entry",
+        "Published",
+        "Pages",
+    ], "Prefer the goodreads work's metadata"
+
+    assert metadata_prefer("book") == ["Language"], "Prefer the ebook's metadata"
 
 
 ################################################################################

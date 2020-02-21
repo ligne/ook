@@ -5,6 +5,7 @@ from jinja2 import Template
 import pandas as pd
 
 from .collection import Collection
+from .config import metadata_prefer
 from .compare import compare
 from .wikidata import wd_search
 from .wikidata import Entity
@@ -248,8 +249,8 @@ def rebuild():
     books = Collection(metadata=False).df
     works = load_df("books")
 
-    prefer_work_cols = ['Work', 'Author', 'Title', 'Series', 'SeriesId', 'Entry', 'Published', 'Pages', 'AuthorId']
-    prefer_book_cols = ['Language']
+    prefer_work_cols = metadata_prefer("work")
+    prefer_book_cols = metadata_prefer("book")
 
     books_mask = pd.concat([
         books.notnull()[prefer_book_cols],

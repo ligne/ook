@@ -11,18 +11,22 @@ _COLUMNS = [
     {
         "name": "Author",
         "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "AuthorId",
         "store": ["goodreads", "books", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Title",
         "store": ["goodreads", "ebooks", "books", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Work",
         "store": ["goodreads", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Shelf",
@@ -44,14 +48,17 @@ _COLUMNS = [
     {
         "name": "Series",
         "store": ["goodreads", "books", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "SeriesId",
         "store": ["goodreads", "books", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Entry",
         "store": ["goodreads", "books", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Binding",
@@ -61,14 +68,17 @@ _COLUMNS = [
         "name": "Published",
         "store": ["goodreads", "books"],
         # Can't convert Published to a date as pandas' range isn't big enough
+        "prefer": "work",
     },
     {
         "name": "Language",
         "store": ["goodreads", "ebooks", "books"],
+        "prefer": "book",
     },
     {
         "name": "Pages",
         "store": ["goodreads", "books", "scraped", "metadata"],
+        "prefer": "work",
     },
     {
         "name": "Words",
@@ -119,6 +129,10 @@ def df_columns(store):
 
 def date_columns(store):
     return [col["name"] for col in _COLUMNS if store in col["store"] and col.get("type") == "date"]
+
+
+def metadata_prefer(preference):
+    return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
 ################################################################################
