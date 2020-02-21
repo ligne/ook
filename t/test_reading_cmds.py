@@ -1,12 +1,15 @@
 # vim: ts=4 : sw=4 : et
 
+import datetime
+import shlex
+
 import pytest
 
 from reading.cmds import arg_parser
 
 
 def _parse_cmdline(line):
-    return arg_parser().parse_args(line.split()[1:])
+    return arg_parser().parse_args(shlex.split(line)[1:])
 
 
 def _parse_bad_cmdline(line):
@@ -82,3 +85,8 @@ def test_arg_parser():
     args = _parse_cmdline('ook --date 2022-10-10 suggest')
     assert str(args.date.date()) == '2022-10-10'
 
+    args = _parse_cmdline("ook suggest")
+    assert args.date.date() == datetime.date.today(), "Defaults to today's date"
+
+    args = _parse_cmdline("ook --date '1st jan 2020' suggest")
+    assert str(args.date.date()) == '2020-01-01'

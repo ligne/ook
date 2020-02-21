@@ -1,7 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
 import argparse
-import datetime
 import pandas as pd
 
 from .config import CATEGORIES, SHELVES
@@ -45,11 +44,7 @@ def arg_parser():
     parser = argparse.ArgumentParser()
 
     # common options
-    parser.add_argument(
-        '--date',
-        type=lambda d: datetime.datetime.strptime(d, '%Y-%m-%d'),
-        default=pd.Timestamp('today'),
-    )
+    parser.add_argument("--date", type=pd.Timestamp, default=pd.Timestamp("today"))
     parser.add_argument('-n', '--ignore-changes', action='store_true')
     parser.add_argument('-f', '--force', action='store_true')
 
