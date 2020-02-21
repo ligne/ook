@@ -4,6 +4,7 @@ from xml.etree import ElementTree
 import pandas as pd
 
 import reading.goodreads
+from reading.goodreads import _get_category
 
 
 def test_process_review():
@@ -170,6 +171,15 @@ def test__get_authors():
 
     # include the author for graphic novels?
     [('Fabien Vehlmann', '761380', None), ('Kerascoët', '752696', 'Illustrator')]
+
+
+def test__get_category():
+    assert _get_category([]) == "", "No shelves"
+    assert _get_category(["short-stories"]) == "short-stories", "Shelf is the category name"
+    assert _get_category(["something", "short-stories"]) == "short-stories", "Not the first shelf"
+    assert _get_category(["essays"]) == "non-fiction", "Not the category name"
+
+    assert _get_category(["blah", "linguistics"]) == "non-fiction", "Had to make a guess"
 
 
 def test__parse_series():
