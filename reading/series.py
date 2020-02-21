@@ -193,10 +193,6 @@ class Series():
             self.df = _sort_entries(self.df)
         elif self.order == 'published':
             self.df = self.df.sort_values('Published')
-        elif self.order == 'random':
-            self.df = self.df.loc[
-                self.df.Title.apply(lambda x: x.__hash__()).sort_values().index
-            ]
         return self
 
 
