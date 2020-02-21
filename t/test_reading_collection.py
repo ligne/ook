@@ -11,8 +11,7 @@ def _get_collection():
 
 
 def test__get_gr_books():
-    c = _get_collection()
-    df = c.df
+    df = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
 
     assert sorted(df.columns) == sorted([
         'Author',
@@ -23,7 +22,6 @@ def test__get_gr_books():
         'Entry',
         'Language',
         'Pages',
-        'Words',
 
         'Scheduled',
         'Added',
@@ -32,9 +30,6 @@ def test__get_gr_books():
 
         'AuthorId',
         'SeriesId',
-
-        'Gender',
-        'Nationality',
 
         'Binding',
         'Published',
@@ -54,27 +49,6 @@ def test__get_gr_books():
         np.nan
     }
 
-#     eq_(list(zip(df.columns, df.dtypes)), [
-#     ])
-
-    b = df.loc[2366570]  # Les Chouans
-
-    # timestamp columns are ok
-    assert str(b.Added.date()) == '2016-04-18'
-    assert str(b.Started.date()) == '2016-09-08'
-    assert str(b.Read.date()) == '2016-11-06'
-    assert b.Published == 1829  # pandas can't do very old dates...
-
-    b = df.loc[3071647]  # La faute de l'abbé Mouret
-    assert str(b.Scheduled.date()) == '2020-01-01', 'Scheduled column is a timestamp'
-
-    b = df.loc[28595808]  # The McCabe Reader
-    # missing publication year
-    assert np.isnan(b.Published)
-
-    ############################################################################
-    # actual tests of _get_gr_books()
-
     unmerged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=False)
     assert len(unmerged) == 139
     assert not unmerged.index.hasnans
@@ -85,8 +59,8 @@ def test__get_gr_books():
 
 
 def test_goodreads_merge():
-    unmerged = reading.collection._get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
-    merged = reading.collection._get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=True)
+    unmerged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
+    merged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=True)
 
     assert not unmerged.index.equals(merged.index), "Merging goodreads books had some effect"
     assert len(unmerged.index) > len(merged.index), "Merging goodreads books had some effect"
@@ -99,8 +73,8 @@ def test_goodreads_merge():
 
 
 def test_kindle_merge():
-    unmerged = reading.collection._get_kindle_books()
-    merged = reading.collection._get_kindle_books(merge=True)
+    unmerged = _get_kindle_books()
+    merged = _get_kindle_books(merge=True)
 
     assert not unmerged.index.equals(merged.index), "Merging kindle books had some effect"
     assert len(unmerged.index) > len(merged.index), "Merging kindle books had some effect"
@@ -163,6 +137,54 @@ def test_collection():
     assert Collection(metadata=False)
 
     assert len(Collection(merge=True, metadata=True).df) == 1129, "collection is a sensible length"
+
+    df = c.df
+    assert sorted(df.columns) == sorted([
+        "Author",
+        "Title",
+        "Shelf",
+        "Category",
+        "Series",
+        "Entry",
+        "Language",
+        "Pages",
+        "Words",
+
+        "Scheduled",
+        "Added",
+        "Started",
+        "Read",
+
+        "AuthorId",
+        "SeriesId",
+
+        "Gender",
+        "Nationality",
+
+        "Binding",
+        "Published",
+        "Work",
+
+        "Rating",
+        "AvgRating",
+
+        "Borrowed",
+    ])
+
+    b = df.loc[2366570]  # Les Chouans
+
+    # timestamp columns are ok
+    assert str(b.Added.date()) == "2016-04-18"
+    assert str(b.Started.date()) == "2016-09-08"
+    assert str(b.Read.date()) == "2016-11-06"
+    assert b.Published == 1829  # pandas can't do very old dates...
+
+    b = df.loc[3071647]  # La faute de l'abbé Mouret
+    assert str(b.Scheduled.date()) == "2020-01-01", "Scheduled column is a timestamp"
+
+    b = df.loc[28595808]  # The McCabe Reader
+    # missing publication year
+    assert np.isnan(b.Published)
 
 
 def test__process_fixes():
