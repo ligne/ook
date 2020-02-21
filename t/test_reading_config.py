@@ -1,6 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
-from reading.config import config, df_columns, date_columns
+from reading.config import config, df_columns, date_columns, category_patterns
 
 
 def test_df_colums():
@@ -74,6 +74,31 @@ def test_date_columns():
         "Read",
     ], "Date columns for goodreads"
 
+
+################################################################################
+
+def test_category_patterns():
+    (patterns, guesses) = category_patterns()
+    assert patterns == [
+        ["graphic", "graphic-novels", "comics", "graphic-novel"],
+        [
+            "short-stories",
+            "short-story",
+            "nouvelles",
+            "short-story-collections",
+            "relatos-cortos",
+        ],
+        ["non-fiction", "nonfiction", "essays"],
+        ["novels", "novel", "roman", "romans"],
+    ]
+
+    assert guesses == [
+        ["non-fiction", "education", "theology", "linguistics"],
+        ["novels", "fiction"],
+    ]
+
+
+################################################################################
 
 def test_config():
     assert config('goodreads.user'), 'fetched a key that exists'

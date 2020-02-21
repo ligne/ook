@@ -8,7 +8,7 @@ import requests
 from dateutil.parser import parse
 
 import reading.series
-from reading.config import config
+from reading.config import config, category_patterns
 
 
 # get all the books on the goodread shelves.
@@ -192,30 +192,13 @@ def _get_authors(authors):
 
 # tries to divine what sort of book this is based on the shelves.
 def _get_category(shelves):
-    patterns = (
-        ('graphic', ('graphic-novels', 'comics', 'graphic-novel')),
-        ('short-stories', ('short-stories', 'short-story', 'nouvelles', 'short-story-collections', 'relatos-cortos')),
-        ('non-fiction', ('non-fiction', 'nonfiction', 'essays')),
-        ('novels', ('novel', 'novels', 'roman', 'romans')),
-    )
+    for patterns in category_patterns():
+        for shelf in shelves:
+            for category in patterns:
+                if shelf in category:
+                    return category[0]
 
-    for shelf in shelves:
-        for (c, n) in patterns:
-            if shelf in n:
-                return c
-
-    # if that failed, try and guess a sensible default
-    patterns = (
-        ('non-fiction', ('education', 'theology', 'linguistics')),
-        ('novels', ('fiction')),
-    )
-
-    for shelf in shelves:
-        for (c, n) in patterns:
-            if shelf in n:
-                return c
-
-    return ''
+    return ""
 
 
 ################################################################################

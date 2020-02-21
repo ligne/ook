@@ -123,6 +123,38 @@ def date_columns(store):
 
 ################################################################################
 
+_CATEGORIES = {
+    "graphic": (
+        ["graphic-novels", "comics", "graphic-novel"],
+    ),
+    "short-stories": (
+        ["short-story", "nouvelles", "short-story-collections", "relatos-cortos"],
+    ),
+    "non-fiction": (
+        ["nonfiction", "essays"],
+        ['education', "theology", "linguistics"],
+    ),
+    "novels": (
+        ["novel", "roman", "romans"],
+        ["fiction"],
+    ),
+}
+
+
+def category_patterns():
+    patterns = []
+    guesses = []
+
+    for name, pats in _CATEGORIES.items():
+        patterns.append([name] + pats[0])
+        if len(pats) > 1:
+            guesses.append([name] + pats[1])
+
+    return (patterns, guesses)
+
+
+################################################################################
+
 # value = config('key.name')
 def config(key):
     with open('data/config.yml') as fh:
