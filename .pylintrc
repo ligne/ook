@@ -47,7 +47,7 @@ expected-line-ending-format=LF
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=df,c,it,m,ii,fh,g
+good-names=df,c,it,m,ii,fh,g,e
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,blah,bla,blabla,data
