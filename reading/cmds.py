@@ -94,7 +94,6 @@ def arg_parser():
 
 def main():
     args = arg_parser().parse_args()
-    print(args)
 
     if args.mode == 'update':
         import reading.update
