@@ -13,7 +13,6 @@ enable=all
 disable=
         len-as-condition,
         protected-access,
-        too-few-public-methods,
         locally-disabled,
         cyclic-import,
         using-constant-test,
@@ -38,7 +37,7 @@ disable=
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=121
+max-line-length=110
 
 # Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
 expected-line-ending-format=LF
