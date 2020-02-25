@@ -139,8 +139,8 @@ def test_collection():
     assert Collection(metadata=False)
 
     assert (
-        len(_get_collection(merge=True, metadata=True).df) == 361
-    ), "collection is a sensible length"
+        len(_get_collection(merge=True, metadata=True).df) == 396
+    ), "Merged collection is a sensible length"
 
     df = c.df
     assert sorted(df.columns) == sorted([
