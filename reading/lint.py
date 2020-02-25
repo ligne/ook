@@ -110,31 +110,43 @@ def lint_scheduled_misshelved():
 
 
 # scheduled books by authors i've already read this year
-# FIXME rewrite this too
-def check_scheduled_but_already_read(df):
-    ignore_authors = [
-        'Terry Pratchett',
-        'Iain Banks',
-    ]
+def lint_overscheduled():
+    c = Collection(merge=True)
+    df = c.df
 
     import datetime
+    from reading.scheduling import _set_schedules
+
+    _set_schedules(df, config("scheduled"), col="Automatic")
 
     today = datetime.date.today()
 
-    # has been scheduled
-    scheduled = df.Scheduled.notnull()
-    # duplicate author for the same year, ignoring volumes of the same book
-    duplicated = df.duplicated(['Author', 'Scheduled', 'Volume'])
-    # by authors i expect to be reading several times a year
-    ignored = df['Author'].isin(ignore_authors)
-    # scheduled for this year
-    this_year = df.Scheduled == str(today.year)
-    # by authors i've already read this year
-    authors = df[(df['Date Read'].dt.year == today.year) | (df['Exclusive Shelf'] == 'currently-reading')].Author.values
-    read_this_year = df.Author.isin(authors)
+    # not read or automatically scheduled this year
+    bad = set(
+        df[
+            (df.Read.dt.year == today.year)
+            | (df.Shelf == "currently-reading")
+            | (df.Automatic.dt.year == today.year)
+        ].AuthorId
+    )
 
-    df = df[scheduled & ~ignored & (duplicated | (this_year & read_this_year))]
-    #print_entries(df, 'Multiple scheduled books by the same author', ['Scheduled'])
+    # books that are manually scheduled but not in the list
+    df = df[
+        df.Automatic.isnull()
+        & df.AuthorId.isin(bad)
+        & (df.Scheduled.dt.year == today.year)
+    ]
+
+    return {
+        "title": "Multiple scheduled books by the same author",
+        "df": df,
+        "template": """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
 
 
 def lint_scheduling():
