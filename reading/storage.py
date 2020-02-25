@@ -18,3 +18,11 @@ def load_df(name, fname=None):
         columns=df_columns(name),
         parse_dates=date_columns(name)
     )
+
+
+def save_df(name, df, fname=None):
+    df.sort_index().to_csv(
+        fname or f"data/{name}.csv",
+#        columns=df_columns(name),
+        float_format="%.20g"
+    )
