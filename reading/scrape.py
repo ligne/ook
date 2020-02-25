@@ -27,18 +27,6 @@ def pages(review):
         return None
 
 
-# still a date, but from a different place in the html and pd.Timestamp may not
-# be able to handle it. ValueError is to catch its NaT filler value.
-def published(review):
-    try:
-        return dateutil.parser.parse(
-            review.find(class_='date_pub').div.text,
-            default=datetime.datetime(2018, 1, 1),
-        ).year
-    except (AttributeError, ValueError):
-        return None
-
-
 def started_date(review):
     return _get_date(review, 'date_started_value')
 
@@ -71,8 +59,6 @@ def scrape(fname):
             'Started': started_date(review),
             'Read': read_date(review),
             'Pages': pages(review),
-            # this doesn't seem to actually find anything...
-            #'Published': published(review),
         })
 
     return pd.DataFrame(books).set_index('BookId')
