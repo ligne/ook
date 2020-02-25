@@ -3,6 +3,7 @@
 from .collection import Collection
 from .compare import compare
 from .config import config
+from .storage import save_df
 
 
 def goodreads(args):
@@ -13,7 +14,7 @@ def goodreads(args):
     old = Collection(fixes=False).shelves(exclude=["kindle"])
 
     if not args.ignore_changes:
-        df.sort_index().to_csv("data/goodreads.csv", float_format="%.20g")
+        save_df("goodreads", df)
 
     compare(old.df, df)
 
@@ -45,7 +46,7 @@ def scrape(args):
     fixes = rebuild(_scrape(config('goodreads.html')), df)
 
     if not args.ignore_changes:
-        fixes.to_csv('data/scraped.csv', float_format='%.20g')
+        save_df("scraped", fixes)
 
     new = Collection().df
 

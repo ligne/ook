@@ -5,7 +5,7 @@ import re
 import pandas as pd
 
 from .config import config
-from .storage import load_df
+from .storage import load_df, save_df
 
 
 words_per_page = 390
@@ -82,7 +82,7 @@ def _save_kindle_books(df, csv="data/ebooks.csv"):
 
     df = df[df.Shelf == 'kindle']
 
-    df.sort_index()[columns].to_csv(csv, float_format="%.20g")
+    save_df("ebooks", df[columns])
 
 
 ################################################################################
