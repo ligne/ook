@@ -1,6 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
 import numpy as np
+import pandas as pd
+from pandas.testing import assert_frame_equal
 
 import reading.collection
 from reading.collection import Collection, _get_gr_books, _get_kindle_books
@@ -45,6 +47,7 @@ def test__get_gr_books():
         'novels',
         'short-stories',
         'non-fiction',
+        'articles',
         'graphic',
         np.nan
     }
@@ -189,7 +192,68 @@ def test_collection():
     assert np.isnan(b.Published)
 
 
+def test_collection_shelves():
+    c = _get_collection()
+    assert set(c.shelves(["library"]).df.Shelf) == {"library"}, "Only the selected shelf"
+
+    c = _get_collection()
+    assert set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set(), "Not the excluded shelf"
+
+    assert_frame_equal(_get_collection(shelves=["library"]).df, _get_collection().shelves(["library"]).df)
+
+    df = pd.concat([
+        _get_collection().shelves(exclude=["library"]).df,
+        _get_collection().shelves(include=["library"]).df,
+    ])
+
+    assert set(df.index) == set(_get_collection().df.index)
+
+
+def test_collection_languages():
+    c = _get_collection()
+    assert set(c.languages(["fr"]).df.Language) == {"fr"}, "Only the selected language"
+
+    c = _get_collection()
+    assert set(c.languages(exclude=["fr"]).df.Language) & {"fr"} == set(), "Not the excluded language"
+
+    assert_frame_equal(
+        _get_collection(languages=["fr"]).df,
+        _get_collection().languages(["fr"]).df
+    )
+
+#    df = pd.concat([
+#        _get_collection().shelves(exclude=["library"]).df,
+#        _get_collection().shelves(include=["library"]).df,
+#    ])
+#
+#    assert set(df.index) == set(_get_collection().df.index)
+
+
+def test_collection_categories():
+    c = _get_collection()
+    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected category"
+
+    c = _get_collection()
+    assert set(c.categories(exclude=["novels"]).df.Category) & {"novels"} == set(), "Not the excluded category"
+
+    assert_frame_equal(
+        _get_collection(categories=["fr"]).df,
+        _get_collection().categories(["fr"]).df
+    )
+
+#    df = pd.concat([
+#        _get_collection().shelves(exclude=["library"]).df,
+#        _get_collection().shelves(include=["library"]).df,
+#    ])
+#
+#    assert set(df.index) == set(_get_collection().df.index)
+
+
+def test_collection_borrowed():
+    assert set(_get_collection().borrowed().df.Borrowed) == {True, False}
+    assert set(_get_collection().borrowed(True).df.Borrowed) == {True}
+    assert set(_get_collection().borrowed(False).df.Borrowed) == {False}
+
+
 def test__process_fixes():
     assert not reading.collection._process_fixes({}), 'No fixes to apply'
-
-

@@ -189,18 +189,18 @@ class Collection():
         # take a clean copy before filtering
         self.all = df.copy()
 
+        if categories or shelves or languages or borrowed:
+            import inspect
+            caller = inspect.stack()[1]
+            print(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
+
         # apply filters on shelf, language, category.
         if categories:
             df = df[df.Category.isin(categories)]
-        else:
-            # ignore articles unless explicitly requested
-            df = df[~df.Category.isin(['articles'])]
-
         if languages:
             df = df[df['Language'].isin(languages)]
         if shelves:
             df = df[df['Shelf'].isin(shelves)]
-
         if borrowed is not None:
             df = df[df['Borrowed'] == borrowed]
 
@@ -212,6 +212,31 @@ class Collection():
             df.update(load_df("scraped"))
 
         self.df = df
+
+    def _filter_list(self, col, include=None, exclude=None):
+        if include:
+            self.df = self.df[self.df[col].isin(include)]
+        elif exclude:
+            self.df = self.df[~self.df[col].isin(exclude)]
+
+        return self
+
+    # filter by shelf
+    def shelves(self, include=None, exclude=None):
+        return self._filter_list("Shelf", include, exclude)
+
+    # filter by language
+    def languages(self, include=None, exclude=None):
+        return self._filter_list("Language", include, exclude)
+
+    # filter by category
+    def categories(self, include=None, exclude=None):
+        return self._filter_list("Category", include, exclude)
+
+    def borrowed(self, state=None):
+        if state is not None:
+            self.df = self.df[self.df.Borrowed == state]
+        return self
 
     # save to disk.  FIXME must only apply to one file?
     def save(self):
