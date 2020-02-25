@@ -47,7 +47,6 @@ def test__get_gr_books():
         'novels',
         'short-stories',
         'non-fiction',
-        'articles',
         'graphic',
         np.nan
     }
