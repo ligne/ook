@@ -6,8 +6,8 @@ import reading.collection
 from reading.collection import Collection, _get_gr_books, _get_kindle_books
 
 
-def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False)
+def _get_collection(**kwargs):
+    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False, **kwargs)
 
 
 def test__get_gr_books():
@@ -136,7 +136,9 @@ def test_collection():
     assert Collection(fixes=False)
     assert Collection(metadata=False)
 
-    assert len(Collection(merge=True, metadata=True).df) == 1129, "collection is a sensible length"
+    assert (
+        len(_get_collection(merge=True, metadata=True).df) == 361
+    ), "collection is a sensible length"
 
     df = c.df
     assert sorted(df.columns) == sorted([
