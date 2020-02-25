@@ -189,6 +189,11 @@ class Collection():
         # take a clean copy before filtering
         self.all = df.copy()
 
+        if categories or shelves or languages or borrowed:
+            import inspect
+            caller = inspect.stack()[1]
+            print(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
+
         # apply filters on shelf, language, category.
         if categories:
             df = df[df.Category.isin(categories)]
