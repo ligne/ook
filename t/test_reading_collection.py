@@ -193,13 +193,19 @@ def test_collection():
 
 def test_collection_shelves():
     c = _get_collection()
-    assert set(c.shelves(["library"]).df.Shelf) == {"library"}, "Only the selected shelf"
+    assert set(c.shelves(["library"]).df.Shelf) == {
+        "library"
+    }, "Only the selected shelf"
 
     c = _get_collection()
-    assert set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set(), "Not the excluded shelf"
+    assert (
+        set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set()
+    ), "Not the excluded shelf"
 
-    assert_frame_equal(_get_collection(shelves=["library"]).df, _get_collection().shelves(["library"]).df)
-
+    assert_frame_equal(
+        _get_collection(shelves=["library"]).df,
+        _get_collection().shelves(["library"]).df,
+    )
     df = pd.concat([
         _get_collection().shelves(exclude=["library"]).df,
         _get_collection().shelves(include=["library"]).df,
@@ -209,15 +215,16 @@ def test_collection_shelves():
 
 
 def test_collection_languages():
-    c = _get_collection()
-    assert set(c.languages(["fr"]).df.Language) == {"fr"}, "Only the selected language"
+    assert set(_get_collection().languages(["fr"]).df.Language) == {
+        "fr"
+    }, "Only the selected language"
 
-    c = _get_collection()
-    assert set(c.languages(exclude=["fr"]).df.Language) & {"fr"} == set(), "Not the excluded language"
+    assert (
+        set(_get_collection().languages(exclude=["fr"]).df.Language) & {"fr"} == set()
+    ), "Not the excluded language"
 
     assert_frame_equal(
-        _get_collection(languages=["fr"]).df,
-        _get_collection().languages(["fr"]).df
+        _get_collection(languages=["fr"]).df, _get_collection().languages(["fr"]).df
     )
 
 #    df = pd.concat([
@@ -229,15 +236,17 @@ def test_collection_languages():
 
 
 def test_collection_categories():
-    c = _get_collection()
-    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected category"
+    assert set(_get_collection().categories(["novels"]).df.Category) == {
+        "novels"
+    }, "Only the selected category"
 
-    c = _get_collection()
-    assert set(c.categories(exclude=["novels"]).df.Category) & {"novels"} == set(), "Not the excluded category"
+    assert (
+        set(_get_collection().categories(exclude=["novels"]).df.Category) & {"novels"}
+        == set()
+    ), "Not the excluded category"
 
     assert_frame_equal(
-        _get_collection(categories=["fr"]).df,
-        _get_collection().categories(["fr"]).df
+        _get_collection(categories=["fr"]).df, _get_collection().categories(["fr"]).df
     )
 
 #    df = pd.concat([
