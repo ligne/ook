@@ -93,16 +93,16 @@ def test__get_kindle_books():
     df = reading.collection._get_kindle_books()
 
     assert list(df.columns) == [
-        'Author',
-        'Title',
-        'Shelf',
-        'Category',
-        'Language',
-        'Added',
-        'Binding',
-        'Words',
-        'Borrowed',
-        'Pages',
+        "Author",
+        "Title",
+        "Category",
+        "Language",
+        "Words",
+        "Added",
+        "Pages",
+        "Shelf",
+        "Binding",
+        "Borrowed",
     ]
 
     assert set(df.Binding) == {'ebook'}, 'ebook binding is always ebook'
