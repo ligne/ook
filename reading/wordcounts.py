@@ -68,10 +68,9 @@ def _ignore_item(path):
     ignore_fname = ['My Clippings.txt']
     ignore_ext   = ['.kfx']
 
-    fname = path.parts[-1]
     return (not path.is_file()
-            or fname[0] == '.'
-            or fname in ignore_fname
+            or path.name[0] == "."
+            or path.name in ignore_fname
             or path.suffix in ignore_ext)
 
 
@@ -82,12 +81,12 @@ def get_ebooks(kindle_dir):
         for f in (kindle_dir / d).iterdir():
             if _ignore_item(f):
                 continue
-            yield (category, f, str(Path(category, f.parts[-1])))
+            yield (category, f, str(Path(category, f.name)))
 
     for f in kindle_dir.iterdir():
         if _ignore_item(f):
             continue
-        yield ('articles', f, str(Path('articles', f.parts[-1])))
+        yield ("articles", f, str(Path("articles", f.name)))
 
 
 def process(df, force=False):
