@@ -145,11 +145,13 @@ if __name__ == "__main__":
     scheduled(df)
     print('----')
     print('This year:')
-    for _ix, row in scheduled_at(df, datetime.date(TODAY.year, 12, 31)).sort_values('Title').iterrows():
+    DATE = datetime.date(TODAY.year, 12, 31)
+    for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
         print(' *', row.Title)
     print('----')
     print('Next year:')
-    for _ix, row in scheduled_at(df, datetime.date(TODAY.year + 1, 12, 31)).sort_values('Title').iterrows():
+    DATE = datetime.date(TODAY.year + 1, 12, 31)
+    for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
         print(' *', row.Title)
     print('----')
     print('CURRENT:')
