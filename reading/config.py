@@ -13,6 +13,10 @@ _COLUMNS = [
         "store": ["authors"],
     },
     {
+        "name": "BookId",
+        "store": ["books"],
+    },
+    {
         "name": "Author",
         "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
         "prefer": "work",
@@ -29,7 +33,7 @@ _COLUMNS = [
     },
     {
         "name": "Work",
-        "store": ["goodreads", "metadata"],
+        "store": ["goodreads", "books", "metadata"],
         "prefer": "work",
     },
     {
@@ -66,11 +70,11 @@ _COLUMNS = [
     },
     {
         "name": "Binding",
-        "store": ["goodreads", "ebooks"],
+        "store": ["goodreads"],
     },
     {
         "name": "Published",
-        "store": ["goodreads", "books"],
+        "store": ["goodreads", "books", "metadata"],
         # Can't convert Published to a date as pandas' range isn't big enough
         "prefer": "work",
     },
