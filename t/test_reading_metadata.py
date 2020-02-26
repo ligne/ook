@@ -1,14 +1,14 @@
 # vim: ts=4 : sw=4 : et
 
-import reading.metadata
+from reading.metadata import _list_book_choices
 
 
 def test__list_book_choices():
     # nothing
-    assert reading.metadata._list_book_choices([], set(), set()) == ''
+    assert _list_book_choices([], set(), set()) == ''
 
     # books from goodreads title search
-    assert reading.metadata._list_book_choices([
+    assert _list_book_choices([
         {
             'Ratings': '31583',
             'Published': '1853',
@@ -119,7 +119,7 @@ def test__list_book_choices():
             'Title': 'A Portrait of the Artist as a Young Man, Notes'
         },
     ]
-    assert reading.metadata._list_book_choices(results, author_ids={5144}, work_ids={3298883}) == '''
+    assert _list_book_choices(results, author_ids={5144}, work_ids={3298883}) == '''
 \033[1m 1.\033[0m\033[32m A Portrait of the Artist as a Young Man\033[0m\033[33m
       James Joyce\033[0m
       Published: 1916
@@ -182,7 +182,7 @@ def test__list_book_choices():
             'Title': 'A Portrait of the Artist as a Young Man, Notes'
         },
     ]
-    assert reading.metadata._list_book_choices(results, author_ids={5144}, work_ids=set()) == '''
+    assert _list_book_choices(results, author_ids={5144}, work_ids=set()) == '''
 \033[1m 1.\033[0m A Portrait of the Artist as a Young Man\033[0m\033[33m
       James Joyce\033[0m
       Published: 1916
