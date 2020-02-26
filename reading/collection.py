@@ -70,21 +70,8 @@ def _get_kindle_books(csv=None, merge=False):
 
 # FIXME maybe want this to not require pandas?
 def _save_kindle_books(df, csv="data/ebooks.csv"):
-    columns = [
-        'Author',
-        'Title',
-        'Shelf',
-        'Category',
-        'Language',
-        'Added',
-        'Binding',
-        'Words',
-        'Borrowed'
-    ]
-
     df = df[df.Shelf == 'kindle']
-
-    save_df("ebooks", df[columns])
+    save_df("ebooks", df)
 
 
 ################################################################################
