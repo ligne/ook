@@ -23,6 +23,6 @@ def load_df(name, fname=None):
 def save_df(name, df, fname=None):
     df.sort_index().to_csv(
         fname or f"data/{name}.csv",
-#        columns=df_columns(name),
-        float_format="%.20g"
+        columns=df_columns(name),
+        float_format="%.20g",
     )
