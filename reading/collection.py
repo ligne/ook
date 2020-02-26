@@ -60,6 +60,8 @@ def _get_kindle_books(csv=None, merge=False):
             }),
         ], sort=False).set_index("BookId")
 
+    df = df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
+
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
