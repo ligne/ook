@@ -10,7 +10,7 @@ from .compare import compare
 from .wikidata import wd_search
 from .wikidata import Entity
 from .goodreads import search_title, fetch_book
-from .storage import load_df
+from .storage import load_df, save_df
 
 from .collection import _ebook_parse_title
 
@@ -193,8 +193,8 @@ def find(what):
     except FullExit:
         return
 
-    books.to_csv("data/books.csv", float_format="%.20g")
-    authors.to_csv("data/authors.csv", float_format="%.20g")
+    save_df("books", books)
+    save_df("authors", authors)
 
 
 # associate WorkIds with book IDs
@@ -291,5 +291,4 @@ def main(args):
     compare(old, new)
 
     if not args.ignore_changes:
-        metadata.to_csv('data/metadata.csv', float_format='%.20g')
-
+        save_df("metadata", metadata)

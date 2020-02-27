@@ -15,33 +15,28 @@ def _get_collection(**kwargs):
 def test__get_gr_books():
     df = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
 
-    assert sorted(df.columns) == sorted([
-        'Author',
-        'Title',
-        'Shelf',
-        'Category',
-        'Series',
-        'Entry',
-        'Language',
-        'Pages',
-
-        'Scheduled',
-        'Added',
-        'Started',
-        'Read',
-
-        'AuthorId',
-        'SeriesId',
-
-        'Binding',
-        'Published',
-        'Work',
-
-        'Rating',
-        'AvgRating',
-
-        'Borrowed',
-    ])
+    assert list(df.columns) == [
+        "Author",
+        "AuthorId",
+        "Title",
+        "Work",
+        "Shelf",
+        "Category",
+        "Scheduled",
+        "Borrowed",
+        "Series",
+        "SeriesId",
+        "Entry",
+        "Binding",
+        "Published",
+        "Language",
+        "Pages",
+        "Added",
+        "Started",
+        "Read",
+        "Rating",
+        "AvgRating",
+    ]
 
     assert set(df.Category) == {
         'novels',
@@ -93,16 +88,16 @@ def test__get_kindle_books():
     df = reading.collection._get_kindle_books()
 
     assert list(df.columns) == [
-        'Author',
-        'Title',
-        'Shelf',
-        'Category',
-        'Language',
-        'Added',
-        'Binding',
-        'Words',
-        'Borrowed',
-        'Pages',
+        "Author",
+        "Title",
+        "Category",
+        "Language",
+        "Words",
+        "Added",
+        "Pages",
+        "Shelf",
+        "Binding",
+        "Borrowed",
     ]
 
     assert set(df.Binding) == {'ebook'}, 'ebook binding is always ebook'
@@ -129,7 +124,7 @@ def test__get_kindle_books():
 
 def test_collection():
     c = Collection()
-    assert c.df.equals(Collection().df), 'Same collection is the same'
+    assert c.df.equals(Collection().df), "Same collection is the same"
 
     assert Collection(merge=True, metadata=False)
     assert Collection(merge=True, metadata=True)
@@ -143,37 +138,31 @@ def test_collection():
     ), "Merged collection is a sensible length"
 
     df = c.df
-    assert sorted(df.columns) == sorted([
+    assert list(df.columns) == [
         "Author",
+        "AuthorId",
         "Title",
+        "Work",
         "Shelf",
         "Category",
+        "Scheduled",
+        "Borrowed",
         "Series",
+        "SeriesId",
         "Entry",
+        "Binding",
+        "Published",
         "Language",
         "Pages",
-        "Words",
-
-        "Scheduled",
         "Added",
         "Started",
         "Read",
-
-        "AuthorId",
-        "SeriesId",
-
-        "Gender",
-        "Nationality",
-
-        "Binding",
-        "Published",
-        "Work",
-
         "Rating",
         "AvgRating",
-
-        "Borrowed",
-    ])
+        "Words",
+        "Gender",
+        "Nationality",
+    ]
 
     b = df.loc[2366570]  # Les Chouans
 

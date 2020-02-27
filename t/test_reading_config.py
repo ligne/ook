@@ -30,9 +30,11 @@ def test_df_colums():
     ], "Columns for goodreads.csv"
 
     assert df_columns("books") == [
+        "BookId",
         "Author",
         "AuthorId",
         "Title",
+        "Work",
         "Category",
         "Series",
         "SeriesId",
@@ -64,6 +66,7 @@ def test_df_colums():
         "Series",
         "SeriesId",
         "Entry",
+        "Published",
         "Pages",
     ], "Columns for metadata.csv"
 

@@ -3,19 +3,19 @@
 from .collection import Collection
 from .compare import compare
 from .config import config
+from .storage import load_df, save_df
 
 
 def goodreads(args):
     from .goodreads import get_books
 
-    df = get_books()
-
-    old = Collection(fixes=False).shelves(exclude=["kindle"])
+    old = load_df("goodreads")
+    new = get_books()
 
     if not args.ignore_changes:
-        df.sort_index().to_csv("data/goodreads.csv", float_format="%.20g")
+        save_df("goodreads", new)
 
-    compare(old.df, df)
+    compare(old, new)
 
     # FIXME update series
 
@@ -23,13 +23,11 @@ def goodreads(args):
 def kindle(args):
     from .wordcounts import process
 
-    old = Collection(metadata=False).shelves(['kindle']).df
+    old = load_df("ebooks")
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
-        Collection(df=new).save()
-
-    new = new.assign(Work=None, Shelf='kindle')
+        save_df("ebooks", new)
 
     compare(old, new, use_work=False)
 
@@ -45,7 +43,7 @@ def scrape(args):
     fixes = rebuild(_scrape(config('goodreads.html')), df)
 
     if not args.ignore_changes:
-        fixes.to_csv('data/scraped.csv', float_format='%.20g')
+        save_df("scraped", fixes)
 
     new = Collection().df
 

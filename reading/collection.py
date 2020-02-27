@@ -35,12 +35,6 @@ def _get_gr_books(csv=None, merge=False):
     return df
 
 
-def _save_gr_books(_df):
-    pass
-
-
-################################################################################
-
 def _get_kindle_books(csv=None, merge=False):
     df = load_df("ebooks", csv)
 
@@ -60,29 +54,12 @@ def _get_kindle_books(csv=None, merge=False):
             }),
         ], sort=False).set_index("BookId")
 
+    df = df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
+
     # FIXME not needed?
     df.Author.fillna('', inplace=True)
 
     return df
-
-
-# FIXME maybe want this to not require pandas?
-def _save_kindle_books(df, csv="data/ebooks.csv"):
-    columns = [
-        'Author',
-        'Title',
-        'Shelf',
-        'Category',
-        'Language',
-        'Added',
-        'Binding',
-        'Words',
-        'Borrowed'
-    ]
-
-    df = df[df.Shelf == 'kindle']
-
-    df.sort_index()[columns].to_csv(csv, float_format="%.20g")
 
 
 ################################################################################
@@ -237,11 +214,6 @@ class Collection():
         if state is not None:
             self.df = self.df[self.df.Borrowed == state]
         return self
-
-    # save to disk.  FIXME must only apply to one file?
-    def save(self):
-        _save_gr_books(self.df)
-        _save_kindle_books(self.df)
 
 
 if __name__ == "__main__":
