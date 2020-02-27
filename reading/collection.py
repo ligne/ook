@@ -133,16 +133,10 @@ class Collection():
     #       also in goodreads)
     #   control visibility of later books in series
 
-    def __init__(self, df=None,
-                 gr_csv=None, ebook_csv=None,
+    def __init__(self, gr_csv=None, ebook_csv=None,
                  dedup=False, merge=False,
                  fixes=True, metadata=True,
                  shelves=None, categories=None, languages=None, borrowed=None):
-        # just wrap it
-        if df is not None:
-            self.df = df.copy()
-            return
-
         # otherwise load and concatenate the CSV files
         df = pd.concat([
             _get_gr_books(gr_csv, merge),
