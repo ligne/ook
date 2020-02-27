@@ -235,7 +235,7 @@ def test__read_choice(monkeypatch):
         assert _read_choice(length), "Asked to save and quit"
 
     monkeypatch.setattr("builtins.input", lambda prompt: "s")
-    assert _read_choice(length) == None, "Skip to the next"
+    assert not _read_choice(length), "Skip to the next"
 
     monkeypatch.setattr("builtins.input", lambda prompt: _raise(EOFError))
     with pytest.raises(SaveExit):
@@ -244,3 +244,11 @@ def test__read_choice(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda prompt: _raise(KeyboardInterrupt))
     with pytest.raises(FullExit):
         assert _read_choice(length), "Ctrl-C exits without saving"
+
+    inputs = (x for x in ["7", "t", "2"])
+    monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
+    assert _read_choice(length) == "2", "Invalid option"
+
+    inputs = (x for x in ["?", "1"])
+    monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
+    assert _read_choice(length) == "1", "Request the help message"
