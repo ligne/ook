@@ -1,6 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
-from reading.metadata import _list_book_choices
+import pytest
+
+from reading.metadata import _list_book_choices, _read_choice, SaveExit, FullExit
 
 
 def test__list_book_choices():
@@ -209,3 +211,36 @@ def test__list_book_choices():
       https://www.goodreads.com/author/show/5677665
 '''.lstrip()
 
+
+# helper to raise from inside a lambda
+def _raise(exception):
+    raise exception
+
+
+def test__read_choice(monkeypatch):
+    length = 3
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "1")
+    assert _read_choice(length) == "1", "Selected an index"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "")
+    assert _read_choice(length) == "1", "Default index is 1"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "q")
+    with pytest.raises(SaveExit):
+        assert _read_choice(length), "Asked to save and quit"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "Q")
+    with pytest.raises(FullExit):
+        assert _read_choice(length), "Asked to save and quit"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "s")
+    assert _read_choice(length) == None, "Skip to the next"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: _raise(EOFError))
+    with pytest.raises(SaveExit):
+        assert _read_choice(length), "Ctrl-D saves and exits"
+
+    monkeypatch.setattr("builtins.input", lambda prompt: _raise(KeyboardInterrupt))
+    with pytest.raises(FullExit):
+        assert _read_choice(length), "Ctrl-C exits without saving"
