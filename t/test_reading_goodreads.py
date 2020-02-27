@@ -4,7 +4,7 @@ from xml.etree import ElementTree
 import pandas as pd
 
 import reading.goodreads
-from reading.goodreads import _get_category
+from reading.goodreads import _get_category, _get_authors
 
 
 def test_process_review():
@@ -159,18 +159,46 @@ def test__get_authors():
     ) == ('Victoria Schwab', '3099544'), 'Pseudonyms listed afterwards'
 
     # FIXME editor(s)/translator but not other authors
-    [('Ernst Zillekens', '675893', 'Editor')]
-    [('Brian Davies', '91422', 'Editor'), ('Paul Kucharski', '14879133', 'Editor')]
-    [('Helen Waddell', '132162', 'translator'), ('M. Basil Pennington', '30605', 'Introduction')]
-    [
-        ('Michael Cox', '39412', 'Editor'),
-        ('R.A. Gilbert', '1952887', 'Editor'),
-        ('Mrs. Henry Wood', '1779542', 'Contributor'),
-        ('Mary Elizabeth Braddon', '45896', 'Contributor')
-    ]
+    assert (
+        _get_authors([("Ernst Zillekens", "675893", "Editor")]) == ()
+    ), "Just an editor"
+
+    assert (
+        _get_authors(
+            [
+                ("Brian Davies", "91422", "Editor"),
+                ("Paul Kucharski", "14879133", "Editor"),
+            ]
+        )
+        == ()
+    ), "Just two editors"
+
+    assert (
+        _get_authors(
+            [
+                ("Helen Waddell", "132162", "translator"),
+                ("M. Basil Pennington", "30605", "Introduction"),
+            ]
+        )
+        == ()
+    ), "Just a translator"
+
+    assert (
+        _get_authors(
+            [
+                ("Michael Cox", "39412", "Editor"),
+                ("R.A. Gilbert", "1952887", "Editor"),
+                ("Mrs. Henry Wood", "1779542", "Contributor"),
+                ("Mary Elizabeth Braddon", "45896", "Contributor"),
+            ]
+        )
+        == ()
+    ), "An anthology, with editors and contributors"
 
     # include the author for graphic novels?
-    [('Fabien Vehlmann', '761380', None), ('Kerascoët', '752696', 'Illustrator')]
+    assert _get_authors(
+        [("Fabien Vehlmann", "761380", None), ("Kerascoët", "752696", "Illustrator")]
+    ) == ("Fabien Vehlmann", "761380")
 
 
 def test__get_category():
