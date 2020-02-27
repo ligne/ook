@@ -28,7 +28,7 @@ def kindle(args):
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
-        Collection(df=new).save()
+        save_df("ebooks", new)
 
     new = new.assign(Work=None, Shelf='kindle')
 
