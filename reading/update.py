@@ -3,20 +3,19 @@
 from .collection import Collection
 from .compare import compare
 from .config import config
-from .storage import save_df
+from .storage import load_df, save_df
 
 
 def goodreads(args):
     from .goodreads import get_books
 
-    df = get_books()
-
-    old = Collection(fixes=False).shelves(exclude=["kindle"])
+    old = load_df("goodreads")
+    new = get_books()
 
     if not args.ignore_changes:
-        save_df("goodreads", df)
+        save_df("goodreads", new)
 
-    compare(old.df, df)
+    compare(old, new)
 
     # FIXME update series
 
@@ -24,13 +23,11 @@ def goodreads(args):
 def kindle(args):
     from .wordcounts import process
 
-    old = Collection(metadata=False).shelves(['kindle']).df
+    old = load_df("ebooks")
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
         save_df("ebooks", new)
-
-    new = new.assign(Work=None, Shelf='kindle')
 
     compare(old, new, use_work=False)
 

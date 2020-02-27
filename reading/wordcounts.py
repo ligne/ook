@@ -110,15 +110,10 @@ def process(df, force=False):
             'BookId': name,
             'Author': author,
             'Title': title,
-            'Shelf': 'kindle',
             'Category': category,
             'Language': language,
             'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
-            'AuthorId': None,
-            'Binding': 'ebook',
-            'Work': None,
             'Words': words,
-            'Borrowed': False,
         })
 
     return pd.DataFrame(ebooks).set_index('BookId')
