@@ -49,7 +49,7 @@ def test__list_book_choices():
     assert _list_book_choices([], set(), set()) == ''
 
     # books from goodreads title search
-    assert _list_book_choices([
+    assert decode_colour(_list_book_choices([
         {
             'Ratings': '31583',
             'Published': '1853',
@@ -91,38 +91,38 @@ def test__list_book_choices():
             'AuthorId': '1413437',
             'Title': 'Cranford/Cousin Phillis'
         }
-    ], set(), set()) == '''
-\033[1m 1.\033[0m Cranford\033[0m
-      Elizabeth Gaskell\033[0m
+    ], set(), set())) == """\
+<BOLD> 1.<RESET> Cranford<RESET>
+      Elizabeth Gaskell<RESET>
       Published: 1853
       Ratings: 31583
       https://www.goodreads.com/book/show/182381
       https://www.goodreads.com/author/show/1413437
- 2. The Cranford Chronicles\033[0m
-      Elizabeth Gaskell\033[0m
+ 2. The Cranford Chronicles<RESET>
+      Elizabeth Gaskell<RESET>
       Published: 1859
       Ratings: 1515
       https://www.goodreads.com/book/show/2141817
       https://www.goodreads.com/author/show/1413437
- 3. Return to Cranford: Cranford and other stories\033[0m
-      Elizabeth Gaskell\033[0m
+ 3. Return to Cranford: Cranford and other stories<RESET>
+      Elizabeth Gaskell<RESET>
       Published: 2009
       Ratings: 74
       https://www.goodreads.com/book/show/7329542
       https://www.goodreads.com/author/show/1413437
- 4. Cranford\033[0m
-      J.Y.K. Kerr\033[0m
+ 4. Cranford<RESET>
+      J.Y.K. Kerr<RESET>
       Published: 2000
       Ratings: 10
       https://www.goodreads.com/book/show/732416
       https://www.goodreads.com/author/show/1215308
- 5. Cranford/Cousin Phillis\033[0m
-      Elizabeth Gaskell\033[0m
+ 5. Cranford/Cousin Phillis<RESET>
+      Elizabeth Gaskell<RESET>
       Published: 1864
       Ratings: 428
       https://www.goodreads.com/book/show/222401
       https://www.goodreads.com/author/show/1413437
-'''.lstrip()
+"""
 
     # it's both an author and a work that i have already.
     results = [
@@ -160,32 +160,32 @@ def test__list_book_choices():
             'Title': 'A Portrait of the Artist as a Young Man, Notes'
         },
     ]
-    assert _list_book_choices(results, author_ids={5144}, work_ids={3298883}) == '''
-\033[1m 1.\033[0m\033[32m A Portrait of the Artist as a Young Man\033[0m\033[33m
-      James Joyce\033[0m
+    assert decode_colour(_list_book_choices(results, author_ids={5144}, work_ids={3298883})) == """\
+<BOLD> 1.<RESET><GREEN> A Portrait of the Artist as a Young Man<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1916
       Ratings: 109451
       https://www.goodreads.com/book/show/7588
       https://www.goodreads.com/author/show/5144
- 2. A Portrait of the Artist as a Young Man / Dubliners\033[0m\033[33m
-      James Joyce\033[0m
+ 2. A Portrait of the Artist as a Young Man / Dubliners<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1914
       Ratings: 5733
       https://www.goodreads.com/book/show/23296
       https://www.goodreads.com/author/show/5144
- 3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music\033[0m\033[33m
-      James Joyce\033[0m
+ 3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1992
       Ratings: 113
       https://www.goodreads.com/book/show/580717
       https://www.goodreads.com/author/show/5144
- 4. A Portrait of the Artist as a Young Man, Notes\033[0m
-      Valerie Zimbarro\033[0m
+ 4. A Portrait of the Artist as a Young Man, Notes<RESET>
+      Valerie Zimbarro<RESET>
       Published: 1964
       Ratings: 12
       https://www.goodreads.com/book/show/7593
       https://www.goodreads.com/author/show/5677665
-'''.lstrip()
+"""
 
     # known author, but new book
     results = [
@@ -223,32 +223,32 @@ def test__list_book_choices():
             'Title': 'A Portrait of the Artist as a Young Man, Notes'
         },
     ]
-    assert _list_book_choices(results, author_ids={5144}, work_ids=set()) == '''
-\033[1m 1.\033[0m A Portrait of the Artist as a Young Man\033[0m\033[33m
-      James Joyce\033[0m
+    assert decode_colour(_list_book_choices(results, author_ids={5144}, work_ids=set())) == """\
+<BOLD> 1.<RESET> A Portrait of the Artist as a Young Man<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1916
       Ratings: 109451
       https://www.goodreads.com/book/show/7588
       https://www.goodreads.com/author/show/5144
- 2. A Portrait of the Artist as a Young Man / Dubliners\033[0m\033[33m
-      James Joyce\033[0m
+ 2. A Portrait of the Artist as a Young Man / Dubliners<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1914
       Ratings: 5733
       https://www.goodreads.com/book/show/23296
       https://www.goodreads.com/author/show/5144
- 3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music\033[0m\033[33m
-      James Joyce\033[0m
+ 3. Dubliners/A Portrait of the Artist As a Young Man/Chamber Music<RESET><YELLOW>
+      James Joyce<RESET>
       Published: 1992
       Ratings: 113
       https://www.goodreads.com/book/show/580717
       https://www.goodreads.com/author/show/5144
- 4. A Portrait of the Artist as a Young Man, Notes\033[0m
-      Valerie Zimbarro\033[0m
+ 4. A Portrait of the Artist as a Young Man, Notes<RESET>
+      Valerie Zimbarro<RESET>
       Published: 1964
       Ratings: 12
       https://www.goodreads.com/book/show/7593
       https://www.goodreads.com/author/show/5677665
-'''.lstrip()
+"""
 
 
 # helper to raise from inside a lambda
