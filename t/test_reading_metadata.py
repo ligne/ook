@@ -291,3 +291,25 @@ def test__read_choice(monkeypatch):
     inputs = (x for x in ["?", "1"])
     monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
     assert _read_choice(length) == "1", "Request the help message"
+
+
+def test__read_choice_output(monkeypatch, capsys):
+    length = 3
+
+    monkeypatch.setattr("builtins.input", lambda prompt: "1")
+    _read_choice(length)
+    output = capsys.readouterr()
+    assert output.out == ""
+
+    inputs = (x for x in ["?", "1"])
+    monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
+    _read_choice(length)
+    output = capsys.readouterr()
+    assert decode_colour(output.out) == """
+<BRIGHTRED>1-3 - select
+
+s - skip to the next author
+q - save and exit
+Q - exit without saving
+? - print help<RESET>
+""".lstrip()
