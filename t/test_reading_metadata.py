@@ -1,9 +1,48 @@
 # vim: ts=4 : sw=4 : et
 
+import re
+
 import pytest
 
 from reading.metadata import _list_book_choices, _read_choice, SaveExit, FullExit
 
+
+def _colour_to_string(colour):
+    styles = ["RESET", "BOLD", "FAINT", "ITALIC", "REVERSE"]
+    codes = ["BLACK", "RED", "GREEN", "YELLOW", "BLUE", "MAGENTA", "CYAN", "WHITE"]
+    effects = {
+        "3": "",   # foreground
+        "4": "B",  # background
+        "9": "BRIGHT"
+    }
+
+    if len(colour) == 1:
+        return styles[int(colour)]
+
+    effect, code = list(colour)
+    return effects[effect] + codes[int(code)]
+
+
+def _decode_colourspec(match):
+    return (
+        "<" + ";".join([_colour_to_string(colour) for colour in match.group(1).split(";")]) + ">"
+    )
+
+
+def decode_colour(string):
+    return re.sub("\033" + r"\[([0-9;]*)m", _decode_colourspec, string)
+
+
+def test_decode_colour():
+    assert decode_colour("") == ""
+    assert decode_colour("blah") == "blah"
+    assert decode_colour("\033[0m") == "<RESET>"
+    assert decode_colour("blah\033[32m") == "blah<GREEN>"
+    assert decode_colour("blah\033[31mbloh\033[34;42m") == "blah<RED>bloh<BLUE;BGREEN>"
+    assert decode_colour("\033[94;42m text") == "<BRIGHTBLUE;BGREEN> text"
+
+
+#################################################################################
 
 def test__list_book_choices():
     # nothing
