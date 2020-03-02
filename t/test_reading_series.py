@@ -4,7 +4,6 @@ import pytest
 
 import pandas as pd
 
-from reading.collection import Collection
 import reading.series
 from reading.series import _parse_entries, _get_entry, interesting
 from reading.series import _lookup_series_id
@@ -78,8 +77,8 @@ def test_interesting():
     })
 
 
-def test__lookup_series_id():
-    c = _get_collection()
+def test__lookup_series_id(collection):
+    c = collection("2019-12-04")
 
     # FIXME check the exception message?
     with pytest.raises(ValueError):
@@ -95,10 +94,6 @@ def test_ignore():
 
 
 ################################################################################
-
-def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False)
-
 
 def test_series():
     # needs at least *something* to go on
@@ -146,8 +141,8 @@ def test_series():
     # FIXME also check .missing behaviour
 
 
-def test_series_last_read():
-    c = _get_collection()
+def test_series_last_read(collection):
+    c = collection("2019-12-04", fixes=False)
 
     s = Series(author='Hašek', df=c.df)
     assert s.last_read() is None, 'Never read'

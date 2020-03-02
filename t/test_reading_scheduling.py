@@ -3,14 +3,8 @@
 import itertools
 import pandas as pd
 
-from reading.collection import Collection
 from reading.scheduling import _windows, _dates, _schedule
 from reading.scheduling import scheduled_at
-
-
-# load a test Collection
-def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False)
 
 
 ###############################################################################
@@ -258,10 +252,10 @@ def _format_schedule(df, sched):
     return [(str(date.date()), df.loc[ix].Title) for date, ix in sched]
 
 
-def test__schedule():
+def test__schedule(collection):
     date = pd.Timestamp('2019-12-04')
 
-    df = _get_collection().df
+    df = collection("2019-12-04", fixes=False).df
 
     assert _format_schedule(df, _schedule(df, **{
         'author': 'Le Guin',
@@ -339,8 +333,8 @@ def _format_scheduled_df(sched):
     return [row.Title for ix, row in sched.iterrows()]
 
 
-def test_scheduled_at():
-    c = _get_collection()
+def test_scheduled_at(collection):
+    c = collection("2019-12-04", fixes=False)
     df = c.df
 
     s = [

@@ -8,9 +8,7 @@ import reading.collection
 from reading.collection import Collection, _get_gr_books, _get_kindle_books
 
 
-def _get_collection(**kwargs):
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv', fixes=False, **kwargs)
-
+################################################################################
 
 def test__get_gr_books():
     df = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
@@ -126,7 +124,7 @@ def test__get_kindle_books():
     assert len(df[df.Author.isnull()]) == 0, 'Every ebook has an author'
 
 
-def test_collection():
+def test_collection_crudely(collection):
     c = Collection()
     assert c.df.equals(Collection().df), "Same collection is the same"
 
@@ -138,10 +136,13 @@ def test_collection():
     assert Collection(metadata=False)
 
     assert (
-        len(_get_collection(merge=True, metadata=True).df) == 396
+        len(collection("2019-12-04", merge=True, metadata=True).df) == 396
     ), "Merged collection is a sensible length"
 
-    df = c.df
+
+def test_collection(collection):
+    df = collection("2019-12-04").df
+
     assert list(df.columns) == [
         "Author",
         "AuthorId",
@@ -184,40 +185,40 @@ def test_collection():
     assert np.isnan(b.Published)
 
 
-def test_collection_shelves():
-    c = _get_collection()
+def test_collection_shelves(collection):
+    c = collection("2019-12-04")
     assert set(c.shelves(["library"]).df.Shelf) == {
         "library"
     }, "Only the selected shelf"
 
-    c = _get_collection()
+    c = collection("2019-12-04")
     assert (
         set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set()
     ), "Not the excluded shelf"
 
     assert_frame_equal(
-        _get_collection(shelves=["library"]).df,
-        _get_collection().shelves(["library"]).df,
+        collection("2019-12-04", shelves=["library"]).df,
+        collection("2019-12-04").shelves(["library"]).df,
     )
+
     df = pd.concat([
-        _get_collection().shelves(exclude=["library"]).df,
-        _get_collection().shelves(include=["library"]).df,
+        collection("2019-12-04").shelves(exclude=["library"]).df,
+        collection("2019-12-04").shelves(include=["library"]).df,
     ])
+    assert set(df.index) == set(collection("2019-12-04").df.index)
 
-    assert set(df.index) == set(_get_collection().df.index)
 
-
-def test_collection_languages():
-    assert set(_get_collection().languages(["fr"]).df.Language) == {
+def test_collection_languages(collection):
+    assert set(collection("2019-12-04").languages(["fr"]).df.Language) == {
         "fr"
     }, "Only the selected language"
 
     assert (
-        set(_get_collection().languages(exclude=["fr"]).df.Language) & {"fr"} == set()
+        set(collection("2019-12-04").languages(exclude=["fr"]).df.Language) & {"fr"} == set()
     ), "Not the excluded language"
 
     assert_frame_equal(
-        _get_collection(languages=["fr"]).df, _get_collection().languages(["fr"]).df
+        collection("2019-12-04", languages=["fr"]).df, collection("2019-12-04").languages(["fr"]).df
     )
 
 #    df = pd.concat([
@@ -228,18 +229,20 @@ def test_collection_languages():
 #    assert set(df.index) == set(_get_collection().df.index)
 
 
-def test_collection_categories():
-    assert set(_get_collection().categories(["novels"]).df.Category) == {
+def test_collection_categories(collection):
+    assert set(collection("2019-12-04").categories(["novels"]).df.Category) == {
         "novels"
     }, "Only the selected category"
 
     assert (
-        set(_get_collection().categories(exclude=["novels"]).df.Category) & {"novels"}
+        set(collection("2019-12-04").categories(exclude=["novels"]).df.Category)
+        & {"novels"}
         == set()
     ), "Not the excluded category"
 
     assert_frame_equal(
-        _get_collection(categories=["fr"]).df, _get_collection().categories(["fr"]).df
+        collection("2019-12-04", categories=["novels"]).df,
+        collection("2019-12-04").categories(["novels"]).df,
     )
 
 #    df = pd.concat([
@@ -250,10 +253,10 @@ def test_collection_categories():
 #    assert set(df.index) == set(_get_collection().df.index)
 
 
-def test_collection_borrowed():
-    assert set(_get_collection().borrowed().df.Borrowed) == {True, False}
-    assert set(_get_collection().borrowed(True).df.Borrowed) == {True}
-    assert set(_get_collection().borrowed(False).df.Borrowed) == {False}
+def test_collection_borrowed(collection):
+    assert set(collection("2019-12-04").borrowed().df.Borrowed) == {True, False}
+    assert set(collection("2019-12-04").borrowed(True).df.Borrowed) == {True}
+    assert set(collection("2019-12-04").borrowed(False).df.Borrowed) == {False}
 
 
 def test__process_fixes():
