@@ -65,6 +65,8 @@ def test_goodreads_merge():
     assert not unmerged.index.hasnans, "No NaNs in unmerged goodreads index"
     assert not merged.index.hasnans, "No NaNs in merged goodreads index"
 
+    assert merged.index.difference(unmerged.index).empty, "merged is a subset of unmerged"
+
     assert 0 not in merged.index, "Index should be BookIds"
     assert 3 not in merged.index, "Check it's searching by ID not index"
 
@@ -78,6 +80,8 @@ def test_kindle_merge():
 
     assert not unmerged.index.hasnans, "No NaNs in unmerged kindle index"
     assert not merged.index.hasnans, "No NaNs in merged kindle index"
+
+    assert merged.index.difference(unmerged.index).empty, "merged is a subset of unmerged"
 
     assert 0 not in merged.index, "Index should be BookIds"
     assert 3 not in merged.index, "Check it's searching by ID not index"
