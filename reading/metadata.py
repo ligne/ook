@@ -245,10 +245,7 @@ def find_authors(authors):
 ################################################################################
 
 # regenerates the metadata based on what has been gathered.
-def rebuild():
-    books = Collection(metadata=False).df
-    works = load_df("books")
-
+def rebuild(books, works):
     prefer_work_cols = metadata_prefer("work")
     prefer_book_cols = metadata_prefer("book")
 
@@ -286,7 +283,8 @@ def main(args):
     find(args.find)
 
     new = old.copy()
-    metadata = rebuild()
+    metadata = rebuild(Collection(metadata=False).df, load_df("books"))
+
     new.update(metadata)
     compare(old, new)
 
