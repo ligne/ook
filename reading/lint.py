@@ -53,7 +53,7 @@ def lint_missing_category():
 
 
 def lint_missing_published_date():
-    c = Collection(shelves=['pending', 'ebooks', 'elsewhere', 'read'])
+    c = Collection().shelves(["pending", "ebooks", "elsewhere", "read"])
     return {
         'title': 'Missing a published date',
         'df': c.df[c.df.Published.isnull()],
@@ -67,7 +67,7 @@ def lint_missing_published_date():
 
 
 def lint_dates():
-    c = Collection(shelves=['read'])
+    c = Collection().shelves(["read"])
     return {
         'title': 'Finished before starting',
         'df': c.df[c.df.Read < c.df.Started],
@@ -95,7 +95,7 @@ def lint_missing_language():
 
 
 def lint_scheduled_misshelved():
-    c = Collection(shelves=['read', 'currently-reading', 'to-read'])
+    c = Collection().shelves(["read", "currently-reading", "to-read"])
     return {
         'title': 'Scheduled books on wrong shelves',
         'df': c.df[c.df.Scheduled.notnull()],
@@ -216,15 +216,7 @@ def lint_binding():
         'Relié',
         'Board book',
     ]
-    c = Collection(shelves=[
-        'read',
-        'currently-reading',
-        'pending',
-        'elsewhere',
-        'library',
-        'ebooks',
-        'to-read',
-    ])
+    c = Collection().shelves(exclude=["kindle"])
     return {
         'title': 'Bad binding',
         'df': c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
@@ -241,7 +233,7 @@ def lint_binding():
 
 
 def lint_author_metadata():
-    df = Collection(shelves=['read']).df  # FIXME
+    df = Collection().shelves(["read"]).df  # FIXME
 
     return {
         'title': 'Missing author metadata',
@@ -257,7 +249,7 @@ def lint_author_metadata():
 
 # books on elsewhere shelf that are not marked as borrowed.
 def lint_missing_borrowed():
-    c = Collection(shelves=['elsewhere', 'library'], borrowed=False)
+    c = Collection().shelves(["elsewhere", "library"]).borrowed(False)
     return {
         'title': 'Elsewhere but not marked as borrowed',
         'df': c.df,
@@ -272,7 +264,7 @@ def lint_missing_borrowed():
 
 # books i've borrowed that need to be returned.
 def lint_needs_returning():
-    c = Collection(shelves=['read'], borrowed=True)
+    c = Collection().shelves(["read"]).borrowed(True)
     return {
         'title': 'Borrowed books to return',
         'df': c.df,
