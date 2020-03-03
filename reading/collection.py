@@ -186,6 +186,8 @@ class Collection():
         if borrowed is not None:
             self.df = self.df[self.df.Borrowed == borrowed]
 
+        return self
+
     def _filter_list(self, col, include=None, exclude=None):
         if include:
             self.df = self.df[self.df[col].isin(include)]

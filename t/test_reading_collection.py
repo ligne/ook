@@ -269,5 +269,17 @@ def test_collection_borrowed(collection):
     )
 
 
+def test_collection_filter(collection):
+    assert_frame_equal(
+        collection("2019-12-04").filter(borrowed=True).df,
+        collection("2019-12-04").borrowed(True).df,
+    ) # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(shelves=["pending"], borrowed=True).df,
+        collection("2019-12-04").borrowed(True).shelves(["pending"]).df,
+    ) # Same, but with more than one filter
+
+
 def test__process_fixes():
     assert not reading.collection._process_fixes({}), 'No fixes to apply'
