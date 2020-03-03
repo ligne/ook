@@ -258,6 +258,16 @@ def test_collection_borrowed(collection):
     assert set(collection("2019-12-04").borrowed(True).df.Borrowed) == {True}
     assert set(collection("2019-12-04").borrowed(False).df.Borrowed) == {False}
 
+    assert_frame_equal(
+        collection("2019-12-04", borrowed=True).df,
+        collection("2019-12-04").borrowed(True).df,
+    )
+
+    assert_frame_equal(
+        collection("2019-12-04", borrowed=False).df,
+        collection("2019-12-04").borrowed(False).df,
+    )
+
 
 def test__process_fixes():
     assert not reading.collection._process_fixes({}), 'No fixes to apply'

@@ -160,21 +160,6 @@ class Collection():
         # take a clean copy before filtering
         self.all = df.copy()
 
-        if categories or shelves or languages or borrowed:
-            import inspect
-            caller = inspect.stack()[1]
-            print(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
-
-        # apply filters on shelf, language, category.
-        if categories:
-            df = df[df.Category.isin(categories)]
-        if languages:
-            df = df[df['Language'].isin(languages)]
-        if shelves:
-            df = df[df['Shelf'].isin(shelves)]
-        if borrowed is not None:
-            df = df[df['Borrowed'] == borrowed]
-
         # apply fixes.
         if fixes:
             d = _process_fixes(config('fixes'))
@@ -183,6 +168,23 @@ class Collection():
             df.update(load_df("scraped"))
 
         self.df = df
+
+        if categories or shelves or languages or borrowed is not None:
+            import inspect
+            caller = inspect.stack()[1]
+            print(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
+            self.filter(shelves, categories, languages, borrowed)
+
+    def filter(self, shelves=None, categories=None, languages=None, borrowed=None):
+        """Apply filters on shelf, language, category or borrowed status."""
+        if categories:
+            self.df = self.df[self.df.Category.isin(categories)]
+        if languages:
+            self.df = self.df[self.df.Language.isin(languages)]
+        if shelves:
+            self.df = self.df[self.df.Shelf.isin(shelves)]
+        if borrowed is not None:
+            self.df = self.df[self.df.Borrowed == borrowed]
 
     def _filter_list(self, col, include=None, exclude=None):
         if include:
