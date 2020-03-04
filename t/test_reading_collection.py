@@ -57,6 +57,8 @@ def test_goodreads_merge():
     unmerged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv")
     merged = _get_gr_books(csv="t/data/goodreads-2019-12-04.csv", merge=True)
 
+    assert sorted(list(unmerged.columns) + ["Volume"]) == sorted(merged.columns)
+
     assert not unmerged.index.equals(merged.index), "Merging goodreads books had some effect"
     assert len(unmerged.index) > len(merged.index), "Merging goodreads books had some effect"
 
@@ -72,6 +74,8 @@ def test_goodreads_merge():
 def test_kindle_merge():
     unmerged = _get_kindle_books()
     merged = _get_kindle_books(merge=True)
+
+    assert sorted(list(unmerged.columns) + ["Volume"]) == sorted(merged.columns)
 
     assert not unmerged.index.equals(merged.index), "Merging kindle books had some effect"
     assert len(unmerged.index) > len(merged.index), "Merging kindle books had some effect"
