@@ -186,6 +186,11 @@ def test_collection(collection):
 
 
 def test_collection_shelves(collection):
+    assert_frame_equal(
+        collection("2019-12-04").shelves().df,
+        collection("2019-12-04").df
+    )
+
     c = collection("2019-12-04")
     assert set(c.shelves(["library"]).df.Shelf) == {
         "library"
@@ -204,6 +209,15 @@ def test_collection_shelves(collection):
 
 
 def test_collection_languages(collection):
+    assert_frame_equal(
+        collection("2019-12-04").languages().df,
+        collection("2019-12-04").df
+    )
+
+    assert_frame_equal(
+        collection("2019-12-04").languages().df, collection("2019-12-04").df
+    )
+
     assert set(collection("2019-12-04").languages(["fr"]).df.Language) == {
         "fr"
     }, "Only the selected language"
@@ -221,6 +235,11 @@ def test_collection_languages(collection):
 
 
 def test_collection_categories(collection):
+    assert_frame_equal(
+        collection("2019-12-04").categories().df,
+        collection("2019-12-04").df
+    )
+
     assert set(collection("2019-12-04").categories(["novels"]).df.Category) == {
         "novels"
     }, "Only the selected category"
@@ -246,6 +265,10 @@ def test_collection_borrowed(collection):
 
 
 def test_collection_filter(collection):
+    assert_frame_equal(
+        collection("2019-12-04").filter().df, collection("2019-12-04").df
+    )  # filter() does nothing without arguments
+
     assert_frame_equal(
         collection("2019-12-04").filter(borrowed=True).df,
         collection("2019-12-04").borrowed(True).df,
