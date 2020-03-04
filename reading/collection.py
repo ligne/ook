@@ -171,8 +171,9 @@ class Collection():
 
         if categories or shelves or languages or borrowed is not None:
             import inspect
+            from warnings import warn
             caller = inspect.stack()[1]
-            print(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
+            warn(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
             self.filter(shelves, categories, languages, borrowed)
 
     def filter(self, shelves=None, categories=None, languages=None, borrowed=None):
