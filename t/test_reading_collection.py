@@ -196,11 +196,6 @@ def test_collection_shelves(collection):
         set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set()
     ), "Not the excluded shelf"
 
-    assert_frame_equal(
-        collection("2019-12-04", shelves=["library"]).df,
-        collection("2019-12-04").shelves(["library"]).df,
-    )
-
     df = pd.concat([
         collection("2019-12-04").shelves(exclude=["library"]).df,
         collection("2019-12-04").shelves(include=["library"]).df,
@@ -216,10 +211,6 @@ def test_collection_languages(collection):
     assert (
         set(collection("2019-12-04").languages(exclude=["fr"]).df.Language) & {"fr"} == set()
     ), "Not the excluded language"
-
-    assert_frame_equal(
-        collection("2019-12-04", languages=["fr"]).df, collection("2019-12-04").languages(["fr"]).df
-    )
 
 #    df = pd.concat([
 #        _get_collection().shelves(exclude=["library"]).df,
@@ -240,11 +231,6 @@ def test_collection_categories(collection):
         == set()
     ), "Not the excluded category"
 
-    assert_frame_equal(
-        collection("2019-12-04", categories=["novels"]).df,
-        collection("2019-12-04").categories(["novels"]).df,
-    )
-
 #    df = pd.concat([
 #        _get_collection().shelves(exclude=["library"]).df,
 #        _get_collection().shelves(include=["library"]).df,
@@ -257,16 +243,6 @@ def test_collection_borrowed(collection):
     assert set(collection("2019-12-04").borrowed().df.Borrowed) == {True, False}
     assert set(collection("2019-12-04").borrowed(True).df.Borrowed) == {True}
     assert set(collection("2019-12-04").borrowed(False).df.Borrowed) == {False}
-
-    assert_frame_equal(
-        collection("2019-12-04", borrowed=True).df,
-        collection("2019-12-04").borrowed(True).df,
-    )
-
-    assert_frame_equal(
-        collection("2019-12-04", borrowed=False).df,
-        collection("2019-12-04").borrowed(False).df,
-    )
 
 
 def test_collection_filter(collection):
