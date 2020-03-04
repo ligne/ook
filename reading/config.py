@@ -15,6 +15,7 @@ _COLUMNS = [
     {
         "name": "BookId",
         "store": ["books"],
+        "merge": "first",
     },
     {
         "name": "Author",
@@ -25,6 +26,7 @@ _COLUMNS = [
         "name": "AuthorId",
         "store": ["goodreads", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Title",
@@ -35,33 +37,40 @@ _COLUMNS = [
         "name": "Work",
         "store": ["goodreads", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Shelf",
         "store": ["goodreads"],
+        "merge": "first",
     },
     {
         "name": "Category",
         "store": ["goodreads", "ebooks", "books"],
+        "merge": "first",
     },
     {
         "name": "Scheduled",
         "store": ["goodreads"],
         "type": "date",
+        "merge": "first",
     },
     {
         "name": "Borrowed",
         "store": ["goodreads"],
+        "merge": "first",
     },
     {
         "name": "Series",
         "store": ["goodreads", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "SeriesId",
         "store": ["goodreads", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Entry",
@@ -71,49 +80,59 @@ _COLUMNS = [
     {
         "name": "Binding",
         "store": ["goodreads"],
+        "merge": "first",
     },
     {
         "name": "Published",
         "store": ["goodreads", "books", "metadata"],
         # Can't convert Published to a date as pandas' range isn't big enough
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Language",
         "store": ["goodreads", "ebooks", "books"],
         "prefer": "book",
+        "merge": "first",
     },
     {
         "name": "Pages",
         "store": ["goodreads", "books", "scraped", "metadata"],
         "prefer": "work",
+        "merge": "sum",
     },
     {
         "name": "Words",
         "store": ["ebooks"],
+        "merge": "sum",
     },
     {
         "name": "Added",
         "store": ["goodreads", "ebooks"],
         "type": "date",
+        "merge": "first",
     },
     {
         "name": "Started",
         "store": ["goodreads", "scraped"],
         "type": "date",
+        "merge": "first",
     },
     {
         "name": "Read",
         "store": ["goodreads", "scraped"],
         "type": "date",
+        "merge": "last",
     },
     {
         "name": "Rating",
         "store": ["goodreads"],
+        "merge": "mean",
     },
     {
         "name": "AvgRating",
         "store": ["goodreads"],
+        "merge": "first",
     },
     {
         "name": "Gender",
@@ -141,6 +160,17 @@ def date_columns(store):
 
 def metadata_prefer(preference):
     return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
+
+
+def merge_preferences(store):
+    return {
+        **{"BookId": "first"},
+        **{
+            col["name"]: col["merge"]
+            for col in _COLUMNS
+            if store in col["store"] and "merge" in col
+        },
+    }
 
 
 ################################################################################

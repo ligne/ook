@@ -4,7 +4,7 @@ import re
 
 import pandas as pd
 
-from .config import config
+from .config import config, merge_preferences
 from .storage import load_df
 
 
@@ -26,10 +26,9 @@ def _get_gr_books(csv=None, merge=False):
 
         df = pd.concat([
             df[df.Volume.isnull()],
-            df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
-                **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
-                **{'Pages': 'sum', "BookId": "first"},
-            }),
+            df[df.Volume.notnull()].groupby(["Author", "Title"], as_index=False).aggregate(
+                merge_preferences("goodreads")
+            ),
         ], sort=False).set_index("BookId")
 
     return df
@@ -38,9 +37,6 @@ def _get_gr_books(csv=None, merge=False):
 def _get_kindle_books(csv=None, merge=False):
     df = load_df("ebooks", csv)
 
-    # calculate page count
-    df['Pages'] = df.Words / words_per_page
-
     if merge:
         df = df.drop('Title', axis=1).join(
             df.Title.apply(_ebook_parse_title)
@@ -48,11 +44,13 @@ def _get_kindle_books(csv=None, merge=False):
 
         df = pd.concat([
             df[df.Volume.isnull()],
-            df[df.Volume.notnull()].groupby(['Author', 'Title'], as_index=False).aggregate({
-                **{col: 'first' for col in df.columns if col not in ('Author', 'Title', 'Entry', 'Volume')},
-                **{'Pages': 'sum', 'Words': 'sum', "BookId": "first"},
-            }),
+            df[df.Volume.notnull()].groupby(["Author", "Title"], as_index=False).aggregate(
+                merge_preferences("ebooks")
+            ),
         ], sort=False).set_index("BookId")
+
+    # calculate page count
+    df["Pages"] = df.Words / words_per_page
 
     df = df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
 
