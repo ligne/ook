@@ -134,10 +134,8 @@ class Collection():
     #   control visibility of later books in series
 
     def __init__(self, gr_csv=None, ebook_csv=None,
-                 dedup=False, merge=False,
-                 fixes=True, metadata=True,
-                 shelves=None, categories=None, languages=None, borrowed=None):
-        # otherwise load and concatenate the CSV files
+                 dedup=False, merge=False, fixes=True, metadata=True):
+        # load and concatenate the CSV files
         df = pd.concat([
             _get_gr_books(gr_csv, merge),
             _get_kindle_books(ebook_csv, merge),
@@ -168,13 +166,6 @@ class Collection():
             df.update(load_df("scraped"))
 
         self.df = df
-
-        if categories or shelves or languages or borrowed is not None:
-            import inspect
-            from warnings import warn
-            caller = inspect.stack()[1]
-            warn(f"DEPRECATED ARGS: {caller.filename.split('/')[-1]}:{caller.function}:{caller.lineno}")
-            self.filter(shelves, categories, languages, borrowed)
 
     def filter(self, shelves=None, categories=None, languages=None, borrowed=None):
         """Apply filters on shelf, language, category or borrowed status."""
