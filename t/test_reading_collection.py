@@ -249,12 +249,27 @@ def test_collection_filter(collection):
     assert_frame_equal(
         collection("2019-12-04").filter(borrowed=True).df,
         collection("2019-12-04").borrowed(True).df,
-    ) # filter() does the same as the individual methods
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(shelves=["library"]).df,
+        collection("2019-12-04").shelves(["library"]).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(languages=["fr"]).df,
+        collection("2019-12-04").languages(["fr"]).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(categories=["graphic"]).df,
+        collection("2019-12-04").categories(["graphic"]).df,
+    )  # filter() does the same as the individual methods
 
     assert_frame_equal(
         collection("2019-12-04").filter(shelves=["pending"], borrowed=True).df,
         collection("2019-12-04").borrowed(True).shelves(["pending"]).df,
-    ) # Same, but with more than one filter
+    )  # Same, but with more than one filter
 
 
 def test__process_fixes():
