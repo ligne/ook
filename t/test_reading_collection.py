@@ -190,6 +190,11 @@ def test_collection(collection):
 
 
 def test_collection_shelves(collection):
+    assert_frame_equal(
+        collection("2019-12-04").shelves().df,
+        collection("2019-12-04").df
+    )
+
     c = collection("2019-12-04")
     assert set(c.shelves(["library"]).df.Shelf) == {
         "library"
@@ -200,11 +205,6 @@ def test_collection_shelves(collection):
         set(c.shelves(exclude=["library"]).df.Shelf) & {"library"} == set()
     ), "Not the excluded shelf"
 
-    assert_frame_equal(
-        collection("2019-12-04", shelves=["library"]).df,
-        collection("2019-12-04").shelves(["library"]).df,
-    )
-
     df = pd.concat([
         collection("2019-12-04").shelves(exclude=["library"]).df,
         collection("2019-12-04").shelves(include=["library"]).df,
@@ -213,6 +213,15 @@ def test_collection_shelves(collection):
 
 
 def test_collection_languages(collection):
+    assert_frame_equal(
+        collection("2019-12-04").languages().df,
+        collection("2019-12-04").df
+    )
+
+    assert_frame_equal(
+        collection("2019-12-04").languages().df, collection("2019-12-04").df
+    )
+
     assert set(collection("2019-12-04").languages(["fr"]).df.Language) == {
         "fr"
     }, "Only the selected language"
@@ -220,10 +229,6 @@ def test_collection_languages(collection):
     assert (
         set(collection("2019-12-04").languages(exclude=["fr"]).df.Language) & {"fr"} == set()
     ), "Not the excluded language"
-
-    assert_frame_equal(
-        collection("2019-12-04", languages=["fr"]).df, collection("2019-12-04").languages(["fr"]).df
-    )
 
 #    df = pd.concat([
 #        _get_collection().shelves(exclude=["library"]).df,
@@ -234,6 +239,11 @@ def test_collection_languages(collection):
 
 
 def test_collection_categories(collection):
+    assert_frame_equal(
+        collection("2019-12-04").categories().df,
+        collection("2019-12-04").df
+    )
+
     assert set(collection("2019-12-04").categories(["novels"]).df.Category) == {
         "novels"
     }, "Only the selected category"
@@ -243,11 +253,6 @@ def test_collection_categories(collection):
         & {"novels"}
         == set()
     ), "Not the excluded category"
-
-    assert_frame_equal(
-        collection("2019-12-04", categories=["novels"]).df,
-        collection("2019-12-04").categories(["novels"]).df,
-    )
 
 #    df = pd.concat([
 #        _get_collection().shelves(exclude=["library"]).df,
@@ -262,15 +267,36 @@ def test_collection_borrowed(collection):
     assert set(collection("2019-12-04").borrowed(True).df.Borrowed) == {True}
     assert set(collection("2019-12-04").borrowed(False).df.Borrowed) == {False}
 
+
+def test_collection_filter(collection):
     assert_frame_equal(
-        collection("2019-12-04", borrowed=True).df,
-        collection("2019-12-04").borrowed(True).df,
-    )
+        collection("2019-12-04").filter().df, collection("2019-12-04").df
+    )  # filter() does nothing without arguments
 
     assert_frame_equal(
-        collection("2019-12-04", borrowed=False).df,
-        collection("2019-12-04").borrowed(False).df,
-    )
+        collection("2019-12-04").filter(borrowed=True).df,
+        collection("2019-12-04").borrowed(True).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(shelves=["library"]).df,
+        collection("2019-12-04").shelves(["library"]).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(languages=["fr"]).df,
+        collection("2019-12-04").languages(["fr"]).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(categories=["graphic"]).df,
+        collection("2019-12-04").categories(["graphic"]).df,
+    )  # filter() does the same as the individual methods
+
+    assert_frame_equal(
+        collection("2019-12-04").filter(shelves=["pending"], borrowed=True).df,
+        collection("2019-12-04").borrowed(True).shelves(["pending"]).df,
+    )  # Same, but with more than one filter
 
 
 def test__process_fixes():

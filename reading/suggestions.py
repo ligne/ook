@@ -19,22 +19,21 @@ def _recent_author_ids(date):
 
 
 def _read_author_ids():
-    return list(Collection(shelves=['read']).df.AuthorId)
+    return list(Collection().shelves(["read"]).df.AuthorId)
 
 
 def _read_nationalities():
-    return list(Collection(shelves=['read']).df.Nationality)
+    return list(Collection().shelves(["read"]).df.Nationality)
 
 
 ################################################################################
 
 def scheduled(args):
-    c = Collection(
+    c = Collection(merge=True).filter(
         shelves=args.shelves,
         languages=args.languages,
         categories=args.categories,
         borrowed=args.borrowed,
-        merge=True,
     )
     df = c.df
 
@@ -50,12 +49,11 @@ def scheduled(args):
 
 # suggestions
 def main(args):
-    c = Collection(
+    c = Collection(merge=True).filter(
         shelves=args.shelves,
         languages=args.languages,
         categories=args.categories,
         borrowed=args.borrowed,
-        merge=True,
     )
     df = c.df
 

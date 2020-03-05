@@ -114,7 +114,7 @@ def increase():
 
 # number of new authors a year
 def new_authors():
-    authors = Collection(shelves=['read']).df
+    authors = Collection().shelves(["read"]).df
     first = authors.set_index('Read').sort_index().Author.drop_duplicates()
     first = first.resample('D').count().reindex(ix).fillna(0)
     first.rolling(window=365, min_periods=0).sum().plot()
@@ -135,7 +135,7 @@ def new_authors():
 
 
 def median_date():
-    read = Collection(shelves=['read']).df.dropna(subset=['Published'])
+    read = Collection().shelves(["read"]).df.dropna(subset=["Published"])
 
     read = read.set_index('Read').Published.resample('D').mean()
 
@@ -158,7 +158,7 @@ def median_date():
 
 # ratio of old/new books
 def oldness():
-    df = Collection(shelves=['read']).df.dropna(subset=['Published'])
+    df = Collection().shelves(["read"]).df.dropna(subset=["Published"])
 
     df = pd.DataFrame({
         'thresh': df.Published.apply(lambda x: (x < thresh and 1 or 0)),
@@ -187,7 +187,7 @@ def oldness():
 
 
 def gender():
-    df = Collection(shelves=['read']).df
+    df = Collection().shelves(["read"]).df
     df.Gender = df.Gender.fillna('unknown')
 
     df = df.pivot_table(
@@ -211,7 +211,7 @@ def gender():
 
 
 def language():
-    df = Collection(shelves=['read']).df
+    df = Collection().shelves(["read"]).df
 
     df.Language = df.Language.fillna('unknown')
     df = df.pivot_table(
@@ -234,7 +234,7 @@ def language():
 
 
 def category():
-    df = Collection(shelves=['read']).df
+    df = Collection().shelves(["read"]).df
 
     df.Category = df.Category.fillna('unknown')
     df = df.pivot_table(
@@ -258,7 +258,7 @@ def category():
 
 # plot total/new nationalities over the preceding year
 def nationality():
-    df = Collection(shelves=['read']).df
+    df = Collection().shelves(["read"]).df
 
     # how many new nationalities a year
     authors = df.set_index('Read').sort_index()
@@ -316,7 +316,7 @@ def reading_rate():
 
 
 def rate_area():
-    df = Collection(shelves=['read']).df
+    df = Collection().shelves(["read"]).df
 
     df['ppd'] = df.Pages / ((df.Read - df.Started).dt.days + 1)
 
@@ -340,7 +340,7 @@ def rate_area():
 
 
 def doy():
-    df = Collection(shelves=["read"]).df.dropna(subset=["Read"])
+    df = Collection().shelves(["read"]).df.dropna(subset=["Read"])
 
     df["Year"] = df.Read.dt.year
     df["Day of Year"] = df.Read.dt.dayofyear
