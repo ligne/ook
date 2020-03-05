@@ -151,18 +151,26 @@ _COLUMNS = [
 
 # columns for various CSVs (eg goodreads, ebooks)
 def df_columns(store):
+    """Return a list of the columns that should be included in $store."""
     return [col["name"] for col in _COLUMNS if store in col["store"]]
 
 
 def date_columns(store):
+    """Return a list of the columns that should be treated as dates."""
     return [col["name"] for col in _COLUMNS if store in col["store"] and col.get("type") == "date"]
 
 
 def metadata_prefer(preference):
+    """Return a list of columns whose values should be prioritised when assembling the metadata.
+
+    Where $preference should be one of "work" (for the Goodreads work) or
+    "book" (for the ebook).
+    """
     return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
 def merge_preferences(store):
+    """Return a dict specifying how volumes of the same book should be merged."""
     return {
         **{"BookId": "first"},
         **{
@@ -209,6 +217,7 @@ def category_patterns():
 
 # value = config('key.name')
 def config(key):
+    """Return a value from the configuration file, or None if it was not found."""
     with open('data/config.yml') as fh:
         conf = yaml.safe_load(fh)
 
