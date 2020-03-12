@@ -90,8 +90,7 @@ def test_kindle_merge():
 
 
 def test__get_kindle_books():
-    # FIXME use a test csv
-    df = reading.collection._get_kindle_books()
+    df = _get_kindle_books(csv="t/data/ebooks-2019-12-04.csv")
 
     assert list(df.columns) == [
         "Author",
