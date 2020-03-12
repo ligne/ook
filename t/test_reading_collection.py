@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-import reading.collection
-from reading.collection import Collection, _get_gr_books, _get_kindle_books
+from reading.collection import Collection, _get_gr_books, _get_kindle_books, _process_fixes
 
 
 ################################################################################
@@ -299,4 +298,4 @@ def test_collection_filter(collection):
 
 
 def test__process_fixes():
-    assert not reading.collection._process_fixes({}), 'No fixes to apply'
+    assert not _process_fixes({}), 'No fixes to apply'
