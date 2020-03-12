@@ -199,7 +199,7 @@ def find(what):
 
 # associate WorkIds with book IDs
 def find_books(books):
-    df = Collection().df  # include metadata
+    df = Collection().categories(exclude=["articles"]).df  # include metadata
 
     author_ids = set(df.AuthorId.dropna().astype(int))
     work_ids = set(df.Work.dropna().astype(int))
