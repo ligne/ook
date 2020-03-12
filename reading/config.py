@@ -3,7 +3,7 @@
 import yaml
 
 
-SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle"}
+SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}
 CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
 
 
