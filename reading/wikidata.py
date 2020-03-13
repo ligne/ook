@@ -52,7 +52,6 @@ class Entity():
             j = r.json()
         self.entity = j['entities'][qid]
 
-    # handle non-humans and collectives
     @property
     def gender(self):
         """Return the gender of the entity, or None if it doesn't exist."""
@@ -61,7 +60,6 @@ class Entity():
         except KeyError:
             return None
 
-    # return a list if necessary
     @property
     def nationality(self):
         """
@@ -75,18 +73,14 @@ class Entity():
         except KeyError:
             return None
 
+        try:
+            return e._property("P297")
+        except KeyError:
+            # TODO: try a bit harder
+            pass
+
         # use the name by default
-        nat = e.label
-
-        if e.has_property("P297"):
-            nat = e._property("P297").lower()
-        # TODO: try a bit harder
-
-        return nat
-
-    # whether the entity has the given property
-    def has_property(self, prop):
-        return prop in self.entity["claims"]
+        return e.label
 
     # returns the given property, in a hopefully useful form
     def _property(self, prop):
