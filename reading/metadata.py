@@ -158,22 +158,21 @@ def lookup_author(author):
 
 # check the author data looks reasonable
 # FIXME Do This Properly, and allow editing
-def confirm_author(author):
-    entity = Entity(author['QID'])
+def confirm_author(entity):
+    """Get user confirmation and return a dict of the interesting fields."""
+    author = {
+        "QID": entity.qid,
+        "Author": entity.label,
+        "Gender": entity.gender,
+        "Nationality": entity.nationality,
+        "Description": entity.description,
+    }
 
-    try:
-        author['Gender']      = entity.gender()
-        author['Nationality'] = entity.nationality()
-    except Exception:  # FIXME
-        print('\033[91mError fetching data\033[0m')
-        print()
-        return None
-
-    print('\n\033[32m{Label}: {Gender}, {Nationality}\033[0m'.format(**author))
-    c = input('Is this correct? [Y/n] ')
+    print("\n\033[32m{Author}: {Gender}, {Nationality}\033[0m".format(**author))
+    c = input("Is this correct? [Y/n] ")
     print()
 
-    return None if (c and c != 'y') else author
+    return None if (c and c != "y") else author
 
 
 ################################################################################
@@ -233,13 +232,9 @@ def find_authors(authors):
         if not resp:
             continue
 
-        # FIXME save the QID?
-        resp = confirm_author(resp)
-        if not resp:
-            continue
-
-        resp['Author'] = resp.pop('Label')  # FIXME
-        authors.loc[int(author_id)] = pd.Series(resp)
+        author = confirm_author(Entity(resp["QID"]))
+        if author:
+            authors.loc[int(author_id)] = author
 
 
 ################################################################################

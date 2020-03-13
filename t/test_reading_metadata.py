@@ -4,7 +4,9 @@ import re
 
 import pytest
 
-from reading.metadata import _list_book_choices, _read_choice, SaveExit, FullExit
+from reading.metadata import _list_book_choices, _read_choice, SaveExit, FullExit, rebuild, confirm_author
+from reading.storage import load_df, save_df
+from reading.wikidata import Entity
 
 
 def _colour_to_string(colour):
@@ -313,3 +315,40 @@ q - save and exit
 Q - exit without saving
 ? - print help<RESET>
 """.lstrip()
+
+
+################################################################################
+
+def test_confirm_author_reject(monkeypatch, capsys):
+    monkeypatch.setattr("builtins.input", lambda prompt: "n")
+
+    entity = Entity("Q12807")
+    author = confirm_author(entity)
+    output = capsys.readouterr()
+    assert decode_colour(output.out) == """
+<GREEN>Umberto Eco: male, it<RESET>
+
+"""
+    assert author is None
+
+
+def test_confirm_author_accept(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda prompt: "y")
+
+    entity = Entity("Q12807")
+    author = confirm_author(entity)
+    assert author == {
+        "QID": "Q12807",
+        "Author": "Umberto Eco",
+        "Gender": "male",
+        "Nationality": "it",
+        "Description": "Italian semiotician, essayist, philosopher, literary critic, and novelist",
+    }
+
+
+def test_confirm_author_default_accepts(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda prompt: "")
+
+    entity = Entity("Q12807")
+    author = confirm_author(entity)
+    assert author["Nationality"] == "it"

@@ -75,21 +75,37 @@ def test_format_search_results_no_results():
 
 def test_entity():
     entity = Entity("Q12807")
-    assert entity.label() == "Umberto Eco"
-    assert entity.gender() == "male"
-    assert entity.nationality() == "it"
+    assert entity.qid == "Q12807"
+    assert entity.label == "Umberto Eco"
+    assert entity.description == (
+        "Italian semiotician, essayist, philosopher, literary critic, and novelist"
+    )
+    assert entity.gender == "male"
+    assert entity.nationality == "it"
 
     entity = Entity("Q276032")
-    assert entity.label() == "Edith Wharton"
-    assert entity.gender() == "female"
-    assert entity.nationality() == "us"
+    assert entity.qid == "Q276032"
+    assert entity.label == "Edith Wharton"
+    assert entity.description == "American novelist, short story writer, designer"
+    assert entity.gender == "female"
+    assert entity.nationality == "us"
 
     entity = Entity("Q8018")
-    assert entity.label() == "Augustine of Hippo"
-    assert entity.gender() == "male"
-    assert entity.nationality() == "ancient Rome"
+    assert entity.qid == "Q8018"
+    assert entity.label == "Augustine of Hippo"
+    assert entity.description == "Early Christian theologian, philosopher and Church Father"
+    assert entity.gender == "male"
+    assert entity.nationality == "ancient Rome"
+
+    entity = Entity("Q3302368")
+    assert entity.label == "Max de Radiguès"
+    assert entity.description == "", "Empty description"
 
 
 def test_entity_collective():
     entity = Entity("Q2662892")
-    assert entity.label() == "Boileau-Narcejac"
+    assert entity.qid == "Q2662892"
+    assert entity.label == "Boileau-Narcejac"
+    assert entity.description == "Team of French writers"
+    assert entity.gender is None
+    assert entity.nationality is None
