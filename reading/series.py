@@ -169,6 +169,7 @@ class Series():
         return self.sort().df[~self.df.Shelf.isin(['read', 'currently-reading'])]
 
     # return readable ones in order (for scheduling)
+    @property
     def readable(self):
         if self.missing == 'ignore':
             return self.remaining()
