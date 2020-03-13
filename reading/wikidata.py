@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Functions for interfacing with WikiData."""
+
 import json
 import sys
 
@@ -11,20 +13,22 @@ def _uc_first(s):
     return s[:1].upper() + s[1:]
 
 
-# use the basic wikidata search.
 def wd_search(term):
-    r = requests.get('https://www.wikidata.org/w/api.php', params={
-        'action': 'wbsearchentities',
-        'language': 'en',
-        'format': 'json',
-        'search': term,
-    })
+    """Search for $term using the basic WikiData search."""
+    return _format_search_results(requests.get("https://www.wikidata.org/w/api.php", params={
+        "action": "wbsearchentities",
+        "language": "en",
+        "format": "json",
+        "search": term,
+    }).json())
 
+
+def _format_search_results(results):
     return [{
-        'Label': res['label'],
-        'QID': res['id'],
-        'Description': _uc_first(res.get('description', '')),
-    } for res in r.json()['search']]
+        "Label": res["label"],
+        "QID": res["id"],
+        "Description": _uc_first(res.get("description", "")),
+    } for res in results["search"]]
 
 
 ###############################################################################
