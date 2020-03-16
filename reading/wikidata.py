@@ -65,8 +65,8 @@ class Entity():
         """
         Return the nationality, or None if it doesn't exist.
 
-        The nationality can either be an ISO 3166 2-letter code, or the full
-        name if such a thing doesn't exist.
+        The nationality can either be an ISO 3166-1 alpha-2 code, or the full
+        name of the country if the former doesn't exist.
         """
         try:
             e = self._property("P27")
