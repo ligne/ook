@@ -65,7 +65,7 @@ def test_get_ebooks(tmp_path):
     ]
 
 
-ebook_paths = [path for path in Path("t/data/ebooks").iterdir()]
+ebook_paths = list(Path("t/data/ebooks").iterdir())
 ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
 
