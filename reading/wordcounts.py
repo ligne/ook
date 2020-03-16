@@ -1,17 +1,18 @@
 # vim: ts=4 : sw=4 : et
 
 from subprocess import check_output, call, DEVNULL
+
 from pathlib import Path
-import yaml
+from subprocess import CalledProcessError, run
+from tempfile import NamedTemporaryFile
+
 import pandas as pd
+import yaml
 
 from .config import config
 
 
-# returns the wordcount for a document.
-# FIXME trim standard headers/footers?
 def wordcount(path):
-    # FIXME use tempfile
     try:
         if call(['ebook-convert', str(path), '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
             print("something wrong counting words in", path)
@@ -26,6 +27,32 @@ def wordcount(path):
             words += len(line.split())
 
     return words
+
+
+# return a file (which may be the original) containing the contents of $path
+# as text
+def _as_text(path):
+    if path.suffix == ".txt":
+        return path.read_text()
+
+    tmpfile = NamedTemporaryFile(suffix=".txt")
+
+    try:
+        run(["ebook-convert", str(path), tmpfile.name], capture_output=True, check=True)
+    except OSError:
+        # ebook-convert probably doesn't exist
+        return None
+    except CalledProcessError as e:
+        # it fell over
+        print(e)
+        return None
+
+    return tmpfile.read()
+
+
+# counts the words in $textfile. FIXME trim standard headers/footers?
+def _count_words(textfile):
+    return len(textfile.split()) if textfile is not None else None
 
 
 # gathers metadata from the ebook.  annoyingly, calibre doesn't support

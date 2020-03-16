@@ -63,3 +63,35 @@ def test_get_ebooks(tmp_path):
         ("novels", "books/novel3.mobi", "novels/novel3.mobi"),
         ("short-stories", "short-stories/stories1.azw3", "short-stories/stories1.azw3"),
     ]
+
+
+@pytest.mark.slow
+def test__as_text():
+    for path in [
+        Path("t/data/ebooks/supernatural.mobi"),
+        Path("t/data/ebooks/pg4559.mobi"),
+        Path("t/data/ebooks/pg6838.mobi"),
+    ]:
+        assert _as_text(path) == path.with_suffix(".txt").read_bytes()
+
+
+def idfn(val):
+    return val.name
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("path", list(Path("t/data/ebooks").iterdir()), ids=idfn)
+def test_wordcount(path):
+    from reading.wordcounts import wordcount
+    new_words = _count_words(_as_text(path))
+    old_words = wordcount(path)
+
+    assert abs(new_words - old_words) < 100
+
+
+def test__count_words():
+    assert _count_words(None) is None, "Works when there was a problem converting"
+    assert _count_words("") == 0
+    assert _count_words("word") == 1
+    assert _count_words("two words") == 2
+    assert _count_words(b"two words") == 2, "Works with bytestrings too"
