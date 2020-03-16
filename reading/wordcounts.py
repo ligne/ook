@@ -1,11 +1,10 @@
 # vim: ts=4 : sw=4 : et
 
-from subprocess import check_output, call, DEVNULL
-
 from pathlib import Path
-from subprocess import CalledProcessError, run
+from subprocess import CalledProcessError, check_output, run
 from tempfile import NamedTemporaryFile
 
+import attr
 import pandas as pd
 import yaml
 
@@ -72,6 +71,52 @@ print(yaml.safe_dump({
         language = 'en'
 
     return (author, title, language)
+
+
+def _read_metadata(path):
+    return yaml.safe_load(check_output(["python2", "-c", """
+import os, sys, yaml
+
+sys.path.insert(0, '/usr/lib/calibre')
+sys.resources_location  = '/usr/share/calibre'
+sys.extensions_location = '/usr/lib/calibre/calibre/plugins'
+
+from calibre.ebooks.metadata.meta import get_metadata
+
+path = sys.argv[1]
+ext = os.path.splitext(path)[-1][1:]
+ext = ext in ['txt', 'pdf'] and ext or 'mobi'
+mi = get_metadata(open(path, 'r+b'), ext, force_read_metadata=True)
+print(yaml.safe_dump({
+    'Title':     mi.get('title'),
+    'Authors':   mi.get('authors'),
+    'Languages': mi.get('languages'),
+}))
+""", str(path)]))
+
+
+@attr.s
+class Metadata:
+    metadata = attr.ib()
+
+    @property
+    def author(self):
+        """Return the Author of the ebook."""
+        author = self.metadata["Authors"][0]
+        return "" if author == "Unknown" else author
+
+    @property
+    def title(self):
+        """Return the Title of the ebook."""
+        return self.metadata["Title"]
+
+    @property
+    def language(self):
+        """Return the Language of the ebook."""
+        try:
+            return self.metadata["Languages"][0][:2]
+        except (KeyError, IndexError):
+            return "en"
 
 
 def _ignore_item(path):

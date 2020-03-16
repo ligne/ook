@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from reading.wordcounts import _ignore_item, get_ebooks, _as_text, _count_words
+from reading.wordcounts import (
+    Metadata, _as_text, _count_words, _ignore_item, _read_metadata, get_ebooks, metadata)
 
 
 def test__ignore_item(tmp_path):
@@ -81,3 +82,64 @@ def test__count_words():
     assert _count_words("word") == 1
     assert _count_words("two words") == 2
     assert _count_words(b"two words") == 2, "Works with bytestrings too"
+
+
+def test__read_metadata():
+    path = Path("t/data/ebooks/supernatural.mobi")
+    assert _read_metadata(path) == {
+        "Authors": ["H. P. Lovecraft"],
+        "Languages": ["en"],
+        "Title": "Supernatural Horror in Literature",
+    }
+
+    path = Path("t/data/ebooks/pg4559.mobi")
+    assert _read_metadata(path) == {
+        "Authors": ["Jules Renard"],
+        "Languages": ["fr"],
+        "Title": "Poil de Carotte",
+    }
+
+    path = Path("t/data/ebooks/pg6838.mobi")
+    assert _read_metadata(path) == {
+        "Authors": ["Victor Hugo"],
+        "Languages": ["fr"],
+        "Title": "Le Dernier Jour d'un Condamné",
+    }, "Metadata with diacritical marks"
+
+
+ebook_paths = list(Path("t/data/ebooks").iterdir())
+ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
+
+
+@pytest.mark.slow
+@pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
+def test_all_metadata(path):
+    m = Metadata(_read_metadata(path))
+    assert metadata(path) == (m.author, m.title, m.language)
+
+
+def test_metadata():
+    m = Metadata({
+        "Authors": ["H. P. Lovecraft"],
+        "Languages": ["en"],
+        "Title": "Supernatural Horror in Literature",
+    })
+    assert m.author == "H. P. Lovecraft"
+    assert m.language == "en"
+    assert m.title == "Supernatural Horror in Literature"
+
+    m = Metadata({
+        "Authors": ["H. P. Lovecraft"],
+        "Languages": [],
+        "Title": "Supernatural Horror in Literature",
+    })
+    assert m.language == "en", "Default language is 'en'"
+
+    m = Metadata({
+        "Authors": ["Victor Hugo"],
+        "Languages": ["fr"],
+        "Title": "Le Dernier Jour d'un Condamné",
+    })
+    assert m.author == "Victor Hugo"
+    assert m.language == "fr"
+    assert m.title == "Le Dernier Jour d'un Condamné"
