@@ -33,7 +33,7 @@ def wordcount(path):
 # as text
 def _as_text(path):
     if path.suffix == ".txt":
-        return path.read_text()
+        return path.read_bytes()
 
     tmpfile = NamedTemporaryFile(suffix=".txt")
 

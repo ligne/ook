@@ -65,28 +65,14 @@ def test_get_ebooks(tmp_path):
     ]
 
 
-@pytest.mark.slow
-def test__as_text():
-    for path in [
-        Path("t/data/ebooks/supernatural.mobi"),
-        Path("t/data/ebooks/pg4559.mobi"),
-        Path("t/data/ebooks/pg6838.mobi"),
-    ]:
-        assert _as_text(path) == path.with_suffix(".txt").read_bytes()
-
-
-def idfn(val):
-    return val.name
+ebook_paths = [path for path in Path("t/data/ebooks").iterdir()]
+ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
 
 @pytest.mark.slow
-@pytest.mark.parametrize("path", list(Path("t/data/ebooks").iterdir()), ids=idfn)
-def test_wordcount(path):
-    from reading.wordcounts import wordcount
-    new_words = _count_words(_as_text(path))
-    old_words = wordcount(path)
-
-    assert abs(new_words - old_words) < 100
+@pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
+def test__as_text(path):
+    assert _as_text(path) == path.with_suffix(".txt").read_bytes()
 
 
 def test__count_words():
