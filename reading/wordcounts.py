@@ -12,23 +12,6 @@ import yaml
 from .config import config
 
 
-def wordcount(path):
-    try:
-        if call(['ebook-convert', str(path), '/tmp/test.txt'], stdout=DEVNULL, stderr=DEVNULL):
-            print("something wrong counting words in", path)
-            return None
-    except OSError:
-        # ebook-convert probably doesn't exist
-        return 0
-
-    words = 0
-    with open('/tmp/test.txt', 'r') as book:
-        for line in book:
-            words += len(line.split())
-
-    return words
-
-
 # return a file (which may be the original) containing the contents of $path
 # as text
 def _as_text(path):
@@ -130,7 +113,7 @@ def process(df, force=False):
 
         # get the metadata and wordcount
         (author, title, language) = metadata(path)
-        words = wordcount(path)
+        words = _count_words(_as_text(path))
 
         ebooks.append({
             'BookId': name,
