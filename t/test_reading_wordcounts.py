@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from reading.wordcounts import (
-    Metadata, _as_text, _count_words, _ignore_item, _read_metadata, get_ebooks, metadata)
+    Metadata, _as_text, _count_words, _ignore_item, _read_metadata, get_ebooks)
 
 
 def test__ignore_item(tmp_path):
@@ -105,17 +105,6 @@ def test__read_metadata():
         "Languages": ["fr"],
         "Title": "Le Dernier Jour d'un Condamné",
     }, "Metadata with diacritical marks"
-
-
-ebook_paths = list(Path("t/data/ebooks").iterdir())
-ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
-
-
-@pytest.mark.slow
-@pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
-def test_all_metadata(path):
-    m = Metadata(_read_metadata(path))
-    assert metadata(path) == (m.author, m.title, m.language)
 
 
 def test_metadata():

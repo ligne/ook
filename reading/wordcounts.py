@@ -39,40 +39,6 @@ def _count_words(textfile):
 
 # gathers metadata from the ebook.  annoyingly, calibre doesn't support
 # Python3, and there aren't many other easy options...
-def metadata(path):
-    mi = yaml.safe_load(check_output(['python2', '-c', '''
-import os, sys, yaml
-
-sys.path.insert(0, '/usr/lib/calibre')
-sys.resources_location  = '/usr/share/calibre'
-sys.extensions_location = '/usr/lib/calibre/calibre/plugins'
-
-from calibre.ebooks.metadata.meta import get_metadata
-
-path = sys.argv[1]
-ext = os.path.splitext(path)[-1][1:]
-ext = ext in ['txt', 'pdf'] and ext or 'mobi'
-mi = get_metadata(open(path, 'r+b'), ext, force_read_metadata=True)
-print(yaml.safe_dump({
-    'Title':     mi.get('title'),
-    'Authors':   mi.get('authors'),
-    'Languages': mi.get('languages'),
-}))
-''', str(path)]))
-
-    title = mi['Title']
-    author = mi['Authors'][0]
-    if author == 'Unknown':
-        author = ''
-
-    try:
-        language = mi['Languages'][0][:2]
-    except (KeyError, IndexError):
-        language = 'en'
-
-    return (author, title, language)
-
-
 def _read_metadata(path):
     return yaml.safe_load(check_output(["python2", "-c", """
 import os, sys, yaml
@@ -157,15 +123,15 @@ def process(df, force=False):
             continue
 
         # get the metadata and wordcount
-        (author, title, language) = metadata(path)
+        metadata = Metadata(_read_metadata(path))
         words = _count_words(_as_text(path))
 
         ebooks.append({
             'BookId': name,
-            'Author': author,
-            'Title': title,
+            'Author': metadata.author,
+            'Title': metadata.title,
             'Category': category,
-            'Language': language,
+            'Language': metadata.language,
             'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
             'Words': words,
         })
