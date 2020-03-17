@@ -80,6 +80,18 @@ def test__as_text(path):
     assert _as_text(path) == path.with_suffix(".txt").read_bytes()
 
 
+def test_missing_ebook_convert(monkeypatch):
+    monkeypatch.setenv("PATH", "/no/such/path")
+    path = Path("t/data/ebooks/supernatural.mobi")
+    assert _as_text(path) is None, "Missing ebook-convert command"
+
+
+def test_ebook_invalid(tmp_path):
+    path = tmp_path / "blah.mobi"
+    path.write_bytes(b"blah")
+    assert _as_text(path) is None, "Error converting the ebook"
+
+
 def test__count_words():
     assert _count_words(None) is None, "Works when there was a problem converting"
     assert _count_words("") == 0
