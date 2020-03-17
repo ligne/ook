@@ -8,6 +8,8 @@ from reading.wordcounts import (
     Metadata, _as_text, _count_words, _ignore_item, _read_metadata, get_ebooks)
 
 
+################################################################################
+
 def test__ignore_item(tmp_path):
     p = tmp_path / "item.mobi"
     p.touch()
@@ -66,6 +68,8 @@ def test_get_ebooks(tmp_path):
     ]
 
 
+################################################################################
+
 ebook_paths = list(Path("t/data/ebooks").iterdir())
 ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
@@ -83,6 +87,8 @@ def test__count_words():
     assert _count_words("two words") == 2
     assert _count_words(b"two words") == 2, "Works with bytestrings too"
 
+
+################################################################################
 
 def test__read_metadata():
     path = Path("t/data/ebooks/supernatural.mobi")
