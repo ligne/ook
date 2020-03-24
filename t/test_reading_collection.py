@@ -228,12 +228,13 @@ def test_collection_languages(collection):
         set(collection("2019-12-04").languages(exclude=["fr"]).df.Language) & {"fr"} == set()
     ), "Not the excluded language"
 
-#    df = pd.concat([
-#        _get_collection().shelves(exclude=["library"]).df,
-#        _get_collection().shelves(include=["library"]).df,
-#    ])
-#
-#    assert set(df.index) == set(_get_collection().df.index)
+    df = pd.concat([
+        collection("2019-12-04").languages(exclude=["fr"]).df,
+        collection("2019-12-04").languages(include=["fr"]).df,
+    ])
+    assert (
+        set(df.index) == set(collection("2019-12-04").df.index)
+    ), "include + exclude = all languages"
 
 
 def test_collection_categories(collection):
@@ -252,12 +253,13 @@ def test_collection_categories(collection):
         == set()
     ), "Not the excluded category"
 
-#    df = pd.concat([
-#        _get_collection().shelves(exclude=["library"]).df,
-#        _get_collection().shelves(include=["library"]).df,
-#    ])
-#
-#    assert set(df.index) == set(_get_collection().df.index)
+    df = pd.concat([
+        collection("2019-12-04").categories(exclude=["novels"]).df,
+        collection("2019-12-04").categories(include=["novels"]).df,
+    ])
+    assert (
+        set(df.index) == set(collection("2019-12-04").df.index)
+    ), "include + exclude = all categories"
 
 
 def test_collection_borrowed(collection):
