@@ -277,6 +277,20 @@ def lint_needs_returning():
     }
 
 
+def lint_not_rated():
+    c = Collection().shelves(["read"])
+    return {
+        "title": "Read but not yet rated",
+        "df": c.df[c.df.Rating == 0],
+        "template": """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}, https://www.goodreads.com/review/edit/{{entry.Index}}
+{%- endfor %}
+
+""",
+    }
+
+
 # find unnecessary fixes
 # FIXME update
 def lint_fixes():
