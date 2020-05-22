@@ -88,6 +88,8 @@ def _sort(df, args):
     if args.alpha:
         # FIXME use a more sortable version of the title
         df = df.sort_values(['Title', 'Author'])
+    elif args.age:
+        df = df.sort_values(['Added', 'Title', 'Author'])
     else:
         df = df.sort_values(['Pages', 'Title', 'Author'])
 
