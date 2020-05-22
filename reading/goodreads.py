@@ -34,7 +34,7 @@ def get_books():
             books.append({**api_book, **book})
 
         r = x.find('reviews')
-        if r.get('end') >= r.get('total'):
+        if int(r.get('end')) >= int(r.get('total')):
             break
 
         page += 1
