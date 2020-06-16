@@ -39,7 +39,7 @@ def lint_words_per_page():
 
 
 def lint_missing_category():
-    c = Collection(fixes=None)
+    c = Collection()
     return {
         'title': 'Missing a category',
         'df': c.df[c.df.Category.isnull()],
