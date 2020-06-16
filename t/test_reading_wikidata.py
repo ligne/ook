@@ -95,7 +95,7 @@ def test_entity():
     assert entity.label == "Augustine of Hippo"
     assert entity.description == "Early Christian theologian, philosopher and Church Father"
     assert entity.gender == "male"
-    assert entity.nationality == "ancient Rome"
+    assert entity.nationality == "Ancient Rome"
 
     entity = Entity("Q3302368")
     assert entity.label == "Max de Radiguès"
