@@ -207,6 +207,7 @@ def lint_duplicates():
 def lint_binding():
     good_bindings = [
         'Paperback',
+        'paperback',
         'Hardcover',
         'Mass Market Paperback',
         'Kindle Edition',
