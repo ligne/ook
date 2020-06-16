@@ -79,9 +79,8 @@ def backlog():
 
     p = p.cumsum(axis=1)
 
-    # truncate to the interesting bit (after i'd added my books and those from
-    # home)
-    start = '2016-05-13'
+    # truncate to the interesting bit
+    start = '2016-04-17'
 
     # number of pages
     save_image(p, 'pages', start=start)
