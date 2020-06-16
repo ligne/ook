@@ -156,6 +156,19 @@ def median_date():
     plt.close()
 
 
+def length():
+    read = Collection().shelves(["read"]).df
+    read = read.set_index("Read").Pages.resample("D").mean()
+    read.rolling(window=365, min_periods=0).mean().reindex(ix).ffill().loc["2016":].plot()
+
+    # prettify and save
+    name = "length"
+    plt.grid(True)
+    plt.title("Average length")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
+    plt.close()
+
+
 # ratio of old/new books
 def oldness():
     df = Collection().shelves(["read"]).df.dropna(subset=["Published"])
@@ -444,6 +457,7 @@ def scheduled():
 ################################################################################
 
 def main(_args):
+    length()
     doy()
     nationality()
     gender()
