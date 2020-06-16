@@ -146,8 +146,6 @@ def median_date():
     # set the top of the graph to the current year
     plt.ylim([plt.ylim()[0], today.year])
 
-    plt.axhline(thresh, color='k', alpha=0.5)
-
     # prettify and save
     name = 'median_date'
     plt.grid(True)
