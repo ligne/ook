@@ -207,6 +207,25 @@ class Collection():
             self.df = self.df[self.df.Borrowed == state]
         return self
 
+    @property
+    def read(self):
+        """Return a dataframe of all read books."""
+        return self.all[self.all.Shelf.isin(["read", "currently-reading"])]
+
+    @property
+    def read_authorids(self):
+        """Return a list of the AuthorIds of all read authors."""
+        return set(self.read.AuthorId)
+
+    @property
+    def recent_authorids(self):
+        """Return a list of the AuthorIds of all recently read books."""
+
+    @property
+    def read_nationalities(self):
+        """Return a list of all read nationalities."""
+        return set(self.read.Nationality)
+
 
 if __name__ == "__main__":
     print(Collection().df)

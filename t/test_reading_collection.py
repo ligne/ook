@@ -302,5 +302,52 @@ def test_collection_filter(collection):
     )  # Same, but with more than one filter
 
 
+def test_read(collection):
+    c = collection("2019-12-04")
+
+    df = c.read
+
+    assert set(df.Shelf) == {"read", "currently-reading"}, "Only expected shelves"
+    assert 10374 in df.index, "Read book is there"
+
+    assert 38290 not in df.index, "Unread book is not"
+    assert 38290 in c.all.index, "Unread book is in the collection however"
+
+    assert_frame_equal(
+        collection("2019-12-04").categories(["novels"]).read,
+        collection("2019-12-04").read,
+    )  # Same result even with a filtered frame
+
+
+# def test_recent_authorids(collection):
+#     c = collection("2019-12-04")
+
+
+def test_read_authorids(collection):
+    c = collection("2019-12-04")
+
+    assert c.read_authorids == {
+        1654,
+        3354,
+        4750,
+        4785,
+        7628,
+        9343,
+        9693,
+        228089,
+        874602,
+        2778055,
+        5807106,
+    }
+
+    assert 2778055 in c.read_authorids, "Author in currently-reading is included"
+
+
+def test_read_nationalities(collection):
+    c = collection("2019-12-04")
+
+    assert c.read_nationalities == {"fr", "us", "jp", "gb", "be"}
+
+
 def test__process_fixes():
     assert not _process_fixes({}), 'No fixes to apply'
