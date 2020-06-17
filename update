@@ -26,29 +26,29 @@ rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindl
 
 tmpdir=`mktemp -d`
 
-OPTS="--width 50 --size 15"
+OPTS="--width 50 --size 15 --shelves kindle"
 
 # update suggestions
 (
   echo Scheduled
   echo
-  ./suggestions.py --scheduled
+  ./ook scheduled
   echo ----
   echo All novels
   echo
-  ./suggestions.py $OPTS --categories books
+  ./ook suggest $OPTS --categories novels
   echo ----
   echo All short stories
   echo
-  ./suggestions.py $OPTS --categories short-stories
+  ./ook suggest $OPTS --categories short-stories
   echo ----
   echo French books
   echo
-  ./suggestions.py $OPTS --languages fr
+  ./ook suggest $OPTS --languages fr
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py $OPTS --categories non-fiction
+  ./ook suggest $OPTS --categories non-fiction
 ) > $tmpdir/00\ Suggestions.txt
 
 OPTS="--width 50 --shelves kindle"
@@ -57,44 +57,44 @@ OPTS="--width 50 --shelves kindle"
 (
   echo Articles
   echo
-  ./suggestions.py $OPTS --categories articles --words
+  ./ook suggest $OPTS --categories articles --words
   echo ----
   echo Novels
   echo
-  ./suggestions.py $OPTS --categories novels
+  ./ook suggest $OPTS --categories novels
   echo ----
   echo Short stories
   echo
-  ./suggestions.py $OPTS --categories short-stories
+  ./ook suggest $OPTS --categories short-stories
   echo ----
   echo French books
   echo
-  ./suggestions.py $OPTS --language fr
+  ./ook suggest $OPTS --language fr
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py $OPTS --categories non-fiction
+  ./ook suggest $OPTS --categories non-fiction
 ) > $tmpdir/00\ Numeric.txt
 (
   echo Articles
   echo
-  ./suggestions.py $OPTS --alpha --categories articles --words
+  ./ook suggest $OPTS --alpha --categories articles --words
   echo ----
   echo Novels
   echo
-  ./suggestions.py $OPTS --alpha --categories novels
+  ./ook suggest $OPTS --alpha --categories novels
   echo ----
   echo Short stories
   echo
-  ./suggestions.py $OPTS --alpha --categories short-stories
+  ./ook suggest $OPTS --alpha --categories short-stories
   echo ----
   echo French books
   echo
-  ./suggestions.py $OPTS --alpha --language fr
+  ./ook suggest $OPTS --alpha --language fr
   echo ----
   echo Non-fiction
   echo
-  ./suggestions.py $OPTS --alpha --categories non-fiction
+  ./ook suggest $OPTS --alpha --categories non-fiction
 ) > $tmpdir/00\ Alphabetical.txt
 
 diff -uwr $kindle_dir/documents/wordcounts/00\ Suggestions.txt $tmpdir/
