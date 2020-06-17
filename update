@@ -26,7 +26,7 @@ rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindl
 
 tmpdir=`mktemp -d`
 
-OPTS="--width 50 --size 15 --shelves kindle"
+OPTS="--width 50 --size 15"
 
 # update suggestions
 (
