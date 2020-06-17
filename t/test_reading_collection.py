@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+import pytest
+
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
@@ -126,6 +128,7 @@ def test__get_kindle_books():
     assert len(df[df.Author.isnull()]) == 0, 'Every ebook has an author'
 
 
+@pytest.mark.slow
 def test_collection_crudely(collection):
     c = Collection()
     assert c.df.equals(Collection().df), "Same collection is the same"
