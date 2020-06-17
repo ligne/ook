@@ -141,7 +141,7 @@ def test_collection_crudely(collection):
     assert Collection(metadata=False)
 
     assert (
-        len(collection("2019-12-04", merge=True, metadata=True).df) == 396
+        len(collection("2019-12-04", merge=True, metadata=True).df) == 397
     ), "Merged collection is a sensible length"
 
 
