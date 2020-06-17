@@ -28,11 +28,11 @@ def _filter_parser():
     # sort
     parser.add_argument('--alpha', action='store_true')
     parser.add_argument('--age', action='store_true')
+    parser.add_argument('--words', action="store_true")
     # display
     parser.add_argument('--size', type=int, default=10)
     parser.add_argument('--all', action="store_true")
     parser.add_argument('--width', type=int, default=None)  # FIXME display option
-    parser.add_argument('--words', action="store_true")
 
     return parser
 
