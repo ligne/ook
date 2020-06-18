@@ -51,7 +51,7 @@ OPTS="--width 50 --size 15"
   ./ook suggest $OPTS --categories non-fiction
 ) > $tmpdir/00\ Suggestions.txt
 
-OPTS="--width 50 --shelves kindle"
+OPTS="--width 50 --shelves kindle --all"
 
 # add alphabetically and numerically sorted versions of all wordcount lists.
 (
