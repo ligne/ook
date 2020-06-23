@@ -51,6 +51,8 @@ good-names=df,c,it,m,ii,fh,g,e
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,blah,bla,blabla,data
 
+no-docstring-rgx=^_|^main$
+
 # Include a hint for the correct naming format with invalid-name
 include-naming-hint=yes
 
