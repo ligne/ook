@@ -128,32 +128,30 @@ def test_changes():
     c = changes(rev_id, current, offsets, expected)
 
     assert c == {
-        'requests': [
-            {'deleteContentRange': {'range': {'endIndex': 436, 'startIndex': 435}}},
-            {'deleteContentRange': {'range': {'endIndex': 395, 'startIndex': 383}}},
-            {'deleteContentRange': {'range': {'endIndex': 298, 'startIndex': 284}}},
-            {'insertText': {'location': {'index': (284, 298)}, 'text': 'Kurt Vonnegut Jr.\n'}},
-            {'insertText': {'location': {'index': (236, 283)}, 'text': '* The Burning Chambers\n'}},
-            {'deleteContentRange': {'range': {'endIndex': 174, 'startIndex': 131}}},
+        "requests": [
+            {"deleteContentRange": {"range": {"endIndex": 436, "startIndex": 435}}},
+            {"deleteContentRange": {"range": {"endIndex": 395, "startIndex": 383}}},
+            {"deleteContentRange": {"range": {"endIndex": 298, "startIndex": 284}}},
+            {"insertText": {"location": {"index": (284, 298)}, "text": "Kurt Vonnegut Jr.\n"}},
+            {"insertText": {"location": {"index": (236, 283)}, "text": "* The Burning Chambers\n"}},
+            {"deleteContentRange": {"range": {"endIndex": 174, "startIndex": 131}}},
             {
-                'insertText': {
-                    'location': {'index': (100, 116)},
-                    'text': 'Charles Brockden Brown\n'
-                    '* Wieland; or The Transformation, and '
-                    'Memoirs of Carwin, The Biloquist\n'
-                    '\n',
+                "insertText": {
+                    "location": {"index": (100, 116)},
+                    "text": "Charles Brockden Brown\n"
+                            "* Wieland; or The Transformation, and Memoirs of Carwin, The Biloquist\n\n",
                 }
             },
-            {'deleteContentRange': {'range': {'endIndex': 63, 'startIndex': 41}}},
+            {"deleteContentRange": {"range": {"endIndex": 63, "startIndex": 41}}},
             {
-                'insertText': {
-                    'location': {'index': (41, 52)},
-                    'text': 'Alan Garner\n* The Owl Service\n',
+                "insertText": {
+                    "location": {"index": (41, 52)},
+                    "text": "Alan Garner\n* The Owl Service\n",
                 }
             },
         ],
-        'writeControl': {
-            'requiredRevisionId': 'AOV_f48jtrnaJS70zG3tqgVShUQVCQseXYV6KVeT91bzb9IgXehnfjimaEAbKz4B35_IucCYyxVlPjM2LQxv'
+        "writeControl": {
+            "requiredRevisionId": "AOV_f48jtrnaJS70zG3tqgVShUQVCQseXYV6KVeT91"
+                                  "bzb9IgXehnfjimaEAbKz4B35_IucCYyxVlPjM2LQxv",
         },
     }
-
