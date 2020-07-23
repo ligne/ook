@@ -171,6 +171,7 @@ def lint_scheduling():
         'template': """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}:  {{entry.Expected.year}}, not {{entry.Scheduled.year}}
+  https://www.goodreads.com/book/show/{{entry.Index}}
 {%- endfor %}
 
 """,
