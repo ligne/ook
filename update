@@ -19,10 +19,7 @@ echo
 rsync -ha --delete $kindle_dir/ /home/local/mlb/.kindle/ --exclude-from ~/.kindle-excludes
 
 # recalculate wordcounts
-./wordcounts.py
-
-# regenerate the graphs and update the total ebook wordcount
-./reading.py
+./ook update --kindle
 
 tmpdir=`mktemp -d`
 
