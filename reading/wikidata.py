@@ -18,6 +18,7 @@ def wd_search(term):
     return _format_search_results(requests.get("https://www.wikidata.org/w/api.php", params={
         "action": "wbsearchentities",
         "language": "en",
+        "limit": 20,
         "format": "json",
         "search": term,
     }).json())
