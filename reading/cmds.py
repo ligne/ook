@@ -9,7 +9,12 @@ from .config import CATEGORIES, SHELVES
 def _filter_parser():
     parser = argparse.ArgumentParser(add_help=False)
 
-    parser.add_argument("--shelves", nargs="+", choices=SHELVES, default=SHELVES)
+    parser.add_argument(
+        "--shelves",
+        nargs="+",
+        choices=SHELVES,
+        default=(SHELVES - {"to-read"})
+    )
     parser.add_argument("--languages", nargs="+")
     parser.add_argument(
         "--categories",
