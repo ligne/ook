@@ -265,6 +265,21 @@ def lint_missing_borrowed():
     }
 
 
+# books on elsewhere shelf that are not marked as borrowed.
+def lint_extraneous_borrowed():
+    c = Collection().shelves(["to-read"]).borrowed(True)
+    return {
+        'title': 'To-read but marked as borrowed',
+        'df': c.df,
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
+
+
 # books i've borrowed that need to be returned.
 def lint_needs_returning():
     c = Collection().shelves(["read"]).borrowed(True)
