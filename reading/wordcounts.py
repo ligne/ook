@@ -17,10 +17,12 @@ def _as_text(path):
     if path.suffix == ".txt":
         return path.read_bytes()
 
+    cmd = "pdftotext" if path.suffix == ".pdf" else "ebook-convert"
+
     tmpfile = NamedTemporaryFile(suffix=".txt")
 
     try:
-        run(["ebook-convert", str(path), tmpfile.name], capture_output=True, check=True)
+        run([cmd, str(path), tmpfile.name], capture_output=True, check=True)
     except OSError:
         # ebook-convert probably doesn't exist
         return None
