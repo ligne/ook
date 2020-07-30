@@ -217,6 +217,7 @@ def lint_binding():
         'Broché',
         'Relié',
         'Board book',
+        "Unknown Binding",
     ]
     c = Collection().shelves(exclude=["kindle"])
     return {
