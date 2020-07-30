@@ -110,8 +110,8 @@ Matthew Lewis, The Monk
     assert _changed(b1a, b2) == """
 Matthew Lewis, The Monk
   * Category unset (previously novels)
-  * Added: 2017-07-27 → 2017-12-25
   * Binding set to Paperback
+  * Added: 2017-07-27 → 2017-12-25
 """.strip(), 'Fields set and unset'
 
     ###
