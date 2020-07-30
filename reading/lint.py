@@ -6,7 +6,7 @@ from .config import config
 
 
 def lint_missing_pagecount():
-    c = Collection()
+    c = Collection().shelves(exclude=["to-read"])
     return {
         'title': 'Missing a pagecount',
         'df': c.df[c.df.Pages.isnull()],
