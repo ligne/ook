@@ -74,7 +74,7 @@ def _added(book):
   * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
-  * {{b.Pages|int}} pages
+  * {% if "Pages" in b %}{{b.Pages|int}} pages{% else %}{{b.Words|int}} words{% endif %}
   * Language: {{b.Language}}
 ''').render(b=book)
 
