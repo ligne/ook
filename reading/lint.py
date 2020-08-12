@@ -135,6 +135,7 @@ def lint_overscheduled():
         df.Automatic.isnull()
         & df.AuthorId.isin(bad)
         & (df.Scheduled.dt.year == today.year)
+        & (df.Shelf != "currently-reading")
     ]
 
     return {
