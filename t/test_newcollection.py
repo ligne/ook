@@ -184,3 +184,83 @@ def test_filter_shelves():
         Collection.from_dir("t/data/2019-12-04").shelves(include=["library"]).df,
     ])
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+
+
+def test_filter_languages():
+    """Test the language() method."""
+    c = Collection.from_dir("t/data/2019-12-04")
+    c2 = Collection.from_dir("t/data/2019-12-04")
+
+    assert_frame_equal(c.languages().df, c2.df)  # no argument makes it a no-op
+
+    assert set(c.languages(["fr"]).df.Language) == {"fr"}, "Only the selected language"
+
+    c.reset()
+
+    c.languages(exclude=["fr"])
+    assert "fr" not in set(c.df.Language), "Not the excluded language"
+    assert "en" in set(c.df.Language), "Does include others"
+
+    c = Collection.from_dir("t/data/2019-12-04")
+    df = pd.concat([
+        Collection.from_dir("t/data/2019-12-04").languages(exclude=["fr"]).df,
+        Collection.from_dir("t/data/2019-12-04").languages(include=["fr"]).df,
+    ])
+    assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+
+
+def test_filter_categories():
+    """Test the categories() metod."""
+    c = Collection.from_dir("t/data/2019-12-04")
+    c2 = Collection.from_dir("t/data/2019-12-04")
+
+    assert_frame_equal(c.categories().df, c2.df)  # no argument makes it a no-op
+
+    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected language"
+
+    c.reset()
+
+    c.categories(exclude=["novels"])
+    assert "novels" not in set(c.df.Category), "Not the excluded category"
+    assert "articles" in set(c.df.Category), "Does include others"
+
+    c = Collection.from_dir("t/data/2019-12-04")
+    df = pd.concat([
+        Collection.from_dir("t/data/2019-12-04").categories(exclude=["novels"]).df,
+        Collection.from_dir("t/data/2019-12-04").categories(include=["novels"]).df,
+    ])
+    assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+
+
+def test_filter_borrowed():
+    """Test the borrowed() method."""
+    c = Collection.from_dir("t/data/2019-12-04")
+    assert set(c.borrowed().df.Borrowed) == {True, False}
+
+    c = Collection.from_dir("t/data/2019-12-04")
+    assert set(c.borrowed(True).df.Borrowed) == {True}
+
+    c = Collection.from_dir("t/data/2019-12-04")
+    assert set(c.borrowed(False).df.Borrowed) == {False}
+
+
+def test_chaining():
+    c = Collection.from_dir("t/data/2019-12-04")
+    c.shelves(["pending"]).borrowed(True).languages(["fr"])
+
+    assert_frame_equal(
+        c.df, c.all[(c.all.Shelf == "pending") & c.all.Borrowed & (c.all.Language == "fr")]
+    )
+
+    c = Collection.from_dir("t/data/2019-12-04")
+    c.shelves(["pending"]).categories(["graphic"]).languages(exclude=["fr"]).borrowed(False)
+
+    assert_frame_equal(
+        c.df,
+        c.all[
+            (c.all.Shelf == "pending")
+            & (c.all.Category == "graphic")
+            & (c.all.Language == "fr")
+            & ~c.all.Borrowed
+        ],
+    )

@@ -295,6 +295,20 @@ class NewCollection:
         """Filter the collection by shelf."""
         return self._filter_list("Shelf", include, exclude)
 
+    def languages(self, include=None, exclude=None):
+        """Filter the collection by language."""
+        return self._filter_list("Language", include, exclude)
+
+    def categories(self, include=None, exclude=None):
+        """Filter the collection by category."""
+        return self._filter_list("Category", include, exclude)
+
+    def borrowed(self, state=None):
+        """Filter the collection by borrowed status."""
+        if state is not None:
+            self._df["_Mask"] &= self._df.Borrowed == state
+        return self
+
 
 ################################################################################
 
