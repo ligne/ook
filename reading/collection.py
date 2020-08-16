@@ -2,6 +2,7 @@
 
 import re
 
+import attr
 import pandas as pd
 
 from .config import config, merge_preferences
@@ -226,6 +227,76 @@ class Collection():
         """Return a list of all read nationalities."""
         return set(self.read.Nationality)
 
+
+################################################################################
+
+@attr.s
+class NewCollection:
+    """A collection of books."""
+
+    _df = attr.ib(repr=lambda df: f"[{len(df)} books]")
+    merge = attr.ib(default=False, kw_only=True)
+    dedup = attr.ib(default=False, kw_only=True)
+
+    # Add a column for tracking visibility
+    def __attrs_post_init__(self):
+        """Set up accounting for filtered books."""
+        self.reset()
+
+    @classmethod
+    def from_dir(cls, csv_dir="data", _fixes=True, _metadata=True, **kwargs):
+        """Create a collection from the contents of $csv_dir."""
+        # load and concatenate the CSV files
+        df = pd.concat([
+            load_df("goodreads", f"{csv_dir}/goodreads.csv"),
+            _get_kindle_books(csv=f"{csv_dir}/ebooks.csv", merge=False),
+        ], sort=False)
+
+        # FIXME apply fixes and metadata
+
+        return cls(df, **kwargs)
+
+    def reset(self):
+        """Reset the state of the collection."""
+        self._df["_Mask"] = True
+        return self
+
+    ### Access #################################################################
+
+    @property
+    def all(self):
+        """Return a dataframe of all books in this collection."""
+        # FIXME handle merge and dedup
+        return self._df.drop("_Mask", axis="columns")
+
+    # FIXME rename to something better?
+    @property
+    def df(self):
+        """Return a dataframe of all selected books."""
+        # FIXME handle merge and dedup
+        return self._df[self._df["_Mask"]].drop("_Mask", axis="columns")
+
+    @property
+    def read(self):
+        """Return a dataframe of books that have been read or are currently being read."""
+        # FIXME this would include merge and dedup, but do we want this?
+        return self.all[self.all.Shelf.isin(["read", "currently-reading"])]
+
+    ### Filtering #############################################################
+
+    def _filter_list(self, col, include, exclude):
+        if include:
+            self._df["_Mask"] &= self._df[col].isin(include)
+        if exclude:
+            self._df["_Mask"] &= ~self._df[col].isin(exclude)
+        return self
+
+    def shelves(self, include=None, exclude=None):
+        """Filter the collection by shelf."""
+        return self._filter_list("Shelf", include, exclude)
+
+
+################################################################################
 
 if __name__ == "__main__":
     print(Collection().df)

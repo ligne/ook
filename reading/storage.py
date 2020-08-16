@@ -14,8 +14,11 @@ def _load_csv(name, columns, parse_dates=False):
         return pd.DataFrame(columns=columns)
 
 
-def load_df(name, fname=None):
+def load_df(name, fname=None, dirname=None):
     """Load and return a dataframe of type $name, creating it if necessary."""
+    if dirname:
+        fname = f"{dirname}/{name}.csv"
+
     return _load_csv(
         fname or f"data/{name}.csv",
         columns=df_columns(name),
