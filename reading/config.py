@@ -2,6 +2,8 @@
 
 import yaml
 
+import attr
+
 
 SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}
 CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
@@ -215,24 +217,44 @@ def category_patterns():
 
 ################################################################################
 
-# value = config('key.name')
-def config(key):
-    """Return a value from the configuration file, or None if it was not found."""
-    with open('data/config.yml') as fh:
-        conf = yaml.safe_load(fh)
+@attr.s
+class Config:
+    """configuration."""
 
-    for segment in key.split('.'):
+    _conf = attr.ib()
+
+    @classmethod
+    def from_file(cls, filename="data/config.yml"):
+        """Create from $filename."""
         try:
-            conf = conf[segment]
-        except KeyError:
-            # use defaults and/or emit warning
-            return None
+            with open(filename) as fh:
+                conf = yaml.safe_load(fh)
+        except FileNotFoundError:
+            conf = {}
 
-    return conf
+        return cls(conf)
+
+    def __call__(self, key):
+        value = self._conf
+
+        for segment in key.split("."):
+            try:
+                value = value[segment]
+            except KeyError:
+                # TODO use defaults and/or emit warning
+                return None
+
+        return value
+
+    def reset(self, conf=None):
+        """Set to an empty configuration."""
+        self._conf = conf or {}
+
+
+config = Config.from_file()
 
 
 ################################################################################
 
 def main(args):
     print(config(args.key))
-

@@ -1,8 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
 from reading.config import (
-    category_patterns, config, date_columns,
-    df_columns, metadata_prefer, merge_preferences)
+    Config, category_patterns, date_columns, df_columns, merge_preferences,
+    metadata_prefer)
 
 
 def test_df_colums():
@@ -174,7 +174,40 @@ def test_merge_preferences():
 
 ################################################################################
 
-def test_config():
+def test_config_import():
+    """Test the config import, as used in the codebase."""
+    from reading.config import config
     assert config('goodreads.user'), 'fetched a key that exists'
     assert not config('blah.blah'), '"fetched" a key that does not exist'
 
+
+def test_config():
+    """Test the config object."""
+
+    config = Config({
+        "goodreads": {
+            "user": 1234567890,
+        },
+    })
+
+    assert config("goodreads.user"), "fetched a key that exists"
+    assert not config("blah.blah"), "'fetched' a key that does not exist"
+
+    config = Config.from_file("data/config.yml")  # created from a file
+
+    assert config("goodreads.user"), "fetched a key that exists"
+    assert not config("blah.blah"), "'fetched' a key that does not exist"
+
+    assert Config.from_file("/does/not/exist"), "created from a missing file"
+
+
+def test_config_reset():
+    """Test the reset method."""
+    config = Config({"key": "value"})
+    assert config("key") == "value", "key exists"
+
+    config.reset()
+    assert not config("key"), "key no longer exists"
+
+    config.reset({"key": "other"})
+    assert config("key") == "other", "key has been changed"
