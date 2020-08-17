@@ -29,11 +29,12 @@ def _read_nationalities():
 ################################################################################
 
 def scheduled(args):
-    c = Collection(merge=True).filter(
-        shelves=args.shelves,
-        languages=args.languages,
-        categories=args.categories,
-        borrowed=args.borrowed,
+    c = (
+        Collection(merge=True)
+        .shelves(args.shelves)
+        .languages(args.languages)
+        .categories(args.categories)
+        .borrowed(args.borrowed)
     )
     df = c.df
 
@@ -49,11 +50,12 @@ def scheduled(args):
 
 # suggestions
 def main(args):
-    c = Collection(merge=True).filter(
-        shelves=args.shelves,
-        languages=args.languages,
-        categories=args.categories,
-        borrowed=args.borrowed,
+    c = (
+        Collection(merge=True)
+        .shelves(args.shelves)
+        .languages(args.languages)
+        .categories(args.categories)
+        .borrowed(args.borrowed)
     )
     df = c.df
 

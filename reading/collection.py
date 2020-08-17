@@ -166,19 +166,6 @@ class Collection():
 
         self.df = df
 
-    def filter(self, shelves=None, categories=None, languages=None, borrowed=None):
-        """Apply filters on shelf, language, category or borrowed status."""
-        if categories:
-            self.df = self.df[self.df.Category.isin(categories)]
-        if languages:
-            self.df = self.df[self.df.Language.isin(languages)]
-        if shelves:
-            self.df = self.df[self.df.Shelf.isin(shelves)]
-        if borrowed is not None:
-            self.df = self.df[self.df.Borrowed == borrowed]
-
-        return self
-
     def _filter_list(self, col, include=None, exclude=None):
         if include:
             self.df = self.df[self.df[col].isin(include)]
