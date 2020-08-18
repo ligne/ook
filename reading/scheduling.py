@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+import itertools
+
 import datetime
 import pandas as pd
 
@@ -67,7 +69,7 @@ def scheduled_at(df, date=TODAY, schedules=None):
 ################################################################################
 
 def _schedule(df, author=None, series=None,
-              start=None, per_year=1, offset=0, force=False,
+              start=None, per_year=1, offset=0, force=False, skip=0,
               date=TODAY):
     series = Series(
         author=author,
@@ -84,6 +86,8 @@ def _schedule(df, author=None, series=None,
         last_read=series.last_read(),
         date=date,
     )
+
+    dates = itertools.islice(dates, skip, None)
 
     return zip(dates, series.remaining().index)
 

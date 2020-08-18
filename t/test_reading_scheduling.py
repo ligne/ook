@@ -295,6 +295,17 @@ def test__schedule(collection):
     ], 'Several a year, late in year: skips first window'
 
     assert _format_schedule(df, _schedule(df, **{
+        "author": "Le Guin",
+        "per_year": 2,
+        "skip": 1
+    }, date=date)) == [
+        ("2020-01-01", "The Left Hand of Darkness"),
+        ("2020-07-01", "The Word For World Is Forest"),
+        ("2021-01-01", "The Earthsea Quartet"),
+        ("2021-07-01", "Orsinia"),
+    ], "Several a year, skip next window"
+
+    assert _format_schedule(df, _schedule(df, **{
         'series': 'Languedoc',
     }, date=date)) == [
         ('2020-01-01', 'Sepulchre'),
