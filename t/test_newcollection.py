@@ -245,6 +245,7 @@ def test_filter_borrowed():
 
 
 def test_chaining():
+    """Test that filters chain correctly."""
     c = Collection.from_dir("t/data/2019-12-04")
     c.shelves(["pending"]).borrowed(True).languages(["fr"])
 
