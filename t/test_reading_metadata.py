@@ -4,7 +4,9 @@ import re
 
 import pytest
 
-from reading.metadata import _list_book_choices, _read_choice, SaveExit, FullExit, rebuild, confirm_author
+from reading.metadata import (
+    FullExit, SaveExit, _list_book_choices, _read_choice,
+    confirm_author, rebuild)
 from reading.storage import load_df, save_df
 from reading.wikidata import Entity
 
