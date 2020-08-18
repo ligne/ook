@@ -251,7 +251,7 @@ class Config:
         self._conf = conf or {}
 
 
-config = Config.from_file()
+config = Config.from_file()  # pylint: disable=invalid-name
 
 
 ################################################################################
