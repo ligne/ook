@@ -164,7 +164,7 @@ def _fetch_series(series_id):
         with open(fname) as fh:
             xml = fh.read()
     except FileNotFoundError:
-        xml = requests.get('https://www.goodreads.com/series/show/{}.xml'.format(series_id), params={
+        xml = requests.get(f"https://www.goodreads.com/series/show/{series_id}.xml", params={
             'key': config('goodreads.key'),
         }).content
         with open(fname, 'wb') as fh:
