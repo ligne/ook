@@ -139,7 +139,7 @@ def test_changes():
                 "insertText": {
                     "location": {"index": (100, 116)},
                     "text": "Charles Brockden Brown\n"
-                            "* Wieland; or The Transformation, and Memoirs of Carwin, The Biloquist\n\n",
+                            "* Wieland; or The Transformation, and Memoirs of Carwin, The Biloquist\n\n",  # noqa: E501
                 }
             },
             {"deleteContentRange": {"range": {"endIndex": 63, "startIndex": 41}}},
