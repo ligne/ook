@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import datetime
+import textwrap
 
 # pylint: disable=wrong-import-position
 
@@ -424,12 +425,13 @@ def scheduled():
             pages_over = pages_remaining - page_limit
             needed_rate = pages_remaining / days_remaining
 
-            print("Too many books for {}:".format(year))
-            print("    {:.0f} pages to read in {:.0f} days.".format(pages_remaining, days_remaining))
-            print("    {:.0f} days at current rate".format(days_required))
-            print("    {:.0f} days/{:.0f} pages over".format(days_over, pages_over))
-            print("    {:.1f}pp/day to read them all ({:.1f} currently)".format(needed_rate, rate))
-            print()
+            print(textwrap.dedent(f"""\
+                Too many books for {year}:
+                    {pages_remaining:.0f} pages to read in {days_remaining:.0f} days
+                    {days_required:.0f} days at current rate
+                    {days_over:.0f} days/{pages_over:.0f} pages over
+                    {needed_rate:.1f}pp/day to read them all ({rate:.1f} currently)
+            """))
 
         pages = p.sort_values().values
         pd.DataFrame([pages], index=[year]).plot.bar(stacked=True, ax=ax, rot=0, legend=False)
