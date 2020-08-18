@@ -183,7 +183,6 @@ def test_config_import():
 
 def test_config():
     """Test the config object."""
-
     config = Config({
         "goodreads": {
             "user": 1234567890,
