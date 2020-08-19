@@ -27,6 +27,7 @@ disable=
         redefined-outer-name,
         # checked by flake8
         broad-except,
+        line-too-long,
         # don't care
         fixme,
         missing-docstring,
