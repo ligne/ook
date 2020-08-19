@@ -1,10 +1,13 @@
 # vim: ts=4 : sw=4 : et
 
+import textwrap
+import yaml
+
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from reading.collection import NewCollection as Collection
+from reading.collection import NewCollection as Collection, _process_fixes
 
 
 ################################################################################
@@ -117,6 +120,65 @@ def test_reset():
 
     c2.reset()
     assert_frame_equal(c1.df, c2.df)  # Reset dataframe is the same again
+
+
+################################################################################
+
+# fixes/metadata
+
+def test__process_fixes():
+    """Test the fix munging function."""
+    assert not _process_fixes({}), "No fixes to apply"
+
+    fixes = yaml.safe_load("""
+        general:
+          - BookId: 20636970  # La Curée
+            Read: 2018-02-09
+          - BookId: 3263729  # The Mabinogion
+            Started: 2019-08-06
+        columns:
+          Category:
+            non-fiction:
+              - 1777481  # Culture and Society in France 1789-1848
+              - 3110594  # Zola: Le saut dans les étoiles
+          Language:
+            fr:
+              - 140785  # Maigret Hésite
+              - 770786  # Le Horla et autres nouvelles
+              - 816920  # Nana
+            en:
+              - 58614  # A Beleaguered City and Other Stories
+    """)
+
+    assert _process_fixes(fixes).to_csv() == textwrap.dedent("""\
+        ,Category,Language,Read,Started
+        20636970,,,2018-02-09,
+        3263729,,,,2019-08-06
+        1777481,non-fiction,,,
+        3110594,non-fiction,,,
+        140785,,fr,,
+        770786,,fr,,
+        816920,,fr,,
+        58614,,en,,
+    """), "Rearranged some fixes"
+
+    general_only = {k: v for k, v in fixes.items() if k == "general"}
+    assert _process_fixes(general_only).to_csv() == textwrap.dedent("""\
+        ,Read,Started
+        20636970,2018-02-09,
+        3263729,,2019-08-06
+    """), "Only general fixes"
+
+    columnar_only = {k: v for k, v in fixes.items() if k == "columns"}
+    assert _process_fixes(columnar_only).to_csv() == textwrap.dedent("""\
+        ,Category,Language
+        1777481,non-fiction,
+        3110594,non-fiction,
+        140785,,fr
+        770786,,fr
+        816920,,fr
+        58614,,en
+    """), "Only columnar fixes"
 
 
 ################################################################################
