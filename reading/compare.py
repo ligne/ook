@@ -42,11 +42,11 @@ def _compare_with_work(old, new):
         _o = old[old['Work'] == ix]
         _n = new[new['Work'] == ix]
 
-        if len(_o) and len(_n):
+        if not _o.empty and not _n.empty:
             changed = _changed(_o.iloc[0], _n.iloc[0])
             if changed:
                 print(changed)
-        elif len(_n):
+        elif not _n.empty:
             print(_added(_n.iloc[0]))
         else:
             print(_removed(_o.iloc[0]))

@@ -354,7 +354,7 @@ def main(args):
             print(report)
             continue
 
-        if not len(report['df']):
+        if not len(report['df']):  # pylint: disable=len-as-condition
             continue
 
         print('=== {} ==='.format(report['title']))

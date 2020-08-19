@@ -11,11 +11,11 @@ ignore=.git,data,old
 
 enable=all
 disable=
-        len-as-condition,
         protected-access,
         locally-disabled,
         cyclic-import,
         using-constant-test,
+        suppressed-message,
         #
         #
         # possibly false positives?

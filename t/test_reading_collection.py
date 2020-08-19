@@ -125,7 +125,7 @@ def test__get_kindle_books():
     assert str(b.Added.date()) == '2013-02-06', 'Added is sensible'
 
     # FIXME do we actually care?
-    assert len(df[df.Author.isnull()]) == 0, 'Every ebook has an author'
+    assert df[df.Author.isnull()].empty, "Every ebook has an author"
 
 
 @pytest.mark.slow

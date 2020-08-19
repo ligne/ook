@@ -181,9 +181,9 @@ class Series():
     def last_read(self):
         read = self.df[self.df.Read.notnull()]
 
-        if len(self.df[self.df.Shelf == 'currently-reading']):
+        if not self.df[self.df.Shelf == 'currently-reading'].empty:
             return pd.Timestamp('today')
-        elif len(read):
+        elif not read.empty:
             return read.Read.sort_values().iat[-1]
         else:
             return None
