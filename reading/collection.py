@@ -201,19 +201,19 @@ class Collection():
         """Return a dataframe of all read books."""
         return self.all[self.all.Shelf.isin(["read", "currently-reading"])]
 
-    @property
-    def read_authorids(self):
-        """Return a list of the AuthorIds of all read authors."""
-        return set(self.read.AuthorId)
 
-    @property
-    def recent_authorids(self):
-        """Return a list of the AuthorIds of all recently read books."""
+def read_authorids(c):
+    """Return a list of the AuthorIds of all read authors."""
+    return set(c.read.AuthorId)
 
-    @property
-    def read_nationalities(self):
-        """Return a list of all read nationalities."""
-        return set(self.read.Nationality)
+
+def recent_authorids(_c):
+    """Return a list of the AuthorIds of all recently read books."""
+
+
+def read_nationalities(c):
+    """Return a list of all read nationalities."""
+    return set(c.read.Nationality)
 
 
 ################################################################################

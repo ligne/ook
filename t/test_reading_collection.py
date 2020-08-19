@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from reading.collection import Collection, _get_gr_books, _get_kindle_books, _process_fixes
+from reading.collection import (
+    Collection, _get_gr_books, _get_kindle_books, _process_fixes,
+    read_authorids, read_nationalities)
 
 
 ################################################################################
@@ -288,14 +290,10 @@ def test_read(collection):
     )  # Same result even with a filtered frame
 
 
-# def test_recent_authorids(collection):
-#     c = collection("2019-12-04")
-
-
 def test_read_authorids(collection):
     c = collection("2019-12-04")
 
-    assert c.read_authorids == {
+    assert read_authorids(c) == {
         1654,
         3354,
         4750,
@@ -309,13 +307,13 @@ def test_read_authorids(collection):
         5807106,
     }
 
-    assert 2778055 in c.read_authorids, "Author in currently-reading is included"
+    assert 2778055 in read_authorids(c), "Author in currently-reading is included"
 
 
 def test_read_nationalities(collection):
     c = collection("2019-12-04")
 
-    assert c.read_nationalities == {"fr", "us", "jp", "gb", "be"}
+    assert read_nationalities(c) == {"fr", "us", "jp", "gb", "be"}
 
 
 def test__process_fixes():
