@@ -162,6 +162,10 @@ def test__process_fixes():
         58614,,en,,
     """), "Rearranged some fixes"
 
+    # Check the date columns are indeed dates
+    assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Started.dtypes)
+    assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Read.dtypes)
+
     general_only = {k: v for k, v in fixes.items() if k == "general"}
     assert _process_fixes(general_only).to_csv() == textwrap.dedent("""\
         ,Read,Started
