@@ -38,6 +38,10 @@ def test_collection():
     assert c.merge is True, "Enabled merging"
     assert c.dedup is True, "Enabled dedup"
 
+    # Test the new and old collections produce the same result
+    from reading.collection import Collection as OldCollection
+    assert_frame_equal(Collection.from_dir().df, OldCollection().df)
+
 
 def test_kindle_books():
     """Tests specific to ebooks."""
