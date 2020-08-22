@@ -247,18 +247,18 @@ class NewCollection:
         if csv_dir is None:
             return cls(df, **kwargs)
 
+        # Ensure the additional columns exist in any case
+        df = df.assign(Gender=None, Nationality=None)
         if metadata:
             df.update(load_df("metadata", dirname=csv_dir))
             # load author information
+            # FIXME this is very, very slow and should be moved into metadata.rebuild()
             authors = load_df("authors", dirname=csv_dir)
-            df = df.join(
+            df.update(
                 df[df.AuthorId.isin(authors.index)]
                 .AuthorId
                 .apply(lambda x: authors.loc[x, ["Gender", "Nationality"]])
             )
-        else:
-            # Ensure the additional columns exist in any case
-            df = df.assign(Gender=None, Nationality=None)
 
         if fixes:
             df.update(load_df("scraped", dirname=csv_dir))
