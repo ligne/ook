@@ -376,7 +376,7 @@ novels/b869w.mobi,Emily Brontë,4191,,1565818,,,,1847,464
 novels/pg13765.mobi,,9057,,181928,Joseph Rouletabille,59997,1.0,1907,288
 short-stories/Les_soirees_de_Medan.pdf,Émile Zola,4750,Les Soirées de Médan,1838632,,,,1973,290
 short-stories/pg1429-images.mobi,,45712,The Garden Party and Other Stories,1698523,,,,1922,159
-"""
+"""  # noqa: E501
 
 
 def test_rebuild_none_apply(tmp_path, collection):
