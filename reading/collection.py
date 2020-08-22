@@ -231,6 +231,8 @@ class NewCollection:
         """Set up accounting for filtered books."""
         self.reset()
 
+    ############################################################################
+
     @classmethod
     def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
         """Create a collection from the contents of $csv_dir."""
@@ -292,7 +294,7 @@ class NewCollection:
         # FIXME this would include merge and dedup, but do we want this?
         return self.all[self.all.Shelf.isin(["read", "currently-reading"])]
 
-    ### Filtering #############################################################
+    ### Filtering ##############################################################
 
     def _filter_list(self, col, include, exclude):
         if include:
