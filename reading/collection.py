@@ -242,11 +242,6 @@ class NewCollection:
             _get_kindle_books(csv=f"{csv_dir}/ebooks.csv", merge=False),
         ], sort=False)
 
-        # FIXME hack so csv_dir=None gives an empty Collection. this is
-        # horrible and should be removed
-        if csv_dir is None:
-            return cls(df, **kwargs)
-
         # Ensure the additional columns exist in any case
         df = df.assign(Gender=None, Nationality=None)
         if metadata:

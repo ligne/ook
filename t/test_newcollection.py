@@ -16,7 +16,7 @@ from reading.collection import NewCollection as Collection, _process_fixes
 
 def test_collection():
     """General tests."""
-    c = Collection.from_dir(None)
+    c = Collection.from_dir("/does/not/exist")
     assert c, "Created an empty collection"
     assert c.merge is False, "No merge by default"
     assert c.dedup is False, "No dedup by default"
