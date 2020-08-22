@@ -1,5 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
+import math
 import textwrap
 import yaml
 
@@ -7,6 +8,7 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
+from reading.config import config
 from reading.collection import NewCollection as Collection, _process_fixes
 
 
@@ -25,7 +27,7 @@ def test_collection():
     c = Collection.from_dir("t/data/2019-12-04/")
     assert c, "Created a collection from a directory"
     assert (
-        repr(c) == "NewCollection(_df=[160 books], merge=False, dedup=False)"
+        repr(c) == "NewCollection(_df=[157 books], merge=False, dedup=False)"
     ), "Legible __repr__ for a collection with books"
 
     c = Collection.from_dir(None, merge=True)
@@ -53,9 +55,7 @@ def test_kindle_books():
 
 def test_collection_columns():
     """Test the columns are present and correct."""
-    df = Collection.from_dir("t/data/2019-12-04")._df
-
-    assert list(df.columns) == [
+    columns = [
         "Author",
         "AuthorId",
         "Title",
@@ -77,11 +77,18 @@ def test_collection_columns():
         "Rating",
         "AvgRating",
         "Words",
-        # "Gender",
-        # "Nationality",
+        "Gender",
+        "Nationality",
         "_Mask",  # FIXME
     ]
 
+    c = Collection.from_dir("t/data/2019-12-04")
+    assert list(c._df.columns) == columns, "All the columns are there"
+
+    c = Collection.from_dir("t/data/2019-12-04", metadata=False)
+    assert list(c._df.columns) == columns, "All the columns are still there when metadata is off"
+
+    df = Collection.from_dir("t/data/2019-12-04")._df
     b = df.loc[2366570]  # Les Chouans
 
     # timestamp columns are ok
@@ -97,8 +104,8 @@ def test_collection_columns():
     # missing publication year
     assert np.isnan(b.Published)
 
-    df = Collection.from_dir("t/data/2019-12-04")._df
-    assert set(df.Category) == {
+    c = Collection.from_dir("t/data/2019-12-04", fixes=False)
+    assert set(c._df.Category) == {
         "articles",
         "novels",
         "short-stories",
@@ -183,6 +190,71 @@ def test__process_fixes():
         816920,,fr
         58614,,en
     """), "Only columnar fixes"
+
+
+def test_fixes(monkeypatch):
+    """Test fix application."""
+    with open("t/data/2019-12-04/config.yml") as fh:
+        fixes = yaml.safe_load(fh)
+
+    monkeypatch.setattr(config, "_conf", fixes)
+    assert config("fixes") == fixes["fixes"]
+
+    c_with = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=True)
+    c_wout = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=False)
+
+    assert c_with.all.shape == c_wout.all.shape, "The shape hasn't changed"
+    assert not c_with.all.equals(c_wout.all), "But they're not the same"
+
+    # Read date has been fixed
+    assert str(c_wout.all.loc[20636970].Read.date()) == "2018-03-14"
+    assert str(c_with.all.loc[20636970].Read.date()) == "2018-02-09"
+
+    # Page count has been fixed
+    assert math.isnan(c_wout.all.loc[3110594].Pages)
+    assert c_with.all.loc[3110594].Pages == 341
+
+    # Category has been fixed
+    assert math.isnan(c_wout.all.loc[7022275].Category)
+    assert c_with.all.loc[7022275].Category == "novels"
+
+    # Language has been fixed
+    assert math.isnan(c_wout.all.loc[816920].Language)
+    assert c_with.all.loc[816920].Language == "fr"
+
+    # Fixing an ebook
+    assert c_wout.all.loc["short-stories/Les_soirees_de_Medan.pdf"].Language == "en"
+    assert c_with.all.loc["short-stories/Les_soirees_de_Medan.pdf"].Language == "fr"
+
+    # FIXME also scraped.csv
+
+
+def test_metadata(monkeypatch):
+    """Test metadata application."""
+    c_with = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=True)
+    c_wout = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False)
+
+    assert c_with.all.shape == c_wout.all.shape, "The shape hasn't changed"
+    assert not c_with.all.equals(c_wout.all), "But they're not the same"
+
+    assert c_wout.all.Gender.isnull().all(), "Gender is unset without metadata"
+    assert c_wout.all.Nationality.isnull().all(), "Nationality is unset without metadata"
+
+    assert c_with.all.Gender.notnull().any(), "At least one gender is set"
+    assert c_with.all.Nationality.notnull().any(), "At least one nationality is set"
+
+    # Metadata has been applied
+    assert c_wout.all.loc["novels/b869w.mobi"].Author == "Emily, Bronte,; Brontë, Emily, 1818-1848"
+    assert c_with.all.loc["novels/b869w.mobi"].Author == "Emily Brontë"
+
+    with open("t/data/2019-12-04/config.yml") as fh:
+        monkeypatch.setattr(config, "_conf", yaml.safe_load(fh))
+
+    c_fixes = Collection.from_dir("t/data/2019-12-04", fixes=True, metadata=True)
+
+    # Fixes take precedence over metadata
+    assert c_with.all.loc["short-stories/Les_soirees_de_Medan.pdf"].Pages == 290  # from metadata
+    assert c_fixes.all.loc["short-stories/Les_soirees_de_Medan.pdf"].Pages == 777  # from fixes
 
 
 ################################################################################

@@ -232,7 +232,7 @@ class NewCollection:
         self.reset()
 
     @classmethod
-    def from_dir(cls, csv_dir="data", _fixes=True, _metadata=True, **kwargs):
+    def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
         """Create a collection from the contents of $csv_dir."""
         # load and concatenate the CSV files
         df = pd.concat([
@@ -240,7 +240,29 @@ class NewCollection:
             _get_kindle_books(csv=f"{csv_dir}/ebooks.csv", merge=False),
         ], sort=False)
 
-        # FIXME apply fixes and metadata
+        # FIXME hack so csv_dir=None gives an empty Collection. this is
+        # horrible and should be removed
+        if csv_dir is None:
+            return cls(df, **kwargs)
+
+        if metadata:
+            df.update(load_df("metadata", dirname=csv_dir))
+            # load author information
+            authors = load_df("authors", dirname=csv_dir)
+            df = df.join(
+                df[df.AuthorId.isin(authors.index)]
+                .AuthorId
+                .apply(lambda x: authors.loc[x, ["Gender", "Nationality"]])
+            )
+        else:
+            # Ensure the additional columns exist in any case
+            df = df.assign(Gender=None, Nationality=None)
+
+        if fixes:
+            df.update(load_df("scraped", dirname=csv_dir))
+            fixes = _process_fixes(config("fixes"))
+            if fixes is not None:
+                df.update(fixes)
 
         return cls(df, **kwargs)
 

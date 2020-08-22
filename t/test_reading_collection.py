@@ -300,7 +300,6 @@ def test_read_authorids(collection):
         4785,
         7628,
         9343,
-        9693,
         228089,
         874602,
         2778055,
@@ -313,7 +312,7 @@ def test_read_authorids(collection):
 def test_read_nationalities(collection):
     c = collection("2019-12-04")
 
-    assert read_nationalities(c) == {"fr", "us", "jp", "gb", "be"}
+    assert read_nationalities(c) == {"fr", "us", "jp", "gb"}
 
 
 def test__process_fixes():
