@@ -127,7 +127,7 @@ def test_reset():
     c1 = Collection.from_dir("t/data/2019-12-04")
     c2 = Collection.from_dir("t/data/2019-12-04")
 
-    assert_frame_equal(c1.df, c2.df)  # Identical dataframes are the same"
+    assert_frame_equal(c1.df, c2.df)  # Identical dataframes are the same
 
     c2.shelves(["library"])
     assert not c1.df.equals(c2.df), "Changed dataframe is different"
