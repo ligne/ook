@@ -92,6 +92,9 @@ def test_collection_columns():
     c = Collection.from_dir("t/data/2019-12-04", metadata=False)
     assert list(c._df.columns) == columns, "All the columns are still there when metadata is off"
 
+
+def test_column_contents():
+    """Test the columns have reasonable dtypes."""
     df = Collection.from_dir("t/data/2019-12-04")._df
     b = df.loc[2366570]  # Les Chouans
 
