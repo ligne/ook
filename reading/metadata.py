@@ -259,12 +259,10 @@ def rebuild(books, works):
         books.where(books_mask),
     ], sort=False)
 
-    # filter out no-op changes and empty bits
-    return (
-        metadata[books.reindex_like(metadata) != metadata]
-        .dropna(how='all', axis='index')
-        .dropna(how='all', axis='columns')
-    )
+    (metadata, books) = metadata.align(books, "inner")
+
+    # filter out no-op changes and empty rows
+    return metadata[books != metadata].dropna(how="all", axis="index")
 
 
 ################################################################################
