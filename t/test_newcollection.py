@@ -266,6 +266,17 @@ def test_metadata(monkeypatch):
 
 ################################################################################
 
+# merge/dedup
+
+def test_dedup_requires_merge():
+    """Deduplication currently requires merge to be enabled."""
+    with pytest.raises(ValueError) as excinfo:
+        Collection.from_dir("t/data/2019-12-04", merge=False, dedup=True)
+    assert "merge" in str(excinfo.value)
+
+
+################################################################################
+
 # access
 
 def test_df():

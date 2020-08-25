@@ -226,7 +226,11 @@ class NewCollection:
     merge = attr.ib(default=False, kw_only=True)
     dedup = attr.ib(default=False, kw_only=True)
 
-    # Add a column for tracking visibility
+    @dedup.validator
+    def _validate_dedup_has_merge(self, _attribute, _value):
+        if self.dedup and not self.merge:
+            raise ValueError("dedup=True requires merge=True")
+
     def __attrs_post_init__(self):
         """Set up accounting for filtered books."""
         self.reset()
