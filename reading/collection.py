@@ -218,6 +218,31 @@ def read_nationalities(c):
 
 ################################################################################
 
+def _merge_id(book):
+    """Generate a merge key for $book."""
+    # groups share the same author and title, but have distinct, non-null volumes.
+    # FIXME want to work **without** metadata or the ebook titles will be broken.
+    # FIXME generate these as part of metadata.rebuild()? would also solve the
+    # problem above if we extract the volume/title at the same time...
+    if book.Shelf == "kindle":
+        cleaned = _ebook_parse_title(book.Title)
+        title = cleaned.Title
+        volume = cleaned.Volume
+    else:
+        title, volume = re.match("(?P<Title>.+?)(?: (?P<Volume>I+))?$", book.Title).groups()
+
+    # [author, canonical title], but only if there's a volume number.
+    return f"{book.Author}|{title}" if volume else book.name
+
+
+def _merged_title(book):
+    """Return the canonical title for $book."""
+    if book.Shelf == "kindle":
+        return _ebook_parse_title(book.Title).Title if book.Category != "articles" else book.Title
+    else:
+        return re.match("(?P<Title>.+?)(?: (?P<Volume>I+))?$", book.Title).group("Title")
+
+
 @attr.s
 class NewCollection:
     """A collection of books."""
@@ -272,20 +297,48 @@ class NewCollection:
         self._df["_Mask"] = True
         return self
 
+    ### Merging/dedup ##########################################################
+
+    def _merged(self):
+        """Return all the books, merged."""
+        df = self._df.assign(
+            MergeId=self._df.apply(_merge_id, axis="columns"),
+            Title=self._df.apply(_merged_title, axis="columns"),
+        )
+
+        merge_prefs = {
+            **merge_preferences("goodreads"),
+            **merge_preferences("ebooks"),
+            "Author": "first",
+            "Title": "first",
+            "Gender": "first",
+            "Nationality": "first",
+            "_Mask": "any",
+        }
+
+        return (
+            df.reset_index()
+            .groupby("MergeId", as_index=False, sort=False)
+            .aggregate(merge_prefs)
+            .set_index("BookId")
+        ).assign(Entry=None)  # FIXME do something about Entry?
+
     ### Access #################################################################
 
     @property
     def all(self):
         """Return a dataframe of all books in this collection."""
-        # FIXME handle merge and dedup
-        return self._df.drop("_Mask", axis="columns")
+        # FIXME handle dedup
+        df = self._merged() if self.merge else self._df
+        return df.drop("_Mask", axis="columns")
 
     # FIXME rename to something better?
     @property
     def df(self):
         """Return a dataframe of all selected books."""
-        # FIXME handle merge and dedup
-        return self._df[self._df["_Mask"]].drop("_Mask", axis="columns")
+        # FIXME handle dedup
+        df = self._merged() if self.merge else self._df
+        return df[df["_Mask"]].drop("_Mask", axis="columns")
 
     @property
     def read(self):

@@ -1,0 +1,13 @@
+BookId,Author,AuthorId,Title,Work,Shelf,Category,Scheduled,Borrowed,Series,SeriesId,Entry,Binding,Published,Language,Pages,Added,Started,Read,Rating,AvgRating
+21124,Simone de Beauvoir,5548,Le deuxième sexe I,41037628,pending,non-fiction,,False,Le deuxième sexe,132910,1,Mass Market Paperback,1949,fr,,2018-07-12,,,0,4.25
+426675,Simone de Beauvoir,5548,Le deuxième sexe II,80161754,pending,non-fiction,,False,Le deuxième sexe,132910,2,Mass Market Paperback,1949,fr,,2018-01-04,,,0,4.25
+956320,Alexandre Dumas,4785,Le Comte de Monte-Cristo II,19052285,read,novels,,False,Le Comte de Monte-Cristo,225265,2 of 2,Mass Market Paperback,1844,fr,674,2016-07-11,2017-04-22,2017-06-02,4,4.5300000000000002487
+956321,Alexandre Dumas,4785,Les Trois Mousquetaires,1263212,read,novels,,False,The d'Artagnan Romances,55138,1,Mass Market Paperback,1844,fr,896,2016-04-21,2016-04-21,2016-05-30,5,4.0700000000000002842
+956323,Alexandre Dumas,4785,Le Comte de Monte-Cristo I,41399325,read,novels,,False,Le Comte de Monte-Cristo,225265,1 of 2,Mass Market Paperback,1844,fr,703,2016-07-11,2017-02-19,2017-04-02,5,4.5099999999999997868
+956325,Alexandre Dumas,4785,Vingt ans après,666376,read,novels,,False,The d'Artagnan Romances,55138,2,Paperback,1845,fr,904,2016-11-08,2018-10-04,2018-12-31,3,4.0499999999999998224
+6829259,Mrs. Oliphant,14266369,Hester,867446,pending,novels,,False,,,,Paperback,1883,en,512,2019-07-03,,,0,3.8599999999999998757
+8123649,Alexandre Dumas,4785,Pauline,1443737,library,novels,,True,,,,Paperback,1838,,250,2020-01-23,,,0,3.7400000000000002132
+13499942,Alexandre Dumas,4785,"Les Mille et Un Fantômes, précédé de La Femme au collier de velours",244749,read,short-stories,,False,,,,Paperback,1849,fr,432,2016-04-20,2019-08-15,2019-09-17,4,3.8199999999999998401
+20618571,Alexandre Dumas,4785,La Tulipe Noire,2024166,read,novels,,False,,,,Paperback,1850,fr,316,2016-04-20,2020-05-21,2020-05-25,5,3.8100000000000000533
+27281602,Alexandre Dumas,4785,Le Château d'Eppstein,189388,to-read,novels,,False,,,,Paperback,1843,fr,400,2019-09-25,,,0,3.5200000000000000178
+39073893,Alexandre Dumas,4785,La Dame de Monsoreau,2369834,pending,novels,,False,,,,Paperback,1847,fr,991,2018-03-07,,,0,4.2000000000000001776

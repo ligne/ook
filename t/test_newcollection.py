@@ -7,6 +7,7 @@ import yaml
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
+import pytest
 
 from reading.config import config
 from reading.collection import NewCollection as Collection, _process_fixes
@@ -29,14 +30,6 @@ def test_collection():
     assert (
         repr(c) == "NewCollection(_df=[157 books], merge=False, dedup=False)"
     ), "Legible __repr__ for a collection with books"
-
-    c = Collection.from_dir(None, merge=True)
-    assert c.merge is True, "Enabled merging"
-    assert c.dedup is False, "No dedup by default"
-
-    c = Collection.from_dir(None, merge=True, dedup=True)
-    assert c.merge is True, "Enabled merging"
-    assert c.dedup is True, "Enabled dedup"
 
     # Test the new and old collections produce the same result
     from reading.collection import Collection as OldCollection
@@ -266,7 +259,108 @@ def test_metadata(monkeypatch):
 
 ################################################################################
 
-# merge/dedup
+# merging guts
+
+def test_merged():
+    """General tests of the guts of the merge process."""
+    c = Collection.from_dir("t/data/merging/")
+
+    df_clean = c._df.copy()
+    df = c._merged()
+
+    assert_frame_equal(c._df, df_clean)  # _df hasn't been modified
+
+    assert len(df) < len(df_clean), "Merged dataframe is shorter"
+    assert set(df.index) < set(df_clean.index), "Remaining index values are unchanged"
+
+
+def test_merged_goodreads():
+    """Simple case: a goodreads book."""
+    c = Collection.from_dir("t/data/merging/")
+    df = c._merged()
+
+    book = df.loc[956320]
+    unmerged = c._df[c._df.Title.str.contains("Monte-Cristo")]
+
+    assert book.Title == "Le Comte de Monte-Cristo", "Combined title has no volume number"
+    assert book.Pages == sum(unmerged.Pages), "Pages is the sum"
+    assert book["_Mask"], "Mask has been retained"
+    assert str(book.Added.date()) == "2016-07-11"
+    assert str(book.Started.date()) == "2017-02-19"
+    assert str(book.Read.date()) == "2017-06-02"
+    assert book.Rating == 4.5
+    assert not book.Entry  # unset until i decide what to do with it
+
+
+def test_merged_kindle():
+    """Simple case: a kindle book."""
+    c = Collection.from_dir("t/data/merging/")
+    df = c._merged()
+
+    book = df.loc["novels/pg13947.mobi"]
+    unmerged = c._df[c._df.Title.str.contains("Le vicomte de Bragelonne")]
+
+    assert book.Title == "Le vicomte de Bragelonne", "Combined title has no volume number"
+    assert book.Pages == sum(unmerged.Pages), "Pages is the sum"
+    assert book["_Mask"], "Mask has been retained"
+
+
+def test_merged_added():
+    """The earliest Added date is used."""
+    c = Collection.from_dir("t/data/merging/")
+    df = c._merged()
+
+    book = df.loc[21124]
+    assert str(book.Added.date()) == "2018-01-04", "Added on the earlier date"
+
+
+################################################################################
+
+# merging
+
+def test_merge():
+    """General merging tests."""
+    c_un = Collection.from_dir("t/data/merging")
+    assert c_un.dedup is False, "No merging by default"
+
+    c = Collection.from_dir("t/data/merging", merge=True)
+    assert c.merge is True, "Enabled merging"
+
+    assert_frame_equal(c._df, c_un._df)  # underlying dataframes are identical
+
+
+def test_merge_all():
+    """Test merging."""
+    c = Collection.from_dir("t/data/merging", merge=True)
+
+    assert c.all is not None, "it didn't explode"
+
+
+def test_merge_df():
+    """Test merging."""
+    c = Collection.from_dir("t/data/merging", merge=True)
+
+    assert c.df is not None, "it didn't explode"
+
+    assert 956320 in c.df.index, "Novel is there"
+    c.categories(["non-fiction"])
+    assert 21124 in c.df.index, "Non-fiction book is there"
+    assert 956320 not in c.df.index, "Novel is not"
+
+
+################################################################################
+
+# deduplication
+
+def test_dedup():
+    """Test deduplication."""
+    c = Collection.from_dir("t/data/2019-12-04")
+    assert c.dedup is False, "No dedup by default"
+
+    c = Collection.from_dir("t/data/2019-12-04", merge=True, dedup=True)
+    assert c.merge is True, "Enabled merging"
+    assert c.dedup is True, "Enabled dedup"
+
 
 def test_dedup_requires_merge():
     """Deduplication currently requires merge to be enabled."""
