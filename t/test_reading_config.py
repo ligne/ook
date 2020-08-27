@@ -125,7 +125,7 @@ def test_metadata_prefer():
 
 def test_merge_preferences():
     assert merge_preferences("goodreads") == {
-        "Added": "first",
+        "Added": "min",
         "AuthorId": "first",
         "AvgRating": "first",
         "Binding": "first",
@@ -136,12 +136,12 @@ def test_merge_preferences():
         "Pages": "sum",
         "Published": "first",
         "Rating": "mean",
-        "Read": "last",
+        "Read": "max",
         "Scheduled": "first",
         "Series": "first",
         "SeriesId": "first",
         "Shelf": "first",
-        "Started": "first",
+        "Started": "min",
         "Work": "first",
     }, "What columns to prefer when merging goodreads volumes"
 
@@ -149,13 +149,20 @@ def test_merge_preferences():
         **{
             col: "first"
             for col in df_columns("goodreads")
-            if col not in ("Author", "Title", "Entry", "Volume")
+            if col not in ("Author", "Title", "Entry", "Volume", "Added", "Started", "Read")
         },
-        **{"Pages": "sum", "BookId": "first", "Rating": "mean", "Read": "last"},
+        **{
+            "Pages": "sum",
+            "BookId": "first",
+            "Rating": "mean",
+            "Added": "min",
+            "Started": "min",
+            "Read": "max",
+        },
     }
 
     assert merge_preferences("ebooks") == {
-        "Added": "first",
+        "Added": "min",
         "BookId": "first",
         "Category": "first",
         "Language": "first",
@@ -166,9 +173,9 @@ def test_merge_preferences():
         **{
             col: "first"
             for col in df_columns("ebooks")
-            if col not in ("Author", "Title", "Entry", "Volume")
+            if col not in ("Author", "Title", "Entry", "Volume", "Added")
         },
-        **{"Words": "sum", "BookId": "first"},
+        **{"Words": "sum", "BookId": "first", "Added": "min"},
     }
 
 

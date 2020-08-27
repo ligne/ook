@@ -112,19 +112,19 @@ _COLUMNS = [
         "name": "Added",
         "store": ["goodreads", "ebooks"],
         "type": "date",
-        "merge": "first",
+        "merge": "min",
     },
     {
         "name": "Started",
         "store": ["goodreads", "scraped"],
         "type": "date",
-        "merge": "first",
+        "merge": "min",
     },
     {
         "name": "Read",
         "store": ["goodreads", "scraped"],
         "type": "date",
-        "merge": "last",
+        "merge": "max",
     },
     {
         "name": "Rating",
