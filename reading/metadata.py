@@ -198,7 +198,7 @@ def find(what):
 
 # associate WorkIds with book IDs
 def find_books(books):
-    df = Collection().categories(exclude=["articles"]).df  # include metadata
+    df = Collection.from_dir().categories(exclude=["articles"]).df  # include metadata
 
     author_ids = set(df.AuthorId.dropna().astype(int))
     work_ids = set(df.Work.dropna().astype(int))
@@ -221,7 +221,7 @@ def find_books(books):
 
 # associate Wikidata QIDs with AuthorIds
 def find_authors(authors):
-    df = Collection().df
+    df = Collection.from_dir().df
     df = df[~df.AuthorId.isin(authors.index)].groupby('AuthorId').aggregate({
         'Author': 'first',
         'Title': list,
@@ -268,7 +268,7 @@ def rebuild(books, works):
 ################################################################################
 
 def main(args):
-    old = Collection().df
+    old = Collection.from_dir().df
 
     if not args.find:
         return
@@ -276,7 +276,7 @@ def main(args):
     find(args.find)
 
     new = old.copy()
-    metadata = rebuild(Collection(metadata=False).df, load_df("books"))
+    metadata = rebuild(Collection.from_dir(metadata=False).df, load_df("books"))
 
     new.update(metadata)
     compare(old, new)

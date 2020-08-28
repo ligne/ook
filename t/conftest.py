@@ -4,7 +4,7 @@
 
 import pytest
 
-from reading.collection import NewCollection as Collection
+from reading.collection import Collection
 
 
 @pytest.fixture()

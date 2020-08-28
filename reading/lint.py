@@ -6,7 +6,7 @@ from .config import config
 
 
 def lint_missing_pagecount():
-    c = Collection().shelves(exclude=["to-read"])
+    c = Collection.from_dir().shelves(exclude=["to-read"])
     return {
         'title': 'Missing a pagecount',
         'df': c.df[c.df.Pages.isnull()],
@@ -20,7 +20,7 @@ def lint_missing_pagecount():
 
 
 def lint_words_per_page():
-    c = Collection(fixes=None, merge=True)
+    c = Collection.from_dir(fixes=None, merge=True).shelves(["kindle"])
 
     df = c.df
     df['wpp'] = df.Words / df.Pages
@@ -39,7 +39,7 @@ def lint_words_per_page():
 
 
 def lint_missing_category():
-    c = Collection()
+    c = Collection.from_dir()
     return {
         'title': 'Missing a category',
         'df': c.df[c.df.Category.isnull()],
@@ -53,7 +53,7 @@ def lint_missing_category():
 
 
 def lint_missing_published_date():
-    c = Collection().shelves(["pending", "ebooks", "elsewhere", "read"])
+    c = Collection.from_dir().shelves(["pending", "ebooks", "elsewhere", "read"])
     return {
         'title': 'Missing a published date',
         'df': c.df[c.df.Published.isnull()],
@@ -67,7 +67,7 @@ def lint_missing_published_date():
 
 
 def lint_dates():
-    c = Collection().shelves(["read"])
+    c = Collection.from_dir().shelves(["read"])
     return {
         'title': 'Finished before starting',
         'df': c.df[c.df.Read < c.df.Started],
@@ -81,7 +81,7 @@ def lint_dates():
 
 
 def lint_missing_language():
-    c = Collection()
+    c = Collection.from_dir()
     return {
         'title': 'Missing a language',
         'df': c.df[c.df.Language.isnull()],
@@ -95,7 +95,7 @@ def lint_missing_language():
 
 
 def lint_scheduled_misshelved():
-    c = Collection().shelves(["read", "currently-reading", "to-read"])
+    c = Collection.from_dir().shelves(["read", "currently-reading", "to-read"])
     return {
         'title': 'Scheduled books on wrong shelves',
         'df': c.df[c.df.Scheduled.notnull()],
@@ -111,7 +111,7 @@ def lint_scheduled_misshelved():
 
 # scheduled books by authors i've already read this year
 def lint_overscheduled():
-    c = Collection(merge=True)
+    c = Collection.from_dir(merge=True)
     df = c.df
 
     import datetime
@@ -151,7 +151,7 @@ def lint_overscheduled():
 
 
 def lint_scheduling():
-    c = Collection()
+    c = Collection.from_dir()
 
     df = c.df
 
@@ -180,7 +180,7 @@ def lint_scheduling():
 
 
 def lint_duplicates():
-    df = Collection(merge=True).df
+    df = Collection.from_dir(merge=True).df
 
     # FIXME move this into the Collection and make it non-manky
     df = df.groupby('Work').filter(lambda x: len(x) > 1)
@@ -220,7 +220,7 @@ def lint_binding():
         'Board book',
         "Unknown Binding",
     ]
-    c = Collection().shelves(exclude=["kindle"])
+    c = Collection.from_dir().shelves(exclude=["kindle"])
     return {
         'title': 'Bad binding',
         'df': c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
@@ -237,7 +237,7 @@ def lint_binding():
 
 
 def lint_author_metadata():
-    df = Collection().shelves(["read"]).df  # FIXME
+    df = Collection.from_dir().shelves(["read"]).df  # FIXME
 
     return {
         'title': 'Missing author metadata',
@@ -253,7 +253,7 @@ def lint_author_metadata():
 
 # books on elsewhere shelf that are not marked as borrowed.
 def lint_missing_borrowed():
-    c = Collection().shelves(["elsewhere", "library"]).borrowed(False)
+    c = Collection.from_dir().shelves(["elsewhere", "library"]).borrowed(False)
     return {
         'title': 'Elsewhere but not marked as borrowed',
         'df': c.df,
@@ -268,7 +268,7 @@ def lint_missing_borrowed():
 
 # books on elsewhere shelf that are not marked as borrowed.
 def lint_extraneous_borrowed():
-    c = Collection().shelves(["to-read"]).borrowed(True)
+    c = Collection.from_dir().shelves(["to-read"]).borrowed(True)
     return {
         'title': 'To-read but marked as borrowed',
         'df': c.df,
@@ -283,7 +283,7 @@ def lint_extraneous_borrowed():
 
 # books i've borrowed that need to be returned.
 def lint_needs_returning():
-    c = Collection().shelves(["read"]).borrowed(True)
+    c = Collection.from_dir().shelves(["read"]).borrowed(True)
     return {
         'title': 'Borrowed books to return',
         'df': c.df,
@@ -297,7 +297,7 @@ def lint_needs_returning():
 
 
 def lint_not_rated():
-    c = Collection().shelves(["read"])
+    c = Collection.from_dir().shelves(["read"])
     return {
         "title": "Read but not yet rated",
         "df": c.df[c.df.Rating == 0],
@@ -313,7 +313,7 @@ def lint_not_rated():
 # find unnecessary fixes
 # FIXME update
 def lint_fixes():
-    c = Collection(fixes=None)
+    c = Collection.from_dir(fixes=None)
 
     fixes = _process_fixes(config('fixes'))
     errors = []

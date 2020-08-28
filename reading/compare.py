@@ -173,9 +173,9 @@ def _finished(book):
 
 if __name__ == "__main__":
     from .collection import Collection
-    old = Collection(gr_csv=sys.argv[1]).df.fillna('')
-    new = Collection(gr_csv=sys.argv[2]).df.fillna('')
+    from .storage import load_df
 
-#    _changed(old, new)
-    compare(old, new)
-
+    compare(
+        Collection(load_df("goodreads", sys.argv[1])).df.fillna(""),
+        Collection(load_df("goodreads", sys.argv[2])).df.fillna(""),
+    )

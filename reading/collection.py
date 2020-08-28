@@ -17,38 +17,8 @@ pd.options.display.width = None
 
 ################################################################################
 
-def _get_gr_books(csv=None, merge=False):
-    df = load_df("goodreads", csv)
-
-    if merge:
-        df = df.drop("Title", axis=1).join(
-            df.Title.str.extract("(?P<Title>.+?)(?: (?P<Volume>I+))?$", expand=True)
-        ).reset_index()
-
-        df = pd.concat([
-            df[df.Volume.isnull()],
-            df[df.Volume.notnull()].groupby(["Author", "Title"], as_index=False).aggregate(
-                merge_preferences("goodreads")
-            ),
-        ], sort=False).set_index("BookId")
-
-    return df
-
-
-def _get_kindle_books(csv=None, merge=False):
+def _get_kindle_books(csv=None):
     df = load_df("ebooks", csv)
-
-    if merge:
-        df = df.drop('Title', axis=1).join(
-            df.Title.apply(_ebook_parse_title)
-        ).reset_index()
-
-        df = pd.concat([
-            df[df.Volume.isnull()],
-            df[df.Volume.notnull()].groupby(["Author", "Title"], as_index=False).aggregate(
-                merge_preferences("ebooks")
-            ),
-        ], sort=False).set_index("BookId")
 
     # calculate page count
     df["Pages"] = df.Words / words_per_page
@@ -123,85 +93,6 @@ def _process_fixes(fixes):
 
 ################################################################################
 
-class Collection():
-
-    # options:
-    #   control dtype?
-    #   control what fix-ups are enabled (for linting)
-    #   control merging volumes
-    #   control dedup (duplicate books;  duplicate ebooks;  ebooks that are
-    #       also in goodreads)
-    #   control visibility of later books in series
-
-    def __init__(self, gr_csv=None, ebook_csv=None,
-                 dedup=False, merge=False, fixes=True, metadata=True):
-        # load and concatenate the CSV files
-        df = pd.concat([
-            _get_gr_books(gr_csv, merge),
-            _get_kindle_books(ebook_csv, merge),
-        ], sort=False)
-
-        if metadata:
-            df.update(load_df("metadata"))
-            # load author information
-            authors = load_df("authors")
-            df = df.join(
-                df[df.AuthorId.isin(authors.index)]
-                .AuthorId
-                .apply(lambda x: authors.loc[x, ["Gender", "Nationality"]])
-            )
-
-        if dedup:
-            # FIXME to be implemented
-            pass
-
-        # take a clean copy before filtering
-        self.all = df.copy()
-
-        # apply fixes.
-        if fixes:
-            d = _process_fixes(config('fixes'))
-            if d is not None:
-                df.update(d)
-            df.update(load_df("scraped"))
-
-        self.df = df
-
-    def _filter_list(self, col, include=None, exclude=None):
-        if include:
-            self.df = self.df[self.df[col].isin(include)]
-        elif exclude:
-            self.df = self.df[~self.df[col].isin(exclude)]
-
-        return self
-
-    # filter by shelf
-    def shelves(self, include=None, exclude=None):
-        """Filter the collection by shelf."""
-        return self._filter_list("Shelf", include, exclude)
-
-    # filter by language
-    def languages(self, include=None, exclude=None):
-        """Filter the collection by language."""
-        return self._filter_list("Language", include, exclude)
-
-    # filter by category
-    def categories(self, include=None, exclude=None):
-        """Filter the collection by category."""
-        return self._filter_list("Category", include, exclude)
-
-    def borrowed(self, state=None):
-        """Filter the collection by borrowed status."""
-        if state is not None:
-            self.df = self.df[self.df.Borrowed == state]
-        return self
-
-    @property
-    def read(self):
-        """Return a dataframe of all read books."""
-        return self.all[self.all.Shelf.isin(["read", "currently-reading"])]
-
-
 def read_authorids(c):
     """Return a list of the AuthorIds of all read authors."""
     return set(c.read.AuthorId)
@@ -244,7 +135,7 @@ def _merged_title(book):
 
 
 @attr.s
-class NewCollection:
+class Collection:
     """A collection of books."""
 
     _df = attr.ib(repr=lambda df: f"[{len(df)} books]")
@@ -268,7 +159,7 @@ class NewCollection:
         # load and concatenate the CSV files
         df = pd.concat([
             load_df("goodreads", f"{csv_dir}/goodreads.csv"),
-            _get_kindle_books(csv=f"{csv_dir}/ebooks.csv", merge=False),
+            _get_kindle_books(csv=f"{csv_dir}/ebooks.csv"),
         ], sort=False)
 
         # Ensure the additional columns exist in any case
@@ -377,6 +268,5 @@ class NewCollection:
 ################################################################################
 
 if __name__ == "__main__":
-    print(Collection().df)
-    print(Collection().df.dtypes)
-
+    print(Collection.from_dir().df.drop("AvgRating", axis="columns"))
+    print(Collection.from_dir().df.dtypes)

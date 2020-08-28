@@ -143,22 +143,21 @@ def _windows(start, per_year=1, offset=1):
 
 if __name__ == "__main__":
     from .collection import Collection
-    df = Collection().shelves(exclude=["kindle", "to-read"]).df
-    df = df.drop_duplicates(['Work'])
+    df = Collection.from_dir().shelves(exclude=["kindle", "to-read"]).df
+    df = df.drop_duplicates(["Work"])  # FIXME
 
     scheduled(df)
-    print('----')
-    print('This year:')
+    print("----")
+    print("This year:")
     DATE = datetime.date(TODAY.year, 12, 31)
     for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
-        print(' *', row.Title)
-    print('----')
-    print('Next year:')
+        print(" *", row.Title)
+    print("----")
+    print("Next year:")
     DATE = datetime.date(TODAY.year + 1, 12, 31)
     for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
-        print(' *', row.Title)
-    print('----')
-    print('CURRENT:')
-    for _ix, row in scheduled_at(df, TODAY).sort_values('Title').iterrows():
-        print(' *', row.Title)
-
+        print(" *", row.Title)
+    print("----")
+    print("CURRENT:")
+    for _ix, row in scheduled_at(df, TODAY).sort_values("Title").iterrows():
+        print(" *", row.Title)

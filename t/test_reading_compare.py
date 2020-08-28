@@ -6,12 +6,8 @@ from reading.collection import Collection
 from reading.compare import _added, _removed, _changed, _started, _finished
 
 
-def _get_collection():
-    return Collection(gr_csv='t/data/goodreads-2019-12-04.csv')
-
-
-c = _get_collection()
-df = c.df.fillna('')
+c = Collection.from_dir("t/data/2019-12-04")
+df = c.df.fillna("")
 
 
 ################################################################################

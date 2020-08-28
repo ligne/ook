@@ -2,15 +2,43 @@
 
 import math
 import textwrap
-import yaml
 
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 import pytest
+import yaml
 
+from reading.collection import (
+    Collection, _process_fixes, read_authorids, read_nationalities)
 from reading.config import config
-from reading.collection import NewCollection as Collection, _process_fixes
+
+
+################################################################################
+
+def test_read_authorids():
+    c = Collection.from_dir("t/data/2019-12-04")
+
+    assert read_authorids(c) == {
+        1654,
+        3354,
+        4750,
+        4785,
+        7628,
+        9343,
+        228089,
+        874602,
+        2778055,
+        5807106,
+    }
+
+    assert 2778055 in read_authorids(c), "Author in currently-reading is included"
+
+
+def test_read_nationalities():
+    c = Collection.from_dir("t/data/2019-12-04")
+
+    assert read_nationalities(c) == {"fr", "us", "jp", "gb"}
 
 
 ################################################################################
@@ -22,18 +50,14 @@ def test_collection():
     assert c.merge is False, "No merge by default"
     assert c.dedup is False, "No dedup by default"
     assert (
-        repr(c) == "NewCollection(_df=[0 books], merge=False, dedup=False)"
+        repr(c) == "Collection(_df=[0 books], merge=False, dedup=False)"
     ), "Legible __repr__ for an empty collection"
 
     c = Collection.from_dir("t/data/2019-12-04/")
     assert c, "Created a collection from a directory"
     assert (
-        repr(c) == "NewCollection(_df=[157 books], merge=False, dedup=False)"
+        repr(c) == "Collection(_df=[157 books], merge=False, dedup=False)"
     ), "Legible __repr__ for a collection with books"
-
-    # Test the new and old collections produce the same result
-    from reading.collection import Collection as OldCollection
-    assert_frame_equal(Collection.from_dir().df, OldCollection().df)
 
 
 def test_kindle_books():
@@ -422,7 +446,7 @@ def test_filter_shelves():
 
     assert set(c.shelves(["library"]).df.Shelf) == {"library"}, "Only the selected shelf"
 
-    c.reset()
+    c = Collection.from_dir("t/data/2019-12-04")
 
     c.shelves(exclude=["library"])
     assert "library" not in set(c.df.Shelf), "Not the excluded shelf"
@@ -445,7 +469,7 @@ def test_filter_languages():
 
     assert set(c.languages(["fr"]).df.Language) == {"fr"}, "Only the selected language"
 
-    c.reset()
+    c = Collection.from_dir("t/data/2019-12-04")
 
     c.languages(exclude=["fr"])
     assert "fr" not in set(c.df.Language), "Not the excluded language"
@@ -460,15 +484,15 @@ def test_filter_languages():
 
 
 def test_filter_categories():
-    """Test the categories() metod."""
+    """Test the categories() method."""
     c = Collection.from_dir("t/data/2019-12-04")
     c2 = Collection.from_dir("t/data/2019-12-04")
 
     assert_frame_equal(c.categories().df, c2.df)  # no argument makes it a no-op
 
-    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected language"
+    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected category"
 
-    c.reset()
+    c = Collection.from_dir("t/data/2019-12-04")
 
     c.categories(exclude=["novels"])
     assert "novels" not in set(c.df.Category), "Not the excluded category"
