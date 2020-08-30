@@ -9,26 +9,8 @@ from .config import config, merge_preferences
 from .storage import load_df
 
 
-words_per_page = 390
-
 pd.options.display.max_rows = None
 pd.options.display.width = None
-
-
-################################################################################
-
-def _get_kindle_books(csv=None):
-    df = load_df("ebooks", csv)
-
-    # calculate page count
-    df["Pages"] = df.Words / words_per_page
-
-    df = df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
-
-    # FIXME not needed?
-    df.Author.fillna('', inplace=True)
-
-    return df
 
 
 ################################################################################
@@ -156,11 +138,17 @@ class Collection:
     @classmethod
     def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
         """Create a collection from the contents of $csv_dir."""
-        # load and concatenate the CSV files
-        df = pd.concat([
-            load_df("goodreads", f"{csv_dir}/goodreads.csv"),
-            _get_kindle_books(csv=f"{csv_dir}/ebooks.csv"),
-        ], sort=False)
+        gr_df = load_df("goodreads", dirname=csv_dir)
+
+        ebooks_df = load_df("ebooks", dirname=csv_dir)
+        # calculate page count
+        ebooks_df["Pages"] = ebooks_df.Words / config("kindle.words_per_page")
+        # assign default columns
+        ebooks_df = ebooks_df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
+        # FIXME not needed?
+        ebooks_df.Author.fillna("", inplace=True)
+
+        df = pd.concat([gr_df, ebooks_df], sort=False)
 
         # Ensure the additional columns exist in any case
         df = df.assign(Gender=None, Nationality=None)
