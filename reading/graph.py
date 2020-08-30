@@ -12,6 +12,8 @@ import pandas as pd
 import numpy as np
 
 from .collection import Collection
+from .config import config
+from .scheduling import _set_schedules
 
 # pylint: enable=wrong-import-position
 
@@ -399,13 +401,14 @@ def scheduled_years(df):
 # plot reading schedule against time left, with warnings.
 def scheduled():
     df = Collection.from_dir().df
+    _set_schedules(df, config("scheduled"))
 
     rate = _pages_changed(df, 'read', 'Read').rolling(365).mean().iloc[-1]
 
     df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
     df = df.dropna(subset=['Scheduled'])
 
-    years = scheduled_years(df)
+    years = scheduled_years(df)[:3]
 
     _fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
 
