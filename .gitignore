@@ -8,5 +8,6 @@ todo
 /.cache/
 /.coverage
 /htmlcov/
+/tools/
 # don't want any more .py files in the root
 /*.py
