@@ -13,7 +13,7 @@ def test_load_df():
 
 
 def test_save_df(tmp_path):
-    df = Collection(gr_csv="t/data/goodreads-2019-12-04.csv", fixes=False, metadata=False).df
+    df = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False).df
 
     # pick out a few books
     df = df[df.AuthorId == 9121]

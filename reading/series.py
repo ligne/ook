@@ -134,7 +134,7 @@ def ignore(series_id):
 class Series():
 
     # FIXME need to filter out to-read books
-    _df = Collection().df
+    _df = Collection.from_dir().df
 
     def __init__(self, author=None, series=None, series_id=None, settings=None, df=_df):
         # FIXME get settings for this series, and check

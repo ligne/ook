@@ -1,8 +1,8 @@
 # vim: ts=4 : sw=4 : et
 
 from reading.config import (
-    category_patterns, config, date_columns,
-    df_columns, metadata_prefer, merge_preferences)
+    Config, category_patterns, date_columns, df_columns, merge_preferences,
+    metadata_prefer)
 
 
 def test_df_colums():
@@ -124,57 +124,71 @@ def test_metadata_prefer():
 ################################################################################
 
 def test_merge_preferences():
-    assert merge_preferences("goodreads") == {
-        "Added": "first",
+    assert merge_preferences() == {
+        "Added": "min",
+        "Author": "first",
         "AuthorId": "first",
         "AvgRating": "first",
         "Binding": "first",
         "BookId": "first",
         "Borrowed": "first",
         "Category": "first",
+        "Gender": "first",
         "Language": "first",
+        "_Mask": "any",
+        "Nationality": "first",
         "Pages": "sum",
         "Published": "first",
         "Rating": "mean",
-        "Read": "last",
+        "Read": "max",
         "Scheduled": "first",
         "Series": "first",
         "SeriesId": "first",
         "Shelf": "first",
-        "Started": "first",
-        "Work": "first",
-    }, "What columns to prefer when merging goodreads volumes"
-
-    assert merge_preferences("goodreads") == {
-        **{
-            col: "first"
-            for col in df_columns("goodreads")
-            if col not in ("Author", "Title", "Entry", "Volume")
-        },
-        **{"Pages": "sum", "BookId": "first", "Rating": "mean", "Read": "last"},
-    }
-
-    assert merge_preferences("ebooks") == {
-        "Added": "first",
-        "BookId": "first",
-        "Category": "first",
-        "Language": "first",
+        "Started": "min",
+        "Title": "first",
         "Words": "sum",
-    }, "What columns to prefer when merging ebook volumes"
-
-    assert merge_preferences("ebooks") == {
-        **{
-            col: "first"
-            for col in df_columns("ebooks")
-            if col not in ("Author", "Title", "Entry", "Volume")
-        },
-        **{"Words": "sum", "BookId": "first"},
+        "Work": "first",
     }
 
 
 ################################################################################
 
-def test_config():
+def test_config_import():
+    """Test the config import, as used in the codebase."""
+    from reading.config import config
     assert config('goodreads.user'), 'fetched a key that exists'
     assert not config('blah.blah'), '"fetched" a key that does not exist'
 
+
+def test_config():
+    """Test the config object."""
+    config = Config({
+        "goodreads": {
+            "user": 1234567890,
+        },
+    })
+
+    assert config("goodreads.user"), "fetched a key that exists"
+    assert not config("blah.blah"), "'fetched' a key that does not exist"
+
+    assert config("kindle.words_per_page") == 390, "Some keys have a default value"
+
+    config = Config.from_file("data/config.yml")  # created from a file
+
+    assert config("goodreads.user"), "fetched a key that exists"
+    assert not config("blah.blah"), "'fetched' a key that does not exist"
+
+    assert Config.from_file("/does/not/exist"), "created from a missing file"
+
+
+def test_config_reset():
+    """Test the reset method."""
+    config = Config({"key": "value"})
+    assert config("key") == "value", "key exists"
+
+    config.reset()
+    assert not config("key"), "key no longer exists"
+
+    config.reset({"key": "other"})
+    assert config("key") == "other", "key has been changed"

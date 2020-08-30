@@ -2,6 +2,8 @@
 
 import yaml
 
+import attr
+
 
 SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}
 CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
@@ -21,6 +23,7 @@ _COLUMNS = [
         "name": "Author",
         "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "AuthorId",
@@ -32,6 +35,7 @@ _COLUMNS = [
         "name": "Title",
         "store": ["goodreads", "ebooks", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Work",
@@ -110,19 +114,19 @@ _COLUMNS = [
         "name": "Added",
         "store": ["goodreads", "ebooks"],
         "type": "date",
-        "merge": "first",
+        "merge": "min",
     },
     {
         "name": "Started",
         "store": ["goodreads", "scraped"],
         "type": "date",
-        "merge": "first",
+        "merge": "min",
     },
     {
         "name": "Read",
         "store": ["goodreads", "scraped"],
         "type": "date",
-        "merge": "last",
+        "merge": "max",
     },
     {
         "name": "Rating",
@@ -137,14 +141,21 @@ _COLUMNS = [
     {
         "name": "Gender",
         "store": ["authors"],
+        "merge": "first",
     },
     {
         "name": "Nationality",
         "store": ["authors"],
+        "merge": "first",
     },
     {
         "name": "Description",
         "store": ["authors"],
+    },
+    {
+        "name": "_Mask",
+        "store": [],
+        "merge": "any",
     },
 ]
 
@@ -169,15 +180,11 @@ def metadata_prefer(preference):
     return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
-def merge_preferences(store):
+def merge_preferences():
     """Return a dict specifying how volumes of the same book should be merged."""
     return {
         **{"BookId": "first"},
-        **{
-            col["name"]: col["merge"]
-            for col in _COLUMNS
-            if store in col["store"] and "merge" in col
-        },
+        **{col["name"]: col["merge"] for col in _COLUMNS if "merge" in col},
     }
 
 
@@ -215,24 +222,49 @@ def category_patterns():
 
 ################################################################################
 
-# value = config('key.name')
-def config(key):
-    """Return a value from the configuration file, or None if it was not found."""
-    with open('data/config.yml') as fh:
-        conf = yaml.safe_load(fh)
+_DEFAULTS = {
+    "kindle.words_per_page": 390,
+}
 
-    for segment in key.split('.'):
+
+@attr.s
+class Config:
+    """configuration."""
+
+    _conf = attr.ib()
+
+    @classmethod
+    def from_file(cls, filename="data/config.yml"):
+        """Create from $filename."""
         try:
-            conf = conf[segment]
-        except KeyError:
-            # use defaults and/or emit warning
-            return None
+            with open(filename) as fh:
+                conf = yaml.safe_load(fh)
+        except FileNotFoundError:
+            conf = {}
 
-    return conf
+        return cls(conf)
+
+    def __call__(self, key):
+        value = self._conf
+
+        for segment in key.split("."):
+            try:
+                value = value[segment]
+            except KeyError:
+                # TODO use defaults and/or emit warning
+                return _DEFAULTS.get(key)
+
+        return value
+
+    def reset(self, conf=None):
+        """Set to an empty configuration."""
+        self._conf = conf or {}
+
+
+config = Config.from_file()  # pylint: disable=invalid-name
 
 
 ################################################################################
 
 def main(args):
     print(config(args.key))
-

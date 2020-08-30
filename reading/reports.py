@@ -15,7 +15,7 @@ def _process_report(report):
     filters = report.get('filter', [])
 
     for segment in report['segments']:
-        df = Collection(merge=True).df
+        df = Collection.from_dir(merge=True).df
 
         if 'shelves' in segment:
             df = df[df.Shelf.isin(segment['shelves'])]

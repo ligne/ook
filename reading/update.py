@@ -35,17 +35,17 @@ def kindle(args):
 def scrape(args):
     from .scrape import scrape as _scrape, rebuild
 
-    c = Collection(fixes=None)
+    c = Collection.from_dir(fixes=None)
     df = c.df
 
-    old = Collection().df
+    old = Collection.from_dir().df
 
     fixes = rebuild(_scrape(config('goodreads.html')), df)
 
     if not args.ignore_changes:
         save_df("scraped", fixes)
 
-    new = Collection().df
+    new = Collection.from_dir().df
 
     compare(old, new)
 

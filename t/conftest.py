@@ -11,12 +11,7 @@ from reading.collection import Collection
 def collection():
     """Return a collection factory."""
     def _get_collection(name, fixes=False, **kwargs):
-        return Collection(
-            gr_csv=f"t/data/goodreads-{name}.csv",
-            ebook_csv=f"t/data/ebooks-{name}.csv",
-            fixes=fixes,
-            **kwargs,
-        )
+        return Collection.from_dir(f"t/data/{name}/", fixes, **kwargs)
 
     return _get_collection
 

@@ -2,14 +2,14 @@
 
 from textwrap import fill
 
-from .scheduling import scheduled_books, scheduled_at
-from .collection import Collection
+from .collection import Collection, read_authorids, read_nationalities
+from .scheduling import scheduled_at, scheduled_books
 
 
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
-def _recent_author_ids(date):
-    df = Collection().df  # want to consider *all* books
+def _recent_author_ids(c, date):
+    df = c.all
 
     return list(df[
         (df.Read.dt.year == date.year)
@@ -18,22 +18,15 @@ def _recent_author_ids(date):
     ].AuthorId)
 
 
-def _read_author_ids():
-    return list(Collection().shelves(["read"]).df.AuthorId)
-
-
-def _read_nationalities():
-    return list(Collection().shelves(["read"]).df.Nationality)
-
-
 ################################################################################
 
 def scheduled(args):
-    c = Collection(merge=True).filter(
-        shelves=args.shelves,
-        languages=args.languages,
-        categories=args.categories,
-        borrowed=args.borrowed,
+    c = (
+        Collection.from_dir(merge=True)
+        .shelves(args.shelves)
+        .languages(args.languages)
+        .categories(args.categories)
+        .borrowed(args.borrowed)
     )
     df = c.df
 
@@ -41,7 +34,7 @@ def scheduled(args):
     df = df[df.Scheduled.dt.year == args.date.year]
     args.all = True  # no display limit on scheduled books
 
-    df = _filter(df, args)
+    df = _filter(df, args, c)
     df = _sort(df, args)
     df = _reduce(df, args)
     _display(df, args)
@@ -49,36 +42,37 @@ def scheduled(args):
 
 # suggestions
 def main(args):
-    c = Collection(merge=True).filter(
-        shelves=args.shelves,
-        languages=args.languages,
-        categories=args.categories,
-        borrowed=args.borrowed,
+    c = (
+        Collection.from_dir(merge=True)
+        .shelves(args.shelves)
+        .languages(args.languages)
+        .categories(args.categories)
+        .borrowed(args.borrowed)
     )
     df = c.df
 
     # filter out recently-read, scheduled, etc
-    df = df[~df.AuthorId.isin(_recent_author_ids(args.date))]
+    df = df[~df.AuthorId.isin(_recent_author_ids(c, args.date))]
     df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
     # FIXME eventually filter out "blocked" books
 
-    df = _filter(df, args)
+    df = _filter(df, args, c)
     df = _sort(df, args)
     df = _reduce(df, args)
     _display(df, args)
 
 
 # do more filtering
-def _filter(df, args):
+def _filter(df, args, c):
     if args.old_authors:
-        df = df[df.AuthorId.isin(_read_author_ids())]
+        df = df[df.AuthorId.isin(read_authorids(c))]
     elif args.new_authors:
-        df = df[~df.AuthorId.isin(_read_author_ids())]
+        df = df[~df.AuthorId.isin(read_authorids(c))]
 
     if args.old_nationalities:
-        df = df[df.Nationality.isin(_read_nationalities())]
+        df = df[df.Nationality.isin(read_nationalities(c))]
     elif args.new_nationalities:
-        df = df[~df.Nationality.isin(_read_nationalities())]
+        df = df[~df.Nationality.isin(read_nationalities(c))]
 
     return df
 
