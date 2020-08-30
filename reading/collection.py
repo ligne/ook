@@ -197,20 +197,10 @@ class Collection:
             Title=self._df.apply(_merged_title, axis="columns"),
         )
 
-        merge_prefs = {
-            **merge_preferences("goodreads"),
-            **merge_preferences("ebooks"),
-            "Author": "first",
-            "Title": "first",
-            "Gender": "first",
-            "Nationality": "first",
-            "_Mask": "any",
-        }
-
         return (
             df.reset_index()
             .groupby("MergeId", as_index=False, sort=False)
-            .aggregate(merge_prefs)
+            .aggregate(merge_preferences())
             .set_index("BookId")
         ).assign(Entry=None)  # FIXME do something about Entry?
 

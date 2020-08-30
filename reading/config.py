@@ -23,6 +23,7 @@ _COLUMNS = [
         "name": "Author",
         "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "AuthorId",
@@ -34,6 +35,7 @@ _COLUMNS = [
         "name": "Title",
         "store": ["goodreads", "ebooks", "books", "metadata"],
         "prefer": "work",
+        "merge": "first",
     },
     {
         "name": "Work",
@@ -139,14 +141,21 @@ _COLUMNS = [
     {
         "name": "Gender",
         "store": ["authors"],
+        "merge": "first",
     },
     {
         "name": "Nationality",
         "store": ["authors"],
+        "merge": "first",
     },
     {
         "name": "Description",
         "store": ["authors"],
+    },
+    {
+        "name": "_Mask",
+        "store": [],
+        "merge": "any",
     },
 ]
 
@@ -171,15 +180,11 @@ def metadata_prefer(preference):
     return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
-def merge_preferences(store):
+def merge_preferences():
     """Return a dict specifying how volumes of the same book should be merged."""
     return {
         **{"BookId": "first"},
-        **{
-            col["name"]: col["merge"]
-            for col in _COLUMNS
-            if store in col["store"] and "merge" in col
-        },
+        **{col["name"]: col["merge"] for col in _COLUMNS if "merge" in col},
     }
 
 
