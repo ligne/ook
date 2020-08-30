@@ -172,6 +172,8 @@ def test_config():
     assert config("goodreads.user"), "fetched a key that exists"
     assert not config("blah.blah"), "'fetched' a key that does not exist"
 
+    assert config("kindle.words_per_page") == 390, "Some keys have a default value"
+
     config = Config.from_file("data/config.yml")  # created from a file
 
     assert config("goodreads.user"), "fetched a key that exists"

@@ -222,6 +222,11 @@ def category_patterns():
 
 ################################################################################
 
+_DEFAULTS = {
+    "kindle.words_per_page": 390,
+}
+
+
 @attr.s
 class Config:
     """configuration."""
@@ -247,7 +252,7 @@ class Config:
                 value = value[segment]
             except KeyError:
                 # TODO use defaults and/or emit warning
-                return None
+                return _DEFAULTS.get(key)
 
         return value
 
