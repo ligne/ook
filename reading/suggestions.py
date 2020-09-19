@@ -53,7 +53,7 @@ def main(args):
 
     # filter out recently-read, scheduled, etc
     df = df[~df.AuthorId.isin(_recent_author_ids(c, args.date))]
-    df = df[~(df.Scheduled.notnull() | scheduled_books(df))]
+    df = df[~(df.Scheduled.notnull() | scheduled_books(c.all).reindex(df.index))]
     # FIXME eventually filter out "blocked" books
 
     df = _filter(df, args, c)

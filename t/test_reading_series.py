@@ -2,12 +2,8 @@
 
 import pytest
 
-import pandas as pd
-
 import reading.series
-from reading.series import _parse_entries, _get_entry, interesting
-from reading.series import _lookup_series_id
-from reading.series import Series
+from reading.series import _get_entry, _lookup_series_id, _parse_entries, interesting
 
 
 def test__get_entry():
@@ -91,69 +87,3 @@ def test__lookup_series_id(collection):
 def test_ignore():
     assert not reading.series.ignore(1)
     assert reading.series.ignore(55486)
-
-
-################################################################################
-
-def test_series():
-    # needs at least *something* to go on
-    with pytest.raises(ValueError):
-        Series()
-
-    # by author name
-    s = Series(author='Beauvoir')
-    assert s, 'Created a series from an author'
-    assert s.label == 'Beauvoir'
-    assert s.order == 'published', 'Authors are read in published order by default'
-    assert s.missing == 'ignore', 'Authors have no missing books to ignore'
-
-    # by series name
-    s = Series(series='Culture')
-    assert s, 'Created a series from a name'
-    assert s.label == 'Culture'
-    assert s.order == 'series', 'Series are read in order'
-    assert s.missing == 'ignore'
-
-    # by SeriesID
-    s = Series(series_id=49118)
-    assert s, 'Created a series from an ID'
-    assert s.label == 'Culture'
-    assert s.order == 'series', 'Series are read in order'
-    assert s.missing == 'ignore'
-
-    # FIXME check these last two have the same results
-
-    # series can have multiple authors
-    s = Series(series='Spirou')
-    assert len(set(s.df.Author)) > 1
-
-    # settings
-    s = Series(series='Culture', settings={
-        'order': 'published',
-    })
-    assert s.order == 'published', 'Can override the order of series'
-    assert s.missing == 'ignore', 'By default ignore missing books from series'
-
-    # FIXME also check .missing behaviour
-
-
-@pytest.mark.xfail
-def test_duplicate_warning():
-    """A warning should be issued if there are duplicate books in a series."""
-    # but there aren't any duplicates at the moment
-    with pytest.warns(UserWarning):
-        Series(author='Iain Banks')
-
-
-def test_series_last_read(collection):
-    c = collection("2019-12-04", fixes=False)
-
-    s = Series(author='Hašek', df=c.df)
-    assert s.last_read() is None, 'Never read'
-
-    s = Series(author='Vonnegut', df=c.df)
-    assert s.last_read().date() == pd.Timestamp('today').date(), 'Currently reading'
-
-    s = Series(author='Murakami', df=c.df)
-    assert str(s.last_read().date()) == '2019-08-27', 'Previously read'
-

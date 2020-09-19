@@ -1,35 +1,17 @@
 # vim: ts=4 : sw=4 : et
 
-import sys
 import operator
 import re
-from warnings import warn
 from functools import reduce
 
-import pandas as pd
-
 import reading.goodreads
+
 from .config import config
-from .collection import Collection
+
 
 # configuration:
 #   series information cache.  build it from the series extracted from books.
 #   series configuration.
-
-# what to select
-#   author
-#   series
-#   series ID
-# what order to use
-#   publication date
-#   series order
-#   random?
-#   date added
-# missing books (for series only)
-#   strict -- all books must be there; warn and leave gaps
-#   ignore -- pretend gaps aren't there
-#   break -- suspend when there's a gap.
-# only trilogies need to be strict, so default to 'ignore'?
 
 # might be multiple volumes of the same work
 #   subsume into volumes information
@@ -127,87 +109,3 @@ def _get_series_info(series_id):
 # whether to ignore the series.
 def ignore(series_id):
     return int(series_id) in config('series.ignore')
-
-
-################################################################################
-
-class Series():
-
-    # FIXME need to filter out to-read books
-    _df = Collection.from_dir().df
-
-    def __init__(self, author=None, series=None, series_id=None, settings=None, df=_df):
-        # FIXME get settings for this series, and check
-        if not settings:
-            settings = _get_series_settings(series_id)
-
-        if series and not series_id:
-            # look up the series ID
-            series_id = _lookup_series_id(df, series)
-
-        if author:
-            # just work through in order
-            self.label = author
-            self.order = settings.get('order', 'published')
-            self.missing = 'ignore'
-            self.df = df[df.Author.str.contains(author)]
-        elif series_id:
-            self.info = _get_series_info(series_id)
-            self.series_id = series_id
-            self.order = settings.get('order', 'series')
-            self.missing = settings.get('missing', 'ignore')
-            self.df = df[df.SeriesId == self.series_id].copy()
-            self.label = self.info['Series']
-        else:
-            raise ValueError("Must provide author, series or series ID.")
-
-        if self.df.duplicated('Work').any():
-            warn('Duplicate works in series {}'.format(self.label))
-
-    # books in the series that still need to be read
-    def remaining(self):
-        return self.sort().df[~self.df.Shelf.isin(['read', 'currently-reading'])]
-
-    # return readable ones in order (for scheduling)
-    @property
-    def readable(self):
-        if self.missing == 'ignore':
-            return self.remaining()
-        # if 'strict', return leaving gaps
-        # if 'break', return until the first blockage
-        return None
-
-    # date this series was last read (today if still reading)
-    def last_read(self):
-        read = self.df[self.df.Read.notnull()]
-
-        if not self.df[self.df.Shelf == 'currently-reading'].empty:
-            return pd.Timestamp('today')
-        elif not read.empty:
-            return read.Read.sort_values().iat[-1]
-        else:
-            return None
-
-    # sort the books according to preference
-    def sort(self):
-        if self.order == 'series':
-            self.df = _sort_entries(self.df)
-        elif self.order == 'published':
-            self.df = self.df.sort_values('Published')
-        return self
-
-
-if __name__ == "__main__":
-    (t, n) = sys.argv[1:3]
-    if t == 'author':
-        s = Series(author=n)
-    elif t == 'series':
-        s = Series(series=n)
-    elif t == 'sid':
-        s = Series(series_id=int(n))
-    else:
-        print("bad")
-        sys.exit()
-
-    print(s.remaining()[['Author', 'Series', 'Entry', 'Title']])
-
