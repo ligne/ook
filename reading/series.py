@@ -64,19 +64,6 @@ def _sort_entries(df):
     return df.loc[df.Entry.apply(_parse_entries).sort_values().index]
 
 
-# return the information for the series
-# from cache and config?
-def _get_series_settings(_series):
-    return {}
-
-
-# return the series information (number of works and entry numbers)
-def _get_series_info(series_id):
-    return reading.goodreads._parse_series(
-        reading.goodreads._fetch_series(series_id)
-    ) or {}
-
-
 # whether to ignore the series.
 def ignore(series_id):
     return int(series_id) in config('series.ignore')
