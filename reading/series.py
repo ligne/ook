@@ -1,10 +1,10 @@
 # vim: ts=4 : sw=4 : et
 
-import operator
-import re
 from functools import reduce
+import operator
 
 import reading.goodreads
+from reading.goodreads import _parse_entries
 
 from .config import config
 
@@ -28,35 +28,6 @@ from .config import config
 # it can be used for slicing dataframes.
 def hidden(_df):
     pass
-
-
-# extracts a single entry from a string.
-def _get_entry(string):
-    # strip out the leading number and try and make it an int.
-    try:
-        m = re.match(r'\s*([\d.]+)', string)
-        return int(m.group(0))
-    except (ValueError, AttributeError):
-        return None
-
-
-# converts an entries string into a list of integers
-def _parse_entries(entries):
-    if not isinstance(entries, str):
-        return []
-
-    if re.search('[,&]', entries):
-        return reduce(operator.concat, [
-            _parse_entries(x) for x in re.split('[,&]', entries)
-        ])
-    elif '-' in entries:
-        start, end = [_get_entry(x) for x in entries.split('-')]
-        if None not in (start, end):
-            return list(range(start, end + 1))
-        return []
-    else:
-        e = _get_entry(entries)
-        return [e] if e is not None else []
 
 
 # returns False if the series is deemed uninteresting.

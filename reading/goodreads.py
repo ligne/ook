@@ -1,14 +1,18 @@
 # vim: ts=4 : sw=4 : et
 
+"""Code for interacting with the Goodreads API."""
+
+from functools import reduce
+import operator
 import re
 from xml.etree import ElementTree
 
+from dateutil.parser import parse
 import pandas as pd
 import requests
-from dateutil.parser import parse
 
+from reading.config import category_patterns, config
 import reading.series
-from reading.config import config, category_patterns
 
 
 # get all the books on the goodread shelves.
@@ -178,6 +182,32 @@ def _parse_series(xml):
         'Count': xml.find('series/primary_work_count').text,
         'Entries': [x.find('user_position').text for x in xml.find('series/series_works')],
     }
+
+
+# extracts a single entry from a string.
+def _get_entry(string):
+    # strip out the leading number and try and make it an int.
+    try:
+        return int(re.match(r"\s*([\d.]+)", string).group(0))
+    except (ValueError, AttributeError):
+        return None
+
+
+# converts an entries string into a list of integers
+def _parse_entries(entries):
+    if not isinstance(entries, str):
+        return []
+
+    if re.search("[,&]", entries):
+        return reduce(operator.concat, [_parse_entries(x) for x in re.split("[,&]", entries)])
+    elif "-" in entries:
+        start, end = [_get_entry(x) for x in entries.split("-")]
+        if None not in (start, end):
+            return list(range(start, end + 1))
+        return []
+    else:
+        e = _get_entry(entries)
+        return [e] if e is not None else []
 
 
 ################################################################################
