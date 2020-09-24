@@ -82,23 +82,19 @@ def process_review(r):
 
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id):
-    book = _parse_book_api(_fetch_book_api(book_id))
+    api_book = _fetch_book_api(book_id)
+    book = _parse_book_api(api_book)
+
     # if the interesting information isn't there, fetch it via html
     if False:
         book.update(_parse_book_html(_fetch_book_html(book_id)))
 
-    # fetch series
-    series_id = book['SeriesId']
-    if series_id:
-        series = _parse_series(_fetch_series(series_id))
-
-        if not reading.series.interesting(book['Entry'], series):
-            # remove the series information
-            book.update({
-                'SeriesId': None,
-                'Series': None,
-                'Entry': None,
-            })
+    # fetch series information
+    series_info = _parse_book_series(api_book, config("series.ignore"))
+    if series_info:
+        series = _parse_series(_fetch_series(series_info["SeriesId"]))
+        if interesting(series_info["Entry"], series):
+            book.update(series_info)
 
     return book
 
@@ -124,14 +120,6 @@ def _parse_book_api(xml):
     except TypeError:
         pass
 
-    series = entry = series_id = None
-    for s in xml.findall('book/series_works/series_work'):
-        if int(s.find('series/id').text) not in config('series.ignore'):
-            series_id = int(s.find('series/id').text)
-            series = s.find('series/title').text.strip()
-            entry = s.find('user_position').text
-            break
-
     shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
 #    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
@@ -144,11 +132,20 @@ def _parse_book_api(xml):
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Pages': float(xml.find('book/num_pages').text or 'nan'),
-        'Series': series,
-        'SeriesId': series_id,
-        'Entry': entry,
         'Category': _get_category(shelves),
     }
+
+
+def _parse_book_series(xml, ignore):
+    for series in xml.findall("book/series_works/series_work"):
+        series_id = int(series.find("series/id").text)
+        if series_id not in ignore:
+            return {
+                "SeriesId": series_id,
+                "Series": series.find("series/title").text.strip(),
+                "Entry": series.find("user_position").text,
+            }
+    return None
 
 
 # the edition language isn't accessible through the API for some books.

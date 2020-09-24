@@ -5,7 +5,13 @@ from xml.etree import ElementTree
 import pandas as pd
 
 import reading.goodreads
-from reading.goodreads import _get_authors, _get_category, _get_entry, _parse_entries
+from reading.goodreads import (
+    _get_authors,
+    _get_category,
+    _get_entry,
+    _parse_book_series,
+    _parse_entries,
+)
 
 
 def test_process_review():
@@ -73,9 +79,6 @@ def test__parse_book_api():
         'Language': 'fr',
         'Published': 1891,
         'Pages': 542.,
-        'SeriesId': 40441,
-        'Series': 'Les Rougon-Macquart',
-        'Entry': '18',
         'Category': 'novels',
     }
 
@@ -87,9 +90,6 @@ def test__parse_book_api():
         'Language': 'en',
         'Published': 397,
         'Pages': 311,
-        'SeriesId': None,
-        'Series': None,
-        'Entry': None,
         'Category': 'non-fiction',
     }
 
@@ -101,9 +101,6 @@ def test__parse_book_api():
         'Language': None,
         'Published': 1823,
         'Pages': 496,
-        'SeriesId': 81550,
-        'Series': 'The Leatherstocking Tales',
-        'Entry': '1',
         'Category': 'novels',
     }
 
@@ -116,11 +113,34 @@ def test__parse_book_api():
         'Language': 'en',
         'Published': 2013,
         'Pages': 369,
-        'SeriesId': None,
-        'Series': None,
-        'Entry': None,
         'Category': 'non-fiction',  # FIXME should be 'graphic'
     }
+
+
+def test__parse_book_series():
+    r = ElementTree.parse("t/data/book/115069.xml")
+    assert _parse_book_series(r, []) == {
+        "SeriesId": 40441,
+        "Series": "Les Rougon-Macquart",
+        "Entry": "18",
+    }, "Parse series information from a book"
+
+    r = ElementTree.parse("t/data/book/3602116.xml")
+    assert _parse_book_series(r, []) is None, "Book without series"
+
+    r = ElementTree.parse("t/data/book/38290.xml")
+    assert _parse_book_series(r, []) == {
+        "SeriesId": 55486,
+        "Series": "The Leatherstocking Tales",
+        "Entry": "4",
+    }, "Book with multiple series"
+
+    r = ElementTree.parse("t/data/book/38290.xml")
+    assert _parse_book_series(r, [55486]) == {
+        "SeriesId": 81550,
+        "Series": "The Leatherstocking Tales",
+        "Entry": "1",
+    }, "Book ignoring one of the series"
 
 
 def test__get_authors():
