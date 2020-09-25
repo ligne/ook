@@ -139,11 +139,14 @@ def _parse_book_api(xml):
 def _parse_book_series(xml, ignore):
     for series in xml.findall("book/series_works/series_work"):
         series_id = int(series.find("series/id").text)
-        if series_id not in ignore:
+        series_name = series.find("series/title").text.strip()
+        entry = series.find("user_position").text
+
+        if entry and series_id not in ignore:
             return {
                 "SeriesId": series_id,
-                "Series": series.find("series/title").text.strip(),
-                "Entry": series.find("user_position").text,
+                "Series": series_name,
+                "Entry": entry,
             }
     return None
 
