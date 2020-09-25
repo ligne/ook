@@ -85,10 +85,6 @@ def fetch_book(book_id):
     api_book = _fetch_book_api(book_id)
     book = _parse_book_api(api_book)
 
-    # if the interesting information isn't there, fetch it via html
-    if False:
-        book.update(_parse_book_html(_fetch_book_html(book_id)))
-
     # fetch series information
     series_info = _parse_book_series(api_book, config("series.ignore"))
     if series_info:
@@ -149,15 +145,6 @@ def _parse_book_series(xml, ignore):
                 "Entry": entry,
             }
     return None
-
-
-# the edition language isn't accessible through the API for some books.
-def _fetch_book_html(_book_id):
-    pass
-
-
-def _parse_book_html(_html):
-    pass
 
 
 ################################################################################
