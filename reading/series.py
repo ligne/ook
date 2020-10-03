@@ -32,15 +32,7 @@ def hidden(_df):
 
 # returns False if the series is deemed uninteresting.
 def interesting(entry, series):
-    book_entries = _parse_entries(entry)
-    series_entries = reduce(operator.concat, [
-        _parse_entries(x) for x in series['Entries']
-    ])
-
-    if set(book_entries) == set(series_entries):
-        return False
-
-    return True
+    return set(entry.split("|")) != set(series["Entries"])
 
 
 # finds the series ID matching $name. throws an exception if there isn't

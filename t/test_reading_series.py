@@ -7,17 +7,9 @@ from reading.series import _lookup_series_id, interesting
 
 
 def test_interesting():
-    assert interesting('1', {
-        'Entries': ['1', '2', '3']
-    })
-
-    assert not interesting('1', {
-        'Entries': ['1']
-    })
-
-    assert not interesting('1-2', {
-        'Entries': ['1', '2']
-    })
+    assert interesting("1", {"Entries": ["1", "2", "3"]})
+    assert not interesting("1", {"Entries": ["1"]})
+    assert not interesting("1|2", {"Entries": ["1", "2"]})
 
 
 def test__lookup_series_id(collection):

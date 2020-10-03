@@ -12,7 +12,7 @@ import pandas as pd
 import requests
 
 from reading.config import category_patterns, config
-import reading.series
+from reading.series import interesting
 
 
 # get all the books on the goodread shelves.
