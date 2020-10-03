@@ -142,7 +142,7 @@ def _parse_book_series(xml, ignore):
             return {
                 "SeriesId": series_id,
                 "Series": series_name,
-                "Entry": entry,
+                "Entry": "|".join((str(x) for x in _parse_entries(entry))),
             }
     return None
 

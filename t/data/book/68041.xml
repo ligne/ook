@@ -1,0 +1,799 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GoodreadsResponse>
+  <Request>
+    <authentication>true</authentication>
+    <key><![CDATA[_____gOoDrEaDsKeY_____]]></key>
+    <method><![CDATA[book_show]]></method>
+  </Request>
+  <book>
+    <id>68041</id>
+    <title><![CDATA[The Earthsea Quartet (Earthsea Cycle, #1-4)]]></title>
+    <isbn><![CDATA[0140154272]]></isbn>
+    <isbn13><![CDATA[9780140154276]]></isbn13>
+    <asin><![CDATA[]]></asin>
+    <kindle_asin><![CDATA[]]></kindle_asin>
+    <marketplace_id><![CDATA[]]></marketplace_id>
+    <country_code><![CDATA[GB]]></country_code>
+    <image_url>https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1330196610l/68041._SX98_.jpg</image_url>
+    <small_image_url>https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1330196610l/68041._SY75_.jpg</small_image_url>
+    <publication_year>1993</publication_year>
+    <publication_month>10</publication_month>
+    <publication_day>28</publication_day>
+    <publisher>Penguin</publisher>
+    <language_code>en-US</language_code>
+    <is_ebook>false</is_ebook>
+    <description><![CDATA[As a young dragonlord, Ged, whose use-name is Sparrowhawk, is sent to the island of Roke to learn the true way of magic. A natural magician, Ged becomes an Archmage and helps the High Priestess Tenar escape from the labyrinth of darkness. But as the years pass, true magic and ancient ways are forced to submit to the powers of evil and death.]]></description>
+    <work>
+      <id type="integer">1112741</id>
+      <books_count type="integer">26</books_count>
+      <best_book_id type="integer">68041</best_book_id>
+      <reviews_count type="integer">18953</reviews_count>
+      <ratings_sum type="integer">38716</ratings_sum>
+      <ratings_count type="integer">9064</ratings_count>
+      <text_reviews_count type="integer">529</text_reviews_count>
+      <original_publication_year type="integer">1984</original_publication_year>
+      <original_publication_month nil="true" type="integer"/>
+      <original_publication_day nil="true" type="integer"/>
+      <original_title>The Earthsea Quartet</original_title>
+      <original_language_id nil="true" type="integer"/>
+      <media_type>book</media_type>
+      <rating_dist>5:4458|4:3026|3:1242|2:258|1:80|total:9064</rating_dist>
+      <desc_user_id type="integer">-9</desc_user_id>
+      <default_chaptering_book_id nil="true" type="integer"/>
+      <default_description_language_code nil="true"/>
+      <work_uri>kca://work/amzn1.gr.work.v1.QegueGXovfgN0j3Lo5MDdg</work_uri>
+    </work>
+    <average_rating>4.27</average_rating>
+    <num_pages><![CDATA[691]]></num_pages>
+    <format><![CDATA[Paperback]]></format>
+    <edition_information><![CDATA[]]></edition_information>
+    <ratings_count><![CDATA[6732]]></ratings_count>
+    <text_reviews_count><![CDATA[301]]></text_reviews_count>
+    <url><![CDATA[https://www.goodreads.com/book/show/68041.The_Earthsea_Quartet]]></url>
+    <link><![CDATA[https://www.goodreads.com/book/show/68041.The_Earthsea_Quartet]]></link>
+    <authors>
+      <author>
+        <id>874602</id>
+        <name>Ursula K. Le Guin</name>
+        <role></role>
+        <image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1244291425p5/874602.jpg]]></image_url>
+        <small_image_url nophoto="false"><![CDATA[https://images.gr-assets.com/authors/1244291425p2/874602.jpg]]></small_image_url>
+        <link><![CDATA[https://www.goodreads.com/author/show/874602.Ursula_K_Le_Guin]]></link>
+        <average_rating>4.05</average_rating>
+        <ratings_count>1014269</ratings_count>
+        <text_reviews_count>60727</text_reviews_count>
+      </author>
+    </authors>
+    <reviews_widget><![CDATA[
+        <style>
+  #goodreads-widget {
+    font-family: georgia, serif;
+    padding: 18px 0;
+    width:565px;
+  }
+  #goodreads-widget h1 {
+    font-weight:normal;
+    font-size: 16px;
+    border-bottom: 1px solid #BBB596;
+    margin-bottom: 0;
+  }
+  #goodreads-widget a {
+    text-decoration: none;
+    color:#660;
+  }
+  iframe{
+    background-color: #fff;
+  }
+  #goodreads-widget a:hover { text-decoration: underline; }
+  #goodreads-widget a:active {
+    color:#660;
+  }
+  #gr_footer {
+    width: 100%;
+    border-top: 1px solid #BBB596;
+    text-align: right;
+  }
+  #goodreads-widget .gr_branding{
+    color: #382110;
+    font-size: 11px;
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+</style>
+<div id="goodreads-widget">
+  <div id="gr_header"><h1><a rel="nofollow" href="https://www.goodreads.com/book/show/68041.The_Earthsea_Quartet">The Earthsea Quartet Reviews</a></h1></div>
+  <iframe id="the_iframe" src="https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&amp;format=html&amp;isbn=0140154272&amp;links=660&amp;min_rating=&amp;review_back=fff&amp;stars=000&amp;text=000" width="565" height="400" frameborder="0"></iframe>
+  <div id="gr_footer">
+    <a class="gr_branding" target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/book/show/68041.The_Earthsea_Quartet?utm_medium=api&amp;utm_source=reviews_widget">Reviews from Goodreads.com</a>
+  </div>
+</div>
+
+      ]]></reviews_widget>
+    <popular_shelves>
+      <shelf count="7221" name="to-read"/>
+      <shelf count="974" name="fantasy"/>
+      <shelf count="695" name="currently-reading"/>
+      <shelf count="176" name="favorites"/>
+      <shelf count="163" name="fiction"/>
+      <shelf count="151" name="owned"/>
+      <shelf count="75" name="books-i-own"/>
+      <shelf count="64" name="classics"/>
+      <shelf count="53" name="young-adult"/>
+      <shelf count="51" name="favourites"/>
+      <shelf count="42" name="default"/>
+      <shelf count="37" name="magic"/>
+      <shelf count="29" name="ya"/>
+      <shelf count="26" name="series"/>
+      <shelf count="25" name="owned-books"/>
+      <shelf count="25" name="high-fantasy"/>
+      <shelf count="24" name="tbr"/>
+      <shelf count="23" name="dragons"/>
+      <shelf count="21" name="adventure"/>
+      <shelf count="21" name="fantasy-sci-fi"/>
+      <shelf count="20" name="library"/>
+      <shelf count="20" name="my-books"/>
+      <shelf count="20" name="epic-fantasy"/>
+      <shelf count="19" name="physical-tbr"/>
+      <shelf count="19" name="sci-fi-fantasy"/>
+      <shelf count="16" name="female-author"/>
+      <shelf count="15" name="my-library"/>
+      <shelf count="15" name="owned-tbr"/>
+      <shelf count="15" name="ursula-k-le-guin"/>
+      <shelf count="13" name="wish-list"/>
+      <shelf count="12" name="on-hold"/>
+      <shelf count="12" name="science-fiction"/>
+      <shelf count="12" name="earthsea"/>
+      <shelf count="12" name="english"/>
+      <shelf count="12" name="scifi-fantasy"/>
+      <shelf count="12" name="collection"/>
+      <shelf count="11" name="to-buy"/>
+      <shelf count="11" name="novels"/>
+      <shelf count="11" name="classic"/>
+      <shelf count="11" name="bookshelf"/>
+      <shelf count="10" name="dnf"/>
+      <shelf count="10" name="re-read"/>
+      <shelf count="9" name="home-library"/>
+      <shelf count="9" name="female-authors"/>
+      <shelf count="9" name="fantasy-scifi"/>
+      <shelf count="9" name="fantasia"/>
+      <shelf count="9" name="sub"/>
+      <shelf count="9" name="on-my-shelf"/>
+      <shelf count="9" name="books"/>
+      <shelf count="9" name="adult"/>
+      <shelf count="9" name="sci-fi"/>
+      <shelf count="9" name="omnibus"/>
+      <shelf count="8" name="paperback"/>
+      <shelf count="8" name="to-read-owned"/>
+      <shelf count="8" name="literature"/>
+      <shelf count="8" name="genre-fantasy"/>
+      <shelf count="8" name="did-not-finish"/>
+      <shelf count="8" name="sci-fi-and-fantasy"/>
+      <shelf count="8" name="american"/>
+      <shelf count="7" name="maybe"/>
+      <shelf count="7" name="owned-but-not-read"/>
+      <shelf count="7" name="scifi"/>
+      <shelf count="7" name="tbr-pile"/>
+      <shelf count="7" name="children-s"/>
+      <shelf count="7" name="ursula-le-guin"/>
+      <shelf count="7" name="i-own"/>
+      <shelf count="7" name="sf-fantasy"/>
+      <shelf count="6" name="unfinished"/>
+      <shelf count="6" name="abandoned"/>
+      <shelf count="6" name="fantasy-tbr"/>
+      <shelf count="6" name="to-reread"/>
+      <shelf count="6" name="sff"/>
+      <shelf count="6" name="20th-century"/>
+      <shelf count="6" name="personal-library"/>
+      <shelf count="6" name="all-time-favorites"/>
+      <shelf count="5" name="dropped"/>
+      <shelf count="5" name="owned-to-read"/>
+      <shelf count="5" name="usa"/>
+      <shelf count="5" name="my-bookshelf"/>
+      <shelf count="5" name="fantasy-novels"/>
+      <shelf count="5" name="bought"/>
+      <shelf count="5" name="fantasy-read"/>
+      <shelf count="5" name="book-club"/>
+      <shelf count="5" name="own-tbr"/>
+      <shelf count="5" name="speculative-fiction"/>
+      <shelf count="5" name="epic"/>
+      <shelf count="5" name="scanned"/>
+      <shelf count="5" name="philosophy"/>
+      <shelf count="5" name="favourite-books"/>
+      <shelf count="5" name="have"/>
+      <shelf count="5" name="childrens"/>
+      <shelf count="5" name="science-fiction-and-fantasy"/>
+      <shelf count="5" name="sf"/>
+      <shelf count="4" name="pal"/>
+      <shelf count="4" name="want-to-buy"/>
+      <shelf count="4" name="2020-tbr"/>
+      <shelf count="4" name="2020-reading-list"/>
+      <shelf count="4" name="read-2019"/>
+      <shelf count="4" name="books-that-i-own"/>
+      <shelf count="4" name="american-literature"/>
+    </popular_shelves>
+    <book_links>
+      <book_link>
+        <id>8</id>
+        <name>Libraries</name>
+        <link>https://www.goodreads.com/book_link/follow/8</link>
+      </book_link>
+    </book_links>
+    <buy_links>
+      <buy_link>
+        <id>1</id>
+        <name>Amazon</name>
+        <link>https://www.goodreads.com/book_link/follow/1</link>
+      </buy_link>
+      <buy_link>
+        <id>10</id>
+        <name>Audible</name>
+        <link>https://www.goodreads.com/book_link/follow/10</link>
+      </buy_link>
+      <buy_link>
+        <id>3</id>
+        <name>Barnes &amp; Noble</name>
+        <link>https://www.goodreads.com/book_link/follow/3</link>
+      </buy_link>
+      <buy_link>
+        <id>1027</id>
+        <name>Walmart eBooks</name>
+        <link>https://www.goodreads.com/book_link/follow/1027</link>
+      </buy_link>
+      <buy_link>
+        <id>2102</id>
+        <name>Apple Books</name>
+        <link>https://www.goodreads.com/book_link/follow/2102</link>
+      </buy_link>
+      <buy_link>
+        <id>8036</id>
+        <name>Google Play</name>
+        <link>https://www.goodreads.com/book_link/follow/8036</link>
+      </buy_link>
+      <buy_link>
+        <id>4</id>
+        <name>Abebooks</name>
+        <link>https://www.goodreads.com/book_link/follow/4</link>
+      </buy_link>
+      <buy_link>
+        <id>882</id>
+        <name>Book Depository</name>
+        <link>https://www.goodreads.com/book_link/follow/882</link>
+      </buy_link>
+      <buy_link>
+        <id>5</id>
+        <name>Alibris</name>
+        <link>https://www.goodreads.com/book_link/follow/5</link>
+      </buy_link>
+      <buy_link>
+        <id>9</id>
+        <name>Indigo</name>
+        <link>https://www.goodreads.com/book_link/follow/9</link>
+      </buy_link>
+      <buy_link>
+        <id>107</id>
+        <name>Better World Books</name>
+        <link>https://www.goodreads.com/book_link/follow/107</link>
+      </buy_link>
+      <buy_link>
+        <id>7</id>
+        <name>IndieBound</name>
+        <link>https://www.goodreads.com/book_link/follow/7</link>
+      </buy_link>
+    </buy_links>
+    <series_works>
+      <series_work>
+        <id>184260</id>
+        <user_position>1-4</user_position>
+        <series>
+          <id>40909</id>
+          <title><![CDATA[
+    Earthsea Cycle
+]]></title>
+          <description><![CDATA[
+    "The Word of Unbinding" and "The Rule of Names" are Earthsea short stories that can be found in Le Guin's collection, <i><ahref=http://www.goodreads.com/book/show/77289.The_Wind_s_Twelve_Quarters>The Wind's Twelve Quarters</a></i>. Later Earthsea stories were collected in <I>Tales from Earthsea</i>, which is listed here.
+    
+    Also known as:
+    <i> - Historias de Terramar (Spanish)<i>
+    <i> - La saga di Terramare (Italian)</i>
+    <i> - Erdsee (German)</i>
+    <i> - Maameren tarinat<i>
+    <i> - Saga o Zemljemorju (Slovenian) <i>
+]]></description>
+          <note><![CDATA[
+]]></note>
+          <series_works_count>17</series_works_count>
+          <primary_work_count>6</primary_work_count>
+          <numbered>true</numbered>
+        </series>
+      </series_work>
+    </series_works>
+    <similar_books>
+      <book>
+        <id>6475204</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.Vgkuf2fI4yh5CgiPA9EcsA]]></uri>
+        <title><![CDATA[The Heroes, or, Greek Fairy Tales for My Children  ]]></title>
+        <title_without_series><![CDATA[The Heroes, or, Greek Fairy Tales for My Children]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/6475204-the-heroes-or-greek-fairy-tales-for-my-children]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1148789</id>
+        </work>
+        <isbn></isbn>
+        <isbn13></isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>15568</id>
+            <name>Charles Kingsley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/15568.Charles_Kingsley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>35827435</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.WtgDaaGJQRGXKg6r3XwNYQ]]></uri>
+        <title>The Smoke</title>
+        <title_without_series>The Smoke</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/35827435-the-smoke]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1501013509l/35827435._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1501013509l/35827435._SX98_.jpg]]></image_url>
+        <num_pages>300</num_pages>
+        <work>
+          <id>57331567</id>
+        </work>
+        <isbn>057512010X</isbn>
+        <isbn13>9780575120105</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2018</publication_year>
+        <publication_month>5</publication_month>
+        <publication_day>17</publication_day>
+        <authors>
+          <author>
+            <id>167202</id>
+            <name>Simon Ings</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/167202.Simon_Ings]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>87273</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.vD-soVlUc8DvPjhbuGd_wQ]]></uri>
+        <title><![CDATA[The Tin Princess (Sally Lockhart, #4)]]></title>
+        <title_without_series>The Tin Princess</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/87273.The_Tin_Princess]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1349372067l/87273._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1349372067l/87273._SX98_.jpg]]></image_url>
+        <num_pages>304</num_pages>
+        <work>
+          <id>85119</id>
+        </work>
+        <isbn>0439977797</isbn>
+        <isbn13>9780439977791</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2004</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>3618</id>
+            <name>Philip Pullman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3618.Philip_Pullman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>40500762</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.G7UxeZ9gBruT_dv57ViI8w]]></uri>
+        <title>The Broken Sword</title>
+        <title_without_series>The Broken Sword</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/40500762-the-broken-sword]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1528569301l/40500762._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1528569301l/40500762._SX98_.jpg]]></image_url>
+        <num_pages>208</num_pages>
+        <work>
+          <id>1205843</id>
+        </work>
+        <isbn></isbn>
+        <isbn13></isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2014</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>30</publication_day>
+        <authors>
+          <author>
+            <id>32278</id>
+            <name>Poul Anderson</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/32278.Poul_Anderson]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>3169710</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.Hxjtb9LYmgkNffPGewzScQ]]></uri>
+        <title><![CDATA[City of Secrets (Stravaganza, #4)]]></title>
+        <title_without_series>City of Secrets</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/3169710-city-of-secrets]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>382</num_pages>
+        <work>
+          <id>3201807</id>
+        </work>
+        <isbn>0747592500</isbn>
+        <isbn13>9780747592501</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2008</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>23138</id>
+            <name>Mary Hoffman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/23138.Mary_Hoffman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>34450055</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.-JqsjpQ3atvPpeGs4Jra6A]]></uri>
+        <title><![CDATA[Auto Enrolment: The Essential Guide to Workplace Pensions for Small & Medium Businesses]]></title>
+        <title_without_series><![CDATA[Auto Enrolment: The Essential Guide to Workplace Pensions for Small & Medium Businesses]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/34450055-auto-enrolment]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>55561318</id>
+        </work>
+        <isbn></isbn>
+        <isbn13></isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>505807</id>
+            <name>Adrian Lee</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/505807.Adrian_Lee]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1546746</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.OfH_r9VWfJnElYtnT0kTKw]]></uri>
+        <title>The Labrador Fiasco</title>
+        <title_without_series>The Labrador Fiasco</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1546746.The_Labrador_Fiasco]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1359624780l/1546746._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1359624780l/1546746._SX98_.jpg]]></image_url>
+        <num_pages>41</num_pages>
+        <work>
+          <id>1539048</id>
+        </work>
+        <isbn>0747528896</isbn>
+        <isbn13>9780747528890</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>1996</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>3472</id>
+            <name>Margaret Atwood</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/3472.Margaret_Atwood]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>10571</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.nR0fMLVKPjJQAzAF9u1nyw]]></uri>
+        <title><![CDATA[The Once and Future King (The Once and Future King, #1-5)]]></title>
+        <title_without_series>The Once and Future King</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/10571.The_Once_and_Future_King]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>823</num_pages>
+        <work>
+          <id>57895488</id>
+        </work>
+        <isbn>0006483011</isbn>
+        <isbn13>9780006483014</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>1996</publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>426944</id>
+            <name>T.H. White</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/426944.T_H_White]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>51474929</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v3.qE0f5WiXCYtXLI6y]]></uri>
+        <title><![CDATA[Nevertheless, She Persisted: Flash Fiction Project]]></title>
+        <title_without_series><![CDATA[Nevertheless, She Persisted: Flash Fiction Project]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/51474929-nevertheless-she-persisted]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>76012378</id>
+        </work>
+        <isbn></isbn>
+        <isbn13></isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>6917826</id>
+            <name>Diana M. Pho</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/6917826.Diana_M_Pho]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>7846209</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.Gp3qsK_IcCtzDdUBUvQAzw]]></uri>
+        <title><![CDATA[City of Swords (Stravaganza, #6)]]></title>
+        <title_without_series>City of Swords</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/7846209-city-of-swords]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1331692452l/7846209._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1331692452l/7846209._SX98_.jpg]]></image_url>
+        <num_pages>368</num_pages>
+        <work>
+          <id>10953750</id>
+        </work>
+        <isbn>1408800500</isbn>
+        <isbn13>9781408800508</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2012</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>12</publication_day>
+        <authors>
+          <author>
+            <id>23138</id>
+            <name>Mary Hoffman</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/23138.Mary_Hoffman]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>5316930</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.aRnJIlicJJF4I0ciJxn5Gg]]></uri>
+        <title><![CDATA[Life Story Books for Adopted Children: A Family Friendly Approach]]></title>
+        <title_without_series><![CDATA[Life Story Books for Adopted Children: A Family Friendly Approach]]></title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/5316930-life-story-books-for-adopted-children]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1415590189l/5316930._SX50_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1415590189l/5316930._SX98_.jpg]]></image_url>
+        <num_pages>93</num_pages>
+        <work>
+          <id>5384399</id>
+        </work>
+        <isbn>1843109530</isbn>
+        <isbn13>9781843109532</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2009</publication_year>
+        <publication_month>2</publication_month>
+        <publication_day>15</publication_day>
+        <authors>
+          <author>
+            <id>2284429</id>
+            <name>Joy Rees</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/2284429.Joy_Rees]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>2826006</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.Yz1RusWKWhZx_8U3vLi2vw]]></uri>
+        <title>Pillars of Eternity</title>
+        <title_without_series>Pillars of Eternity</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/2826006-pillars-of-eternity]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1312935029l/2826006._SX50_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1312935029l/2826006._SX98_.jpg]]></image_url>
+        <num_pages>416</num_pages>
+        <work>
+          <id>2852109</id>
+        </work>
+        <isbn>0330308351</isbn>
+        <isbn13>9780330308359</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>1989</publication_year>
+        <publication_month>12</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>6894318</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.nWFSlQhJfZK_w46cEfhESA]]></uri>
+        <title>La Nuit</title>
+        <title_without_series>La Nuit</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/6894318-la-nuit]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1332528428l/6894318._SX50_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1332528428l/6894318._SX98_.jpg]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>7115811</id>
+        </work>
+        <isbn>2226107665</isbn>
+        <isbn13>9782226107664</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2000</publication_year>
+        <publication_month>9</publication_month>
+        <publication_day>6</publication_day>
+        <authors>
+          <author>
+            <id>416453</id>
+            <name>Philippe Druillet</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/416453.Philippe_Druillet]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>2826016</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.XUirVLDo2t5FeljD3UmJWw]]></uri>
+        <title>Annihilation Factor</title>
+        <title_without_series>Annihilation Factor</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/2826016-annihilation-factor]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>1966172</id>
+        </work>
+        <isbn>0805280170</isbn>
+        <isbn13>9780805280173</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year></publication_year>
+        <publication_month></publication_month>
+        <publication_day></publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1742630</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.gFn8T1XjTwWbouML_zVEKg]]></uri>
+        <title>The Knights of the Limits</title>
+        <title_without_series>The Knights of the Limits</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1742630.The_Knights_of_the_Limits]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>220</num_pages>
+        <work>
+          <id>1740283</id>
+        </work>
+        <isbn>1587153831</isbn>
+        <isbn13>9781587153839</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2001</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>2826008</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.SGGxbkpZu6iOieTvTq_59Q]]></uri>
+        <title>The Garments of Caean</title>
+        <title_without_series>The Garments of Caean</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/2826008-the-garments-of-caean]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages></num_pages>
+        <work>
+          <id>2852111</id>
+        </work>
+        <isbn>038504397X</isbn>
+        <isbn13>9780385043977</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>1976</publication_year>
+        <publication_month>1</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1766062</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.qhWGvaZlus57LttNr9Eivw]]></uri>
+        <title>The Fall of Chronopolis</title>
+        <title_without_series>The Fall of Chronopolis</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1766062.The_Fall_of_Chronopolis]]></link>
+        <small_image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png]]></small_image_url>
+        <image_url><![CDATA[https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png]]></image_url>
+        <num_pages>176</num_pages>
+        <work>
+          <id>1764120</id>
+        </work>
+        <isbn>1587153823</isbn>
+        <isbn13>9781587153822</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>2001</publication_year>
+        <publication_month>4</publication_month>
+        <publication_day>1</publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+      <book>
+        <id>1766063</id>
+        <uri><![CDATA[kca://book/amzn1.gr.book.v1.trfq71cE7XIkEBcWDUwy9A]]></uri>
+        <title>The Zen Gun</title>
+        <title_without_series>The Zen Gun</title_without_series>
+        <link><![CDATA[https://www.goodreads.com/book/show/1766063.The_Zen_Gun]]></link>
+        <small_image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1555518750l/1766063._SY75_.jpg]]></small_image_url>
+        <image_url><![CDATA[https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1555518750l/1766063._SY160_.jpg]]></image_url>
+        <num_pages>159</num_pages>
+        <work>
+          <id>1764121</id>
+        </work>
+        <isbn>0879978511</isbn>
+        <isbn13>9780879978518</isbn13>
+        <average_rating>4.27</average_rating>
+        <ratings_count>9064</ratings_count>
+        <publication_year>1983</publication_year>
+        <publication_month>8</publication_month>
+        <publication_day>2</publication_day>
+        <authors>
+          <author>
+            <id>257824</id>
+            <name>Barrington J. Bayley</name>
+            <link><![CDATA[https://www.goodreads.com/author/show/257824.Barrington_J_Bayley]]></link>
+          </author>
+        </authors>
+      </book>
+    </similar_books>
+  </book>
+</GoodreadsResponse>

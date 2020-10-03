@@ -142,6 +142,13 @@ def test__parse_book_series():
         "Entry": "1",
     }, "Book ignoring one of the series"
 
+    r = ElementTree.parse("t/data/book/68041.xml")
+    assert _parse_book_series(r, []) == {
+        "Entry": "1|2|3|4",
+        "Series": "Earthsea Cycle",
+        "SeriesId": 40909,
+    }, "Book with multiple entries"
+
 
 def test__get_authors():
     assert reading.goodreads._get_authors(
