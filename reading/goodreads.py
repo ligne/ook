@@ -1,14 +1,18 @@
 # vim: ts=4 : sw=4 : et
 
+"""Code for interacting with the Goodreads API."""
+
+from functools import reduce
+import operator
 import re
 from xml.etree import ElementTree
 
+from dateutil.parser import parse
 import pandas as pd
 import requests
-from dateutil.parser import parse
 
-import reading.series
-from reading.config import config, category_patterns
+from reading.config import category_patterns, config
+from reading.series import interesting
 
 
 # get all the books on the goodread shelves.
@@ -78,23 +82,15 @@ def process_review(r):
 
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id):
-    book = _parse_book_api(_fetch_book_api(book_id))
-    # if the interesting information isn't there, fetch it via html
-    if False:
-        book.update(_parse_book_html(_fetch_book_html(book_id)))
+    api_book = _fetch_book_api(book_id)
+    book = _parse_book_api(api_book)
 
-    # fetch series
-    series_id = book['SeriesId']
-    if series_id:
-        series = _parse_series(_fetch_series(series_id))
-
-        if not reading.series.interesting(book['Entry'], series):
-            # remove the series information
-            book.update({
-                'SeriesId': None,
-                'Series': None,
-                'Entry': None,
-            })
+    # fetch series information
+    series_info = _parse_book_series(api_book, config("series.ignore"))
+    if series_info:
+        series = _parse_series(_fetch_series(series_info["SeriesId"]))
+        if interesting(series_info["Entry"], series):
+            book.update(series_info)
 
     return book
 
@@ -120,14 +116,6 @@ def _parse_book_api(xml):
     except TypeError:
         pass
 
-    series = entry = series_id = None
-    for s in xml.findall('book/series_works/series_work'):
-        if int(s.find('series/id').text) not in config('series.ignore'):
-            series_id = int(s.find('series/id').text)
-            series = s.find('series/title').text.strip()
-            entry = s.find('user_position').text
-            break
-
     shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
 #    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
@@ -140,20 +128,23 @@ def _parse_book_api(xml):
         'Language': lang,
         'Published': float(xml.find('book/work/original_publication_year').text or 'nan'),
         'Pages': float(xml.find('book/num_pages').text or 'nan'),
-        'Series': series,
-        'SeriesId': series_id,
-        'Entry': entry,
         'Category': _get_category(shelves),
     }
 
 
-# the edition language isn't accessible through the API for some books.
-def _fetch_book_html(_book_id):
-    pass
+def _parse_book_series(xml, ignore):
+    for series in xml.findall("book/series_works/series_work"):
+        series_id = int(series.find("series/id").text)
+        series_name = series.find("series/title").text.strip()
+        entry = series.find("user_position").text
 
-
-def _parse_book_html(_html):
-    pass
+        if entry and series_id not in ignore:
+            return {
+                "SeriesId": series_id,
+                "Series": series_name,
+                "Entry": "|".join((str(x) for x in _parse_entries(entry))),
+            }
+    return None
 
 
 ################################################################################
@@ -173,11 +164,40 @@ def _fetch_series(series_id):
 
 
 def _parse_series(xml):
+    entries = []
+    for work in xml.find("series/series_works"):
+        entries.extend(_parse_entries(work.find("user_position").text))
     return {
-        'Series': xml.find('series/title').text.strip(),
-        'Count': xml.find('series/primary_work_count').text,
-        'Entries': [x.find('user_position').text for x in xml.find('series/series_works')],
+        "Series": xml.find("series/title").text.strip(),
+        "Count": xml.find("series/primary_work_count").text,
+        "Entries": [str(x) for x in sorted(set(entries))],
     }
+
+
+# extracts a single entry from a string.
+def _get_entry(string):
+    # strip out the leading number and try and make it an int.
+    try:
+        return int(re.match(r"\s*([\d.]+)", string).group(0))
+    except (ValueError, AttributeError):
+        return None
+
+
+# converts an entries string into a list of integers
+def _parse_entries(entries):
+    if not isinstance(entries, str):
+        return []
+
+    if re.search("[,&]", entries):
+        return reduce(operator.concat, [_parse_entries(x) for x in re.split("[,&]", entries)])
+    elif "-" in entries:
+        start, end = [_get_entry(x) for x in entries.split("-")]
+        if None not in (start, end):
+            return list(range(start, end + 1))
+        return []
+    else:
+        e = _get_entry(entries)
+        return [e] if e is not None else []
 
 
 ################################################################################

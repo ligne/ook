@@ -1,11 +1,11 @@
 # vim: ts=4 : sw=4 : et
 
+import datetime
 import itertools
 
-import datetime
 import pandas as pd
 
-from .series import Series
+from .chain import Chain
 from .config import config
 
 
@@ -42,11 +42,13 @@ def scheduled(df):
 def scheduled_books(df):
     s = pd.Series(False, df.index)
 
-    for settings in config('scheduled'):
-        s.loc[Series(
-            author=settings.get('author'),
-            series=settings.get('series'),
-        ).df.index.intersection(df.index)] = True
+    for settings in config("scheduled"):
+        if "author" in settings:
+            series = Chain.from_author_name(df, settings["author"])
+        elif "series" in settings:
+            series = Chain.from_series_name(df, settings["series"])
+
+        s.loc[series.remaining.index.intersection(df.index)] = True
 
     return s
 
@@ -71,11 +73,10 @@ def scheduled_at(df, date=TODAY, schedules=None):
 def _schedule(df, author=None, series=None,
               start=None, per_year=1, offset=0, force=False, skip=0,
               date=TODAY):
-    series = Series(
-        author=author,
-        series=series,
-        df=df,
-    )
+    if author:
+        series = Chain.from_author_name(df, author)
+    elif series:
+        series = Chain.from_series_name(df, series)
 
     if not start:
         start = date.year
@@ -83,13 +84,13 @@ def _schedule(df, author=None, series=None,
     dates = _dates(
         start, per_year, offset,
         force,
-        last_read=series.last_read(),
+        last_read=series.last_read,
         date=date,
     )
 
     dates = itertools.islice(dates, skip, None)
 
-    return zip(dates, series.remaining().index)
+    return zip(dates, series.remaining.index)
 
 
 # converts a stream of windows into a stream of dates for scheduling

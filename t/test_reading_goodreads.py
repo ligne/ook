@@ -1,10 +1,18 @@
 # vim: ts=4 : sw=4 : et
 
 from xml.etree import ElementTree
+
 import pandas as pd
 
 import reading.goodreads
-from reading.goodreads import _get_category, _get_authors
+from reading.goodreads import (
+    _get_authors,
+    _get_category,
+    _get_entry,
+    _parse_book_series,
+    _parse_entries,
+    _parse_series,
+)
 
 
 def test_process_review():
@@ -72,9 +80,6 @@ def test__parse_book_api():
         'Language': 'fr',
         'Published': 1891,
         'Pages': 542.,
-        'SeriesId': 40441,
-        'Series': 'Les Rougon-Macquart',
-        'Entry': '18',
         'Category': 'novels',
     }
 
@@ -86,9 +91,6 @@ def test__parse_book_api():
         'Language': 'en',
         'Published': 397,
         'Pages': 311,
-        'SeriesId': None,
-        'Series': None,
-        'Entry': None,
         'Category': 'non-fiction',
     }
 
@@ -100,9 +102,6 @@ def test__parse_book_api():
         'Language': None,
         'Published': 1823,
         'Pages': 496,
-        'SeriesId': 81550,
-        'Series': 'The Leatherstocking Tales',
-        'Entry': '1',
         'Category': 'novels',
     }
 
@@ -115,11 +114,41 @@ def test__parse_book_api():
         'Language': 'en',
         'Published': 2013,
         'Pages': 369,
-        'SeriesId': None,
-        'Series': None,
-        'Entry': None,
         'Category': 'non-fiction',  # FIXME should be 'graphic'
     }
+
+
+def test__parse_book_series():
+    r = ElementTree.parse("t/data/book/115069.xml")
+    assert _parse_book_series(r, []) == {
+        "SeriesId": 40441,
+        "Series": "Les Rougon-Macquart",
+        "Entry": "18",
+    }, "Parse series information from a book"
+
+    r = ElementTree.parse("t/data/book/3602116.xml")
+    assert _parse_book_series(r, []) is None, "Book without series"
+
+    r = ElementTree.parse("t/data/book/38290.xml")
+    assert _parse_book_series(r, []) == {
+        "SeriesId": 55486,
+        "Series": "The Leatherstocking Tales",
+        "Entry": "4",
+    }, "Book with multiple series"
+
+    r = ElementTree.parse("t/data/book/38290.xml")
+    assert _parse_book_series(r, [55486]) == {
+        "SeriesId": 81550,
+        "Series": "The Leatherstocking Tales",
+        "Entry": "1",
+    }, "Book ignoring one of the series"
+
+    r = ElementTree.parse("t/data/book/68041.xml")
+    assert _parse_book_series(r, []) == {
+        "Entry": "1|2|3|4",
+        "Series": "Earthsea Cycle",
+        "SeriesId": 40909,
+    }, "Book with multiple entries"
 
 
 def test__get_authors():
@@ -211,11 +240,62 @@ def test__get_category():
 
 
 def test__parse_series():
-    r = ElementTree.parse('t/data/series/40441.xml')
-    assert reading.goodreads._parse_series(r) == {
-        'Series': 'Les Rougon-Macquart',
-        'Count': '20',
-        'Entries': [str(x + 1) for x in range(20)] + ['1-4', '5-8'],
-    }, 'Parsed a normal series'
+    r = ElementTree.parse("t/data/series/40441.xml")
+    assert _parse_series(r) == {
+        "Series": "Les Rougon-Macquart",
+        "Count": "20",
+        "Entries": [str(x + 1) for x in range(20)],
+    }, "Parsed a normal series"
 
 
+def test__get_entry():
+    assert _get_entry("1") == 1
+    assert _get_entry("3") == 3
+    assert _get_entry("1.1") is None
+    assert _get_entry("1 of 2") == 1
+
+
+def test__parse_entries():
+    assert _parse_entries("1") == [1]
+    assert _parse_entries("1-2") == [1, 2]
+    assert _parse_entries("2-4") == [2, 3, 4]
+    assert _parse_entries("2-4 ") == [2, 3, 4]
+    assert _parse_entries("0") == [0]
+    assert _parse_entries("0-2") == [0, 1, 2]
+
+    assert _parse_entries("1, 2") == [1, 2]
+    assert _parse_entries("1,2") == [1, 2]
+    assert _parse_entries("1 & 2") == [1, 2]
+    assert _parse_entries("1&2") == [1, 2]
+    assert _parse_entries("1 & 3") == [1, 3]
+    assert _parse_entries("1, 2 & 4") == [1, 2, 4]
+    assert _parse_entries("1, 2, 4") == [1, 2, 4]
+    assert _parse_entries("1-3 , 5") == [1, 2, 3, 5]
+    assert _parse_entries("1-3 & 5") == [1, 2, 3, 5]
+    assert _parse_entries("1-4, 6-7") == [1, 2, 3, 4, 6, 7]
+
+    assert _parse_entries(None) == []
+    assert _parse_entries("") == []
+    assert _parse_entries(123) == []
+    assert _parse_entries(1.3) == []
+
+    # extra cruft
+    assert _parse_entries("1-3 omnibus") == [1, 2, 3]
+    assert _parse_entries("1 part 1") == [1]
+    assert _parse_entries("1.3 (Monarch of the Glen)") == []
+    assert _parse_entries("1 of 2") == [1]
+    assert _parse_entries("2 of 2") == [2]
+    assert _parse_entries("I") == []
+    assert _parse_entries("3 pt. 2") == [3]
+    assert _parse_entries("11B") == [11]
+    assert _parse_entries("1, part 2 of 2") == [1]
+    assert _parse_entries("2 (1/2)") == [2]
+    assert _parse_entries("3 part 2/2") == [3]
+    assert _parse_entries("Short Stories") == []
+
+    # dotted entries
+    assert _parse_entries("0.5") == []
+    assert _parse_entries("0.5, 0.6") == []
+    assert _parse_entries("0.5-0.6") == []
+    assert _parse_entries("1-3, 3.1") == [1, 2, 3]
+    assert _parse_entries("4, 5.2 & 13 ") == [4, 13]
