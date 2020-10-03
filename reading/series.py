@@ -1,11 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-from functools import reduce
-import operator
-
-import reading.goodreads
-from reading.goodreads import _parse_entries
-
 from .config import config
 
 
@@ -49,11 +43,6 @@ def _lookup_series_id(df, name):
         ))
 
     return int(series.SeriesId.iat[0])
-
-
-# sort Entry strings
-def _sort_entries(df):
-    return df.loc[df.Entry.apply(_parse_entries).sort_values().index]
 
 
 # whether to ignore the series.

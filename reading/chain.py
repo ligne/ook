@@ -7,8 +7,6 @@ from enum import Enum
 import attr
 import pandas as pd
 
-from .series import _sort_entries
-
 
 class Order(Enum):
     """Sorting options for a Chain."""
@@ -101,7 +99,7 @@ class Chain:
     def sort(self):
         """Sort the books in-place."""
         if self.order == Order.Series:
-            self._df = _sort_entries(self._df)
+            self._df = self._df.iloc[self._df.Entry.str.split("|").argsort()]
         elif self.order == Order.Published:
             self._df = self._df.sort_values("Published")
         elif self.order == Order.Added:
