@@ -140,13 +140,16 @@ class Collection:
         """Create a collection from the contents of $csv_dir."""
         gr_df = load_df("goodreads", dirname=csv_dir)
 
-        ebooks_df = load_df("ebooks", dirname=csv_dir)
-        # calculate page count
-        ebooks_df["Pages"] = ebooks_df.Words / config("kindle.words_per_page")
-        # assign default columns
-        ebooks_df = ebooks_df.assign(Shelf="kindle", Binding="ebook", Borrowed=False)
-        # FIXME not needed?
-        ebooks_df.Author.fillna("", inplace=True)
+        ebooks_df = load_df("ebooks", dirname=csv_dir).assign(
+            # calculate page count
+            Pages=lambda df: df.Words / config("kindle.words_per_page"),
+            # set default columns
+            Shelf="kindle",
+            Binding="ebook",
+            Borrowed=False,
+            # FIXME not needed?
+            Author=lambda df: df.Author.fillna(""),
+        )
 
         df = pd.concat([gr_df, ebooks_df], sort=False)
 
