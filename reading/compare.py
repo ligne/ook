@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Code for reporting the changes between two Collections or dataframes."""
+
 import sys
 
 import pandas as pd

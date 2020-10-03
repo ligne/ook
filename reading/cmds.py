@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Main entry point for the application. Argument parsing and dispatch."""
+
 import argparse
 import pandas as pd
 
