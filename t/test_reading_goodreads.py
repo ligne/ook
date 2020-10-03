@@ -11,6 +11,7 @@ from reading.goodreads import (
     _get_entry,
     _parse_book_series,
     _parse_entries,
+    _parse_series,
 )
 
 
@@ -239,12 +240,12 @@ def test__get_category():
 
 
 def test__parse_series():
-    r = ElementTree.parse('t/data/series/40441.xml')
-    assert reading.goodreads._parse_series(r) == {
-        'Series': 'Les Rougon-Macquart',
-        'Count': '20',
-        'Entries': [str(x + 1) for x in range(20)] + ['1-4', '5-8'],
-    }, 'Parsed a normal series'
+    r = ElementTree.parse("t/data/series/40441.xml")
+    assert _parse_series(r) == {
+        "Series": "Les Rougon-Macquart",
+        "Count": "20",
+        "Entries": [str(x + 1) for x in range(20)],
+    }, "Parsed a normal series"
 
 
 def test__get_entry():

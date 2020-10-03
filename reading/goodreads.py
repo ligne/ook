@@ -164,10 +164,13 @@ def _fetch_series(series_id):
 
 
 def _parse_series(xml):
+    entries = []
+    for work in xml.find("series/series_works"):
+        entries.extend(_parse_entries(work.find("user_position").text))
     return {
-        'Series': xml.find('series/title').text.strip(),
-        'Count': xml.find('series/primary_work_count').text,
-        'Entries': [x.find('user_position').text for x in xml.find('series/series_works')],
+        "Series": xml.find("series/title").text.strip(),
+        "Count": xml.find("series/primary_work_count").text,
+        "Entries": [str(x) for x in sorted(set(entries))],
     }
 
 
