@@ -341,7 +341,7 @@ def rate_area():
             row.Read: 0,
         }, index=ix).ffill()
 
-    g = g.plot(title='Reading rate', kind='area', lw=0)
+    g.plot(title='Reading rate', kind='area', lw=0)
 
     # prettify and save
     name = 'rate_area'
