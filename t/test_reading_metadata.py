@@ -4,9 +4,15 @@ import re
 
 import pytest
 
+from reading.collection import Collection
 from reading.metadata import (
-    FullExit, SaveExit, _list_book_choices, _read_choice,
-    confirm_author, rebuild)
+    FullExit,
+    SaveExit,
+    _list_book_choices,
+    _read_choice,
+    confirm_author,
+    rebuild,
+)
 from reading.storage import load_df, save_df
 from reading.wikidata import Entity
 
@@ -358,9 +364,9 @@ def test_confirm_author_default_accepts(monkeypatch):
 
 ################################################################################
 
-def test_rebuild(tmp_path, collection):
+def test_rebuild(tmp_path):
     """Test the rebuild() function."""
-    books = collection("2019-12-04", metadata=False).df
+    books = Collection.from_dir("t/data/2019-12-04/", metadata=False).df
     works = load_df("books", dirname="t/data/2019-12-04/")
 
     metadata_csv = tmp_path / "metadata.csv"
@@ -379,9 +385,9 @@ short-stories/pg1429-images.mobi,,45712,The Garden Party and Other Stories,16985
 """  # noqa: E501
 
 
-def test_rebuild_none_apply(tmp_path, collection):
+def test_rebuild_none_apply(tmp_path):
     """Test that no metadata is generated for books that don't exist."""
-    books = collection("2019-12-04", metadata=False).all
+    books = Collection.from_dir("t/data/2019-12-04/", metadata=False).df
     works = load_df("books", dirname="t/data/2019-12-04/")
 
     csv = tmp_path / "metadata.csv"
