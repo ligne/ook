@@ -132,12 +132,20 @@ def test_sort():
     assert values == sorted(values), "Sorted by published date"
 
     s.order = Order.Series
-    values = list(s.sort()._df.Series)
+    values = list(s.sort()._df.Entry)
     assert values == sorted(values), "Sorted by entry"
 
     s.order = Order.Added
     values = list(s.sort()._df.Added)
     assert values == sorted(values), "Sorted by added date"
+
+
+def test_numeric_sort():
+    """Ensure the entries are sorted numerically rather than as alphabetically."""
+    c = Collection.from_dir("t/data/2019-12-04")
+
+    s = Chain.from_series_name(c.df, "Rougon-Macquart")
+    assert list(s.sort()._df.Entry) == [str(x + 1) for x in range(20)]
 
 
 ################################################################################

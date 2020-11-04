@@ -40,6 +40,11 @@ def series_id_from_name(df, name):
     return list(df[df.Series.str.contains(name, na=False)].SeriesId)[0]
 
 
+# convert a list of entries as integers
+def _entries_for_sorting(entry):
+    return [int(x) for x in entry] if entry else None
+
+
 ################################################################################
 
 
@@ -99,7 +104,8 @@ class Chain:
     def sort(self):
         """Sort the books in-place."""
         if self.order == Order.Series:
-            self._df = self._df.iloc[self._df.Entry.str.split("|").argsort()]
+            entries = self._df.Entry.str.split("|").apply(_entries_for_sorting)
+            self._df = self._df.iloc[entries.argsort()]
         elif self.order == Order.Published:
             self._df = self._df.sort_values("Published")
         elif self.order == Order.Added:
