@@ -81,7 +81,7 @@ class Entity():
             pass
 
         # use the name by default
-        return e.label
+        return _uc_first(e.label)
 
     # returns the given property, in a hopefully useful form
     def _property(self, prop):
