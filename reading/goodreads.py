@@ -6,6 +6,7 @@ from functools import reduce
 import operator
 import re
 from xml.etree import ElementTree
+import time
 
 from dateutil.parser import parse
 import pandas as pd
@@ -27,9 +28,10 @@ def get_books():
         r = requests.get(url, params={
             'key': config('goodreads.key'),
             'v': 2,
-            'per_page': 200,
+            'per_page': 100,
             'page': page,
         })
+
         x = ElementTree.fromstring(r.content)
 
         for r in x.findall('reviews/'):
@@ -42,6 +44,8 @@ def get_books():
             break
 
         page += 1
+
+        time.sleep(1)
 
     df = pd.DataFrame(data=books).set_index('BookId')
     return df[~(df.Read < pd.Timestamp(config('goodreads.start')))]
@@ -106,6 +110,7 @@ def _fetch_book_api(book_id):
         }).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
+        time.sleep(1)
     return ElementTree.fromstring(xml)
 
 
