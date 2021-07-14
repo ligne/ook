@@ -300,7 +300,7 @@ def lint_not_rated():
     c = Collection.from_dir().shelves(["read"])
     return {
         "title": "Read but not yet rated",
-        "df": c.df[c.df.Rating == 0],
+        "df": c.df[c.df.Rating == 0].sort_values("Read"),
         "template": """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}, https://www.goodreads.com/review/edit/{{entry.Index}}
