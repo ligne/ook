@@ -21,6 +21,8 @@ def get_books():
     page = 1
     books = []
 
+    start_date = pd.Timestamp(config("goodreads.start"))
+
     while True:
         url = 'https://www.goodreads.com/review/list/{}.xml'.format(
             config('goodreads.user')
@@ -36,6 +38,10 @@ def get_books():
 
         for r in x.findall('reviews/'):
             book = process_review(r)
+
+            if book["Read"] < start_date:
+                continue
+
             api_book = fetch_book(book['BookId'])
             books.append({**api_book, **book})
 
@@ -47,8 +53,7 @@ def get_books():
 
         time.sleep(1)
 
-    df = pd.DataFrame(data=books).set_index('BookId')
-    return df[~(df.Read < pd.Timestamp(config('goodreads.start')))]
+    return pd.DataFrame(data=books).set_index("BookId")
 
 
 # extract a (possibly missing) date.
