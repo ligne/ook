@@ -65,7 +65,8 @@ def _process_fixes(fixes):
     d = pd.DataFrame(f).T
 
     # FIXME looks like an upstream bug...
-    for column in ['Read', 'Started']:
+    # https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
+    for column in ["Added", "Read", "Started"]:
         if column not in d.columns:
             continue
         d[column] = pd.to_datetime(d[column])
