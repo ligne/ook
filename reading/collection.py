@@ -50,7 +50,7 @@ def _process_fixes(fixes):
         return None
 
     f = {}
-    for fix in fixes.get('general', []):
+    for fix in fixes:
         fix = {**fix}
         book_id = fix.pop('BookId')
         f[book_id] = fix
