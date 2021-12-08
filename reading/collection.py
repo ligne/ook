@@ -49,13 +49,7 @@ def _process_fixes(fixes):
     if not fixes:
         return None
 
-    f = {}
-    for fix in fixes:
-        fix = {**fix}
-        book_id = fix.pop('BookId')
-        f[book_id] = fix
-
-    d = pd.DataFrame(f).T
+    d = pd.DataFrame(fixes).set_index("BookId")
 
     # FIXME looks like an upstream bug...
     # https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
