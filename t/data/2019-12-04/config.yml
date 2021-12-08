@@ -1,26 +1,22 @@
 fixes:
-  general:
+    # a couple of basic examples
     - BookId: 20636970  # La Curée
       Read: 2018-02-09
     - BookId: 3263729  # The Mabinogion
       Started: 2019-08-06
+    - BookId: 7022275  # Novels
+      Category: novels
+    - BookId: 816920  # Nana
+      Language: fr
+
+    # a book with multiple fixes
     - BookId: 3110594  # Zola: Le saut dans les étoiles
       Pages: 341
+      Category: non-fiction
+
       # an ebook
     - BookId: short-stories/Les_soirees_de_Medan.pdf
       Language: fr
       Pages: 777
-  columns:
-    Category:
-      non-fiction:
-        # this book has both general and columnar fixes
-        - 3110594  # Zola: Le saut dans les étoiles
-      novels:
-        - 7022275  # Novels
-    Language:
-      fr:
-        - 816920  # Nana
-        - 854442  # Au Bonheur des Dames
-        - 1424361  # Le Médecin De Campagne
 
 # vim: ts=2 : sw=2 : et

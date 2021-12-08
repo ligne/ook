@@ -161,28 +161,30 @@ def test__process_fixes():
     """Test the fix munging function."""
     assert not _process_fixes({}), "No fixes to apply"
 
-    fixes = yaml.safe_load("""
-        general:
-          - BookId: 20636970  # La Curée
-            Read: 2018-02-09
-          - BookId: 3263729  # The Mabinogion
-            Started: 2019-08-06
-        columns:
-          Category:
-            non-fiction:
-              - 1777481  # Culture and Society in France 1789-1848
-              - 3110594  # Zola: Le saut dans les étoiles
-          Language:
-            fr:
-              - 140785  # Maigret Hésite
-              - 770786  # Le Horla et autres nouvelles
-              - 816920  # Nana
-            en:
-              - 58614  # A Beleaguered City and Other Stories
-    """)
+    fixes = yaml.safe_load(
+        """
+      - BookId: 20636970  # La Curée
+        Read: 2018-02-09
+      - BookId: 3263729  # The Mabinogion
+        Started: 2019-08-06
+      - BookId: 1777481  # Culture and Society in France 1789-1848
+        Category: non-fiction
+      - BookId: 3110594  # Zola: Le saut dans les étoiles
+        Category: non-fiction
+      - BookId: 140785  # Maigret Hésite
+        Language: fr
+      - BookId: 770786  # Le Horla et autres nouvelles
+        Language: fr
+      - BookId: 816920  # Nana
+        Language: fr
+      - BookId: 58614  # A Beleaguered City and Other Stories
+        Language: en
+    """
+    )
 
-    assert _process_fixes(fixes).to_csv() == textwrap.dedent("""\
-        ,Category,Language,Read,Started
+    assert _process_fixes(fixes).to_csv() == textwrap.dedent(
+        """\
+        BookId,Category,Language,Read,Started
         20636970,,,2018-02-09,
         3263729,,,,2019-08-06
         1777481,non-fiction,,,
@@ -191,29 +193,12 @@ def test__process_fixes():
         770786,,fr,,
         816920,,fr,,
         58614,,en,,
-    """), "Rearranged some fixes"
+    """
+    ), "Rearranged some fixes"
 
     # Check the date columns are indeed dates
     assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Started.dtypes)
     assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Read.dtypes)
-
-    general_only = {k: v for k, v in fixes.items() if k == "general"}
-    assert _process_fixes(general_only).to_csv() == textwrap.dedent("""\
-        ,Read,Started
-        20636970,2018-02-09,
-        3263729,,2019-08-06
-    """), "Only general fixes"
-
-    columnar_only = {k: v for k, v in fixes.items() if k == "columns"}
-    assert _process_fixes(columnar_only).to_csv() == textwrap.dedent("""\
-        ,Category,Language
-        1777481,non-fiction,
-        3110594,non-fiction,
-        140785,,fr
-        770786,,fr
-        816920,,fr
-        58614,,en
-    """), "Only columnar fixes"
 
 
 def test_fixes(monkeypatch):
