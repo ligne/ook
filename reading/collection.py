@@ -55,13 +55,6 @@ def _process_fixes(fixes):
         book_id = fix.pop('BookId')
         f[book_id] = fix
 
-    for col, column_data in fixes.get('columns', {}).items():
-        for val, ids in column_data.items():
-            for book_id in ids:
-                if book_id not in f:
-                    f[book_id] = {}
-                f[book_id][col] = val
-
     d = pd.DataFrame(f).T
 
     # FIXME looks like an upstream bug...
