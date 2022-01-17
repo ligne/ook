@@ -50,6 +50,9 @@ Finished The Bridge by Iain Banks
   * 2016-07-19 → 2016-08-10 (22 days)
   * 288 pages, 13 pages/day
   * Rating: 4
+  * Category: novels
+  * Published: 1986
+  * Language: en
 """.strip(), 'Finished book'
 
     # read in one day
@@ -58,6 +61,9 @@ Finished A Few Notes on the Culture by Iain M. Banks
   * 2018-12-31 → 2018-12-31 (0 days)
   * 17 pages, 17 pages/day
   * Rating: 4
+  * Category: non-fiction
+  * Published: 1994
+  * Language: en
 """.strip(), 'Read in one day'
 
 

@@ -168,6 +168,9 @@ def _finished(book):
   * {{b.Pages|int}} pages, {{(b.Pages / ((b.Read - b.Started).days + 1))|round|int}} pages/day
   {%- endif %}
   * Rating: {{b.Rating|int}}
+  * Category: {{b.Category}}
+  * Published: {{b.Published|int}}
+  * Language: {{b.Language}}
 ''').render(b=book)
 
 
