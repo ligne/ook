@@ -8,7 +8,7 @@ from .collection import Collection
 from .config import metadata_prefer
 from .compare import compare
 from .wikidata import wd_search
-from .wikidata import Entity
+from .wikidata import entity
 from .goodreads import search_title, fetch_book
 from .storage import load_df, save_df
 
@@ -232,7 +232,7 @@ def find_authors(authors):
         if not resp:
             continue
 
-        author = confirm_author(Entity(resp["QID"]))
+        author = confirm_author(entity(resp["QID"]))
         if author:
             authors.loc[int(author_id)] = author
 

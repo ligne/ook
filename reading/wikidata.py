@@ -34,24 +34,32 @@ def _format_search_results(results):
 
 ###############################################################################
 
+def entity(qid):
+    """Return the Entity for $qid."""
+    fname = "data/cache/wikidata/{}.json".format(qid)
+    try:
+        with open(fname) as fh:
+            j = json.load(fh)
+    except FileNotFoundError:
+        url = f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json"
+        r = requests.get(url)
+        with open(fname, "wb") as fh:
+            fh.write(r.content)
+        j = r.json()
+    return Entity(j["entities"][qid])
+
+
 # basic operations on an entity.
 class Entity():
 
     # fetches an entity by its QID
-    def __init__(self, qid):
-        self.qid = qid
+    def __init__(self, entity):
+        self.entity = entity
 
-        fname = 'data/cache/wikidata/{}.json'.format(qid)
-        try:
-            with open(fname) as fh:
-                j = json.load(fh)
-        except FileNotFoundError:
-            url = 'https://www.wikidata.org/wiki/Special:EntityData/{}.json'.format(qid)
-            r = requests.get(url)
-            with open(fname, 'wb') as fh:
-                fh.write(r.content)
-            j = r.json()
-        self.entity = j['entities'][qid]
+    @property
+    def qid(self):
+        """Return the QID for the entity."""
+        return self.entity["title"]
 
     @property
     def gender(self):
@@ -90,7 +98,7 @@ class Entity():
         if p["type"] == "string":
             return p["value"].lower()
         elif p["type"] == "wikibase-entityid":
-            return Entity(p["value"]["id"])
+            return entity(p["value"]["id"])
 
         return p["value"]
 
@@ -110,6 +118,7 @@ class Entity():
 
 ################################################################################
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from pprint import pprint
-    pprint(Entity(sys.argv[1]).__dict__)
+
+    pprint(entity(sys.argv[1]).__dict__)

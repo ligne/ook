@@ -73,8 +73,13 @@ def test_format_search_results_no_results():
 
 ################################################################################
 
+def _load_json(qid):
+    with open(f"t/data/wikidata/entities/{qid}.json") as fh:
+        return json.load(fh)["entities"][qid]
+
+
 def test_entity():
-    entity = Entity("Q12807")
+    entity = Entity(_load_json("Q12807"))
     assert entity.qid == "Q12807"
     assert entity.label == "Umberto Eco"
     assert entity.description == (
@@ -83,27 +88,27 @@ def test_entity():
     assert entity.gender == "male"
     assert entity.nationality == "it"
 
-    entity = Entity("Q276032")
+    entity = Entity(_load_json("Q276032"))
     assert entity.qid == "Q276032"
     assert entity.label == "Edith Wharton"
     assert entity.description == "American novelist, short story writer, designer"
     assert entity.gender == "female"
     assert entity.nationality == "us"
 
-    entity = Entity("Q8018")
+    entity = Entity(_load_json("Q8018"))
     assert entity.qid == "Q8018"
     assert entity.label == "Augustine of Hippo"
     assert entity.description == "Early Christian theologian, philosopher and Church Father"
     assert entity.gender == "male"
     assert entity.nationality == "Ancient Rome"
 
-    entity = Entity("Q3302368")
+    entity = Entity(_load_json("Q3302368"))
     assert entity.label == "Max de Radiguès"
     assert entity.description == "", "Empty description"
 
 
 def test_entity_collective():
-    entity = Entity("Q2662892")
+    entity = Entity(_load_json("Q2662892"))
     assert entity.qid == "Q2662892"
     assert entity.label == "Boileau-Narcejac"
     assert entity.description == "Team of French writers"

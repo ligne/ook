@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import re
+import json
 
 import pytest
 
@@ -327,10 +328,15 @@ Q - exit without saving
 
 ################################################################################
 
+def _load_json(qid):
+    with open(f"t/data/wikidata/entities/{qid}.json") as fh:
+        return json.load(fh)["entities"][qid]
+
+
 def test_confirm_author_reject(monkeypatch, capsys):
     monkeypatch.setattr("builtins.input", lambda prompt: "n")
 
-    entity = Entity("Q12807")
+    entity = Entity(_load_json("Q12807"))
     author = confirm_author(entity)
     output = capsys.readouterr()
     assert decode_colour(output.out) == """
@@ -343,7 +349,7 @@ def test_confirm_author_reject(monkeypatch, capsys):
 def test_confirm_author_accept(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda prompt: "y")
 
-    entity = Entity("Q12807")
+    entity = Entity(_load_json("Q12807"))
     author = confirm_author(entity)
     assert author == {
         "QID": "Q12807",
@@ -357,7 +363,7 @@ def test_confirm_author_accept(monkeypatch):
 def test_confirm_author_default_accepts(monkeypatch):
     monkeypatch.setattr("builtins.input", lambda prompt: "")
 
-    entity = Entity("Q12807")
+    entity = Entity(_load_json("Q12807"))
     author = confirm_author(entity)
     assert author["Nationality"] == "it"
 
