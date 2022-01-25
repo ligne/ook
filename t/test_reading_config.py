@@ -98,7 +98,16 @@ def test_category_patterns():
     ]
 
     assert guesses == [
-        ["non-fiction", "education", "theology", "linguistics"],
+        [
+            "non-fiction",
+            "education",
+            "theology",
+            "linguistics",
+            "architecture",
+            "history",
+            "art",
+            "very-short-introductions",
+        ],
         ["novels", "fiction"],
     ]
 

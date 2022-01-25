@@ -199,7 +199,15 @@ _CATEGORIES = {
     ),
     "non-fiction": (
         ["nonfiction", "essays"],
-        ['education', "theology", "linguistics"],
+        [
+            "education",
+            "theology",
+            "linguistics",
+            "architecture",
+            "history",
+            "art",
+            "very-short-introductions",
+        ],
     ),
     "novels": (
         ["novel", "roman", "romans"],
