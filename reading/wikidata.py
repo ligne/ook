@@ -49,12 +49,12 @@ def entity(qid):
     return Entity(j["entities"][qid])
 
 
-# basic operations on an entity.
-class Entity():
+class Entity:
+    """Basic operations on a Wikidata entity."""
 
     # fetches an entity by its QID
-    def __init__(self, entity):
-        self.entity = entity
+    def __init__(self, e):
+        self.entity = e
 
     @property
     def qid(self):
