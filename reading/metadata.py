@@ -158,21 +158,23 @@ def lookup_author(author):
 
 # check the author data looks reasonable
 # FIXME Do This Properly, and allow editing
-def confirm_author(entity):
+def confirm_author(e):
     """Get user confirmation and return a dict of the interesting fields."""
-    author = {
-        "QID": entity.qid,
-        "Author": entity.label,
-        "Gender": entity.gender,
-        "Nationality": entity.nationality,
-        "Description": entity.description,
-    }
-
-    print("\n\033[32m{Author}: {Gender}, {Nationality}\033[0m".format(**author))
+    print(f"\n\033[32m{e.label}: {e.gender}, {e.nationality}\033[0m")
     c = input("Is this correct? [Y/n] ")
     print()
 
-    return None if (c and c != "y") else author
+    return (
+        None
+        if (c and c != "y")
+        else {
+            "QID": e.qid,
+            "Author": e.label,
+            "Gender": e.gender,
+            "Nationality": e.nationality,
+            "Description": e.description,
+        }
+    )
 
 
 ################################################################################
