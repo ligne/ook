@@ -118,9 +118,13 @@ def _fetch_book_api(book_id):
         xml = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
             'key': config('goodreads.key'),
         }).content
+
+        # test it actually parses before saving...
+        ElementTree.fromstring(xml)
+
         with open(fname, 'wb') as fh:
             fh.write(xml)
-        time.sleep(1)
+        time.sleep(10)
     return ElementTree.fromstring(xml)
 
 
