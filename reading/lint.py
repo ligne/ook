@@ -53,7 +53,8 @@ def lint_missing_category():
 
 
 def lint_missing_published_date():
-    c = Collection.from_dir().shelves(["pending", "ebooks", "elsewhere", "read"])
+    c = Collection.from_dir().shelves(exclude=["kindle", "to-read"])
+
     return {
         'title': 'Missing a published date',
         'df': c.df[c.df.Published.isnull()],
