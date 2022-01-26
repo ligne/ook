@@ -181,6 +181,11 @@ def lint_scheduling():
 
 
 def lint_duplicates():
+    acceptable = [
+        "library, kindle",
+        "ebooks, kindle",
+    ]
+
     df = Collection.from_dir(merge=True).df
 
     # FIXME move this into the Collection and make it non-manky
@@ -191,7 +196,7 @@ def lint_duplicates():
         'Work': 'first',
         'Shelf': lambda x: ', '.join(list(x)),
     })
-    df = df.groupby('Work').filter(lambda x: x.Shelf != 'ebooks, kindle')
+    df = df.groupby("Work").filter(lambda x: ~x.Shelf.isin(acceptable))
 
     return {
         'title': 'Duplicate books',
