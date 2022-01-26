@@ -91,7 +91,12 @@ def process_review(r):
 
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id):
-    api_book = _fetch_book_api(book_id)
+    try:
+        api_book = _fetch_book_api(book_id)
+    except requests.exceptions.TooManyRedirects:
+        print(f"Retrying {book_id}")
+        api_book = _fetch_book_api(book_id)
+
     book = _parse_book_api(api_book)
 
     # fetch series information
