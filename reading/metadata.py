@@ -1,18 +1,16 @@
 # vim: ts=4 : sw=4 : et
 
 import shutil
+
 from jinja2 import Template
 import pandas as pd
 
-from .collection import Collection
-from .config import metadata_prefer
+from .collection import Collection, _ebook_parse_title
 from .compare import compare
-from .wikidata import wd_search
-from .wikidata import entity
-from .goodreads import search_title, fetch_book
+from .config import metadata_prefer
+from .goodreads import fetch_book, search_title
 from .storage import load_df, save_df
-
-from .collection import _ebook_parse_title
+from .wikidata import entity, wd_search
 
 
 ################################################################################
