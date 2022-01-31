@@ -243,7 +243,7 @@ def lint_binding():
 
 
 def lint_author_metadata():
-    df = Collection.from_dir().shelves(["read"]).df  # FIXME
+    df = Collection.from_dir().shelves(exclude=["kindle"]).df
 
     return {
         'title': 'Missing author metadata',
