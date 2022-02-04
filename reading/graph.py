@@ -27,6 +27,17 @@ tomorrow = today + pd.Timedelta('1 day')
 
 ################################################################################
 
+_GRAPHS = {}
+
+
+def graph(func):
+    """Register a graph function."""
+    _GRAPHS[func.__name__] = func
+    return func
+
+
+################################################################################
+
 # from shelf, in direction = date added/read.
 def _pages_changed(df, shelf, direction):
     return df[df.Shelf == shelf] \
@@ -66,6 +77,7 @@ def save_image(df, name, start=None):
 
 # draw graphs of my backlog over time, both as a number of pages and scaled by
 # reading rate.
+@graph
 def backlog():
     df = Collection.from_dir().df
 
@@ -93,6 +105,7 @@ def backlog():
     save_image(p.divide(rate, axis=0), 'backlog', start=start)
 
 
+@graph
 def increase():
     df = Collection.from_dir().df
 
@@ -115,6 +128,7 @@ def increase():
 
 
 # number of new authors a year
+@graph
 def new_authors():
     authors = Collection.from_dir().shelves(["read"]).df
     first = authors.set_index('Read').sort_index().Author.drop_duplicates()
@@ -136,6 +150,7 @@ def new_authors():
     plt.close()
 
 
+@graph
 def median_date():
     read = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
 
@@ -156,6 +171,7 @@ def median_date():
     plt.close()
 
 
+@graph
 def length():
     read = Collection.from_dir().shelves(["read"]).df
     read = read.set_index("Read").Pages.resample("D").mean()
@@ -170,6 +186,7 @@ def length():
 
 
 # ratio of old/new books
+@graph
 def oldness():
     df = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
 
@@ -199,6 +216,7 @@ def oldness():
     plt.close()
 
 
+@graph
 def gender():
     df = Collection.from_dir().shelves(["read"]).df
     df.Gender = df.Gender.fillna('unknown')
@@ -223,6 +241,7 @@ def gender():
     plt.close()
 
 
+@graph
 def language():
     df = Collection.from_dir().shelves(["read"]).df
 
@@ -246,6 +265,7 @@ def language():
     plt.close()
 
 
+@graph
 def category():
     df = Collection.from_dir().shelves(["read"]).df
 
@@ -270,6 +290,7 @@ def category():
 
 
 # plot total/new nationalities over the preceding year
+@graph
 def nationality():
     df = Collection.from_dir().shelves(["read"]).df
 
@@ -305,6 +326,7 @@ def nationality():
 
 
 # plot reading rate so far.
+@graph
 def reading_rate():
     df = Collection.from_dir().df
     completed = _pages_changed(df, 'read', 'Read')
@@ -328,6 +350,7 @@ def reading_rate():
     plt.close()
 
 
+@graph
 def rate_area():
     df = Collection.from_dir().shelves(["read"]).df
 
@@ -352,6 +375,7 @@ def rate_area():
     plt.close()
 
 
+@graph
 def doy():
     df = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Read"])
 
@@ -399,6 +423,7 @@ def scheduled_years(df):
 
 
 # plot reading schedule against time left, with warnings.
+@graph
 def scheduled():
     df = Collection.from_dir().df
     _set_schedules(df, config("scheduled"))
@@ -458,19 +483,8 @@ def scheduled():
 
 ################################################################################
 
-def main(_args):
-    length()
-    doy()
-    nationality()
-    gender()
-    language()
-    category()
-    rate_area()
-    oldness()
-    median_date()
-    scheduled()
-    backlog()
-    increase()
-    new_authors()
-    reading_rate()
-
+def main(args):
+    for name, func in _GRAPHS.items():
+        if args.pattern and args.pattern not in name:
+            continue
+        func()
