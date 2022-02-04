@@ -101,6 +101,21 @@ def lint_dates():
 
 
 @linter
+def lint_started_before_added():
+    c = Collection.from_dir()
+    return {
+        'title': 'Book started before being added',
+        'df': c.df[c.df.Started < c.df.Added],
+        'template': """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}: {{entry.Added.date()}} - {{entry.Started.date()}}
+{%- endfor %}
+
+""",
+    }
+
+
+@linter
 def lint_missing_language():
     c = Collection.from_dir()
     return {
