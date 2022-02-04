@@ -1,10 +1,25 @@
 # vim: ts=4 : sw=4 : et
 
-from .collection import _process_fixes
-from .collection import Collection
+from jinja2 import Template
+
+from .collection import Collection, _process_fixes
 from .config import config
 
 
+################################################################################
+
+_LINTERS = {}
+
+
+def linter(func):
+    """Register a linter function."""
+    _LINTERS[func.__name__] = func
+    return func
+
+
+################################################################################
+
+@linter
 def lint_missing_pagecount():
     c = Collection.from_dir().shelves(exclude=["to-read"])
     return {
@@ -19,6 +34,7 @@ def lint_missing_pagecount():
     }
 
 
+@linter
 def lint_words_per_page():
     c = Collection.from_dir(fixes=None, merge=True).shelves(["kindle"])
 
@@ -38,6 +54,7 @@ def lint_words_per_page():
     }
 
 
+@linter
 def lint_missing_category():
     c = Collection.from_dir()
     return {
@@ -52,6 +69,7 @@ def lint_missing_category():
     }
 
 
+@linter
 def lint_missing_published_date():
     c = Collection.from_dir().shelves(exclude=["kindle", "to-read"])
 
@@ -67,6 +85,7 @@ def lint_missing_published_date():
     }
 
 
+@linter
 def lint_dates():
     c = Collection.from_dir().shelves(["read"])
     return {
@@ -81,6 +100,7 @@ def lint_dates():
     }
 
 
+@linter
 def lint_missing_language():
     c = Collection.from_dir()
     return {
@@ -95,6 +115,7 @@ def lint_missing_language():
     }
 
 
+@linter
 def lint_scheduled_misshelved():
     c = Collection.from_dir().shelves(["read", "currently-reading", "to-read"])
     return {
@@ -111,6 +132,7 @@ def lint_scheduled_misshelved():
 
 
 # scheduled books by authors i've already read this year
+@linter
 def lint_overscheduled():
     c = Collection.from_dir(merge=True)
     df = c.df
@@ -151,6 +173,7 @@ def lint_overscheduled():
     }
 
 
+@linter
 def lint_scheduling():
     c = Collection.from_dir()
 
@@ -180,6 +203,7 @@ def lint_scheduling():
     }
 
 
+@linter
 def lint_duplicates():
     acceptable = [
         "library, kindle",
@@ -212,6 +236,7 @@ def lint_duplicates():
 
 
 # books in dubious formats
+@linter
 def lint_binding():
     good_bindings = [
         'Paperback',
@@ -242,6 +267,7 @@ def lint_binding():
     }
 
 
+@linter
 def lint_author_metadata():
     df = Collection.from_dir().shelves(exclude=["kindle"]).df
 
@@ -258,6 +284,7 @@ def lint_author_metadata():
 
 
 # books on elsewhere shelf that are not marked as borrowed.
+@linter
 def lint_missing_borrowed():
     c = Collection.from_dir().shelves(["elsewhere", "library"]).borrowed(False)
     return {
@@ -273,6 +300,7 @@ def lint_missing_borrowed():
 
 
 # books on elsewhere shelf that are not marked as borrowed.
+@linter
 def lint_extraneous_borrowed():
     c = Collection.from_dir().shelves(["to-read"]).borrowed(True)
     return {
@@ -288,6 +316,7 @@ def lint_extraneous_borrowed():
 
 
 # books i've borrowed that need to be returned.
+@linter
 def lint_needs_returning():
     c = Collection.from_dir().shelves(["read"]).borrowed(True)
     return {
@@ -302,6 +331,7 @@ def lint_needs_returning():
     }
 
 
+@linter
 def lint_not_rated():
     c = Collection.from_dir().shelves(["read"])
     return {
@@ -318,6 +348,7 @@ def lint_not_rated():
 
 # find unnecessary fixes
 # FIXME update
+@linter
 def lint_fixes():
     c = Collection.from_dir(fixes=None)
 
@@ -347,27 +378,23 @@ def lint_fixes():
 ################################################################################
 
 def main(args):
-    # run them all
-    n = __import__(__name__)
-    for f in [x for x in dir(n.lint) if x.startswith('lint_')]:
-        if args.pattern and args.pattern not in f:
+    for name, func in _LINTERS.items():
+        if args.pattern and args.pattern not in name:
             continue
 
-        report = getattr(n.lint, f)()
+        report = func()
 
         # FIXME
-        if report is None or 'df' not in report:
+        if report is None or "df" not in report:
             print(report)
             continue
 
-        if not len(report['df']):  # pylint: disable=len-as-condition
+        if not len(report["df"]):  # pylint: disable=len-as-condition
             continue
 
-        print('=== {} ==='.format(report['title']))
-        from jinja2 import Template
+        print(f"=== {report['title']} ===")
 
-        if 'template' not in report:
+        if "template" not in report:
             continue
 
-        print(Template(report['template']).render(df=report['df']))
-
+        print(Template(report["template"]).render(df=report["df"]))
