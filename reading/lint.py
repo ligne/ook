@@ -21,9 +21,9 @@ def linter(func):
 
 @linter
 def lint_missing_pagecount():
+    """Missing a pagecount."""
     c = Collection.from_dir().shelves(exclude=["to-read"])
     return {
-        'title': 'Missing a pagecount',
         'df': c.df[c.df.Pages.isnull()],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -36,13 +36,13 @@ def lint_missing_pagecount():
 
 @linter
 def lint_words_per_page():
+    """Unusual words per page."""
     c = Collection.from_dir(fixes=None, merge=True).shelves(["kindle"])
 
     df = c.df
     df['wpp'] = df.Words / df.Pages
 
     return {
-        'title': 'Unusual words per page',
         'df': df[(df.wpp < 150) | (df.wpp > 700) & (df.Pages > 10)],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -56,9 +56,9 @@ def lint_words_per_page():
 
 @linter
 def lint_missing_category():
+    """Missing a category."""
     c = Collection.from_dir()
     return {
-        'title': 'Missing a category',
         'df': c.df[c.df.Category.isnull()],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -71,10 +71,10 @@ def lint_missing_category():
 
 @linter
 def lint_missing_published_date():
+    """Missing a published date."""
     c = Collection.from_dir().shelves(exclude=["kindle", "to-read"])
 
     return {
-        'title': 'Missing a published date',
         'df': c.df[c.df.Published.isnull()],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -87,9 +87,9 @@ def lint_missing_published_date():
 
 @linter
 def lint_dates():
+    """Finished date before Started date."""
     c = Collection.from_dir().shelves(["read"])
     return {
-        'title': 'Finished before starting',
         'df': c.df[c.df.Read < c.df.Started],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -102,11 +102,11 @@ def lint_dates():
 
 @linter
 def lint_started_before_added():
+    """Start date before Added date."""
     c = Collection.from_dir()
     return {
-        'title': 'Book started before being added',
-        'df': c.df[c.df.Started < c.df.Added],
-        'template': """
+        "df": c.df[c.df.Started < c.df.Added],
+        "template": """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}: {{entry.Added.date()}} - {{entry.Started.date()}}
 {%- endfor %}
@@ -117,9 +117,9 @@ def lint_started_before_added():
 
 @linter
 def lint_missing_language():
+    """Missing a langugage."""
     c = Collection.from_dir()
     return {
-        'title': 'Missing a language',
         'df': c.df[c.df.Language.isnull()],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -132,9 +132,9 @@ def lint_missing_language():
 
 @linter
 def lint_scheduled_misshelved():
+    """Scheduled books on wrong shelves."""
     c = Collection.from_dir().shelves(["read", "currently-reading", "to-read"])
     return {
-        'title': 'Scheduled books on wrong shelves',
         'df': c.df[c.df.Scheduled.notnull()],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -149,6 +149,7 @@ def lint_scheduled_misshelved():
 # scheduled books by authors i've already read this year
 @linter
 def lint_overscheduled():
+    """Multiple scheduled books by the same author."""
     c = Collection.from_dir(merge=True)
     df = c.df
 
@@ -177,7 +178,6 @@ def lint_overscheduled():
     ]
 
     return {
-        "title": "Multiple scheduled books by the same author",
         "df": df,
         "template": """
 {%- for entry in df.itertuples() %}
@@ -190,6 +190,7 @@ def lint_overscheduled():
 
 @linter
 def lint_scheduling():
+    """Mis-scheduled books."""
     c = Collection.from_dir()
 
     df = c.df
@@ -206,7 +207,6 @@ def lint_scheduling():
     df = df[df.Scheduled.dt.year != df.Expected.dt.year]
 
     return {
-        'title': 'Mis-scheduled books',
         'df': df,
         'template': """
 {%- for entry in df.itertuples() %}
@@ -220,6 +220,7 @@ def lint_scheduling():
 
 @linter
 def lint_duplicates():
+    """Duplicate books."""
     acceptable = [
         "library, kindle",
         "ebooks, kindle",
@@ -238,7 +239,6 @@ def lint_duplicates():
     df = df.groupby("Work").filter(lambda x: ~x.Shelf.isin(acceptable))
 
     return {
-        'title': 'Duplicate books',
         'df': df,
         'template': """
 {%- for entry in df.itertuples() %}
@@ -253,6 +253,7 @@ def lint_duplicates():
 # books in dubious formats
 @linter
 def lint_binding():
+    """Bad binding."""
     good_bindings = [
         'Paperback',
         'paperback',
@@ -268,7 +269,6 @@ def lint_binding():
     ]
     c = Collection.from_dir().shelves(exclude=["kindle"])
     return {
-        'title': 'Bad binding',
         'df': c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
         'template': """
 {%- for binding, books in df.groupby('Binding') %}
@@ -284,10 +284,10 @@ def lint_binding():
 
 @linter
 def lint_author_metadata():
+    """Missing author metadata."""
     df = Collection.from_dir().shelves(exclude=["kindle"]).df
 
     return {
-        'title': 'Missing author metadata',
         'df': df[df[['Nationality', 'Gender']].isnull().any(axis='columns')],
         'template': """
 {%- for entry in df.itertuples() %}
@@ -298,12 +298,11 @@ def lint_author_metadata():
     }
 
 
-# books on elsewhere shelf that are not marked as borrowed.
 @linter
 def lint_missing_borrowed():
+    """Not at home but not marked as borrowed."""
     c = Collection.from_dir().shelves(["elsewhere", "library"]).borrowed(False)
     return {
-        'title': 'Elsewhere but not marked as borrowed',
         'df': c.df,
         'template': """
 {%- for entry in df.itertuples() %}
@@ -314,12 +313,11 @@ def lint_missing_borrowed():
     }
 
 
-# books on elsewhere shelf that are not marked as borrowed.
 @linter
 def lint_extraneous_borrowed():
+    """To-read but marked as borrowed."""
     c = Collection.from_dir().shelves(["to-read"]).borrowed(True)
     return {
-        'title': 'To-read but marked as borrowed',
         'df': c.df,
         'template': """
 {%- for entry in df.itertuples() %}
@@ -330,12 +328,11 @@ def lint_extraneous_borrowed():
     }
 
 
-# books i've borrowed that need to be returned.
 @linter
 def lint_needs_returning():
+    """Borrowed books to return."""
     c = Collection.from_dir().shelves(["read"]).borrowed(True)
     return {
-        'title': 'Borrowed books to return',
         'df': c.df,
         'template': """
 {%- for entry in df.itertuples() %}
@@ -348,9 +345,9 @@ def lint_needs_returning():
 
 @linter
 def lint_not_rated():
+    """Read but not yet rated."""
     c = Collection.from_dir().shelves(["read"])
     return {
-        "title": "Read but not yet rated",
         "df": c.df[c.df.Rating == 0].sort_values("Read"),
         "template": """
 {%- for entry in df.itertuples() %}
@@ -365,6 +362,7 @@ def lint_not_rated():
 # FIXME update
 @linter
 def lint_fixes():
+    """Unneeded fixes."""
     c = Collection.from_dir(fixes=None)
 
     fixes = _process_fixes(config('fixes'))
@@ -379,7 +377,6 @@ def lint_fixes():
                 errors.append("Unnecessary entry [{},{}]".format(book_id, col))
 
     return {
-        'title': 'Fixes',
         'df': errors,
         'template': """
 {%- for entry in df %}
@@ -407,7 +404,11 @@ def main(args):
         if not len(report["df"]):  # pylint: disable=len-as-condition
             continue
 
-        print(f"=== {report['title']} ===")
+        title = func.__doc__
+        if title.endswith("."):
+            title = title[:-1]
+
+        print(f"=== {title} ===")
 
         if "template" not in report:
             continue
