@@ -140,12 +140,12 @@ _COLUMNS = [
     },
     {
         "name": "Gender",
-        "store": ["authors"],
+        "store": ["authors", "metadata"],
         "merge": "first",
     },
     {
         "name": "Nationality",
-        "store": ["authors"],
+        "store": ["authors", "metadata"],
         "merge": "first",
     },
     {

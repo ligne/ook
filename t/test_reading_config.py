@@ -68,6 +68,8 @@ def test_df_colums():
         "Entry",
         "Published",
         "Pages",
+        "Gender",
+        "Nationality",
     ], "Columns for metadata.csv"
 
 
