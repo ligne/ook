@@ -283,13 +283,29 @@ def lint_binding():
 
 
 @linter
-def lint_author_metadata():
-    """Missing author metadata."""
+def missing_nationality():
+    """Missing author nationality."""
     df = Collection.from_dir().shelves(exclude=["kindle"]).df
 
     return {
-        'df': df[df[['Nationality', 'Gender']].isnull().any(axis='columns')],
-        'template': """
+        "df": df[df.Nationality.isnull()].sort_values(["Author", "Title"]),
+        "template": """
+{%- for entry in df.itertuples() %}
+{{entry.Author}}, {{entry.Title}}
+{%- endfor %}
+
+""",
+    }
+
+
+@linter
+def missing_gender():
+    """Missing author gender."""
+    df = Collection.from_dir().shelves(exclude=["kindle"]).df
+
+    return {
+        "df": df[df.Gender.isnull()].sort_values(["Author", "Title"]),
+        "template": """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}
 {%- endfor %}
