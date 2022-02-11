@@ -67,6 +67,7 @@ def test_df_colums():
         "SeriesId",
         "Entry",
         "Published",
+        "Language",
         "Pages",
         "Gender",
         "Nationality",

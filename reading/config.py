@@ -95,7 +95,7 @@ _COLUMNS = [
     },
     {
         "name": "Language",
-        "store": ["goodreads", "ebooks", "books"],
+        "store": ["goodreads", "ebooks", "books", "metadata"],
         "prefer": "book",
         "merge": "first",
     },
