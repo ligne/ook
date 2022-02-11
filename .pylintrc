@@ -13,10 +13,7 @@ enable=all
 disable=
         protected-access,
         locally-disabled,
-        cyclic-import,
-        using-constant-test,
         suppressed-message,
-        #
         #
         # possibly false positives?
         stop-iteration-return,
