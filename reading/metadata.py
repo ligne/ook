@@ -7,7 +7,7 @@ import pandas as pd
 
 from .collection import Collection, _ebook_parse_title
 from .compare import compare
-from .config import metadata_prefer
+from .config import config, df_columns, metadata_prefer
 from .goodreads import fetch_book, search_title
 from .storage import load_df, save_df
 from .wikidata import entity, wd_search
@@ -239,27 +239,31 @@ def find_authors(authors):
 
 ################################################################################
 
-# regenerates the metadata based on what has been gathered.
-def rebuild(books, works):
+def rebuild(books, works, authors):
+    """Rebuild the metadata and return it as a dataframe."""
     prefer_work_cols = metadata_prefer("work")
     prefer_book_cols = metadata_prefer("book")
 
-    books_mask = pd.concat([
-        books.notnull()[prefer_book_cols],
-        works.isnull()[prefer_work_cols],
-    ], axis=1, sort=False)
+    # add in any missing columns, to make things easier
+    books = books.reindex(columns=df_columns("metadata"))
 
-    works_mask = pd.concat([
-        works.notnull()[prefer_work_cols],
-        books.isnull()[prefer_book_cols],
-    ], axis=1, sort=False)
+    # create an empty dataframe the right size
+    metadata = pd.DataFrame().reindex_like(books)
 
-    metadata = pd.concat([
-        works.where(works_mask),
-        books.where(books_mask),
-    ], sort=False)
+    # fill in one set of columns
+    metadata.update(books[prefer_work_cols])
+    metadata.update(works[prefer_work_cols])
 
-    (metadata, books) = metadata.align(books, "inner")
+    # fill in the other
+    metadata.update(works[prefer_book_cols])
+    metadata.update(books[prefer_book_cols])
+
+    # populate the author metadata
+    metadata.update(
+        metadata[metadata.AuthorId.isin(authors.index)].AuthorId.apply(
+            lambda x: authors.loc[x, ["Gender", "Nationality"]]
+        )
+    )
 
     # filter out no-op changes and empty rows
     return metadata[books != metadata].dropna(how="all", axis="index")
@@ -268,18 +272,32 @@ def rebuild(books, works):
 ################################################################################
 
 def main(args):
-    old = Collection.from_dir().df
+    old = Collection.from_dir(fixes=False).df
 
-    if not args.find:
-        return
+    if args.find:
+        find(args.find)
 
-    find(args.find)
+    # rebuild things
+    books = load_df("books")
 
-    new = old.copy()
-    metadata = rebuild(Collection.from_dir(metadata=False).df, load_df("books"))
+    # load the authors and add in the fixes
+    authors = load_df("authors")
+    fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
+    authors.reindex(authors.index.intersection(fixes.index))
+    authors.update(fixes)
 
-    new.update(metadata)
+    new = Collection.from_dir(metadata=False, fixes=False).df
+
+    # this has to be done in two parts, because pandas does not like indexes
+    # containing multiple types
+    gr_metadata = rebuild(load_df("goodreads"), books, authors)
+    ebook_metadata = rebuild(load_df("ebooks"), books, authors)
+
+    new.update(gr_metadata)
+    new.update(ebook_metadata)
+
     compare(old, new)
 
     if not args.ignore_changes:
-        save_df("metadata", metadata)
+        save_df("metadata", ebook_metadata, fname="data/metadata-ebooks.csv")
+        save_df("metadata", gr_metadata, fname="data/metadata-gr.csv")
