@@ -5,7 +5,6 @@ import re
 
 import pytest
 
-from reading.collection import Collection
 from reading.metadata import (
     FullExit,
     SaveExit,
