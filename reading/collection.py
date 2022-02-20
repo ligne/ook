@@ -61,6 +61,18 @@ def _process_fixes(fixes):
     return d
 
 
+def expand_ebooks(ebooks):
+    """Set default/derived columns on the ebooks dataframe."""
+    return ebooks.assign(
+        Shelf="kindle",
+        Borrowed=False,
+        Binding="ebook",
+        Pages=lambda df: df.Words / config("kindle.words_per_page"),
+        # FIXME not needed?
+        Author=lambda df: df.Author.fillna(""),
+    )
+
+
 ################################################################################
 
 def read_authorids(c):
@@ -127,17 +139,7 @@ class Collection:
     def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
         """Create a collection from the contents of $csv_dir."""
         gr_df = load_df("goodreads", dirname=csv_dir)
-
-        ebooks_df = load_df("ebooks", dirname=csv_dir).assign(
-            # calculate page count
-            Pages=lambda df: df.Words / config("kindle.words_per_page"),
-            # set default columns
-            Shelf="kindle",
-            Binding="ebook",
-            Borrowed=False,
-            # FIXME not needed?
-            Author=lambda df: df.Author.fillna(""),
-        )
+        ebooks_df = expand_ebooks(load_df("ebooks", dirname=csv_dir))
 
         df = pd.concat([gr_df, ebooks_df], sort=False)
 
