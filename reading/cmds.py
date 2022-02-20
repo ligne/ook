@@ -62,10 +62,12 @@ def arg_parser():
     subparsers = parser.add_subparsers(title='subcommands', dest='mode')
     subparsers.required = True
 
-    update = subparsers.add_parser('update', argument_default=[])
-    update.add_argument('--goodreads', dest='update', action='append_const', const='goodreads')
-    update.add_argument('--kindle', dest='update', action='append_const', const='kindle')
-    update.add_argument('--scrape', dest='update', action='append_const', const='scrape')
+    update = subparsers.add_parser("update", argument_default=[])
+    update.add_argument("--goodreads", dest="update", action="append_const", const="goodreads")
+    update.add_argument("--kindle", dest="update", action="append_const", const="kindle")
+    update.add_argument("--scrape", dest="update", action="append_const", const="scrape")
+    # FIXME split this into books and authors?
+    update.add_argument("--metadata", dest="update", action="append_const", const="metadata")
 
     metadata = subparsers.add_parser('metadata')
     metadata_choices = ['books', 'authors']
