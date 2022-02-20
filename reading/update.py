@@ -11,8 +11,7 @@ from .storage import load_df, save_df
 from .wordcounts import process
 
 
-def update_goodreads(args):
-    old = load_df("goodreads")
+def update_goodreads(args, old):
     new = get_books()
 
     if not args.ignore_changes:
@@ -23,8 +22,7 @@ def update_goodreads(args):
     # FIXME update series
 
 
-def update_kindle(args):
-    old = load_df("ebooks")
+def update_kindle(args, old):
     new = process(old, force=args.force)
 
     if not args.ignore_changes:
@@ -33,11 +31,9 @@ def update_kindle(args):
     compare(old, new, use_work=False)
 
 
-def update_scrape(args):
+def update_scrape(args, old):
     c = Collection.from_dir(fixes=None)
     df = c.df
-
-    old = Collection.from_dir().df
 
     fixes = rebuild(scrape(config('goodreads.html')), df)
 
@@ -63,8 +59,8 @@ def main(args):
 
     # dispatch to the update commands in a sensible order
     if "goodreads" in args.update:
-        update_goodreads(args)
+        update_goodreads(args, goodreads)
     if "kindle" in args.update:
-        update_kindle(args)
+        update_kindle(args, ebooks)
     if "scrape" in args.update:
-        update_scrape(args)
+        update_scrape(args, scraped)
