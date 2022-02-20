@@ -64,9 +64,9 @@ def main(args):
     authors = load_df("authors")
 
     # dispatch to the update commands in a sensible order
-    if "goodreads" in args.update:
+    if args.goodreads:
         goodreads = update_goodreads(args, goodreads)
-    if "kindle" in args.update:
+    if args.kindle:
         ebooks = update_kindle(args, ebooks)
-    if "scrape" in args.update:
+    if args.scrape:
         scraped = update_scrape(args, scraped)

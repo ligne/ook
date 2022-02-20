@@ -62,12 +62,34 @@ def test_arg_parser():
     args = _parse_cmdline("ook suggest")
     assert "articles" not in args.categories
 
-    assert _parse_cmdline('ook update'), "Doesn't do very much, but it works"
-    assert _parse_cmdline('ook update --goodreads')
-    assert _parse_cmdline('ook update --scrape')
-    assert _parse_cmdline('ook update --scrape --goodreads')
-    # FIXME check that the right variables are set?
 
+def test_update_args():
+    args = _parse_cmdline("ook update")
+    assert args, "Doesn't do very much, but it works"
+    assert args.save is True, "save by default"
+    assert not args.goodreads
+    assert not args.scrape
+    assert not args.kindle
+
+    args = _parse_cmdline("ook update -n")
+    assert args.save is False, "-n prevents saving"
+
+    args = _parse_cmdline("ook update --goodreads")
+    assert args.goodreads, "goodreads is set to be updated"
+    assert not args.scrape, "...but scrape is not"
+    assert not args.kindle, "...and neither is kindle"
+
+    args = _parse_cmdline("ook update --scrape")
+    assert not args.goodreads, "goodreads is not to be updated"
+    assert args.scrape, "...but scrape is"
+
+    args = _parse_cmdline("ook update --scrape --goodreads")
+    assert args.goodreads, "goodreads is set to be updated"
+    assert args.scrape, "...as is scrape..."
+    assert not args.kindle, "...but kindle is still not"
+
+
+def test_metadata_args():
     assert _parse_cmdline('ook metadata')
     args = _parse_cmdline('ook metadata --find')
     assert args.find == ['books', 'authors']
