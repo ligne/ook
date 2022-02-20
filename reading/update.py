@@ -53,6 +53,14 @@ def scrape(args):
 ################################################################################
 
 def main(args):
+    old = Collection.from_dir().df
+
+    goodreads = load_df("goodreads")
+    ebooks = load_df("ebooks")
+    scraped = load_df("scraped")
+    books = load_df("books")
+    authors = load_df("authors")
+
     # dispatch to the update commands in a sensible order
     if 'goodreads' in args.update:
         goodreads(args)
