@@ -166,6 +166,7 @@ class Collection:
 
         if fixes:
             df.update(load_df("scraped", dirname=csv_dir))
+            # FIXME move into the config module?
             fixes = _process_fixes(config("fixes"))
             if fixes is not None:
                 df.update(fixes)
