@@ -21,6 +21,8 @@ def update_goodreads(args, old):
 
     # FIXME update series
 
+    return new
+
 
 def update_kindle(args, old):
     new = process(old, force=args.force)
@@ -29,6 +31,8 @@ def update_kindle(args, old):
         save_df("ebooks", new)
 
     compare(old, new, use_work=False)
+
+    return new
 
 
 def update_scrape(args, old):
@@ -43,6 +47,8 @@ def update_scrape(args, old):
     new = Collection.from_dir().df
 
     compare(old, new)
+
+    return new
 
 
 ################################################################################
@@ -59,8 +65,8 @@ def main(args):
 
     # dispatch to the update commands in a sensible order
     if "goodreads" in args.update:
-        update_goodreads(args, goodreads)
+        goodreads = update_goodreads(args, goodreads)
     if "kindle" in args.update:
-        update_kindle(args, ebooks)
+        ebooks = update_kindle(args, ebooks)
     if "scrape" in args.update:
-        update_scrape(args, scraped)
+        scraped = update_scrape(args, scraped)
