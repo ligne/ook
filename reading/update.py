@@ -70,3 +70,11 @@ def main(args):
         ebooks = update_kindle(args, ebooks)
     if args.scrape:
         scraped = update_scrape(args, scraped)
+
+    # save if necessary
+    if args.save:
+        save_df("goodreads", goodreads, fname="shadow/goodreads.csv")
+        save_df("ebooks", ebooks, fname="shadow/ebooks.csv")
+        save_df("scraped", scraped, fname="shadow/scraped.csv")
+        save_df("books", books, fname="shadow/books.csv")
+        save_df("authors", authors, fname="shadow/authors.csv")
