@@ -6,13 +6,12 @@ from .collection import Collection
 from .compare import compare
 from .config import config
 from .goodreads import get_books
-from .scrape import rebuild
-from .scrape import scrape as _scrape
+from .scrape import rebuild, scrape
 from .storage import load_df, save_df
 from .wordcounts import process
 
 
-def goodreads(args):
+def update_goodreads(args):
     old = load_df("goodreads")
     new = get_books()
 
@@ -24,7 +23,7 @@ def goodreads(args):
     # FIXME update series
 
 
-def kindle(args):
+def update_kindle(args):
     old = load_df("ebooks")
     new = process(old, force=args.force)
 
@@ -34,13 +33,13 @@ def kindle(args):
     compare(old, new, use_work=False)
 
 
-def scrape(args):
+def update_scrape(args):
     c = Collection.from_dir(fixes=None)
     df = c.df
 
     old = Collection.from_dir().df
 
-    fixes = rebuild(_scrape(config('goodreads.html')), df)
+    fixes = rebuild(scrape(config('goodreads.html')), df)
 
     if not args.ignore_changes:
         save_df("scraped", fixes)
@@ -52,6 +51,7 @@ def scrape(args):
 
 ################################################################################
 
+
 def main(args):
     old = Collection.from_dir().df
 
@@ -62,10 +62,9 @@ def main(args):
     authors = load_df("authors")
 
     # dispatch to the update commands in a sensible order
-    if 'goodreads' in args.update:
-        goodreads(args)
-    if 'kindle' in args.update:
-        kindle(args)
-    if 'scrape' in args.update:
-        scrape(args)
-
+    if "goodreads" in args.update:
+        update_goodreads(args)
+    if "kindle" in args.update:
+        update_kindle(args)
+    if "scrape" in args.update:
+        update_scrape(args)
