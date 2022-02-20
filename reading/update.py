@@ -1,14 +1,18 @@
 # vim: ts=4 : sw=4 : et
 
+"""The update command."""
+
 from .collection import Collection
 from .compare import compare
 from .config import config
+from .goodreads import get_books
+from .scrape import rebuild
+from .scrape import scrape as _scrape
 from .storage import load_df, save_df
+from .wordcounts import process
 
 
 def goodreads(args):
-    from .goodreads import get_books
-
     old = load_df("goodreads")
     new = get_books()
 
@@ -21,8 +25,6 @@ def goodreads(args):
 
 
 def kindle(args):
-    from .wordcounts import process
-
     old = load_df("ebooks")
     new = process(old, force=args.force)
 
@@ -33,8 +35,6 @@ def kindle(args):
 
 
 def scrape(args):
-    from .scrape import scrape as _scrape, rebuild
-
     c = Collection.from_dir(fixes=None)
     df = c.df
 
