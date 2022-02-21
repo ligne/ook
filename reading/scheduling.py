@@ -70,6 +70,8 @@ def scheduled_at(df, date=TODAY, schedules=None):
 
 ################################################################################
 
+
+# pylint: disable=too-many-arguments
 def _schedule(df, author=None, series=None,
               start=None, per_year=1, offset=0, force=False, skip=0,
               date=TODAY):
@@ -121,6 +123,9 @@ def _dates(start, per_year=1, offset=1,
 
     # return the start of remaining windows
     yield from (ii[0] for ii in windows)
+
+
+# pylint: enable=too-many-arguments
 
 
 # returns a stream of (start, end) dates which may or may not want a book

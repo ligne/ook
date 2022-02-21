@@ -65,15 +65,3 @@ import-graph=imports.png
 [TYPECHECK]
 
 ignored-classes=Namespace
-
-
-[DESIGN]
-
-# FIXME try and reduce these
-
-# Maximum number of arguments for function / method.
-max-args=12
-
-# Maximum number of locals for function / method body.
-max-locals=19
-

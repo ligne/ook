@@ -423,6 +423,7 @@ def scheduled_years(df):
 
 
 # plot reading schedule against time left, with warnings.
+# pylint: disable=too-many-locals
 @graph
 def scheduled():
     df = Collection.from_dir().df
@@ -479,6 +480,9 @@ def scheduled():
     filename = 'images/scheduled.png'
     plt.savefig(filename, bbox_inches='tight')
     plt.close()
+
+
+# pylint: enable=too-many-locals
 
 
 ################################################################################
