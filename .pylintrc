@@ -35,7 +35,7 @@ disable=
 [FORMAT]
 
 # Maximum number of characters on a single line.
-max-line-length=110
+max-line-length=100
 
 # Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
 expected-line-ending-format=LF
