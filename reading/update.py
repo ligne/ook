@@ -36,6 +36,8 @@ def update_kindle(args, old):
 
 
 def update_scrape(args, old):
+    old = Collection.from_dir().df
+
     c = Collection.from_dir(fixes=None)
     df = c.df
 
