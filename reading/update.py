@@ -2,7 +2,9 @@
 
 """The update command."""
 
-from .collection import Collection
+import pandas as pd
+
+from .collection import Collection, _process_fixes, expand_ebooks
 from .compare import compare
 from .config import config
 from .goodreads import get_books
@@ -65,13 +67,30 @@ def main(args):
     books = load_df("books")
     authors = load_df("authors")
 
-    # dispatch to the update commands in a sensible order
+    # update the base layers
     if args.goodreads:
         goodreads = update_goodreads(args, goodreads)
     if args.kindle:
         ebooks = update_kindle(args, ebooks)
+
+    # assign/derive the additional ebook columns
+    ebooks = expand_ebooks(ebooks)
+
+    # update the overlays
     if args.scrape:
         scraped = update_scrape(args, scraped)
+
+    # assemble the basic collection
+    new = pd.concat([goodreads, ebooks], sort=False)
+
+    # apply the various layers of fixes
+    new.update(scraped)
+    # FIXME
+    new.update(load_df("metadata", fname="data/metadata-ebooks.csv"))
+    new.update(load_df("metadata", fname="data/metadata-gr.csv"))
+    new.update(_process_fixes(config("fixes")))
+
+    compare(old, new)
 
     # save if necessary
     if args.save:
