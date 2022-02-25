@@ -283,7 +283,7 @@ def main(args):
     # load the authors and add in the fixes
     authors = load_df("authors")
     fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
-    authors.reindex(authors.index.intersection(fixes.index))
+    authors = authors.reindex(authors.index.union(fixes.index))
     authors.update(fixes)
 
     new = Collection.from_dir(metadata=False, fixes=False).df
