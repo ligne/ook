@@ -219,7 +219,7 @@ def oldness():
 @graph
 def gender():
     df = Collection.from_dir().shelves(["read"]).df
-    df.Gender = df.Gender.fillna('unknown')
+    df.Gender = df.Gender.fillna("missing")
 
     df = df.pivot_table(
         values='Pages',
