@@ -120,7 +120,7 @@ def _fetch_book_api(book_id):
         }).content
 
         # test it actually parses before saving...
-        ElementTree.fromstring(xml)
+        _parse_book_api(ElementTree.fromstring(xml))
 
         with open(fname, 'wb') as fh:
             fh.write(xml)
