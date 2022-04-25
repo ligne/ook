@@ -21,6 +21,7 @@ def test__uc_first():
 
 ################################################################################
 
+
 def test_format_search_results():
     with open("t/data/wikidata/search/george-sand.json") as fh:
         j = json.load(fh)
@@ -73,6 +74,7 @@ def test_format_search_results_no_results():
 
 ################################################################################
 
+
 def _load_json(qid):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
         return json.load(fh)["entities"][qid]
@@ -82,8 +84,9 @@ def test_entity():
     entity = Entity(_load_json("Q12807"))
     assert entity.qid == "Q12807"
     assert entity.label == "Umberto Eco"
-    assert entity.description == (
-        "Italian semiotician, essayist, philosopher, literary critic, and novelist"
+    assert (
+        entity.description
+        == "Italian semiotician, essayist, philosopher, literary critic, and novelist"
     )
     assert entity.gender == "male"
     assert entity.nationality == "it"

@@ -108,28 +108,35 @@ def main():
 
     if args.mode == 'update':
         import reading.update
+
         reading.update.main(args)
     if args.mode == 'metadata':
         import reading.metadata
+
         reading.metadata.main(args)
     if args.mode == 'lint':
         import reading.lint
+
         reading.lint.main(args)
     if args.mode == 'graph':
         import reading.graph
+
         reading.graph.main(args)
     if args.mode == 'config':
         import reading.config
+
         reading.config.main(args)
     if args.mode == 'scheduled':
         import reading.suggestions
+
         reading.suggestions.scheduled(args)  # !
     if args.mode == 'suggest':
         import reading.suggestions
+
         reading.suggestions.main(args)
     if args.mode == 'reports':
         import reading.reports
+
         reading.reports.main(args)
 
     return 0
-

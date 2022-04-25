@@ -51,7 +51,9 @@ def prefix(book):
 def _display_report(df):
     g = df.sort_values(['Author', 'Title']).groupby('Author')
 
-    print(Template('''
+    print(
+        Template(
+            '''
 {%- for author, books in groups %}
 {{author}}
   {%- for book in books.itertuples() %}
@@ -59,10 +61,13 @@ def _display_report(df):
   {%- endfor %}
 {% endfor %}
 ----
-''').render(groups=g, prefix=prefix))
+'''
+        ).render(groups=g, prefix=prefix)
+    )
 
 
 ################################################################################
+
 
 def main(args):
     for name in args.names:
@@ -70,4 +75,3 @@ def main(args):
         df_list = _process_report(report)
         for df in df_list:
             _display_report(df)
-

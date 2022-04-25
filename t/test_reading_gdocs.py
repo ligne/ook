@@ -138,8 +138,10 @@ def test_changes():
             {
                 "insertText": {
                     "location": {"index": (100, 116)},
-                    "text": "Charles Brockden Brown\n"
-                            "* Wieland; or The Transformation, and Memoirs of Carwin, The Biloquist\n\n",  # noqa: E501
+                    "text": (
+                        "Charles Brockden Brown\n"
+                        "* Wieland; or The Transformation, and Memoirs of Carwin, The Biloquist\n\n"
+                    ),
                 }
             },
             {"deleteContentRange": {"range": {"endIndex": 63, "startIndex": 41}}},
@@ -151,7 +153,9 @@ def test_changes():
             },
         ],
         "writeControl": {
-            "requiredRevisionId": "AOV_f48jtrnaJS70zG3tqgVShUQVCQseXYV6KVeT91"
-                                  "bzb9IgXehnfjimaEAbKz4B35_IucCYyxVlPjM2LQxv",
+            "requiredRevisionId": (
+                "AOV_f48jtrnaJS70zG3tqgVShUQVCQseXYV6KVeT91"
+                "bzb9IgXehnfjimaEAbKz4B35_IucCYyxVlPjM2LQxv"
+            ),
         },
     }

@@ -6,6 +6,7 @@ import textwrap
 # pylint: disable=wrong-import-position
 
 import matplotlib
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -40,13 +41,14 @@ def graph(func):
 
 # from shelf, in direction = date added/read.
 def _pages_changed(df, shelf, direction):
-    return df[df.Shelf == shelf] \
-        .set_index([direction])  \
-        .Pages  \
-        .resample('D')  \
-        .sum()  \
-        .reindex(index=ix)  \
+    return (
+        df[df.Shelf == shelf]
+        .set_index([direction])
+        .Pages.resample('D')
+        .sum()
+        .reindex(index=ix)
         .fillna(0)
+    )
 
 
 # number of pages added by day
@@ -84,13 +86,17 @@ def backlog():
     # FIXME _pages_added() can't see books added before 2016 without this
     df.loc[df.Added < '2016', 'Added'] = pd.Timestamp('2016-01-01')
 
-    p = pd.DataFrame({
-        'elsewhere': _pages_added(df, 'elsewhere'),
-        'ebooks':    _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
-        'library':   _pages_added(df, 'library'),
-        'pending':   _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
-        'read':      _pages_added(df, 'read') - _pages_read(df),
-    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
+    p = pd.DataFrame(
+        {
+            'elsewhere': _pages_added(df, 'elsewhere'),
+            'ebooks': _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
+            'library': _pages_added(df, 'library'),
+            'pending': _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
+            'read': _pages_added(df, 'read') - _pages_read(df),
+        },
+        index=ix,
+        columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'],
+    )
 
     p = p.cumsum(axis=1)
 
@@ -109,13 +115,17 @@ def backlog():
 def increase():
     df = Collection.from_dir().df
 
-    p = pd.DataFrame({
-        'elsewhere': _pages_added(df, 'elsewhere'),
-        'ebooks':    _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
-        'library':   _pages_added(df, 'library'),
-        'pending':   _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
-        'read':     -_pages_read(df),
-    }, index=ix, columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'])
+    p = pd.DataFrame(
+        {
+            'elsewhere': _pages_added(df, 'elsewhere'),
+            'ebooks': _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
+            'library': _pages_added(df, 'library'),
+            'pending': _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
+            'read': -_pages_read(df),
+        },
+        index=ix,
+        columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'],
+    )
 
     # work out how much to shift each column down by
     shift = p.where(p < 0, 0).sum(axis=1)
@@ -156,9 +166,9 @@ def median_date():
 
     read = read.set_index('Read').Published.resample('D').mean()
 
-    read.rolling(window=365, min_periods=0).median()  \
-        .rolling(window=30).mean()  \
-        .reindex(ix).ffill().loc['2016':].plot()
+    read.rolling(window=365, min_periods=0).median().rolling(window=30).mean().reindex(
+        ix
+    ).ffill().loc['2016':].plot()
 
     # set the top of the graph to the current year
     plt.ylim([plt.ylim()[0], today.year])
@@ -190,15 +200,21 @@ def length():
 def oldness():
     df = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
 
-    df = pd.DataFrame({
-        'thresh': df.Published.apply(lambda x: (x < thresh and 1 or 0)),
-        'total':  df.Published.apply(lambda x: 1),
-        'Read': df.Read,
-    }, index=df.index).set_index('Read')  \
-                      .resample('D')      \
-                      .sum()              \
-                      .reindex(ix)        \
-                      .fillna(0)
+    df = (
+        pd.DataFrame(
+            {
+                'thresh': df.Published.apply(lambda x: (x < thresh and 1 or 0)),
+                'total': df.Published.apply(lambda x: 1),
+                'Read': df.Read,
+            },
+            index=df.index,
+        )
+        .set_index('Read')
+        .resample('D')
+        .sum()
+        .reindex(ix)
+        .fillna(0)
+    )
 
     df = df.rolling(window=365, min_periods=0).sum()
     (df.thresh / df.total).rolling(window=10, min_periods=0).mean().plot()
@@ -221,13 +237,17 @@ def gender():
     df = Collection.from_dir().shelves(["read"]).df
     df.Gender = df.Gender.fillna("missing")
 
-    df = df.pivot_table(
-        values='Pages',
-        index='Read',
-        columns='Gender',
-        aggfunc=np.sum,
-        fill_value=0
-    ).rolling('365d').sum()
+    df = (
+        df.pivot_table(
+            values='Pages',
+            index='Read',
+            columns='Gender',
+            aggfunc=np.sum,
+            fill_value=0,
+        )
+        .rolling('365d')
+        .sum()
+    )
     df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
 
     # set to the full range
@@ -246,13 +266,17 @@ def language():
     df = Collection.from_dir().shelves(["read"]).df
 
     df.Language = df.Language.fillna('unknown')
-    df = df.pivot_table(
-        values='Pages',
-        index='Read',
-        columns='Language',
-        aggfunc=np.sum,
-        fill_value=0
-    ).rolling('365d').sum()
+    df = (
+        df.pivot_table(
+            values='Pages',
+            index='Read',
+            columns='Language',
+            aggfunc=np.sum,
+            fill_value=0,
+        )
+        .rolling('365d')
+        .sum()
+    )
     df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
 
     plt.ylim([0, 1])
@@ -270,13 +294,17 @@ def category():
     df = Collection.from_dir().shelves(["read"]).df
 
     df.Category = df.Category.fillna('unknown')
-    df = df.pivot_table(
-        values='Pages',
-        index='Read',
-        columns='Category',
-        aggfunc=np.sum,
-        fill_value=0
-    ).rolling('365d').sum()
+    df = (
+        df.pivot_table(
+            values='Pages',
+            index='Read',
+            columns='Category',
+            aggfunc=np.sum,
+            fill_value=0,
+        )
+        .rolling('365d')
+        .sum()
+    )
     df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
 
     plt.ylim([0, 1])
@@ -307,10 +335,12 @@ def nationality():
         end = date.strftime('%F')
         values.append(len(set(authors.loc[start:end].Nationality.values)))
 
-    pd.DataFrame({
-        'Distinct': pd.Series(data=values, index=ix),
-        'New': first.rolling(window=365).sum(),
-    }).plot()
+    pd.DataFrame(
+        {
+            'Distinct': pd.Series(data=values, index=ix),
+            'New': first.rolling(window=365).sum(),
+        }
+    ).plot()
 
     # force the bottom of the graph to zero and make sure the top doesn't clip.
     ylim = plt.ylim()
@@ -336,10 +366,13 @@ def reading_rate():
     reading = completed.copy()
     reading.loc[tomorrow] = current_pages
 
-    p = pd.DataFrame({
-        'Completed': completed.expanding().mean(),
-        'Reading': reading.expanding().mean().iloc[-2:],
-    }, index=reading.index)
+    p = pd.DataFrame(
+        {
+            'Completed': completed.expanding().mean(),
+            'Reading': reading.expanding().mean().iloc[-2:],
+        },
+        index=reading.index,
+    )
 
     p.plot(title='Pages read per day')
 
@@ -359,10 +392,13 @@ def rate_area():
     g = pd.DataFrame(index=ix)
 
     for ii, row in df.sort_values(['Started']).iterrows():
-        g[ii] = pd.Series({
-            row.Started: row['ppd'],
-            row.Read: 0,
-        }, index=ix).ffill()
+        g[ii] = pd.Series(
+            {
+                row.Started: row['ppd'],
+                row.Read: 0,
+            },
+            index=ix,
+        ).ffill()
 
     g.plot(title='Reading rate', kind='area', lw=0)
 
@@ -382,13 +418,17 @@ def doy():
     df["Year"] = df.Read.dt.year
     df["Day of Year"] = df.Read.dt.dayofyear
 
-    df = df.pivot_table(
-        values="Pages",
-        index="Day of Year",
-        columns="Year",
-        aggfunc=np.sum,
-        fill_value=0
-    ).reindex(range(366), fill_value=0).cumsum()
+    df = (
+        df.pivot_table(
+            values="Pages",
+            index="Day of Year",
+            columns="Year",
+            aggfunc=np.sum,
+            fill_value=0,
+        )
+        .reindex(range(366), fill_value=0)
+        .cumsum()
+    )
 
     target = pd.Series({0: 0, 365: 12000}, index=range(366)).interpolate()
     df.sub(target, axis="index").plot()
@@ -404,6 +444,7 @@ def doy():
 
 
 ################################################################################
+
 
 def is_current_year(year):
     return int(today.year) == int(year)
@@ -454,13 +495,17 @@ def scheduled():
             pages_over = pages_remaining - page_limit
             needed_rate = pages_remaining / days_remaining
 
-            print(textwrap.dedent(f"""\
+            print(
+                textwrap.dedent(
+                    f"""\
                 Too many books for {year}:
                     {pages_remaining:.0f} pages to read in {days_remaining:.0f} days
                     {days_required:.0f} days at current rate
                     {days_over:.0f} days/{pages_over:.0f} pages over
                     {needed_rate:.1f}pp/day to read them all ({rate:.1f} currently)
-            """))
+            """
+                )
+            )
 
         pages = p.sort_values().values
         pd.DataFrame([pages], index=[year]).plot.bar(stacked=True, ax=ax, rot=0, legend=False)
@@ -486,6 +531,7 @@ def scheduled():
 
 
 ################################################################################
+
 
 def main(args):
     for name, func in _GRAPHS.items():

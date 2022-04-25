@@ -19,6 +19,7 @@ def linter(func):
 
 ################################################################################
 
+
 @linter
 def lint_missing_pagecount():
     """Missing a pagecount."""
@@ -230,12 +231,14 @@ def lint_duplicates():
 
     # FIXME move this into the Collection and make it non-manky
     df = df.groupby('Work').filter(lambda x: len(x) > 1)
-    df = df.groupby('Work').aggregate({
-        'Author': 'first',
-        'Title': 'first',
-        'Work': 'first',
-        'Shelf': lambda x: ', '.join(list(x)),
-    })
+    df = df.groupby('Work').aggregate(
+        {
+            'Author': 'first',
+            'Title': 'first',
+            'Work': 'first',
+            'Shelf': lambda x: ', '.join(list(x)),
+        }
+    )
     df = df.groupby("Work").filter(lambda x: ~x.Shelf.isin(acceptable))
 
     return {
@@ -399,11 +402,12 @@ def lint_fixes():
 {{entry}}
 {%- endfor %}
 
-"""
+""",
     }
 
 
 ################################################################################
+
 
 def main(args):
     for name, func in _LINTERS.items():

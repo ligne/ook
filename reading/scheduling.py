@@ -72,9 +72,17 @@ def scheduled_at(df, date=TODAY, schedules=None):
 
 
 # pylint: disable=too-many-arguments
-def _schedule(df, author=None, series=None,
-              start=None, per_year=1, offset=0, force=False, skip=0,
-              date=TODAY):
+def _schedule(
+    df,
+    author=None,
+    series=None,
+    start=None,
+    per_year=1,
+    offset=0,
+    force=False,
+    skip=0,
+    date=TODAY,
+):
     if author:
         series = Chain.from_author_name(df, author)
     elif series:
@@ -84,7 +92,9 @@ def _schedule(df, author=None, series=None,
         start = date.year
 
     dates = _dates(
-        start, per_year, offset,
+        start,
+        per_year,
+        offset,
         force,
         last_read=series.last_read,
         date=date,
@@ -96,9 +106,14 @@ def _schedule(df, author=None, series=None,
 
 
 # converts a stream of windows into a stream of dates for scheduling
-def _dates(start, per_year=1, offset=1,
-           force=False, last_read=None,
-           date=TODAY):
+def _dates(
+    start,
+    per_year=1,
+    offset=1,
+    force=False,
+    last_read=None,
+    date=TODAY,
+):
     date = pd.Timestamp(date)
     windows = _windows(start, per_year, offset)
 
@@ -149,6 +164,7 @@ def _windows(start, per_year=1, offset=1):
 
 if __name__ == "__main__":
     from .collection import Collection
+
     df = Collection.from_dir().shelves(exclude=["kindle", "to-read"]).df
     df = df.drop_duplicates(["Work"])  # FIXME
 

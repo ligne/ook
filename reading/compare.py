@@ -35,10 +35,17 @@ def _compare_with_work(old, new):
 
     # added/removed/changed edition
     idcs = old.index.symmetric_difference(new.index)
-    wids = pd.concat([
-        old.loc[old.index.intersection(idcs)],
-        new.loc[new.index.intersection(idcs)],
-    ], sort=False)['Work'].drop_duplicates().values
+    wids = (
+        pd.concat(
+            [
+                old.loc[old.index.intersection(idcs)],
+                new.loc[new.index.intersection(idcs)],
+            ],
+            sort=False,
+        )['Work']
+        .drop_duplicates()
+        .values
+    )
 
     for ix in wids:
         _o = old[old['Work'] == ix]
@@ -71,19 +78,23 @@ def _compare_without_work(old, new):
 
 # formatting for a book that's been added/removed/changed
 def _added(book):
-    return Template('''Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
+    return Template(
+        '''Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
 {%- if b.Series %}
   * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {% if "Pages" in b %}{{b.Pages|int}} pages{% else %}{{b.Words|int}} words{% endif %}
   * Language: {{b.Language}}
-''').render(b=book)
+'''
+    ).render(b=book)
 
 
 def _removed(book):
-    return Template('''Removed {{b.Title}} by {{b.Author}} from shelf '{{b.Shelf}}'
-''').render(b=book)
+    return Template(
+        '''Removed {{b.Title}} by {{b.Author}} from shelf '{{b.Shelf}}'
+'''
+    ).render(b=book)
 
 
 def _changed(old, new):
@@ -103,7 +114,8 @@ def _changed(old, new):
         return _finished(new)
     else:
         # just generally changed fields
-        return Template('''{{new.Author}}, {{new.Title}}
+        return Template(
+            '''{{new.Author}}, {{new.Title}}
 {%- for col in new.index -%}
   {%- if old[col] != new[col] %}
 
@@ -143,26 +155,31 @@ def _changed(old, new):
       {%- endif %}
   {%- endif -%}
 {%- endfor %}
-''').render(old=old, new=new)
+'''
+        ).render(old=old, new=new)
 
 
 ################################################################################
 
+
 def _started(book):
-    return Template('''Started {{ b.Title }} by {{b.Author}}
+    return Template(
+        '''Started {{ b.Title }} by {{b.Author}}
 {%- if b.Series and b.Series is not number %}
   * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {{b.Pages|int}} pages
   * Language: {{b.Language}}
-''').render(b=book)
+'''
+    ).render(b=book)
 
 
 # FIXME display more information (including category and author
 # gender/nationality) for checking
 def _finished(book):
-    return Template('''Finished {{b.Title}} by {{b.Author}}
+    return Template(
+        '''Finished {{b.Title}} by {{b.Author}}
   * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)
   {%- if b.Pages|int %}
   * {{b.Pages|int}} pages, {{(b.Pages / ((b.Read - b.Started).days + 1))|round|int}} pages/day
@@ -171,7 +188,8 @@ def _finished(book):
   * Category: {{b.Category}}
   * Published: {{b.Published|int}}
   * Language: {{b.Language}}
-''').render(b=book)
+'''
+    ).render(b=book)
 
 
 ################################################################################

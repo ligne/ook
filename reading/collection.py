@@ -75,6 +75,7 @@ def expand_ebooks(ebooks):
 
 ################################################################################
 
+
 def read_authorids(c):
     """Return a list of the AuthorIds of all read authors."""
     return set(c.read.AuthorId)
@@ -90,6 +91,7 @@ def read_nationalities(c):
 
 
 ################################################################################
+
 
 def _merge_id(book):
     """Generate a merge key for $book."""
@@ -179,7 +181,8 @@ class Collection:
             .groupby("MergeId", as_index=False, sort=False)
             .aggregate(merge_preferences())
             .set_index("BookId")
-        ).assign(Entry=None)  # FIXME do something about Entry?
+            .assign(Entry=None)  # FIXME do something about Entry?
+        )
 
     ### Access #################################################################
 

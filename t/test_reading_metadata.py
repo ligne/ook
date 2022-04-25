@@ -21,9 +21,9 @@ def _colour_to_string(colour):
     styles = ["RESET", "BOLD", "FAINT", "ITALIC", "REVERSE"]
     codes = ["BLACK", "RED", "GREEN", "YELLOW", "BLUE", "MAGENTA", "CYAN", "WHITE"]
     effects = {
-        "3": "",   # foreground
+        "3": "",  # foreground
         "4": "B",  # background
-        "9": "BRIGHT"
+        "9": "BRIGHT",
     }
 
     if len(colour) == 1:
@@ -34,9 +34,7 @@ def _colour_to_string(colour):
 
 
 def _decode_colourspec(match):
-    return (
-        "<" + ";".join([_colour_to_string(colour) for colour in match.group(1).split(";")]) + ">"
-    )
+    return "<" + ";".join([_colour_to_string(colour) for colour in match.group(1).split(";")]) + ">"
 
 
 def decode_colour(string):
@@ -54,54 +52,67 @@ def test_decode_colour():
 
 #################################################################################
 
+
 def test__list_book_choices():
     # nothing
     assert _list_book_choices([], set(), set()) == ''
 
     # books from goodreads title search
-    assert decode_colour(_list_book_choices([
-        {
-            'Ratings': '31583',
-            'Published': '1853',
-            'BookId': '182381',
-            'Work': '1016559',
-            'Author': 'Elizabeth Gaskell',
-            'AuthorId': '1413437',
-            'Title': 'Cranford'
-        }, {
-            'Ratings': '1515',
-            'Published': '1859',
-            'BookId': '2141817',
-            'Work': '21949576',
-            'Author': 'Elizabeth Gaskell',
-            'AuthorId': '1413437',
-            'Title': 'The Cranford Chronicles'
-        }, {
-            'Ratings': '74',
-            'Published': '2009',
-            'BookId': '7329542',
-            'Work': '8965360',
-            'Author': 'Elizabeth Gaskell',
-            'AuthorId': '1413437',
-            'Title': 'Return to Cranford: Cranford and other stories'
-        }, {
-            'Ratings': '10',
-            'Published': '2000',
-            'BookId': '732416',
-            'Work': '718606',
-            'Author': 'J.Y.K. Kerr',
-            'AuthorId': '1215308',
-            'Title': 'Cranford'
-        }, {
-            'Ratings': '428',
-            'Published': '1864',
-            'BookId': '222401',
-            'Work': '215385',
-            'Author': 'Elizabeth Gaskell',
-            'AuthorId': '1413437',
-            'Title': 'Cranford/Cousin Phillis'
-        }
-    ], set(), set())) == """\
+    assert (
+        decode_colour(
+            _list_book_choices(
+                [
+                    {
+                        'Ratings': '31583',
+                        'Published': '1853',
+                        'BookId': '182381',
+                        'Work': '1016559',
+                        'Author': 'Elizabeth Gaskell',
+                        'AuthorId': '1413437',
+                        'Title': 'Cranford',
+                    },
+                    {
+                        'Ratings': '1515',
+                        'Published': '1859',
+                        'BookId': '2141817',
+                        'Work': '21949576',
+                        'Author': 'Elizabeth Gaskell',
+                        'AuthorId': '1413437',
+                        'Title': 'The Cranford Chronicles',
+                    },
+                    {
+                        'Ratings': '74',
+                        'Published': '2009',
+                        'BookId': '7329542',
+                        'Work': '8965360',
+                        'Author': 'Elizabeth Gaskell',
+                        'AuthorId': '1413437',
+                        'Title': 'Return to Cranford: Cranford and other stories',
+                    },
+                    {
+                        'Ratings': '10',
+                        'Published': '2000',
+                        'BookId': '732416',
+                        'Work': '718606',
+                        'Author': 'J.Y.K. Kerr',
+                        'AuthorId': '1215308',
+                        'Title': 'Cranford',
+                    },
+                    {
+                        'Ratings': '428',
+                        'Published': '1864',
+                        'BookId': '222401',
+                        'Work': '215385',
+                        'Author': 'Elizabeth Gaskell',
+                        'AuthorId': '1413437',
+                        'Title': 'Cranford/Cousin Phillis',
+                    },
+                ],
+                set(),
+                set(),
+            )
+        )
+        == """\
 <BOLD> 1.<RESET> Cranford<RESET>
       Elizabeth Gaskell<RESET>
       Published: 1853
@@ -133,6 +144,7 @@ def test__list_book_choices():
       https://www.goodreads.com/book/show/222401
       https://www.goodreads.com/author/show/1413437
 """
+    )
 
     # it's both an author and a work that i have already.
     results = [
@@ -143,34 +155,39 @@ def test__list_book_choices():
             'Ratings': '109451',
             'Published': '1916',
             'Author': 'James Joyce',
-            'Title': 'A Portrait of the Artist as a Young Man'
-        }, {
+            'Title': 'A Portrait of the Artist as a Young Man',
+        },
+        {
             'Work': '47198830',
             'AuthorId': '5144',
             'BookId': '23296',
             'Ratings': '5733',
             'Published': '1914',
             'Author': 'James Joyce',
-            'Title': 'A Portrait of the Artist as a Young Man / Dubliners'
-        }, {
+            'Title': 'A Portrait of the Artist as a Young Man / Dubliners',
+        },
+        {
             'Work': '7427316',
             'AuthorId': '5144',
             'BookId': '580717',
             'Ratings': '113',
             'Published': '1992',
             'Author': 'James Joyce',
-            'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'
-        }, {
+            'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music',
+        },
+        {
             'Work': '10692',
             'AuthorId': '5677665',
             'BookId': '7593',
             'Ratings': '12',
             'Published': '1964',
             'Author': 'Valerie Zimbarro',
-            'Title': 'A Portrait of the Artist as a Young Man, Notes'
+            'Title': 'A Portrait of the Artist as a Young Man, Notes',
         },
     ]
-    assert decode_colour(_list_book_choices(results, author_ids={5144}, work_ids={3298883})) == """\
+    assert (
+        decode_colour(_list_book_choices(results, author_ids={5144}, work_ids={3298883}))
+        == """\
 <BOLD> 1.<RESET><GREEN> A Portrait of the Artist as a Young Man<RESET><YELLOW>
       James Joyce<RESET>
       Published: 1916
@@ -196,6 +213,7 @@ def test__list_book_choices():
       https://www.goodreads.com/book/show/7593
       https://www.goodreads.com/author/show/5677665
 """
+    )
 
     # known author, but new book
     results = [
@@ -206,34 +224,39 @@ def test__list_book_choices():
             'Ratings': '109451',
             'Published': '1916',
             'Author': 'James Joyce',
-            'Title': 'A Portrait of the Artist as a Young Man'
-        }, {
+            'Title': 'A Portrait of the Artist as a Young Man',
+        },
+        {
             'Work': '47198830',
             'AuthorId': '5144',
             'BookId': '23296',
             'Ratings': '5733',
             'Published': '1914',
             'Author': 'James Joyce',
-            'Title': 'A Portrait of the Artist as a Young Man / Dubliners'
-        }, {
+            'Title': 'A Portrait of the Artist as a Young Man / Dubliners',
+        },
+        {
             'Work': '7427316',
             'AuthorId': '5144',
             'BookId': '580717',
             'Ratings': '113',
             'Published': '1992',
             'Author': 'James Joyce',
-            'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music'
-        }, {
+            'Title': 'Dubliners/A Portrait of the Artist As a Young Man/Chamber Music',
+        },
+        {
             'Work': '10692',
             'AuthorId': '5677665',
             'BookId': '7593',
             'Ratings': '12',
             'Published': '1964',
             'Author': 'Valerie Zimbarro',
-            'Title': 'A Portrait of the Artist as a Young Man, Notes'
+            'Title': 'A Portrait of the Artist as a Young Man, Notes',
         },
     ]
-    assert decode_colour(_list_book_choices(results, author_ids={5144}, work_ids=set())) == """\
+    assert (
+        decode_colour(_list_book_choices(results, author_ids={5144}, work_ids=set()))
+        == """\
 <BOLD> 1.<RESET> A Portrait of the Artist as a Young Man<RESET><YELLOW>
       James Joyce<RESET>
       Published: 1916
@@ -259,6 +282,7 @@ def test__list_book_choices():
       https://www.goodreads.com/book/show/7593
       https://www.goodreads.com/author/show/5677665
 """
+    )
 
 
 # helper to raise from inside a lambda
@@ -315,7 +339,9 @@ def test__read_choice_output(monkeypatch, capsys):
     monkeypatch.setattr("builtins.input", lambda prompt: next(inputs))
     _read_choice(length)
     output = capsys.readouterr()
-    assert decode_colour(output.out) == """
+    assert (
+        decode_colour(output.out)
+        == """
 <BRIGHTRED>1-3 - select
 
 s - skip to the next author
@@ -323,9 +349,11 @@ q - save and exit
 Q - exit without saving
 ? - print help<RESET>
 """.lstrip()
+    )
 
 
 ################################################################################
+
 
 def _load_json(qid):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
@@ -338,10 +366,13 @@ def test_confirm_author_reject(monkeypatch, capsys):
     entity = Entity(_load_json("Q12807"))
     author = confirm_author(entity)
     output = capsys.readouterr()
-    assert decode_colour(output.out) == """
+    assert (
+        decode_colour(output.out)
+        == """
 <GREEN>Umberto Eco: male, it<RESET>
 
 """
+    )
     assert author is None
 
 
@@ -369,6 +400,7 @@ def test_confirm_author_default_accepts(monkeypatch):
 
 ################################################################################
 
+
 def test_rebuild(tmp_path):
     """Test the rebuild() function."""
     books = load_df("ebooks", dirname="t/data/2019-12-04/")
@@ -379,7 +411,9 @@ def test_rebuild(tmp_path):
 
     save_df("metadata", rebuild(books, works, authors), metadata_csv)
 
-    assert metadata_csv.read_text() == """\
+    assert (
+        metadata_csv.read_text()
+        == """\
 BookId,Author,AuthorId,Title,Work,Series,SeriesId,Entry,Published,Language,Pages,Gender,Nationality
 non-fiction/Coleman-Coding-Freedom.mobi,Gabriella Coleman,7452431,,20545577,,,,2012,,254,female,us
 non-fiction/pg14154.mobi,,425652,The Tale Of Terror: A Study Of The Gothic Fiction,1475662,,,,1963,,200,female,gb
@@ -389,3 +423,4 @@ novels/pg13765.mobi,,9057,,181928,Joseph Rouletabille,59997,1,1907,,288,male,fr
 short-stories/Les_soirees_de_Medan.pdf,Émile Zola,4750,Les Soirées de Médan,1838632,,,,1973,,290,male,fr
 short-stories/pg1429-images.mobi,,45712,The Garden Party and Other Stories,1698523,,,,1922,,159,female,nz
 """  # noqa: E501
+    )

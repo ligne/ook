@@ -109,7 +109,7 @@ def _insert_text_request(start, lines):
             "text": "".join(lines),
             "location": {
                 "index": start,
-            }
+            },
         }
     }
 

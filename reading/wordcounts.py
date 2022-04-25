@@ -42,7 +42,12 @@ def _count_words(textfile):
 # gathers metadata from the ebook.  annoyingly, calibre doesn't support
 # Python3, and there aren't many other easy options...
 def _read_metadata(path):
-    return yaml.safe_load(check_output(["python2", "-c", """
+    return yaml.safe_load(
+        check_output(
+            [
+                "python2",
+                "-c",
+                """
 import os, sys, yaml
 
 sys.path.insert(0, '/usr/lib/calibre')
@@ -60,7 +65,11 @@ print(yaml.safe_dump({
     'Authors':   mi.get('authors'),
     'Languages': mi.get('languages'),
 }))
-""", str(path)]))
+""",
+                str(path),
+            ]
+        )
+    )
 
 
 @attr.s
@@ -89,12 +98,14 @@ class Metadata:
 
 def _ignore_item(path):
     ignore_fname = ['My Clippings.txt']
-    ignore_ext   = ['.kfx']
+    ignore_ext = ['.kfx']
 
-    return (not path.is_file()
-            or path.name[0] == "."
-            or path.name in ignore_fname
-            or path.suffix in ignore_ext)
+    return (
+        not path.is_file()
+        or path.name[0] == "."
+        or path.name in ignore_fname
+        or path.suffix in ignore_ext
+    )
 
 
 # returns all the interesting-looking files.
@@ -117,7 +128,7 @@ def process(df, force=False):
 
     ebooks = []
 
-    for (category, path, name) in get_ebooks(kindle_dir):
+    for category, path, name in get_ebooks(kindle_dir):
         if not force and name in df.index:
             ebook = df.loc[name].to_dict()
             ebook['BookId'] = name
@@ -128,15 +139,16 @@ def process(df, force=False):
         metadata = Metadata(_read_metadata(path))
         words = _count_words(_as_text(path))
 
-        ebooks.append({
-            'BookId': name,
-            'Author': metadata.author,
-            'Title': metadata.title,
-            'Category': category,
-            'Language': metadata.language,
-            'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
-            'Words': words,
-        })
+        ebooks.append(
+            {
+                'BookId': name,
+                'Author': metadata.author,
+                'Title': metadata.title,
+                'Category': category,
+                'Language': metadata.language,
+                'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
+                'Words': words,
+            }
+        )
 
     return pd.DataFrame(ebooks).set_index('BookId')
-

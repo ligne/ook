@@ -5,10 +5,17 @@ from pathlib import Path
 import pytest
 
 from reading.wordcounts import (
-    Metadata, _as_text, _count_words, _ignore_item, _read_metadata, get_ebooks)
+    Metadata,
+    _as_text,
+    _count_words,
+    _ignore_item,
+    _read_metadata,
+    get_ebooks,
+)
 
 
 ################################################################################
+
 
 def test__ignore_item(tmp_path):
     p = tmp_path / "item.mobi"
@@ -44,17 +51,13 @@ def _populate_dir(basedir, dirname, files):
 
 def test_get_ebooks(tmp_path):
     # create the directories
-    _populate_dir(
-        tmp_path, "articles", ["art1.azw3", "art2.txt", "art3.pdf"]
-    )
+    _populate_dir(tmp_path, "articles", ["art1.azw3", "art2.txt", "art3.pdf"])
     _populate_dir(tmp_path, ".", ["article4.azw3", "item.kfx"])
     _populate_dir(tmp_path, "books", ["novel1.azw3", "novel2.txt", "novel3.mobi"])
     _populate_dir(tmp_path, "non-fiction", ["essay1.azw3", "essay2.txt"])
     _populate_dir(tmp_path, "short-stories", ["stories1.azw3", ".hidden"])
 
-    assert [
-        (c, str(p.relative_to(tmp_path)), n) for c, p, n in sorted(get_ebooks(tmp_path))
-    ] == [
+    assert [(c, str(p.relative_to(tmp_path)), n) for c, p, n in sorted(get_ebooks(tmp_path))] == [
         ("articles", "article4.azw3", "articles/article4.azw3"),
         ("articles", "articles/art1.azw3", "articles/art1.azw3"),
         ("articles", "articles/art2.txt", "articles/art2.txt"),
@@ -102,6 +105,7 @@ def test__count_words():
 
 ################################################################################
 
+
 def test__read_metadata():
     path = Path("t/data/ebooks/supernatural.mobi")
     assert _read_metadata(path) == {
@@ -126,27 +130,33 @@ def test__read_metadata():
 
 
 def test_metadata():
-    m = Metadata({
-        "Authors": ["H. P. Lovecraft"],
-        "Languages": ["en"],
-        "Title": "Supernatural Horror in Literature",
-    })
+    m = Metadata(
+        {
+            "Authors": ["H. P. Lovecraft"],
+            "Languages": ["en"],
+            "Title": "Supernatural Horror in Literature",
+        }
+    )
     assert m.author == "H. P. Lovecraft"
     assert m.language == "en"
     assert m.title == "Supernatural Horror in Literature"
 
-    m = Metadata({
-        "Authors": ["H. P. Lovecraft"],
-        "Languages": [],
-        "Title": "Supernatural Horror in Literature",
-    })
+    m = Metadata(
+        {
+            "Authors": ["H. P. Lovecraft"],
+            "Languages": [],
+            "Title": "Supernatural Horror in Literature",
+        }
+    )
     assert m.language == "en", "Default language is 'en'"
 
-    m = Metadata({
-        "Authors": ["Victor Hugo"],
-        "Languages": ["fr"],
-        "Title": "Le Dernier Jour d'un Condamné",
-    })
+    m = Metadata(
+        {
+            "Authors": ["Victor Hugo"],
+            "Languages": ["fr"],
+            "Title": "Le Dernier Jour d'un Condamné",
+        }
+    )
     assert m.author == "Victor Hugo"
     assert m.language == "fr"
     assert m.title == "Le Dernier Jour d'un Condamné"

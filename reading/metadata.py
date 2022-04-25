@@ -15,6 +15,7 @@ from .wikidata import entity, wd_search
 
 ################################################################################
 
+
 class SaveExit(Exception):
     pass
 
@@ -28,7 +29,8 @@ class FullExit(Exception):
 # formats a list of book search results
 def _list_book_choices(results, author_ids, work_ids):
     (width, _) = shutil.get_terminal_size()
-    return Template('''
+    return Template(
+        '''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
   {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title|truncate(width-5)}}\033[0m
@@ -52,13 +54,15 @@ def _list_book_choices(results, author_ids, work_ids):
       https://www.goodreads.com/author/show/{{entry.AuthorId}}
     {%- endif %}
 {% endfor %}
-''').render(results=results, authors=author_ids, works=work_ids, width=width)
+'''
+    ).render(results=results, authors=author_ids, works=work_ids, width=width)
 
 
 # formats a list of author search results
 def _list_author_choices(results):
     (width, _) = shutil.get_terminal_size()
-    return Template('''
+    return Template(
+        '''
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
  {%- if True %} {{entry.Label}}{% endif %}
@@ -66,7 +70,8 @@ def _list_author_choices(results):
     {{entry.Description}}
     {%- endif %}
 {% endfor %}
-''').render(results=results, width=width)
+'''
+    ).render(results=results, width=width)
 
 
 # prompts the user for a selection or other decision.
@@ -78,14 +83,20 @@ def _read_choice(n):
 
     prompt = '\033[94m[{},?]?\033[0m '.format(','.join([selections] + others))
 
-    help_msg = '\033[91m' + '''
+    help_msg = (
+        '\033[91m'
+        + '''
 {} - select
 
 s - skip to the next author
 q - save and exit
 Q - exit without saving
 ? - print help
-'''.format(selections).strip() + '\033[0m'
+'''.format(
+            selections
+        ).strip()
+        + '\033[0m'
+    )
 
     try:
         while True:
@@ -112,6 +123,7 @@ Q - exit without saving
 
 ################################################################################
 
+
 def lookup_work_id(book, author_ids, work_ids):
     print("\033[1mSearching for '{}' by '{}'\033[0m".format(book.Title, book.Author))
 
@@ -136,10 +148,14 @@ def lookup_work_id(book, author_ids, work_ids):
 # associates an AuthorId with a Wikidata QID
 def lookup_author(author):
     (width, _) = shutil.get_terminal_size()
-    print(Template('''
+    print(
+        Template(
+            '''
 \033[1mSearching for '{{author}}'\033[0m
 {{titles|join(', ')|truncate(width)}}\033[0m
-'''.lstrip()).render(author=author.Author, titles=author.Title, width=width))
+'''.lstrip()
+        ).render(author=author.Author, titles=author.Title, width=width)
+    )
 
     results = wd_search(author.Author)
     if not results:
@@ -177,6 +193,7 @@ def confirm_author(e):
 
 ################################################################################
 
+
 def find(what):
     books = load_df("books")
     authors = load_df("authors")
@@ -206,7 +223,7 @@ def find_books(books):
     df = df[df.Work.isnull()]
     df = df[df.Language == 'en']  # search doesn't work well with non-english books
 
-    for (book_id, book) in df.sample(frac=1).iterrows():
+    for book_id, book in df.sample(frac=1).iterrows():
         resp = lookup_work_id(book, author_ids, work_ids)
         if not resp:
             continue
@@ -215,19 +232,25 @@ def find_books(books):
         work_ids.add(resp['Work'])
 
         books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
-        books.loc[book_id, 'Work']   = resp['Work']
+        books.loc[book_id, 'Work'] = resp['Work']
         books.loc[book_id, 'BookId'] = resp['BookId']
 
 
 # associate Wikidata QIDs with AuthorIds
 def find_authors(authors):
     df = Collection.from_dir().df
-    df = df[~df.AuthorId.isin(authors.index)].groupby('AuthorId').aggregate({
-        'Author': 'first',
-        'Title': list,
-    })
+    df = (
+        df[~df.AuthorId.isin(authors.index)]
+        .groupby('AuthorId')
+        .aggregate(
+            {
+                'Author': 'first',
+                'Title': list,
+            }
+        )
+    )
 
-    for (author_id, author) in df.iterrows():
+    for author_id, author in df.iterrows():
         resp = lookup_author(author)
         if not resp:
             continue
@@ -238,6 +261,7 @@ def find_authors(authors):
 
 
 ################################################################################
+
 
 def rebuild(books, works, authors):
     """Rebuild the metadata and return it as a dataframe."""
@@ -270,6 +294,7 @@ def rebuild(books, works, authors):
 
 
 ################################################################################
+
 
 def main(args):
     old = Collection.from_dir(fixes=False).df

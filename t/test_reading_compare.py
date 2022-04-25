@@ -12,40 +12,55 @@ df = c.df.fillna("")
 
 ################################################################################
 
+
 def test__added():
-    assert _added(df.loc[26570162]) == """
+    assert (
+        _added(df.loc[26570162])
+        == """
 Added The Monk by Matthew Lewis to shelf 'pending'
   * novels
   * 339 pages
   * Language: en
-""".strip(), 'Added book'
+""".strip()
+    ), 'Added book'
 
-    assert _added(df.loc[23533039]) == """
+    assert (
+        _added(df.loc[23533039])
+        == """
 Added Ancillary Mercy by Ann Leckie to shelf 'pending'
   * Imperial Radch series, Book 3
   * novels
   * 330 pages
   * Language: en
-""".strip(), 'Added book with series'
+""".strip()
+    ), 'Added book with series'
 
 
 def test__removed():
-    assert _removed(df.loc[26570162]) == """
+    assert (
+        _removed(df.loc[26570162])
+        == """
 Removed The Monk by Matthew Lewis from shelf 'pending'
-""".strip(), 'Removed book'
+""".strip()
+    ), 'Removed book'
 
 
 def test__started():
-    assert _started(df.loc[26570162]) == """
+    assert (
+        _started(df.loc[26570162])
+        == """
 Started The Monk by Matthew Lewis
   * novels
   * 339 pages
   * Language: en
-""".strip(), 'Started book'
+""".strip()
+    ), 'Started book'
 
 
 def test__finished():
-    assert _finished(df.loc[491030]) == """
+    assert (
+        _finished(df.loc[491030])
+        == """
 Finished The Bridge by Iain Banks
   * 2016-07-19 → 2016-08-10 (22 days)
   * 288 pages, 13 pages/day
@@ -53,10 +68,13 @@ Finished The Bridge by Iain Banks
   * Category: novels
   * Published: 1986
   * Language: en
-""".strip(), 'Finished book'
+""".strip()
+    ), 'Finished book'
 
     # read in one day
-    assert _finished(df.loc[25965499]) == """
+    assert (
+        _finished(df.loc[25965499])
+        == """
 Finished A Few Notes on the Culture by Iain M. Banks
   * 2018-12-31 → 2018-12-31 (0 days)
   * 17 pages, 17 pages/day
@@ -64,7 +82,8 @@ Finished A Few Notes on the Culture by Iain M. Banks
   * Category: non-fiction
   * Published: 1994
   * Language: en
-""".strip(), 'Read in one day'
+""".strip()
+    ), 'Read in one day'
 
 
 def test__changed():
@@ -77,30 +96,39 @@ def test__changed():
     b2 = b1.copy()
     b2.Title = b2.Title.lower()
 
-    assert _changed(b1, b2) == """
+    assert (
+        _changed(b1, b2)
+        == """
 Matthew Lewis, the monk
   * Title changed from 'The Monk'
-""".strip(), 'Change in title is treated specially'
+""".strip()
+    ), 'Change in title is treated specially'
 
     ###
     b2 = b1.copy()
     b2.Author = b2.Author.lower()
 
-    assert _changed(b1, b2) == """
+    assert (
+        _changed(b1, b2)
+        == """
 matthew lewis, The Monk
   * Author changed from 'Matthew Lewis'
-""".strip(), 'Change in author is treated specially'
+""".strip()
+    ), 'Change in author is treated specially'
 
     ###
     b2 = b1.copy()
     b2.Shelf = 'elsewhere'
     b2.Pages = 426
 
-    assert _changed(b1, b2) == """
+    assert (
+        _changed(b1, b2)
+        == """
 Matthew Lewis, The Monk
   * Shelf: pending → elsewhere
   * Pages: 339 → 426
-""".strip(), 'Various other fields changed'
+""".strip()
+    ), 'Various other fields changed'
 
     ###
     b2 = b1.copy()
@@ -109,12 +137,15 @@ Matthew Lewis, The Monk
     b1a = b1.copy()
     b1a.Binding = None
 
-    assert _changed(b1a, b2) == """
+    assert (
+        _changed(b1a, b2)
+        == """
 Matthew Lewis, The Monk
   * Category unset (previously novels)
   * Binding set to Paperback
   * Added: 2017-07-27 → 2017-12-25
-""".strip(), 'Fields set and unset'
+""".strip()
+    ), 'Fields set and unset'
 
     ###
     b2 = b1.copy()
@@ -122,24 +153,32 @@ Matthew Lewis, The Monk
     b1a = b1.copy()
     b1a.Scheduled = pd.Timestamp('2020-01-01')
 
-    assert _changed(b1, b2) == """
+    assert (
+        _changed(b1, b2)
+        == """
 Matthew Lewis, The Monk
   * Scheduled for 2021
-""".strip(), 'Scheduled'
+""".strip()
+    ), 'Scheduled'
 
-    assert _changed(b2, b1) == """
+    assert (
+        _changed(b2, b1)
+        == """
 Matthew Lewis, The Monk
   * Unscheduled for 2021
-""".strip(), 'Unscheduled'
+""".strip()
+    ), 'Unscheduled'
 
-    assert _changed(b1a, b2) == """
+    assert (
+        _changed(b1a, b2)
+        == """
 Matthew Lewis, The Monk
   * Scheduled: 2020 → 2021
-""".strip(), 'Scheduled year changed'
+""".strip()
+    ), 'Scheduled year changed'
 
     ###
     b2 = b1.copy()
     b2.AvgRating += 1.2
 
     assert _changed(b1, b2) is None, 'Changes to the average rating are ignored'
-

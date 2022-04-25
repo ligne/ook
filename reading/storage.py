@@ -22,7 +22,7 @@ def load_df(name, fname=None, dirname=None):
     return _load_csv(
         fname or f"data/{name}.csv",
         columns=df_columns(name),
-        parse_dates=date_columns(name)
+        parse_dates=date_columns(name),
     )
 
 

@@ -24,15 +24,16 @@ def get_books():
     start_date = pd.Timestamp(config("goodreads.start"))
 
     while True:
-        url = 'https://www.goodreads.com/review/list/{}.xml'.format(
-            config('goodreads.user')
+        url = 'https://www.goodreads.com/review/list/{}.xml'.format(config('goodreads.user'))
+        r = requests.get(
+            url,
+            params={
+                'key': config('goodreads.key'),
+                'v': 2,
+                'per_page': 100,
+                'page': page,
+            },
         )
-        r = requests.get(url, params={
-            'key': config('goodreads.key'),
-            'v': 2,
-            'per_page': 100,
-            'page': page,
-        })
 
         x = ElementTree.fromstring(r.content)
 
@@ -115,9 +116,12 @@ def _fetch_book_api(book_id):
         with open(fname) as fh:
             xml = fh.read()
     except FileNotFoundError:
-        xml = requests.get('https://www.goodreads.com/book/show/{}.xml'.format(book_id), params={
-            'key': config('goodreads.key'),
-        }).content
+        xml = requests.get(
+            'https://www.goodreads.com/book/show/{}.xml'.format(book_id),
+            params={
+                'key': config('goodreads.key'),
+            },
+        ).content
 
         # test it actually parses before saving...
         _parse_book_api(ElementTree.fromstring(xml))
@@ -137,8 +141,8 @@ def _parse_book_api(xml):
 
     shelves = [s.get('name') for s in xml.findall('book/popular_shelves/')]
 
-#    _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
-#          for s in xml.findall('book/authors/author')]
+    # _a = [(s.find('name').text, s.find('id').text, s.find('role').text)
+    #       for s in xml.findall('book/authors/author')]
 
     return {
         'Author': re.sub(' +', ' ', xml.find('book/authors/author/name').text),
@@ -168,15 +172,19 @@ def _parse_book_series(xml, ignore):
 
 ################################################################################
 
+
 def _fetch_series(series_id):
     fname = 'data/cache/series/{}.xml'.format(series_id)
     try:
         with open(fname) as fh:
             xml = fh.read()
     except FileNotFoundError:
-        xml = requests.get(f"https://www.goodreads.com/series/show/{series_id}.xml", params={
-            'key': config('goodreads.key'),
-        }).content
+        xml = requests.get(
+            f"https://www.goodreads.com/series/show/{series_id}.xml",
+            params={
+                'key': config('goodreads.key'),
+            },
+        ).content
         with open(fname, 'wb') as fh:
             fh.write(xml)
     return ElementTree.fromstring(xml)
@@ -221,12 +229,17 @@ def _parse_entries(entries):
 
 ################################################################################
 
+
 def _get_authors(authors):
     _authors = list(filter(lambda x: x[2] is None, authors))
     return (
-        ', '.join([re.sub(r'\s+', ' ', a[0]) for a in _authors]),
-        ', '.join([a[1] for a in _authors]),
-    ) if _authors else ()
+        (
+            ', '.join([re.sub(r'\s+', ' ', a[0]) for a in _authors]),
+            ', '.join([a[1] for a in _authors]),
+        )
+        if _authors
+        else ()
+    )
 
 
 # tries to divine what sort of book this is based on the shelves.
@@ -244,20 +257,25 @@ def _get_category(shelves):
 
 # search by title
 def search_title(term):
-    r = requests.get('https://www.goodreads.com/search/index.xml', params={
-        'key': config('goodreads.key'),
-        'search[field]': 'title',
-        'q': term,
-    })
+    r = requests.get(
+        'https://www.goodreads.com/search/index.xml',
+        params={
+            'key': config('goodreads.key'),
+            'search[field]': 'title',
+            'q': term,
+        },
+    )
 
     xml = ElementTree.fromstring(r.content)
-    return [{
-        'Title': x.find('best_book/title').text,
-        'BookId': int(x.find('best_book/id').text),
-        'Work': int(x.find('id').text),
-        'AuthorId': x.find('best_book/author/id').text,
-        'Author': x.find('best_book/author/name').text,
-        'Published': x.find('original_publication_year').text,
-        'Ratings': int(x.find('ratings_count').text),
-    } for x in xml.findall('search/results/work')]
-
+    return [
+        {
+            'Title': x.find('best_book/title').text,
+            'BookId': int(x.find('best_book/id').text),
+            'Work': int(x.find('id').text),
+            'AuthorId': x.find('best_book/author/id').text,
+            'Author': x.find('best_book/author/name').text,
+            'Published': x.find('original_publication_year').text,
+            'Ratings': int(x.find('ratings_count').text),
+        }
+        for x in xml.findall('search/results/work')
+    ]

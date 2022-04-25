@@ -192,13 +192,25 @@ def merge_preferences():
 
 _CATEGORIES = {
     "graphic": (
-        ["graphic-novels", "comics", "graphic-novel"],
+        [
+            "graphic-novels",
+            "comics",
+            "graphic-novel",
+        ],
     ),
     "short-stories": (
-        ["short-story", "nouvelles", "short-story-collections", "relatos-cortos"],
+        [
+            "short-story",
+            "nouvelles",
+            "short-story-collections",
+            "relatos-cortos",
+        ],
     ),
     "non-fiction": (
-        ["nonfiction", "essays"],
+        [
+            "nonfiction",
+            "essays",
+        ],
         [
             "education",
             "theology",
@@ -210,8 +222,14 @@ _CATEGORIES = {
         ],
     ),
     "novels": (
-        ["novel", "roman", "romans"],
-        ["fiction"],
+        [
+            "novel",
+            "roman",
+            "romans",
+        ],
+        [
+            "fiction",
+        ],
     ),
 }
 
@@ -273,6 +291,7 @@ config = Config.from_file()  # pylint: disable=invalid-name
 
 
 ################################################################################
+
 
 def main(args):
     print(config(args.key))

@@ -79,7 +79,7 @@ def test__parse_book_api():
         'Title': "L'Argent",
         'Language': 'fr',
         'Published': 1891,
-        'Pages': 542.,
+        'Pages': 542.0,
         'Category': 'novels',
     }
 
@@ -109,8 +109,10 @@ def test__parse_book_api():
     assert reading.goodreads._parse_book_api(r) == {
         'Author': 'Allie Brosh',
         'AuthorId': 6984726,
-        'Title': 'Hyperbole and a Half: Unfortunate Situations, Flawed Coping '
-                 'Mechanisms, Mayhem, and Other Things That Happened',
+        'Title': (
+            'Hyperbole and a Half: Unfortunate Situations, Flawed Coping '
+            'Mechanisms, Mayhem, and Other Things That Happened'
+        ),
         'Language': 'en',
         'Published': 2013,
         'Pages': 369,
@@ -153,43 +155,66 @@ def test__parse_book_series():
 
 def test__get_authors():
     assert reading.goodreads._get_authors(
-        [('Agnes Owens', '108420', None)]
+        [
+            ('Agnes Owens', '108420', None),
+        ],
     ) == ('Agnes Owens', '108420'), 'One author'
 
     assert reading.goodreads._get_authors(
-        [('Anton Chekhov', '5031025', None), ('Rosamund Bartlett', '121845', 'Translator')]
+        [
+            ('Anton Chekhov', '5031025', None),
+            ('Rosamund Bartlett', '121845', 'Translator'),
+        ],
     ) == ('Anton Chekhov', '5031025'), 'With a role to ignore'
 
     assert reading.goodreads._get_authors(
-        [('Wu  Ming', '191397', None)]
+        [
+            ('Wu  Ming', '191397', None),
+        ]
     ) == ('Wu Ming', '191397'), 'Spaces get squashed'
 
     assert reading.goodreads._get_authors(
-        [('Cory Doctorow', '12581', None), ('Charles Stross', '8794', None)]
+        [
+            ('Cory Doctorow', '12581', None),
+            ('Charles Stross', '8794', None),
+        ]
     ) == ('Cory Doctorow, Charles Stross', '12581, 8794'), 'Two authors'
 
-    assert reading.goodreads._get_authors([
-        ('John William Polidori', '26932', None),
-        ('Robert  Morrison', '14558785', 'Editor'),
-        ('Chris Baldick', '155911', 'Editor'),
-        ('Letitia E. Landon', '2927201', None),
-        ('J. Sheridan Le Fanu', '26930', None),
-    ]) == (
+    assert reading.goodreads._get_authors(
+        [
+            ('John William Polidori', '26932', None),
+            ('Robert  Morrison', '14558785', 'Editor'),
+            ('Chris Baldick', '155911', 'Editor'),
+            ('Letitia E. Landon', '2927201', None),
+            ('J. Sheridan Le Fanu', '26930', None),
+        ]
+    ) == (
         'John William Polidori, Letitia E. Landon, J. Sheridan Le Fanu',
-        '26932, 2927201, 26930'
+        '26932, 2927201, 26930',
     ), 'Ignores editors of an anthology'
 
     assert reading.goodreads._get_authors(
-        [('V.E. Schwab', '7168230', 'Pseudonym'), ('Victoria Schwab', '3099544', None)]
+        [
+            ('V.E. Schwab', '7168230', 'Pseudonym'),
+            ('Victoria Schwab', '3099544', None),
+        ]
     ) == ('Victoria Schwab', '3099544'), 'Pseudonym as a separate name'
 
     assert reading.goodreads._get_authors(
-        [('Victoria Schwab', '3099544', None), ('V.E. Schwab', '7168230', 'Pseudonym')]
+        [
+            ('Victoria Schwab', '3099544', None),
+            ('V.E. Schwab', '7168230', 'Pseudonym'),
+        ]
     ) == ('Victoria Schwab', '3099544'), 'Pseudonyms listed afterwards'
 
     # FIXME editor(s)/translator but not other authors
     assert (
-        _get_authors([("Ernst Zillekens", "675893", "Editor")]) == ()
+        _get_authors(
+            [
+                ("Ernst Zillekens", "675893", "Editor"),
+            ]
+        )
+        == ()
     ), "Just an editor"
 
     assert (
@@ -226,7 +251,10 @@ def test__get_authors():
 
     # include the author for graphic novels?
     assert _get_authors(
-        [("Fabien Vehlmann", "761380", None), ("Kerascoët", "752696", "Illustrator")]
+        [
+            ("Fabien Vehlmann", "761380", None),
+            ("Kerascoët", "752696", "Illustrator"),
+        ]
     ) == ("Fabien Vehlmann", "761380")
 
 

@@ -1,8 +1,13 @@
 # vim: ts=4 : sw=4 : et
 
 from reading.config import (
-    Config, category_patterns, date_columns, df_columns, merge_preferences,
-    metadata_prefer)
+    Config,
+    category_patterns,
+    date_columns,
+    df_columns,
+    merge_preferences,
+    metadata_prefer,
+)
 
 
 def test_df_colums():
@@ -85,6 +90,7 @@ def test_date_columns():
 
 ################################################################################
 
+
 def test_category_patterns():
     (patterns, guesses) = category_patterns()
     assert patterns == [
@@ -117,6 +123,7 @@ def test_category_patterns():
 
 ################################################################################
 
+
 def test_metadata_prefer():
     assert metadata_prefer("work") == [
         "Author",
@@ -134,6 +141,7 @@ def test_metadata_prefer():
 
 
 ################################################################################
+
 
 def test_merge_preferences():
     assert merge_preferences() == {
@@ -166,20 +174,24 @@ def test_merge_preferences():
 
 ################################################################################
 
+
 def test_config_import():
     """Test the config import, as used in the codebase."""
     from reading.config import config
+
     assert config('goodreads.user'), 'fetched a key that exists'
     assert not config('blah.blah'), '"fetched" a key that does not exist'
 
 
 def test_config():
     """Test the config object."""
-    config = Config({
-        "goodreads": {
-            "user": 1234567890,
-        },
-    })
+    config = Config(
+        {
+            "goodreads": {
+                "user": 1234567890,
+            },
+        }
+    )
 
     assert config("goodreads.user"), "fetched a key that exists"
     assert not config("blah.blah"), "'fetched' a key that does not exist"

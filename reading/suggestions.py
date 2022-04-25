@@ -11,14 +11,17 @@ from .scheduling import scheduled_at, scheduled_books
 def _recent_author_ids(c, date):
     df = c.all
 
-    return list(df[
-        (df.Read.dt.year == date.year)
-        | ((date - df.Read) < '180 days')
-        | (df.Shelf == 'currently-reading')
-    ].AuthorId)
+    return list(
+        df[
+            (df.Read.dt.year == date.year)
+            | ((date - df.Read) < '180 days')
+            | (df.Shelf == 'currently-reading')
+        ].AuthorId
+    )
 
 
 ################################################################################
+
 
 def scheduled(args):
     c = (
@@ -98,7 +101,7 @@ def _reduce(df, args):
     if not args.all:
         index = len(df.index) // 2
         s = args.size / 2
-        df = df.iloc[int(max(0, index - s)):int(index + s)]
+        df = df.iloc[int(max(0, index - s)) : int(index + s)]
 
     return df
 
@@ -110,9 +113,8 @@ def _display(df, args):
     else:
         fmt = '{Pages:4.0f}  {Title} ({Author})'
 
-    for (_, book) in df.iterrows():
+    for _, book in df.iterrows():
         out = fmt.format(**book)
         if args.width:
             out = fill(out, width=args.width, subsequent_indent='      ')
         print(out)
-

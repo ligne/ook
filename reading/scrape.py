@@ -10,19 +10,26 @@ from .storage import load_df
 
 #################################################################################
 
+
 def book_id(review):
-    return int(re.search(
-        r'/book/show/(\d+)',
-        review.find_all(class_='title')[0].div.a['href']
-    ).group(1))
+    return int(
+        re.search(
+            r'/book/show/(\d+)',
+            review.find_all(class_='title')[0].div.a['href'],
+        ).group(1)
+    )
 
 
 def pages(review):
     try:
-        return int(re.search(
-            r'[\d,]+',
-            review.find(class_='num_pages').div.text,
-        ).group(0).replace(',', ''))
+        return int(
+            re.search(
+                r'[\d,]+',
+                review.find(class_='num_pages').div.text,
+            )
+            .group(0)
+            .replace(',', '')
+        )
     except AttributeError:
         return None
 
@@ -47,6 +54,7 @@ def _get_date(review, field):
 
 ################################################################################
 
+
 def scrape(fname):
     with open(fname) as fh:
         soup = BeautifulSoup(fh, "lxml")
@@ -54,12 +62,14 @@ def scrape(fname):
     books = []
 
     for review in soup.find_all(id=re.compile(r'^review_\d+')):
-        books.append({
-            'BookId': book_id(review),
-            'Started': started_date(review),
-            'Read': read_date(review),
-            'Pages': pages(review),
-        })
+        books.append(
+            {
+                'BookId': book_id(review),
+                'Started': started_date(review),
+                'Read': read_date(review),
+                'Pages': pages(review),
+            }
+        )
 
     return pd.DataFrame(books).set_index('BookId')
 
@@ -69,10 +79,13 @@ def rebuild(scraped, df):
     fixes = load_df("scraped")
 
     # merge in the new data
-    fixes = pd.concat([
-        fixes.loc[fixes.index.difference(scraped.index)],
-        scraped,
-    ], sort=False)
+    fixes = pd.concat(
+        [
+            fixes.loc[fixes.index.difference(scraped.index)],
+            scraped,
+        ],
+        sort=False,
+    )
 
     # trim off scraped books that aren't being tracked
     fixes = fixes.loc[fixes.index.intersection(df.index)]

@@ -9,12 +9,12 @@ from pandas.testing import assert_frame_equal
 import pytest
 import yaml
 
-from reading.collection import (
-    Collection, _process_fixes, read_authorids, read_nationalities)
+from reading.collection import Collection, _process_fixes, read_authorids, read_nationalities
 from reading.config import config
 
 
 ################################################################################
+
 
 def test_read_authorids():
     c = Collection.from_dir("t/data/2019-12-04")
@@ -42,6 +42,7 @@ def test_read_nationalities():
 
 
 ################################################################################
+
 
 def test_collection():
     """General tests."""
@@ -157,6 +158,7 @@ def test_reset():
 
 # fixes/metadata
 
+
 def test__process_fixes():
     """Test the fix munging function."""
     assert not _process_fixes({}), "No fixes to apply"
@@ -270,6 +272,7 @@ def test_metadata(monkeypatch):
 
 # merging guts
 
+
 def test_merged():
     """General tests of the guts of the merge process."""
     c = Collection.from_dir("t/data/merging/")
@@ -327,6 +330,7 @@ def test_merged_added():
 
 # merging
 
+
 def test_merge():
     """General merging tests."""
     c_un = Collection.from_dir("t/data/merging")
@@ -361,6 +365,7 @@ def test_merge_df():
 
 # deduplication
 
+
 def test_dedup():
     """Test deduplication."""
     c = Collection.from_dir("t/data/2019-12-04")
@@ -381,6 +386,7 @@ def test_dedup_requires_merge():
 ################################################################################
 
 # access
+
 
 def test_df():
     """Test the .df property."""
@@ -422,6 +428,7 @@ def test_read():
 
 ################################################################################
 
+
 def test_filter_shelves():
     """Test the shelves() method."""
     c = Collection.from_dir("t/data/2019-12-04")
@@ -438,10 +445,12 @@ def test_filter_shelves():
     assert "kindle" in set(c.df.Shelf), "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
-    df = pd.concat([
-        Collection.from_dir("t/data/2019-12-04").shelves(exclude=["library"]).df,
-        Collection.from_dir("t/data/2019-12-04").shelves(include=["library"]).df,
-    ])
+    df = pd.concat(
+        [
+            Collection.from_dir("t/data/2019-12-04").shelves(exclude=["library"]).df,
+            Collection.from_dir("t/data/2019-12-04").shelves(include=["library"]).df,
+        ]
+    )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
 
 
@@ -461,10 +470,12 @@ def test_filter_languages():
     assert "en" in set(c.df.Language), "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
-    df = pd.concat([
-        Collection.from_dir("t/data/2019-12-04").languages(exclude=["fr"]).df,
-        Collection.from_dir("t/data/2019-12-04").languages(include=["fr"]).df,
-    ])
+    df = pd.concat(
+        [
+            Collection.from_dir("t/data/2019-12-04").languages(exclude=["fr"]).df,
+            Collection.from_dir("t/data/2019-12-04").languages(include=["fr"]).df,
+        ]
+    )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
 
 
@@ -484,10 +495,12 @@ def test_filter_categories():
     assert "articles" in set(c.df.Category), "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
-    df = pd.concat([
-        Collection.from_dir("t/data/2019-12-04").categories(exclude=["novels"]).df,
-        Collection.from_dir("t/data/2019-12-04").categories(include=["novels"]).df,
-    ])
+    df = pd.concat(
+        [
+            Collection.from_dir("t/data/2019-12-04").categories(exclude=["novels"]).df,
+            Collection.from_dir("t/data/2019-12-04").categories(include=["novels"]).df,
+        ]
+    )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
 
 
