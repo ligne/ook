@@ -56,6 +56,9 @@ def main(args):
     df = df[~(df.Scheduled.notnull() | scheduled_books(c.all).reindex(df.index))]
     # FIXME eventually filter out "blocked" books
 
+    # remove other books by scheduled authors
+    df = df[~df.AuthorId.isin(list(c.all[c.all.Scheduled.dt.year == args.date.year].AuthorId))]
+
     df = _filter(df, args, c)
     df = _sort(df, args)
     df = _reduce(df, args)
