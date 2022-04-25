@@ -148,21 +148,8 @@ class Collection:
         df = df.assign(Gender=None, Nationality=None)
 
         if metadata:
-            import os
-
-            if os.environ.get("OOK_OLD_METADATA"):
-                df.update(load_df("metadata", dirname=csv_dir))
-                # load author information
-                # FIXME this is very, very slow and should be moved into metadata.rebuild()
-                authors = load_df("authors", dirname=csv_dir)
-                df.update(
-                    df[df.AuthorId.isin(authors.index)]
-                    .AuthorId
-                    .apply(lambda x: authors.loc[x, ["Gender", "Nationality"]])
-                )
-            else:
-                df.update(load_df("metadata", fname="data/metadata-ebooks.csv"))
-                df.update(load_df("metadata", fname="data/metadata-gr.csv"))
+            df.update(load_df("metadata", fname="data/metadata-ebooks.csv"))
+            df.update(load_df("metadata", fname="data/metadata-gr.csv"))
 
         if fixes:
             df.update(load_df("scraped", dirname=csv_dir))
