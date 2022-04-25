@@ -28,17 +28,38 @@ def _process_report(report):
         yield df
 
 
+def flag(code):
+    """Convert a string into the corresponding Unicode flag."""
+    offset = ord("\N{Regional Indicator Symbol Letter A}") - ord("A")
+    return chr(ord(code[0]) + offset) + chr(ord(code[1]) + offset)
+
+
+# FIXME generalise this and put it somewhere more sensible
+def prefix(book):
+    """Return a prefix representing noteworthy properties of $book."""
+    string = "".join(
+        [
+            ("\N{Circled Latin Capital Letter L}" if book.Shelf == "library" else ""),
+            ("\N{Circled Latin Capital Letter S}" if book.Category == "short-stories" else ""),
+            ("\N{Circled Latin Capital Letter N}" if book.Category == "non-fiction" else ""),
+            (flag("FR") if book.Language == "fr" else ""),
+        ]
+    )
+    return f"{string} " if string else ""
+
+
 def _display_report(df):
     g = df.sort_values(['Author', 'Title']).groupby('Author')
+
     print(Template('''
 {%- for author, books in groups %}
 {{author}}
   {%- for book in books.itertuples() %}
-* {{book.Title}}
+* {{prefix(book)}}{{book.Title}}
   {%- endfor %}
 {% endfor %}
 ----
-''').render(groups=g))
+''').render(groups=g, prefix=prefix))
 
 
 ################################################################################
