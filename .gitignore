@@ -3,6 +3,8 @@
 /data/
 /htmlcov/
 /images/
+.mypy_cache/
+.nfs?*
 /old/
 # don't want any more .py files in the root
 /*.py
@@ -10,4 +12,5 @@
 .*.sw?
 .sw?
 todo
+t/reading
 /tools/
