@@ -1,13 +1,13 @@
-.*.sw?
-.sw?
-*.pyc
-/images/
-/data/
-/old/
-todo
 /.cache/
 /.coverage
+/data/
 /htmlcov/
-/tools/
+/images/
+/old/
 # don't want any more .py files in the root
 /*.py
+*.pyc
+.*.sw?
+.sw?
+todo
+/tools/
