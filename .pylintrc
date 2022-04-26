@@ -18,8 +18,10 @@ disable=
         # possibly false positives?
         stop-iteration-return,
         useless-suppression,
-        # eventually:
+        # removed in bullseye
         bad-whitespace,
+        bad-continuation,
+        # eventually:
         invalid-name,
         redefined-outer-name,
         # checked by flake8
@@ -29,7 +31,6 @@ disable=
         fixme,
         missing-docstring,
         no-else-return,
-        trailing-newlines
 
 
 [FORMAT]
