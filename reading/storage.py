@@ -4,7 +4,7 @@
 
 import pandas as pd
 
-from .config import df_columns, date_columns
+from .config import date_columns, df_columns
 
 
 def _load_csv(name, columns, parse_dates=False):

@@ -1,8 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
-import yaml
-
 import attr
+import yaml
 
 
 SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}

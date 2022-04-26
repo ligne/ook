@@ -4,8 +4,8 @@ import datetime
 import textwrap
 
 import matplotlib
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from .collection import Collection
 from .config import config

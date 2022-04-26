@@ -2,9 +2,11 @@
 
 import datetime
 import re
-import dateutil
+
 from bs4 import BeautifulSoup
+import dateutil
 import pandas as pd
+
 from .storage import load_df
 
 

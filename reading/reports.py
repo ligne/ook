@@ -5,6 +5,7 @@ from jinja2 import Template
 from .collection import Collection
 from .config import config
 
+
 # report: a set of graphs going to a particular output
 #   segment: a set of filters to apply to a Collection
 #   filter: (column, pattern) filters to apply to all the segments in this report

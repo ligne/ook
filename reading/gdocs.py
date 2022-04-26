@@ -2,9 +2,9 @@
 
 """Output to Google Docs."""
 
+from difflib import SequenceMatcher
 import json
 import pickle
-from difflib import SequenceMatcher
 
 from google.auth.transport.requests import AuthorizedSession, Request
 from google_auth_oauthlib.flow import InstalledAppFlow

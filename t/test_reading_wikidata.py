@@ -2,7 +2,7 @@
 
 import json
 
-from reading.wikidata import _uc_first, Entity, _format_search_results
+from reading.wikidata import Entity, _format_search_results, _uc_first
 
 
 def test__uc_first():

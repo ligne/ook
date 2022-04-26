@@ -5,8 +5,8 @@
 from functools import reduce
 import operator
 import re
-from xml.etree import ElementTree
 import time
+from xml.etree import ElementTree
 
 from dateutil.parser import parse
 import pandas as pd

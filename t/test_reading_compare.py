@@ -3,7 +3,7 @@
 import pandas as pd
 
 from reading.collection import Collection
-from reading.compare import _added, _removed, _changed, _started, _finished
+from reading.compare import _added, _changed, _finished, _removed, _started
 
 
 c = Collection.from_dir("t/data/2019-12-04")

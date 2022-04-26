@@ -1,10 +1,10 @@
 # vim: ts=4 : sw=4 : et
 
 import itertools
+
 import pandas as pd
 
-from reading.scheduling import _windows, _dates, _schedule
-from reading.scheduling import scheduled_at
+from reading.scheduling import _dates, _schedule, _windows, scheduled_at
 
 
 ###############################################################################

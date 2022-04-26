@@ -3,6 +3,7 @@
 """Main entry point for the application. Argument parsing and dispatch."""
 
 import argparse
+
 import pandas as pd
 
 from .config import CATEGORIES, SHELVES
