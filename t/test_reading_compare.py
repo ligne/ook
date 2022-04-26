@@ -22,7 +22,7 @@ Added The Monk by Matthew Lewis to shelf 'pending'
   * 339 pages
   * Language: en
 """.strip()
-    ), 'Added book'
+    ), "Added book"
 
     assert (
         _added(df.loc[23533039])
@@ -33,7 +33,7 @@ Added Ancillary Mercy by Ann Leckie to shelf 'pending'
   * 330 pages
   * Language: en
 """.strip()
-    ), 'Added book with series'
+    ), "Added book with series"
 
 
 def test__removed():
@@ -42,7 +42,7 @@ def test__removed():
         == """
 Removed The Monk by Matthew Lewis from shelf 'pending'
 """.strip()
-    ), 'Removed book'
+    ), "Removed book"
 
 
 def test__started():
@@ -54,7 +54,7 @@ Started The Monk by Matthew Lewis
   * 339 pages
   * Language: en
 """.strip()
-    ), 'Started book'
+    ), "Started book"
 
 
 def test__finished():
@@ -69,7 +69,7 @@ Finished The Bridge by Iain Banks
   * Published: 1986
   * Language: en
 """.strip()
-    ), 'Finished book'
+    ), "Finished book"
 
     # read in one day
     assert (
@@ -83,14 +83,14 @@ Finished A Few Notes on the Culture by Iain M. Banks
   * Published: 1994
   * Language: en
 """.strip()
-    ), 'Read in one day'
+    ), "Read in one day"
 
 
 def test__changed():
     b1 = df.loc[26570162]
 
     # FIXME should do nothing if they're both equal?
-    assert _changed(b1, b1) is None, 'Nothing if the books are the same'
+    assert _changed(b1, b1) is None, "Nothing if the books are the same"
 
     ###
     b2 = b1.copy()
@@ -102,7 +102,7 @@ def test__changed():
 Matthew Lewis, the monk
   * Title changed from 'The Monk'
 """.strip()
-    ), 'Change in title is treated specially'
+    ), "Change in title is treated specially"
 
     ###
     b2 = b1.copy()
@@ -114,11 +114,11 @@ Matthew Lewis, the monk
 matthew lewis, The Monk
   * Author changed from 'Matthew Lewis'
 """.strip()
-    ), 'Change in author is treated specially'
+    ), "Change in author is treated specially"
 
     ###
     b2 = b1.copy()
-    b2.Shelf = 'elsewhere'
+    b2.Shelf = "elsewhere"
     b2.Pages = 426
 
     assert (
@@ -128,12 +128,12 @@ Matthew Lewis, The Monk
   * Shelf: pending → elsewhere
   * Pages: 339 → 426
 """.strip()
-    ), 'Various other fields changed'
+    ), "Various other fields changed"
 
     ###
     b2 = b1.copy()
     b2.Category = None
-    b2.Added = pd.Timestamp('2017-12-25')
+    b2.Added = pd.Timestamp("2017-12-25")
     b1a = b1.copy()
     b1a.Binding = None
 
@@ -145,13 +145,13 @@ Matthew Lewis, The Monk
   * Binding set to Paperback
   * Added: 2017-07-27 → 2017-12-25
 """.strip()
-    ), 'Fields set and unset'
+    ), "Fields set and unset"
 
     ###
     b2 = b1.copy()
-    b2.Scheduled = pd.Timestamp('2021-01-01')
+    b2.Scheduled = pd.Timestamp("2021-01-01")
     b1a = b1.copy()
-    b1a.Scheduled = pd.Timestamp('2020-01-01')
+    b1a.Scheduled = pd.Timestamp("2020-01-01")
 
     assert (
         _changed(b1, b2)
@@ -159,7 +159,7 @@ Matthew Lewis, The Monk
 Matthew Lewis, The Monk
   * Scheduled for 2021
 """.strip()
-    ), 'Scheduled'
+    ), "Scheduled"
 
     assert (
         _changed(b2, b1)
@@ -167,7 +167,7 @@ Matthew Lewis, The Monk
 Matthew Lewis, The Monk
   * Unscheduled for 2021
 """.strip()
-    ), 'Unscheduled'
+    ), "Unscheduled"
 
     assert (
         _changed(b1a, b2)
@@ -175,10 +175,10 @@ Matthew Lewis, The Monk
 Matthew Lewis, The Monk
   * Scheduled: 2020 → 2021
 """.strip()
-    ), 'Scheduled year changed'
+    ), "Scheduled year changed"
 
     ###
     b2 = b1.copy()
     b2.AvgRating += 1.2
 
-    assert _changed(b1, b2) is None, 'Changes to the average rating are ignored'
+    assert _changed(b1, b2) is None, "Changes to the average rating are ignored"

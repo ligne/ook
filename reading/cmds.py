@@ -24,22 +24,22 @@ def _filter_parser():
         choices=CATEGORIES,
         default=(CATEGORIES - {"articles"}),
     )
-    parser.add_argument('--new-authors', action="store_true")
-    parser.add_argument('--old-authors', action="store_true")
-    parser.add_argument('--new-nationalities', action="store_true")
-    parser.add_argument('--old-nationalities', action="store_true")
-    parser.add_argument('--borrowed', action='store_true', default=None)
+    parser.add_argument("--new-authors", action="store_true")
+    parser.add_argument("--old-authors", action="store_true")
+    parser.add_argument("--new-nationalities", action="store_true")
+    parser.add_argument("--old-nationalities", action="store_true")
+    parser.add_argument("--borrowed", action="store_true", default=None)
 
     # miscellaneous
     # FIXME also gender, genre
     # sort
-    parser.add_argument('--alpha', action='store_true')
-    parser.add_argument('--age', action='store_true')
-    parser.add_argument('--words', action="store_true")
+    parser.add_argument("--alpha", action="store_true")
+    parser.add_argument("--age", action="store_true")
+    parser.add_argument("--words", action="store_true")
     # display
-    parser.add_argument('--size', type=int, default=10)
-    parser.add_argument('--all', action="store_true")
-    parser.add_argument('--width', type=int, default=None)  # FIXME display option
+    parser.add_argument("--size", type=int, default=10)
+    parser.add_argument("--all", action="store_true")
+    parser.add_argument("--width", type=int, default=None)  # FIXME display option
 
     return parser
 
@@ -53,13 +53,13 @@ def arg_parser():
 
     # common options
     parser.add_argument("--date", type=pd.Timestamp, default=pd.Timestamp("today"))
-    parser.add_argument('-n', '--ignore-changes', action='store_true')
-    parser.add_argument('-f', '--force', action='store_true')
+    parser.add_argument("-n", "--ignore-changes", action="store_true")
+    parser.add_argument("-f", "--force", action="store_true")
 
     # output options
 
     # subparsers
-    subparsers = parser.add_subparsers(title='subcommands', dest='mode')
+    subparsers = parser.add_subparsers(title="subcommands", dest="mode")
     subparsers.required = True
 
     update = subparsers.add_parser("update")
@@ -70,35 +70,35 @@ def arg_parser():
     # FIXME split this into books and authors?
     update.add_argument("--metadata", action="store_true")
 
-    metadata = subparsers.add_parser('metadata')
-    metadata_choices = ['books', 'authors']
-    metadata.add_argument('--find', nargs='?', const=metadata_choices, choices=metadata_choices)
+    metadata = subparsers.add_parser("metadata")
+    metadata_choices = ["books", "authors"]
+    metadata.add_argument("--find", nargs="?", const=metadata_choices, choices=metadata_choices)
     # FIXME some way of selecting a particular BookId
 
     subparsers.add_parser(
-        'scheduled',
+        "scheduled",
         parents=[filter_options],
-        help='show scheduled books',
+        help="show scheduled books",
     )
 
     subparsers.add_parser(
-        'suggest',
+        "suggest",
         parents=[filter_options],
-        help='suggest books',
+        help="suggest books",
     )
 
-    lint = subparsers.add_parser('lint', help='report problems with the collection')
-    lint.add_argument('pattern', nargs='?')
+    lint = subparsers.add_parser("lint", help="report problems with the collection")
+    lint.add_argument("pattern", nargs="?")
 
-    graph = subparsers.add_parser('graph', help='draw graphs')
-    graph.add_argument('pattern', nargs='?')
+    graph = subparsers.add_parser("graph", help="draw graphs")
+    graph.add_argument("pattern", nargs="?")
 
-    reports = subparsers.add_parser('reports', help='generate lists of books')
-    reports.add_argument('names', nargs='*', help='the pre-configured report to generate')
+    reports = subparsers.add_parser("reports", help="generate lists of books")
+    reports.add_argument("names", nargs="*", help="the pre-configured report to generate")
     # FIXME support custom reports
 
-    config = subparsers.add_parser('config', help='display configuration options')
-    config.add_argument('key')
+    config = subparsers.add_parser("config", help="display configuration options")
+    config.add_argument("key")
 
     return parser
 
@@ -106,35 +106,35 @@ def arg_parser():
 def main():
     args = arg_parser().parse_args()
 
-    if args.mode == 'update':
+    if args.mode == "update":
         import reading.update
 
         reading.update.main(args)
-    if args.mode == 'metadata':
+    if args.mode == "metadata":
         import reading.metadata
 
         reading.metadata.main(args)
-    if args.mode == 'lint':
+    if args.mode == "lint":
         import reading.lint
 
         reading.lint.main(args)
-    if args.mode == 'graph':
+    if args.mode == "graph":
         import reading.graph
 
         reading.graph.main(args)
-    if args.mode == 'config':
+    if args.mode == "config":
         import reading.config
 
         reading.config.main(args)
-    if args.mode == 'scheduled':
+    if args.mode == "scheduled":
         import reading.suggestions
 
         reading.suggestions.scheduled(args)  # !
-    if args.mode == 'suggest':
+    if args.mode == "suggest":
         import reading.suggestions
 
         reading.suggestions.main(args)
-    if args.mode == 'reports':
+    if args.mode == "reports":
         import reading.reports
 
         reading.reports.main(args)

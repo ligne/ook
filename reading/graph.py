@@ -7,7 +7,7 @@ import textwrap
 
 import matplotlib
 
-matplotlib.use('Agg')
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -21,9 +21,9 @@ from .scheduling import _set_schedules
 # the cutoff year before which books are considered "old".
 thresh = 1940
 
-ix = pd.DatetimeIndex(start='2016-01-01', end='today', freq='D')
-today = pd.Timestamp('today')
-tomorrow = today + pd.Timedelta('1 day')
+ix = pd.DatetimeIndex(start="2016-01-01", end="today", freq="D")
+today = pd.Timestamp("today")
+tomorrow = today + pd.Timedelta("1 day")
 
 
 ################################################################################
@@ -44,7 +44,7 @@ def _pages_changed(df, shelf, direction):
     return (
         df[df.Shelf == shelf]
         .set_index([direction])
-        .Pages.resample('D')
+        .Pages.resample("D")
         .sum()
         .reindex(index=ix)
         .fillna(0)
@@ -53,12 +53,12 @@ def _pages_changed(df, shelf, direction):
 
 # number of pages added by day
 def _pages_added(df, shelf):
-    return _pages_changed(df, shelf, 'Added').cumsum()
+    return _pages_changed(df, shelf, "Added").cumsum()
 
 
 # number of pages read by day
 def _pages_read(df):
-    return _pages_changed(df, 'read', 'Read').cumsum()
+    return _pages_changed(df, "read", "Read").cumsum()
 
 
 def save_image(df, name, start=None):
@@ -72,8 +72,8 @@ def save_image(df, name, start=None):
 
     # prettify and save
     plt.grid(True)
-    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5))
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.legend(loc="center left", bbox_to_anchor=(1.0, 0.5))
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -84,31 +84,31 @@ def backlog():
     df = Collection.from_dir().df
 
     # FIXME _pages_added() can't see books added before 2016 without this
-    df.loc[df.Added < '2016', 'Added'] = pd.Timestamp('2016-01-01')
+    df.loc[df.Added < "2016", "Added"] = pd.Timestamp("2016-01-01")
 
     p = pd.DataFrame(
         {
-            'elsewhere': _pages_added(df, 'elsewhere'),
-            'ebooks': _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
-            'library': _pages_added(df, 'library'),
-            'pending': _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
-            'read': _pages_added(df, 'read') - _pages_read(df),
+            "elsewhere": _pages_added(df, "elsewhere"),
+            "ebooks": _pages_added(df, "ebooks") + _pages_added(df, "kindle"),
+            "library": _pages_added(df, "library"),
+            "pending": _pages_added(df, "currently-reading") + _pages_added(df, "pending"),
+            "read": _pages_added(df, "read") - _pages_read(df),
         },
         index=ix,
-        columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'],
+        columns=["read", "pending", "ebooks", "elsewhere", "library"],
     )
 
     p = p.cumsum(axis=1)
 
     # truncate to the interesting bit
-    start = '2016-04-17'
+    start = "2016-04-17"
 
     # number of pages
-    save_image(p, 'pages', start=start)
+    save_image(p, "pages", start=start)
 
     # scale by the reading rate at that time
-    rate = _pages_changed(df, 'read', 'Read').expanding().mean() * 365.2425
-    save_image(p.divide(rate, axis=0), 'backlog', start=start)
+    rate = _pages_changed(df, "read", "Read").expanding().mean() * 365.2425
+    save_image(p.divide(rate, axis=0), "backlog", start=start)
 
 
 @graph
@@ -117,14 +117,14 @@ def increase():
 
     p = pd.DataFrame(
         {
-            'elsewhere': _pages_added(df, 'elsewhere'),
-            'ebooks': _pages_added(df, 'ebooks') + _pages_added(df, 'kindle'),
-            'library': _pages_added(df, 'library'),
-            'pending': _pages_added(df, 'currently-reading') + _pages_added(df, 'pending'),
-            'read': -_pages_read(df),
+            "elsewhere": _pages_added(df, "elsewhere"),
+            "ebooks": _pages_added(df, "ebooks") + _pages_added(df, "kindle"),
+            "library": _pages_added(df, "library"),
+            "pending": _pages_added(df, "currently-reading") + _pages_added(df, "pending"),
+            "read": -_pages_read(df),
         },
         index=ix,
-        columns=['read', 'pending', 'ebooks', 'elsewhere', 'library'],
+        columns=["read", "pending", "ebooks", "elsewhere", "library"],
     )
 
     # work out how much to shift each column down by
@@ -132,31 +132,31 @@ def increase():
     # stack the columns, with any negatives set to zero
     heights = p.where(p > 0, 0).cumsum(axis=1)
     # shift everything down
-    p = heights.add(shift, axis='index')
+    p = heights.add(shift, axis="index")
 
-    save_image((p - p.shift(365)), 'increase', start='2018')
+    save_image((p - p.shift(365)), "increase", start="2018")
 
 
 # number of new authors a year
 @graph
 def new_authors():
     authors = Collection.from_dir().shelves(["read"]).df
-    first = authors.set_index('Read').sort_index().Author.drop_duplicates()
-    first = first.resample('D').count().reindex(ix).fillna(0)
+    first = authors.set_index("Read").sort_index().Author.drop_duplicates()
+    first = first.resample("D").count().reindex(ix).fillna(0)
     first.rolling(window=365, min_periods=0).sum().plot()
 
     # force the bottom of the graph to zero
     ylim = plt.ylim()
     plt.ylim([min(ylim[0], 0), ylim[1]])
 
-    plt.axhline(12, color='k', alpha=0.5)
+    plt.axhline(12, color="k", alpha=0.5)
 
     # prettify and save
-    name = 'new_authors'
+    name = "new_authors"
     plt.grid(True)
-    plt.axvspan(today, first.index[-1], color='k', alpha=0.1)
-    plt.title('New authors')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.axvspan(today, first.index[-1], color="k", alpha=0.1)
+    plt.title("New authors")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -164,20 +164,20 @@ def new_authors():
 def median_date():
     read = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
 
-    read = read.set_index('Read').Published.resample('D').mean()
+    read = read.set_index("Read").Published.resample("D").mean()
 
     read.rolling(window=365, min_periods=0).median().rolling(window=30).mean().reindex(
         ix
-    ).ffill().loc['2016':].plot()
+    ).ffill().loc["2016":].plot()
 
     # set the top of the graph to the current year
     plt.ylim([plt.ylim()[0], today.year])
 
     # prettify and save
-    name = 'median_date'
+    name = "median_date"
     plt.grid(True)
-    plt.title('Median publication year')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.title("Median publication year")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -203,14 +203,14 @@ def oldness():
     df = (
         pd.DataFrame(
             {
-                'thresh': df.Published.apply(lambda x: (x < thresh and 1 or 0)),
-                'total': df.Published.apply(lambda x: 1),
-                'Read': df.Read,
+                "thresh": df.Published.apply(lambda x: (x < thresh and 1 or 0)),
+                "total": df.Published.apply(lambda x: 1),
+                "Read": df.Read,
             },
             index=df.index,
         )
-        .set_index('Read')
-        .resample('D')
+        .set_index("Read")
+        .resample("D")
         .sum()
         .reindex(ix)
         .fillna(0)
@@ -222,13 +222,13 @@ def oldness():
     # set to the full range
     plt.ylim([0, 1])
 
-    plt.axhline(0.5, color='k', alpha=0.5)
+    plt.axhline(0.5, color="k", alpha=0.5)
 
     # prettify and save
-    name = 'old_books'
+    name = "old_books"
     plt.grid(True)
-    plt.title('Old books')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.title("Old books")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -239,25 +239,25 @@ def gender():
 
     df = (
         df.pivot_table(
-            values='Pages',
-            index='Read',
-            columns='Gender',
+            values="Pages",
+            index="Read",
+            columns="Gender",
             aggfunc=np.sum,
             fill_value=0,
         )
-        .rolling('365d')
+        .rolling("365d")
         .sum()
     )
-    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
+    df.divide(df.sum(axis="columns"), axis="rows").loc["2017":].plot.area()
 
     # set to the full range
     plt.ylim([0, 1])
 
     # prettify and save
-    name = 'gender'
+    name = "gender"
     plt.grid(True)
-    plt.title('Gender')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.title("Gender")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -265,27 +265,27 @@ def gender():
 def language():
     df = Collection.from_dir().shelves(["read"]).df
 
-    df.Language = df.Language.fillna('unknown')
+    df.Language = df.Language.fillna("unknown")
     df = (
         df.pivot_table(
-            values='Pages',
-            index='Read',
-            columns='Language',
+            values="Pages",
+            index="Read",
+            columns="Language",
             aggfunc=np.sum,
             fill_value=0,
         )
-        .rolling('365d')
+        .rolling("365d")
         .sum()
     )
-    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
+    df.divide(df.sum(axis="columns"), axis="rows").loc["2017":].plot.area()
 
     plt.ylim([0, 1])
 
     # prettify and save
-    name = 'language'
+    name = "language"
     plt.grid(True)
-    plt.title('Languages')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.title("Languages")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -293,27 +293,27 @@ def language():
 def category():
     df = Collection.from_dir().shelves(["read"]).df
 
-    df.Category = df.Category.fillna('unknown')
+    df.Category = df.Category.fillna("unknown")
     df = (
         df.pivot_table(
-            values='Pages',
-            index='Read',
-            columns='Category',
+            values="Pages",
+            index="Read",
+            columns="Category",
             aggfunc=np.sum,
             fill_value=0,
         )
-        .rolling('365d')
+        .rolling("365d")
         .sum()
     )
-    df.divide(df.sum(axis='columns'), axis='rows').loc['2017':].plot.area()
+    df.divide(df.sum(axis="columns"), axis="rows").loc["2017":].plot.area()
 
     plt.ylim([0, 1])
 
     # prettify and save
-    name = 'category'
+    name = "category"
     plt.grid(True)
-    plt.title('Categories')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.title("Categories")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -323,22 +323,22 @@ def nationality():
     df = Collection.from_dir().shelves(["read"]).df
 
     # how many new nationalities a year
-    authors = df.set_index('Read').sort_index()
+    authors = df.set_index("Read").sort_index()
     first = authors.Nationality.drop_duplicates()
-    first = first.resample('D').count().reindex(ix, fill_value=0)
+    first = first.resample("D").count().reindex(ix, fill_value=0)
 
     # total number of distinct nationalities
     # FIXME use rolling apply?
     values = []
     for date in ix:
-        start = (date - pd.Timedelta('365 days')).strftime('%F')
-        end = date.strftime('%F')
+        start = (date - pd.Timedelta("365 days")).strftime("%F")
+        end = date.strftime("%F")
         values.append(len(set(authors.loc[start:end].Nationality.values)))
 
     pd.DataFrame(
         {
-            'Distinct': pd.Series(data=values, index=ix),
-            'New': first.rolling(window=365).sum(),
+            "Distinct": pd.Series(data=values, index=ix),
+            "New": first.rolling(window=365).sum(),
         }
     ).plot()
 
@@ -347,11 +347,11 @@ def nationality():
     plt.ylim([min(ylim[0], 0), ylim[1] + 1])
 
     # prettify and save
-    name = 'nationalities'
+    name = "nationalities"
     plt.grid(True)
-    plt.axvspan(today, first.index[-1], color='k', alpha=0.1)
-    plt.title('Nationalities')
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.axvspan(today, first.index[-1], color="k", alpha=0.1)
+    plt.title("Nationalities")
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -359,27 +359,27 @@ def nationality():
 @graph
 def reading_rate():
     df = Collection.from_dir().df
-    completed = _pages_changed(df, 'read', 'Read')
+    completed = _pages_changed(df, "read", "Read")
 
-    current_pages = df[df.Shelf == 'currently-reading'].Pages.sum()
+    current_pages = df[df.Shelf == "currently-reading"].Pages.sum()
 
     reading = completed.copy()
     reading.loc[tomorrow] = current_pages
 
     p = pd.DataFrame(
         {
-            'Completed': completed.expanding().mean(),
-            'Reading': reading.expanding().mean().iloc[-2:],
+            "Completed": completed.expanding().mean(),
+            "Reading": reading.expanding().mean().iloc[-2:],
         },
         index=reading.index,
     )
 
-    p.plot(title='Pages read per day')
+    p.plot(title="Pages read per day")
 
     # prettify and save
-    name = 'rate'
+    name = "rate"
     plt.grid(True)
-    plt.savefig('images/{}.png'.format(name))
+    plt.savefig("images/{}.png".format(name))
     plt.close()
 
 
@@ -387,27 +387,27 @@ def reading_rate():
 def rate_area():
     df = Collection.from_dir().shelves(["read"]).df
 
-    df['ppd'] = df.Pages / ((df.Read - df.Started).dt.days + 1)
+    df["ppd"] = df.Pages / ((df.Read - df.Started).dt.days + 1)
 
     g = pd.DataFrame(index=ix)
 
-    for ii, row in df.sort_values(['Started']).iterrows():
+    for ii, row in df.sort_values(["Started"]).iterrows():
         g[ii] = pd.Series(
             {
-                row.Started: row['ppd'],
+                row.Started: row["ppd"],
                 row.Read: 0,
             },
             index=ix,
         ).ffill()
 
-    g.plot(title='Reading rate', kind='area', lw=0)
+    g.plot(title="Reading rate", kind="area", lw=0)
 
     # prettify and save
-    name = 'rate_area'
+    name = "rate_area"
     plt.grid(True)
     # the legend doesn't help
     plt.legend().set_visible(False)
-    plt.savefig('images/{}.png'.format(name), bbox_inches='tight')
+    plt.savefig("images/{}.png".format(name), bbox_inches="tight")
     plt.close()
 
 
@@ -470,10 +470,10 @@ def scheduled():
     df = Collection.from_dir().df
     _set_schedules(df, config("scheduled"))
 
-    rate = _pages_changed(df, 'read', 'Read').rolling(365).mean().iloc[-1]
+    rate = _pages_changed(df, "read", "Read").rolling(365).mean().iloc[-1]
 
-    df.loc[df.Shelf == 'currently-reading', 'Scheduled'] = today
-    df = df.dropna(subset=['Scheduled'])
+    df.loc[df.Shelf == "currently-reading", "Scheduled"] = today
+    df = df.dropna(subset=["Scheduled"])
 
     years = scheduled_years(df)[:3]
 
@@ -512,7 +512,7 @@ def scheduled():
 
         ax.axhline(page_limit)
         if is_current_year(year):
-            ax.axhspan(page_limit, page_limit * margin, color='k', alpha=0.1)
+            ax.axhspan(page_limit, page_limit * margin, color="k", alpha=0.1)
 
     # set the right-hand ticks.  no labels except on final column.  do this
     # after all the graphs are drawn, so the y-axis scaling is correct.
@@ -522,8 +522,8 @@ def scheduled():
         if ax != axes[-1]:
             axr.set_yticklabels([])
 
-    filename = 'images/scheduled.png'
-    plt.savefig(filename, bbox_inches='tight')
+    filename = "images/scheduled.png"
+    plt.savefig(filename, bbox_inches="tight")
     plt.close()
 
 

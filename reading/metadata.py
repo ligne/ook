@@ -30,7 +30,7 @@ class FullExit(Exception):
 def _list_book_choices(results, author_ids, work_ids):
     (width, _) = shutil.get_terminal_size()
     return Template(
-        '''
+        """
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
   {%- if entry.Work|int in works %}\033[32m{% endif %} {{entry.Title|truncate(width-5)}}\033[0m
@@ -54,7 +54,7 @@ def _list_book_choices(results, author_ids, work_ids):
       https://www.goodreads.com/author/show/{{entry.AuthorId}}
     {%- endif %}
 {% endfor %}
-'''
+"""
     ).render(results=results, authors=author_ids, works=work_ids, width=width)
 
 
@@ -62,7 +62,7 @@ def _list_book_choices(results, author_ids, work_ids):
 def _list_author_choices(results):
     (width, _) = shutil.get_terminal_size()
     return Template(
-        '''
+        """
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
  {%- if True %} {{entry.Label}}{% endif %}
@@ -70,42 +70,42 @@ def _list_author_choices(results):
     {{entry.Description}}
     {%- endif %}
 {% endfor %}
-'''
+"""
     ).render(results=results, width=width)
 
 
 # prompts the user for a selection or other decision.
 def _read_choice(n):
     entries = [str(x + 1) for x in range(n)]
-    others = list('sqQ')
+    others = list("sqQ")
 
-    selections = '1' if n == 1 else '1-{}'.format(n)
+    selections = "1" if n == 1 else "1-{}".format(n)
 
-    prompt = '\033[94m[{},?]?\033[0m '.format(','.join([selections] + others))
+    prompt = "\033[94m[{},?]?\033[0m ".format(",".join([selections] + others))
 
     help_msg = (
-        '\033[91m'
-        + '''
+        "\033[91m"
+        + """
 {} - select
 
 s - skip to the next author
 q - save and exit
 Q - exit without saving
 ? - print help
-'''.format(
+""".format(
             selections
         ).strip()
-        + '\033[0m'
+        + "\033[0m"
     )
 
     try:
         while True:
-            c = input(prompt) or '1'
-            if c == 'q':
+            c = input(prompt) or "1"
+            if c == "q":
                 raise SaveExit
-            elif c == 'Q':
+            elif c == "Q":
                 raise FullExit
-            elif c == 's':
+            elif c == "s":
                 return None
             elif c in entries:
                 break
@@ -128,7 +128,7 @@ def lookup_work_id(book, author_ids, work_ids):
     print("\033[1mSearching for '{}' by '{}'\033[0m".format(book.Title, book.Author))
 
     title = _ebook_parse_title(book.Title).Title
-    results = sorted(search_title(title), key=lambda x: -x['Ratings'])
+    results = sorted(search_title(title), key=lambda x: -x["Ratings"])
     if not results:
         # halp!
         print("No books found with the title '{}'".format(title))
@@ -150,10 +150,10 @@ def lookup_author(author):
     (width, _) = shutil.get_terminal_size()
     print(
         Template(
-            '''
+            """
 \033[1mSearching for '{{author}}'\033[0m
 {{titles|join(', ')|truncate(width)}}\033[0m
-'''.lstrip()
+""".lstrip()
         ).render(author=author.Author, titles=author.Title, width=width)
     )
 
@@ -199,10 +199,10 @@ def find(what):
     authors = load_df("authors")
 
     try:
-        if 'books' in what:
+        if "books" in what:
             find_books(books)
         # FIXME want to reload so the authors of newly-associated books appear
-        if 'authors' in what:
+        if "authors" in what:
             find_authors(authors)
     except SaveExit:
         pass
@@ -221,19 +221,19 @@ def find_books(books):
     work_ids = set(df.Work.dropna().astype(int))
 
     df = df[df.Work.isnull()]
-    df = df[df.Language == 'en']  # search doesn't work well with non-english books
+    df = df[df.Language == "en"]  # search doesn't work well with non-english books
 
     for book_id, book in df.sample(frac=1).iterrows():
         resp = lookup_work_id(book, author_ids, work_ids)
         if not resp:
             continue
 
-        author_ids.add(resp['AuthorId'])
-        work_ids.add(resp['Work'])
+        author_ids.add(resp["AuthorId"])
+        work_ids.add(resp["Work"])
 
-        books.loc[book_id] = pd.Series(fetch_book(resp['BookId']))
-        books.loc[book_id, 'Work'] = resp['Work']
-        books.loc[book_id, 'BookId'] = resp['BookId']
+        books.loc[book_id] = pd.Series(fetch_book(resp["BookId"]))
+        books.loc[book_id, "Work"] = resp["Work"]
+        books.loc[book_id, "BookId"] = resp["BookId"]
 
 
 # associate Wikidata QIDs with AuthorIds
@@ -241,11 +241,11 @@ def find_authors(authors):
     df = Collection.from_dir().df
     df = (
         df[~df.AuthorId.isin(authors.index)]
-        .groupby('AuthorId')
+        .groupby("AuthorId")
         .aggregate(
             {
-                'Author': 'first',
-                'Title': list,
+                "Author": "first",
+                "Title": list,
             }
         )
     )

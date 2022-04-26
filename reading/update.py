@@ -43,7 +43,7 @@ def update_scrape(args, old):
     c = Collection.from_dir(fixes=None)
     df = c.df
 
-    fixes = rebuild(scrape(config('goodreads.html')), df)
+    fixes = rebuild(scrape(config("goodreads.html")), df)
 
     if not args.ignore_changes:
         save_df("scraped", fixes)

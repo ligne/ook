@@ -38,11 +38,11 @@ def _lookup_series_id(df, name):
     if not names:
         raise ValueError("Couldn't find series matching {}".format(name))
     if len(names) > 1:
-        raise ValueError("Ambiguous series name {}: {}".format(name, ', '.join(names)))
+        raise ValueError("Ambiguous series name {}: {}".format(name, ", ".join(names)))
 
     return int(series.SeriesId.iat[0])
 
 
 # whether to ignore the series.
 def ignore(series_id):
-    return int(series_id) in config('series.ignore')
+    return int(series_id) in config("series.ignore")

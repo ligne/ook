@@ -7,12 +7,12 @@ from reading.wikidata import _uc_first, Entity, _format_search_results
 
 def test__uc_first():
     tests = [
-        ['test', 'Test'],
-        ['Test', 'Test'],
-        ['Test', 'Test'],
-        ['TEST', 'TEST'],
-        ['t', 'T'],
-        ['', ''],
+        ["test", "Test"],
+        ["Test", "Test"],
+        ["Test", "Test"],
+        ["TEST", "TEST"],
+        ["t", "T"],
+        ["", ""],
     ]
 
     for string, expected in tests:

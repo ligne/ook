@@ -17,10 +17,10 @@ def test__lookup_series_id(collection):
 
     # FIXME check the exception message?
     with pytest.raises(ValueError):
-        _lookup_series_id(c.df, ('_' * 100))
+        _lookup_series_id(c.df, ("_" * 100))
 
     with pytest.raises(ValueError):
-        _lookup_series_id(c.df, 'e')
+        _lookup_series_id(c.df, "e")
 
 
 def test_ignore():

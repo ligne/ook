@@ -18,29 +18,29 @@ pd.options.display.width = None
 # split ebook titles into title, subtitle and volume parts, since they tend to
 # be unusably messy
 def _ebook_parse_title(title):
-    title = re.sub(r'\s+', ' ', title.strip())
+    title = re.sub(r"\s+", " ", title.strip())
 
     t = title
     _s = v = None
 
-    m = re.search(r'(?: / |\s?[;:] )', title)
+    m = re.search(r"(?: / |\s?[;:] )", title)
     if m:
-        t, _s = re.split(r'(?: / |\s?[;:] )', title, maxsplit=1)
+        t, _s = re.split(r"(?: / |\s?[;:] )", title, maxsplit=1)
 
     patterns = (
-        (r', Tome ([IV]+)\.', 1),
-        (r', Volume (\d+)(?: \(.+\))', 1),
-        (r', tome (\w+)', 1),
+        (r", Tome ([IV]+)\.", 1),
+        (r", Volume (\d+)(?: \(.+\))", 1),
+        (r", tome (\w+)", 1),
     )
 
     for pat, grp in patterns:
         m = re.search(pat, title, re.IGNORECASE)
         if m:
-            t = re.sub(pat, '', t)
+            t = re.sub(pat, "", t)
             v = m.group(grp)
             break
 
-    return pd.Series([t, v], index=['Title', 'Volume'])
+    return pd.Series([t, v], index=["Title", "Volume"])
 
 
 # rearranges the fixes into something that DataFrame.update() can handle.

@@ -97,8 +97,8 @@ class Metadata:
 
 
 def _ignore_item(path):
-    ignore_fname = ['My Clippings.txt']
-    ignore_ext = ['.kfx']
+    ignore_fname = ["My Clippings.txt"]
+    ignore_ext = [".kfx"]
 
     return (
         not path.is_file()
@@ -110,8 +110,8 @@ def _ignore_item(path):
 
 # returns all the interesting-looking files.
 def get_ebooks(kindle_dir):
-    for d in 'articles', 'short-stories', 'books', 'non-fiction':
-        category = 'novels' if d == 'books' else d
+    for d in "articles", "short-stories", "books", "non-fiction":
+        category = "novels" if d == "books" else d
         for f in (kindle_dir / d).iterdir():
             if _ignore_item(f):
                 continue
@@ -124,14 +124,14 @@ def get_ebooks(kindle_dir):
 
 
 def process(df, force=False):
-    kindle_dir = Path(config('kindle.directory'))
+    kindle_dir = Path(config("kindle.directory"))
 
     ebooks = []
 
     for category, path, name in get_ebooks(kindle_dir):
         if not force and name in df.index:
             ebook = df.loc[name].to_dict()
-            ebook['BookId'] = name
+            ebook["BookId"] = name
             ebooks.append(ebook)
             continue
 
@@ -141,14 +141,14 @@ def process(df, force=False):
 
         ebooks.append(
             {
-                'BookId': name,
-                'Author': metadata.author,
-                'Title': metadata.title,
-                'Category': category,
-                'Language': metadata.language,
-                'Added': pd.Timestamp(path.stat().st_mtime, unit='s').floor('D'),
-                'Words': words,
+                "BookId": name,
+                "Author": metadata.author,
+                "Title": metadata.title,
+                "Category": category,
+                "Language": metadata.language,
+                "Added": pd.Timestamp(path.stat().st_mtime, unit="s").floor("D"),
+                "Words": words,
             }
         )
 
-    return pd.DataFrame(ebooks).set_index('BookId')
+    return pd.DataFrame(ebooks).set_index("BookId")

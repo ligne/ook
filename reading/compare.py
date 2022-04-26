@@ -9,7 +9,7 @@ from jinja2 import Template
 
 
 ignore_columns = [
-    'AvgRating',
+    "AvgRating",
 ]
 
 
@@ -18,7 +18,7 @@ ignore_columns = [
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old, new, use_work=True):
-    (old, new) = [df.fillna('') for df in (old, new)]
+    (old, new) = [df.fillna("") for df in (old, new)]
 
     if use_work:
         _compare_with_work(old, new)
@@ -42,14 +42,14 @@ def _compare_with_work(old, new):
                 new.loc[new.index.intersection(idcs)],
             ],
             sort=False,
-        )['Work']
+        )["Work"]
         .drop_duplicates()
         .values
     )
 
     for ix in wids:
-        _o = old[old['Work'] == ix]
-        _n = new[new['Work'] == ix]
+        _o = old[old["Work"] == ix]
+        _n = new[new["Work"] == ix]
 
         if not _o.empty and not _n.empty:
             changed = _changed(_o.iloc[0], _n.iloc[0])
@@ -79,21 +79,21 @@ def _compare_without_work(old, new):
 # formatting for a book that's been added/removed/changed
 def _added(book):
     return Template(
-        '''Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
+        """Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
 {%- if b.Series %}
   * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {% if "Pages" in b %}{{b.Pages|int}} pages{% else %}{{b.Words|int}} words{% endif %}
   * Language: {{b.Language}}
-'''
+"""
     ).render(b=book)
 
 
 def _removed(book):
     return Template(
-        '''Removed {{b.Title}} by {{b.Author}} from shelf '{{b.Shelf}}'
-'''
+        """Removed {{b.Title}} by {{b.Author}} from shelf '{{b.Shelf}}'
+"""
     ).render(b=book)
 
 
@@ -106,16 +106,16 @@ def _changed(old, new):
     if old.equals(new):
         # nothing changed
         return None
-    elif new['Shelf'] == 'currently-reading' != old['Shelf']:
+    elif new["Shelf"] == "currently-reading" != old["Shelf"]:
         # started reading
         return _started(new)
-    elif new['Shelf'] == 'read' != old['Shelf']:
+    elif new["Shelf"] == "read" != old["Shelf"]:
         # finished reading
         return _finished(new)
     else:
         # just generally changed fields
         return Template(
-            '''{{new.Author}}, {{new.Title}}
+            """{{new.Author}}, {{new.Title}}
 {%- for col in new.index -%}
   {%- if old[col] != new[col] %}
 
@@ -155,7 +155,7 @@ def _changed(old, new):
       {%- endif %}
   {%- endif -%}
 {%- endfor %}
-'''
+"""
         ).render(old=old, new=new)
 
 
@@ -164,14 +164,14 @@ def _changed(old, new):
 
 def _started(book):
     return Template(
-        '''Started {{ b.Title }} by {{b.Author}}
+        """Started {{ b.Title }} by {{b.Author}}
 {%- if b.Series and b.Series is not number %}
   * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {{b.Pages|int}} pages
   * Language: {{b.Language}}
-'''
+"""
     ).render(b=book)
 
 
@@ -179,7 +179,7 @@ def _started(book):
 # gender/nationality) for checking
 def _finished(book):
     return Template(
-        '''Finished {{b.Title}} by {{b.Author}}
+        """Finished {{b.Title}} by {{b.Author}}
   * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)
   {%- if b.Pages|int %}
   * {{b.Pages|int}} pages, {{(b.Pages / ((b.Read - b.Started).days + 1))|round|int}} pages/day
@@ -188,7 +188,7 @@ def _finished(book):
   * Category: {{b.Category}}
   * Published: {{b.Published|int}}
   * Language: {{b.Language}}
-'''
+"""
     ).render(b=book)
 
 

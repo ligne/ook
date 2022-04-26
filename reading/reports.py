@@ -12,15 +12,15 @@ from .config import config
 
 
 def _process_report(report):
-    filters = report.get('filter', [])
+    filters = report.get("filter", [])
 
-    for segment in report['segments']:
+    for segment in report["segments"]:
         df = Collection.from_dir(merge=True).df
 
-        if 'shelves' in segment:
-            df = df[df.Shelf.isin(segment['shelves'])]
-        if 'languages' in segment:
-            df = df[df.Language.isin(segment['languages'])]
+        if "shelves" in segment:
+            df = df[df.Shelf.isin(segment["shelves"])]
+        if "languages" in segment:
+            df = df[df.Language.isin(segment["languages"])]
 
         for col, pattern in filters:
             df = df[~df[col].str.contains(pattern, na=False)]
@@ -49,11 +49,11 @@ def prefix(book):
 
 
 def _display_report(df):
-    g = df.sort_values(['Author', 'Title']).groupby('Author')
+    g = df.sort_values(["Author", "Title"]).groupby("Author")
 
     print(
         Template(
-            '''
+            """
 {%- for author, books in groups %}
 {{author}}
   {%- for book in books.itertuples() %}
@@ -61,7 +61,7 @@ def _display_report(df):
   {%- endfor %}
 {% endfor %}
 ----
-'''
+"""
         ).render(groups=g, prefix=prefix)
     )
 
@@ -71,7 +71,7 @@ def _display_report(df):
 
 def main(args):
     for name in args.names:
-        report = config('reports.' + name)
+        report = config("reports." + name)
         df_list = _process_report(report)
         for df in df_list:
             _display_report(df)

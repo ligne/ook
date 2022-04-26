@@ -30,11 +30,11 @@ TODAY = datetime.date.today()
 
 # FIXME remove this
 def scheduled(df):
-    for settings in config('scheduled'):
-        print(settings.get('author', settings.get('series')))
+    for settings in config("scheduled"):
+        print(settings.get("author", settings.get("series")))
         for date, book in _schedule(df, **settings):
             book = df.loc[book]
-            print('{} {} ({:0.0f})'.format(date.date(), book.Title, book['Published']))
+            print("{} {} ({:0.0f})".format(date.date(), book.Title, book["Published"]))
         print()
 
 
@@ -54,8 +54,8 @@ def scheduled_books(df):
 
 
 # fix up df with the scheduled dates
-def _set_schedules(df, schedules=None, date=TODAY, col='Scheduled'):
-    for settings in schedules or config('scheduled'):
+def _set_schedules(df, schedules=None, date=TODAY, col="Scheduled"):
+    for settings in schedules or config("scheduled"):
         for d, book in _schedule(df, **settings, date=date):
             df.loc[book, col] = d
 
@@ -65,7 +65,7 @@ def _set_schedules(df, schedules=None, date=TODAY, col='Scheduled'):
 def scheduled_at(df, date=TODAY, schedules=None):
     date = pd.Timestamp(date)
     _set_schedules(df, schedules, date)
-    return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values('Title')
+    return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values("Title")
 
 
 ################################################################################

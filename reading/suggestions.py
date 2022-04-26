@@ -14,8 +14,8 @@ def _recent_author_ids(c, date):
     return list(
         df[
             (df.Read.dt.year == date.year)
-            | ((date - df.Read) < '180 days')
-            | (df.Shelf == 'currently-reading')
+            | ((date - df.Read) < "180 days")
+            | (df.Shelf == "currently-reading")
         ].AuthorId
     )
 
@@ -87,11 +87,11 @@ def _filter(df, args, c):
 def _sort(df, args):
     if args.alpha:
         # FIXME use a more sortable version of the title
-        df = df.sort_values(['Title', 'Author'])
+        df = df.sort_values(["Title", "Author"])
     elif args.age:
-        df = df.sort_values(['Added', 'Title', 'Author'])
+        df = df.sort_values(["Added", "Title", "Author"])
     else:
-        df = df.sort_values(['Pages', 'Title', 'Author'])
+        df = df.sort_values(["Pages", "Title", "Author"])
 
     return df
 
@@ -109,12 +109,12 @@ def _reduce(df, args):
 # print out the suggestions
 def _display(df, args):
     if args.words:
-        fmt = '{Words:4.0f}  {Title} ({Author})'
+        fmt = "{Words:4.0f}  {Title} ({Author})"
     else:
-        fmt = '{Pages:4.0f}  {Title} ({Author})'
+        fmt = "{Pages:4.0f}  {Title} ({Author})"
 
     for _, book in df.iterrows():
         out = fmt.format(**book)
         if args.width:
-            out = fill(out, width=args.width, subsequent_indent='      ')
+            out = fill(out, width=args.width, subsequent_indent="      ")
         print(out)
