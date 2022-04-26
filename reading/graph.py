@@ -3,12 +3,7 @@
 import datetime
 import textwrap
 
-# pylint: disable=wrong-import-position
-
 import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
@@ -16,7 +11,12 @@ from .collection import Collection
 from .config import config
 from .scheduling import _set_schedules
 
-# pylint: enable=wrong-import-position
+
+# persuade isort that the backend needs to be set *before* plt is created
+# FIXME longer-term we should stop using the pyplot interface
+if True:  # pylint: disable=using-constant-test
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt  # pylint: disable=ungrouped-imports
 
 # the cutoff year before which books are considered "old".
 thresh = 1940
