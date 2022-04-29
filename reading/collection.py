@@ -49,16 +49,15 @@ def _process_fixes(fixes):
     if not fixes:
         return pd.DataFrame()
 
-    d = pd.DataFrame(fixes).set_index("BookId")
+    fix_df = pd.DataFrame(fixes).set_index("BookId")
 
     # FIXME looks like an upstream bug...
     # https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
     for column in ["Added", "Read", "Started"]:
-        if column not in d.columns:
-            continue
-        d[column] = pd.to_datetime(d[column])
+        if column in fix_df.columns:
+            fix_df[column] = pd.to_datetime(fix_df[column])
 
-    return d
+    return fix_df
 
 
 def expand_ebooks(ebooks):
