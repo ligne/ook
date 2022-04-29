@@ -17,11 +17,11 @@ from .wikidata import entity, wd_search
 
 
 class SaveExit(Exception):
-    pass
+    """Save and exit."""
 
 
 class FullExit(Exception):
-    pass
+    """Exit without saving."""
 
 
 ################################################################################

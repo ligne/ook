@@ -45,8 +45,8 @@ def _filter_parser():
     return parser
 
 
-# returns a parser object
 def arg_parser():
+    """Assemble a parser for the command-line arguments."""
     filter_options = _filter_parser()
 
     # main parser
@@ -104,6 +104,7 @@ def arg_parser():
 
 
 def main():
+    """Parse the command-line arguments and dispatch appropriately."""
     args = arg_parser().parse_args()
 
     if args.mode == "update":

@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Scrape information that's in the goodreads books list but missing from the API(!!)."""
+
 import datetime
 import re
 

@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Configuration."""
+
 import attr
 import yaml
 

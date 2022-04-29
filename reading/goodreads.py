@@ -16,8 +16,8 @@ from reading.config import category_patterns, config
 from reading.series import interesting
 
 
-# get all the books on the goodread shelves.
 def get_books():
+    """Get all the books on the user's goodreads shelves."""
     page = 1
     books = []
 
@@ -63,8 +63,8 @@ def _get_date(xml, tag):
     return pd.Timestamp(date and parse(date).date() or None)
 
 
-# extract the interesting information from an xml review, as a hash.
 def process_review(r):
+    """Extract and return the interesting information from an XML-formatted review, as a hash."""
     sched = [s.get("name") for s in r.findall("shelves/") if re.match(r"^\d{4}$", s.get("name"))]
     scheduled = pd.Timestamp(len(sched) and min(sched) or None)
 
@@ -92,6 +92,7 @@ def process_review(r):
 
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id):
+    """Extract the information that's only available through the book-specific endpoints."""
     try:
         api_book = _fetch_book_api(book_id)
     except requests.exceptions.TooManyRedirects:
@@ -255,8 +256,9 @@ def _get_category(shelves):
 
 ################################################################################
 
-# search by title
+
 def search_title(term):
+    """Search goodreads by title."""
     r = requests.get(
         "https://www.goodreads.com/search/index.xml",
         params={

@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Code for gathering ebooks, their metadata and length."""
+
 from pathlib import Path
 from subprocess import CalledProcessError, check_output, run
 from tempfile import NamedTemporaryFile
@@ -89,7 +91,7 @@ class Metadata:
 
     @property
     def language(self):
-        """Return the Language of the ebook."""
+        """Return the Language of the ebook, defaulting to "en" if missing."""
         try:
             return self.metadata["Languages"][0][:2]
         except (KeyError, IndexError):
@@ -108,8 +110,8 @@ def _ignore_item(path):
     )
 
 
-# returns all the interesting-looking files.
 def get_ebooks(kindle_dir):
+    """Find all the interesting-looking files in $kindle_dir."""
     for d in "articles", "short-stories", "books", "non-fiction":
         category = "novels" if d == "books" else d
         for f in (kindle_dir / d).iterdir():

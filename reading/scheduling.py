@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+"""Code for scheduling books."""
+
 import datetime
 import itertools
 
@@ -38,8 +40,8 @@ def scheduled(df):
         print()
 
 
-# mark all books that are scheduled to be read
 def scheduled_books(df):
+    """Return a boolean Series indicating whether each book is scheduled."""
     s = pd.Series(False, df.index)
 
     for settings in config("scheduled"):

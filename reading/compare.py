@@ -18,6 +18,7 @@ ignore_columns = [
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old, new, use_work=True):
+    """Show how $old and $new dataframes differ, in a way that makes sense for ook."""
     (old, new) = [df.fillna("") for df in (old, new)]
 
     if use_work:
