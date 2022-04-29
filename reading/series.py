@@ -29,20 +29,6 @@ def interesting(entry, series):
     return set(entry.split("|")) != set(series["Entries"])
 
 
-# finds the series ID matching $name. throws an exception if there isn't
-# exactly one.
-def _lookup_series_id(df, name):
-    series = df[df.Series.str.contains(name, na=False)]
-    names = set(series.Series)
-
-    if not names:
-        raise ValueError("Couldn't find series matching {}".format(name))
-    if len(names) > 1:
-        raise ValueError("Ambiguous series name {}: {}".format(name, ", ".join(names)))
-
-    return int(series.SeriesId.iat[0])
-
-
 # whether to ignore the series.
 def ignore(series_id):
     return int(series_id) in config("series.ignore")
