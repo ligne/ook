@@ -161,7 +161,7 @@ def test_reset():
 
 def test__process_fixes():
     """Test the fix munging function."""
-    assert not _process_fixes({}), "No fixes to apply"
+    assert _process_fixes({}).empty, "No fixes to apply"
 
     fixes = yaml.safe_load(
         """

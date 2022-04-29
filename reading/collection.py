@@ -44,10 +44,10 @@ def _ebook_parse_title(title):
 
 
 # rearranges the fixes into something that DataFrame.update() can handle.
-# FIXME clean up this mess
+# FIXME clean up this mess. and move into the config module?
 def _process_fixes(fixes):
     if not fixes:
-        return None
+        return pd.DataFrame()
 
     d = pd.DataFrame(fixes).set_index("BookId")
 
@@ -155,10 +155,7 @@ class Collection:
 
         if fixes:
             df.update(load_df("scraped", dirname=csv_dir))
-            # FIXME move into the config module?
-            fixes = _process_fixes(config("fixes"))
-            if fixes is not None:
-                df.update(fixes)
+            df.update(_process_fixes(config("fixes")))
 
         return cls(df, **kwargs)
 
