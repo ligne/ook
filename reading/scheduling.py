@@ -162,7 +162,8 @@ def _windows(start, per_year=1, offset=1):
 
 ################################################################################
 
-if __name__ == "__main__":
+
+def main():
     from .collection import Collection
 
     df = Collection.from_dir().shelves(exclude=["kindle", "to-read"]).df
@@ -171,15 +172,19 @@ if __name__ == "__main__":
     scheduled(df)
     print("----")
     print("This year:")
-    DATE = datetime.date(TODAY.year, 12, 31)
-    for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
+    date = datetime.date(TODAY.year, 12, 31)
+    for _ix, row in scheduled_at(df, date).sort_values("Title").iterrows():
         print(" *", row.Title)
     print("----")
     print("Next year:")
-    DATE = datetime.date(TODAY.year + 1, 12, 31)
-    for _ix, row in scheduled_at(df, DATE).sort_values("Title").iterrows():
+    date = datetime.date(TODAY.year + 1, 12, 31)
+    for _ix, row in scheduled_at(df, date).sort_values("Title").iterrows():
         print(" *", row.Title)
     print("----")
     print("CURRENT:")
     for _ix, row in scheduled_at(df, TODAY).sort_values("Title").iterrows():
         print(" *", row.Title)
+
+
+if __name__ == "__main__":
+    main()
