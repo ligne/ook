@@ -59,9 +59,8 @@ def arg_parser():
 
     # output options
 
-    # subparsers
-    subparsers = parser.add_subparsers(title="subcommands", dest="mode")
-    subparsers.required = True
+    # modes
+    subparsers = parser.add_subparsers(title="subcommands", dest="mode", required=True)
 
     update = subparsers.add_parser("update")
     update.add_argument("-n", "--ignore-changes", action="store_false", dest="save")
