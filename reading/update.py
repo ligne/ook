@@ -25,8 +25,8 @@ def update_goodreads(args, old):
     return new
 
 
-def update_kindle(args, old):
-    new = process(old, force=args.force)
+def update_kindle(args, old, config):
+    new = process(old, config("kindle.directory"), force=args.force)
 
     if not args.ignore_changes:
         save_df("ebooks", new)
@@ -70,7 +70,7 @@ def main(args, config):
     if args.goodreads:
         goodreads = update_goodreads(args, goodreads)
     if args.kindle:
-        ebooks = update_kindle(args, ebooks)
+        ebooks = update_kindle(args, ebooks, config)
 
     # assign/derive the additional ebook columns
     ebooks = expand_ebooks(ebooks, config("kindle.words_per_page"))

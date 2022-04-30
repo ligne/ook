@@ -10,8 +10,6 @@ import attr
 import pandas as pd
 import yaml
 
-from .config import config
-
 
 # return a file (which may be the original) containing the contents of $path
 # as text
@@ -125,8 +123,8 @@ def get_ebooks(kindle_dir):
         yield ("articles", f, str(Path("articles", f.name)))
 
 
-def process(df, force=False):
-    kindle_dir = Path(config("kindle.directory"))
+def process(df, kindle_dir, force=False):
+    kindle_dir = Path(kindle_dir)
 
     ebooks = []
 
