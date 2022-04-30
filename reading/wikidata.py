@@ -9,8 +9,8 @@ import requests
 
 
 # uppercases the first character of $s *only*
-def _uc_first(s):
-    return s[:1].upper() + s[1:]
+def _uc_first(text: str) -> str:
+    return text[:1].upper() + text[1:]
 
 
 def wd_search(term):
