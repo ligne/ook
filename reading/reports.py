@@ -3,7 +3,6 @@
 from jinja2 import Template
 
 from .collection import Collection
-from .config import config
 
 
 # report: a set of graphs going to a particular output
@@ -70,7 +69,7 @@ def _display_report(df):
 ################################################################################
 
 
-def main(args):
+def main(args, config):
     for name in args.names:
         report = config("reports." + name)
         df_list = _process_report(report)

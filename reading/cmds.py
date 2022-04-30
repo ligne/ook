@@ -139,6 +139,6 @@ def main():
     if args.mode == "reports":
         import reading.reports
 
-        reading.reports.main(args)
+        reading.reports.main(args, config)
 
     return 0
