@@ -115,7 +115,7 @@ def main():
     if args.mode == "metadata":
         import reading.metadata
 
-        reading.metadata.main(args)
+        reading.metadata.main(args, config)
     if args.mode == "lint":
         import reading.lint
 

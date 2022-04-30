@@ -7,7 +7,7 @@ import pandas as pd
 
 from .collection import Collection, _ebook_parse_title
 from .compare import compare
-from .config import config, df_columns, metadata_prefer
+from .config import df_columns, metadata_prefer
 from .goodreads import fetch_book, search_title
 from .storage import load_df, save_df
 from .wikidata import entity, wd_search
@@ -296,7 +296,7 @@ def rebuild(books, works, authors):
 ################################################################################
 
 
-def main(args):
+def main(args, config):
     old = Collection.from_dir(fixes=False).df
 
     if args.find:
