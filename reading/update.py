@@ -6,7 +6,6 @@ import pandas as pd
 
 from .collection import Collection, _process_fixes, expand_ebooks
 from .compare import compare
-from .config import config
 from .goodreads import get_books
 from .scrape import rebuild, scrape
 from .storage import load_df, save_df
@@ -37,7 +36,7 @@ def update_kindle(args, old):
     return new
 
 
-def update_scrape(args, old):
+def update_scrape(args, old, config):
     old = Collection.from_dir().df
 
     c = Collection.from_dir(fixes=None)
@@ -58,7 +57,7 @@ def update_scrape(args, old):
 ################################################################################
 
 
-def main(args):
+def main(args, config):
     old = Collection.from_dir().df
 
     goodreads = load_df("goodreads")
@@ -78,7 +77,7 @@ def main(args):
 
     # update the overlays
     if args.scrape:
-        scraped = update_scrape(args, scraped)
+        scraped = update_scrape(args, scraped, config)
 
     # assemble the basic collection
     new = pd.concat([goodreads, ebooks], sort=False)

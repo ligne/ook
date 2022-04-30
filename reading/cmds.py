@@ -6,7 +6,7 @@ import argparse
 
 import pandas as pd
 
-from .config import CATEGORIES, SHELVES
+from .config import CATEGORIES, SHELVES, Config
 
 
 def _filter_parser():
@@ -106,11 +106,12 @@ def arg_parser():
 def main():
     """Parse the command-line arguments and dispatch appropriately."""
     args = arg_parser().parse_args()
+    config = Config.from_file()
 
     if args.mode == "update":
         import reading.update
 
-        reading.update.main(args)
+        reading.update.main(args, config)
     if args.mode == "metadata":
         import reading.metadata
 
