@@ -74,7 +74,7 @@ class Entity:
     def gender(self):
         """Return the gender of the entity, or None if it doesn't exist."""
         try:
-            return self._property("P21").label
+            return self.get_property("P21").label
         except KeyError:
             return None
 
@@ -87,12 +87,12 @@ class Entity:
         name of the country if the former doesn't exist.
         """
         try:
-            e = self._property("P27")
+            e = self.get_property("P27")
         except KeyError:
             return None
 
         try:
-            return e._property("P297")
+            return e.get_property("P297")
         except KeyError:
             # TODO: try a bit harder
             pass
@@ -100,16 +100,16 @@ class Entity:
         # use the name by default
         return _uc_first(e.label)
 
-    # returns the given property, in a hopefully useful form
-    def _property(self, prop):
-        p = self.entity["claims"][prop][0]["mainsnak"]["datavalue"]
+    def get_property(self, name):
+        """Return property $prop, in a hopefully useful form."""
+        prop = self.entity["claims"][name][0]["mainsnak"]["datavalue"]
 
-        if p["type"] == "string":
-            return p["value"].lower()
-        elif p["type"] == "wikibase-entityid":
-            return entity(p["value"]["id"])
+        if prop["type"] == "string":
+            return prop["value"].lower()
+        elif prop["type"] == "wikibase-entityid":
+            return entity(prop["value"]["id"])
 
-        return p["value"]
+        return prop["value"]
 
     @property
     def label(self):
