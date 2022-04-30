@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""ook - Suggests what to read next and tracks your progress."""
+
 import sys
 
 from reading.cmds import main
