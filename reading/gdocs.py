@@ -9,7 +9,6 @@ import pickle
 from google.auth.transport.requests import AuthorizedSession, Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-from .config import config
 from .reports import _process_report
 
 
@@ -162,7 +161,7 @@ def _display_report(df):
         yield "\n"
 
 
-def main():
+def main(config):
     expected = []
     for df in _process_report(config("reports.docs")):
         expected.extend(_display_report(df))
@@ -184,4 +183,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    from .config import Config
+
+    main(Config.from_file())
