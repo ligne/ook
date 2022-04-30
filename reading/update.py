@@ -74,7 +74,7 @@ def main(args):
         ebooks = update_kindle(args, ebooks)
 
     # assign/derive the additional ebook columns
-    ebooks = expand_ebooks(ebooks)
+    ebooks = expand_ebooks(ebooks, config("kindle.words_per_page"))
 
     # update the overlays
     if args.scrape:

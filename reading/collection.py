@@ -7,7 +7,7 @@ import re
 import attr
 import pandas as pd
 
-from .config import config, merge_preferences
+from .config import Config, merge_preferences
 from .storage import load_df
 
 
@@ -62,13 +62,13 @@ def _process_fixes(fixes):
     return fix_df
 
 
-def expand_ebooks(ebooks):
+def expand_ebooks(ebooks, words_per_page):
     """Set default/derived columns on the ebooks dataframe."""
     return ebooks.assign(
         Shelf="kindle",
         Borrowed=False,
         Binding="ebook",
-        Pages=lambda df: df.Words / config("kindle.words_per_page"),
+        Pages=lambda df: df.Words / words_per_page,
         # FIXME not needed?
         Author=lambda df: df.Author.fillna(""),
     )
@@ -141,8 +141,14 @@ class Collection:
     @classmethod
     def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
         """Create a collection from the contents of $csv_dir."""
+
+        config = Config.from_file(f"{csv_dir}/config.yml")
+
         gr_df = load_df("goodreads", dirname=csv_dir)
-        ebooks_df = expand_ebooks(load_df("ebooks", dirname=csv_dir))
+        ebooks_df = expand_ebooks(
+            load_df("ebooks", dirname=csv_dir),
+            words_per_page=config("kindle.words_per_page"),
+        )
 
         df = pd.concat([gr_df, ebooks_df], sort=False)
 
