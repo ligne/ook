@@ -10,7 +10,6 @@ import pytest
 import yaml
 
 from reading.collection import Collection, _process_fixes, read_authorids, read_nationalities
-from reading.config import config
 
 
 ################################################################################
@@ -203,13 +202,8 @@ def test__process_fixes():
     assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Read.dtypes)
 
 
-def test_fixes(monkeypatch):
+def test_fixes():
     """Test fix application."""
-    with open("t/data/2019-12-04/config.yml") as fh:
-        fixes = yaml.safe_load(fh)
-
-    monkeypatch.setattr(config, "_conf", fixes)
-    assert config("fixes") == fixes["fixes"]
 
     c_with = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=True)
     c_wout = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=False)
@@ -240,7 +234,7 @@ def test_fixes(monkeypatch):
     # FIXME also scraped.csv
 
 
-def test_metadata(monkeypatch):
+def test_metadata():
     """Test metadata application."""
     c_with = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=True)
     c_wout = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False)
@@ -258,9 +252,9 @@ def test_metadata(monkeypatch):
     assert c_wout.all.loc["novels/b869w.mobi"].Author == "Emily, Bronte,; Brontë, Emily, 1818-1848"
     assert c_with.all.loc["novels/b869w.mobi"].Author == "Emily Brontë"
 
-    with open("t/data/2019-12-04/config.yml") as fh:
-        monkeypatch.setattr(config, "_conf", yaml.safe_load(fh))
 
+def test_fix_metadata_precedence():
+    c_with = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=True)
     c_fixes = Collection.from_dir("t/data/2019-12-04", fixes=True, metadata=True)
 
     # Fixes take precedence over metadata
