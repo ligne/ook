@@ -43,7 +43,7 @@ def get_books(user_id, api_key, start_date):
             if book["Read"] < start_date:
                 continue
 
-            api_book = fetch_book(book["BookId"])
+            api_book = fetch_book(book["BookId"], api_key)
             books.append({**api_book, **book})
 
         r = x.find("reviews")
@@ -91,13 +91,13 @@ def process_review(r):
 ################################################################################
 
 # information that's only available through the book-specific endpoints.
-def fetch_book(book_id):
+def fetch_book(book_id, api_key):
     """Extract the information that's only available through the book-specific endpoints."""
     try:
-        api_book = _fetch_book_api(book_id)
+        api_book = _fetch_book_api(book_id, api_key)
     except requests.exceptions.TooManyRedirects:
         print(f"Retrying {book_id}")
-        api_book = _fetch_book_api(book_id)
+        api_book = _fetch_book_api(book_id, api_key)
 
     book = _parse_book_api(api_book)
 
@@ -111,7 +111,7 @@ def fetch_book(book_id):
     return book
 
 
-def _fetch_book_api(book_id):
+def _fetch_book_api(book_id, api_key):
     fname = "data/cache/book/{}.xml".format(book_id)
     try:
         with open(fname) as fh:
@@ -120,7 +120,7 @@ def _fetch_book_api(book_id):
         xml = requests.get(
             "https://www.goodreads.com/book/show/{}.xml".format(book_id),
             params={
-                "key": config("goodreads.key"),
+                "key": api_key,
             },
         ).content
 

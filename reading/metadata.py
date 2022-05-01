@@ -231,7 +231,12 @@ def find_books(books, config):
         author_ids.add(resp["AuthorId"])
         work_ids.add(resp["Work"])
 
-        books.loc[book_id] = pd.Series(fetch_book(resp["BookId"]))
+        books.loc[book_id] = pd.Series(
+            fetch_book(
+                resp["BookId"],
+                config("goodreads.key"),
+            )
+        )
         books.loc[book_id, "Work"] = resp["Work"]
         books.loc[book_id, "BookId"] = resp["BookId"]
 
