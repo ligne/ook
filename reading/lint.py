@@ -5,7 +5,6 @@
 from jinja2 import Template
 
 from .collection import Collection, _process_fixes
-from .config import config
 
 
 ################################################################################
@@ -151,7 +150,7 @@ def lint_scheduled_misshelved():
 
 # scheduled books by authors i've already read this year
 @linter
-def lint_overscheduled():
+def lint_overscheduled(config):
     """Multiple scheduled books by the same author."""
     c = Collection.from_dir(merge=True)
     df = c.df
@@ -192,7 +191,7 @@ def lint_overscheduled():
 
 
 @linter
-def lint_scheduling():
+def lint_scheduling(config):
     """Mis-scheduled books."""
     c = Collection.from_dir()
 
@@ -382,7 +381,7 @@ def lint_not_rated():
 # find unnecessary fixes
 # FIXME update
 @linter
-def lint_fixes():
+def lint_fixes(config):
     """Unneeded fixes."""
     c = Collection.from_dir(fixes=None)
 
@@ -411,12 +410,18 @@ def lint_fixes():
 ################################################################################
 
 
-def main(args):
+def main(args, config):
     for name, func in _LINTERS.items():
         if args.pattern and args.pattern not in name:
             continue
 
-        report = func()
+        import inspect
+
+        # FIXME update all the lint functions and get rid of this
+        if inspect.getfullargspec(func).args:
+            report = func(config)
+        else:
+            report = func()
 
         # FIXME
         if report is None or "df" not in report:

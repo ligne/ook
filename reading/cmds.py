@@ -119,7 +119,7 @@ def main():
     if args.mode == "lint":
         import reading.lint
 
-        reading.lint.main(args)
+        reading.lint.main(args, config)
     if args.mode == "graph":
         import reading.graph
 
