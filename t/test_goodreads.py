@@ -12,6 +12,7 @@ from reading.goodreads import (
     _parse_book_series,
     _parse_entries,
     _parse_series,
+    interesting,
 )
 
 
@@ -265,6 +266,12 @@ def test__get_category():
     assert _get_category(["essays"]) == "non-fiction", "Not the category name"
 
     assert _get_category(["blah", "linguistics"]) == "non-fiction", "Had to make a guess"
+
+
+def test_interesting():
+    assert interesting("1", {"Entries": ["1", "2", "3"]})
+    assert not interesting("1", {"Entries": ["1"]})
+    assert not interesting("1|2", {"Entries": ["1", "2"]})
 
 
 def test__parse_series():

@@ -13,7 +13,6 @@ import pandas as pd
 import requests
 
 from reading.config import category_patterns
-from reading.series import interesting
 
 
 def get_books(user_id, api_key, start_date, ignore_series):
@@ -174,6 +173,11 @@ def _parse_book_series(xml, ignore):
                 "Entry": "|".join((str(x) for x in _parse_entries(entry))),
             }
     return None
+
+
+def interesting(entry, series):
+    """Return False if the series is deemed uninteresting."""
+    return set(entry.split("|")) != set(series["Entries"])
 
 
 ################################################################################
