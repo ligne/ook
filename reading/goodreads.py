@@ -104,7 +104,12 @@ def fetch_book(book_id, api_key):
     # fetch series information
     series_info = _parse_book_series(api_book, config("series.ignore"))
     if series_info:
-        series = _parse_series(_fetch_series(series_info["SeriesId"]))
+        series = _parse_series(
+            _fetch_series(
+                series_info["SeriesId"],
+                api_key,
+            )
+        )
         if interesting(series_info["Entry"], series):
             book.update(series_info)
 
@@ -174,7 +179,7 @@ def _parse_book_series(xml, ignore):
 ################################################################################
 
 
-def _fetch_series(series_id):
+def _fetch_series(series_id, api_key):
     fname = "data/cache/series/{}.xml".format(series_id)
     try:
         with open(fname) as fh:
@@ -183,7 +188,7 @@ def _fetch_series(series_id):
         xml = requests.get(
             f"https://www.goodreads.com/series/show/{series_id}.xml",
             params={
-                "key": config("goodreads.key"),
+                "key": api_key,
             },
         ).content
         with open(fname, "wb") as fh:
