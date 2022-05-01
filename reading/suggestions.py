@@ -23,7 +23,7 @@ def _recent_author_ids(c, date):
 ################################################################################
 
 
-def scheduled(args):
+def scheduled(args, config):
     c = (
         Collection.from_dir(merge=True)
         .shelves(args.shelves)
@@ -33,7 +33,13 @@ def scheduled(args):
     )
     df = c.df
 
-    df = df.loc[scheduled_at(c.all, args.date).index.intersection(df.index)]
+    df = df.loc[
+        scheduled_at(
+            c.all,
+            args.date,
+            config("scheduled"),
+        ).index.intersection(df.index)
+    ]
     df = df[df.Scheduled.dt.year == args.date.year]
     args.all = True  # no display limit on scheduled books
 
@@ -44,7 +50,7 @@ def scheduled(args):
 
 
 # suggestions
-def main(args):
+def main(args, config):
     c = (
         Collection.from_dir(merge=True)
         .shelves(args.shelves)
@@ -56,7 +62,9 @@ def main(args):
 
     # filter out recently-read, scheduled, etc
     df = df[~df.AuthorId.isin(_recent_author_ids(c, args.date))]
-    df = df[~(df.Scheduled.notnull() | scheduled_books(c.all).reindex(df.index))]
+    df = df[
+        ~(df.Scheduled.notnull() | scheduled_books(c.all, config("scheduled")).reindex(df.index))
+    ]
     # FIXME eventually filter out "blocked" books
 
     # remove other books by scheduled authors

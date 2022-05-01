@@ -129,11 +129,11 @@ def main():
     if args.mode == "scheduled":
         import reading.suggestions
 
-        reading.suggestions.scheduled(args)  # !
+        reading.suggestions.scheduled(args, config)  # !
     if args.mode == "suggest":
         import reading.suggestions
 
-        reading.suggestions.main(args)
+        reading.suggestions.main(args, config)
     if args.mode == "reports":
         import reading.reports
 

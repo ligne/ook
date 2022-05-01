@@ -8,7 +8,6 @@ import itertools
 import pandas as pd
 
 from .chain import Chain
-from .config import config
 
 
 TODAY = datetime.date.today()
@@ -31,8 +30,8 @@ TODAY = datetime.date.today()
 
 
 # FIXME remove this
-def scheduled(df):
-    for settings in config("scheduled"):
+def scheduled(df, schedules):
+    for settings in schedules:
         print(settings.get("author", settings.get("series")))
         for date, book in _schedule(df, **settings):
             book = df.loc[book]
@@ -40,11 +39,13 @@ def scheduled(df):
         print()
 
 
-def scheduled_books(df):
+def scheduled_books(df, schedules):
     """Return a boolean Series indicating whether each book is scheduled."""
+    # these are (mostly) books that are scheduled according to the rules, but
+    # too far ahead to be manually scheduled
     s = pd.Series(False, df.index)
 
-    for settings in config("scheduled"):
+    for settings in schedules:
         if "author" in settings:
             series = Chain.from_author_name(df, settings["author"])
         elif "series" in settings:
@@ -56,8 +57,8 @@ def scheduled_books(df):
 
 
 # fix up df with the scheduled dates
-def _set_schedules(df, schedules=None, date=TODAY, col="Scheduled"):
-    for settings in schedules or config("scheduled"):
+def _set_schedules(df, schedules, date=TODAY, col="Scheduled"):
+    for settings in schedules:
         for d, book in _schedule(df, **settings, date=date):
             df.loc[book, col] = d
 
@@ -65,6 +66,7 @@ def _set_schedules(df, schedules=None, date=TODAY, col="Scheduled"):
 # books ready to be read
 #   FIXME delay if per_year == 1.  fix using most recent read date?
 def scheduled_at(df, date=TODAY, schedules=None):
+    assert schedules
     date = pd.Timestamp(date)
     _set_schedules(df, schedules, date)
     return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values("Title")
@@ -167,24 +169,28 @@ def _windows(start, per_year=1, offset=1):
 
 def main():
     from .collection import Collection
+    from .config import Config
+
+    config = Config.from_file()
+    schedules = config("scheduled")
 
     df = Collection.from_dir().shelves(exclude=["kindle", "to-read"]).df
     df = df.drop_duplicates(["Work"])  # FIXME
 
-    scheduled(df)
+    scheduled(df, schedules)
     print("----")
     print("This year:")
     date = datetime.date(TODAY.year, 12, 31)
-    for _ix, row in scheduled_at(df, date).sort_values("Title").iterrows():
+    for _ix, row in scheduled_at(df, date, schedules).sort_values("Title").iterrows():
         print(" *", row.Title)
     print("----")
     print("Next year:")
     date = datetime.date(TODAY.year + 1, 12, 31)
-    for _ix, row in scheduled_at(df, date).sort_values("Title").iterrows():
+    for _ix, row in scheduled_at(df, date, schedules).sort_values("Title").iterrows():
         print(" *", row.Title)
     print("----")
     print("CURRENT:")
-    for _ix, row in scheduled_at(df, TODAY).sort_values("Title").iterrows():
+    for _ix, row in scheduled_at(df, TODAY, schedules).sort_values("Title").iterrows():
         print(" *", row.Title)
 
 
