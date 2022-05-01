@@ -190,9 +190,9 @@ def test_config():
 
     assert config("kindle.words_per_page") == 390, "Some keys have a default value"
 
-    config = Config.from_file("data/config.yml")  # created from a file
+    config = Config.from_file("t/data/2019-12-04/config.yml")  # created from a file
 
-    assert config("goodreads.user"), "fetched a key that exists"
+    assert config("kindle.words_per_page") == 123, "fetched a key that exists"
     assert not config("blah.blah"), "'fetched' a key that does not exist"
 
     assert Config.from_file("/does/not/exist"), "created from a missing file"

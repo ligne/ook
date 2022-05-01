@@ -1,3 +1,6 @@
+# vim: ts=2 : sw=2 : et
+kindle:
+  words_per_page: 123
 fixes:
     # a couple of basic examples
     - BookId: 20636970  # La Curée
@@ -18,5 +21,3 @@ fixes:
     - BookId: short-stories/Les_soirees_de_Medan.pdf
       Language: fr
       Pages: 777
-
-# vim: ts=2 : sw=2 : et
