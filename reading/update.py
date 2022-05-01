@@ -12,8 +12,12 @@ from .storage import load_df, save_df
 from .wordcounts import process
 
 
-def update_goodreads(args, old):
-    new = get_books()
+def update_goodreads(args, old, config):
+    new = get_books(
+        user_id=config("goodreads.user"),
+        api_key=config("goodreads.key"),
+        start_date=config("goodreads.start"),
+    )
 
     if not args.ignore_changes:
         save_df("goodreads", new)
@@ -68,7 +72,7 @@ def main(args, config):
 
     # update the base layers
     if args.goodreads:
-        goodreads = update_goodreads(args, goodreads)
+        goodreads = update_goodreads(args, goodreads, config)
     if args.kindle:
         ebooks = update_kindle(args, ebooks, config)
 

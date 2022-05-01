@@ -16,19 +16,19 @@ from reading.config import category_patterns, config
 from reading.series import interesting
 
 
-def get_books():
+def get_books(user_id, api_key, start_date):
     """Get all the books on the user's goodreads shelves."""
     page = 1
     books = []
 
-    start_date = pd.Timestamp(config("goodreads.start"))
+    start_date = pd.Timestamp(start_date)
 
     while True:
-        url = "https://www.goodreads.com/review/list/{}.xml".format(config("goodreads.user"))
+        url = f"https://www.goodreads.com/review/list/{user_id}.xml"
         r = requests.get(
             url,
             params={
-                "key": config("goodreads.key"),
+                "key": api_key,
                 "v": 2,
                 "per_page": 100,
                 "page": page,
