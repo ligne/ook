@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 
 from .collection import Collection
-from .config import config
 from .scheduling import _set_schedules
 
 
@@ -468,7 +467,7 @@ def scheduled_years(df):
 # plot reading schedule against time left, with warnings.
 # pylint: disable=too-many-locals
 @graph
-def scheduled():
+def scheduled(config):
     df = Collection.from_dir().df
     _set_schedules(df, config("scheduled"))
 
@@ -535,8 +534,14 @@ def scheduled():
 ################################################################################
 
 
-def main(args):
+def main(args, config):
     for name, func in _GRAPHS.items():
         if args.pattern and args.pattern not in name:
             continue
-        func()
+        import inspect
+
+        # FIXME update all the graph functions and get rid of this
+        if inspect.getfullargspec(func).args:
+            func(config)
+        else:
+            func()

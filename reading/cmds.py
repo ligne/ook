@@ -123,7 +123,7 @@ def main():
     if args.mode == "graph":
         import reading.graph
 
-        reading.graph.main(args)
+        reading.graph.main(args, config)
     if args.mode == "config":
         import reading.config
 
