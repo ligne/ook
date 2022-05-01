@@ -257,12 +257,12 @@ def _get_category(shelves):
 ################################################################################
 
 
-def search_title(term):
+def search_title(term, api_key):
     """Search goodreads by title."""
     r = requests.get(
         "https://www.goodreads.com/search/index.xml",
         params={
-            "key": config("goodreads.key"),
+            "key": api_key,
             "search[field]": "title",
             "q": term,
         },

@@ -124,11 +124,11 @@ Q - exit without saving
 ################################################################################
 
 
-def lookup_work_id(book, author_ids, work_ids):
+def lookup_work_id(book, author_ids, work_ids, config):
     print("\033[1mSearching for '{}' by '{}'\033[0m".format(book.Title, book.Author))
 
     title = _ebook_parse_title(book.Title).Title
-    results = sorted(search_title(title), key=lambda x: -x["Ratings"])
+    results = sorted(search_title(title, config("goodreads.key")), key=lambda x: -x["Ratings"])
     if not results:
         # halp!
         print("No books found with the title '{}'".format(title))
@@ -194,13 +194,13 @@ def confirm_author(e):
 ################################################################################
 
 
-def find(what):
+def find(what, config):
     books = load_df("books")
     authors = load_df("authors")
 
     try:
         if "books" in what:
-            find_books(books)
+            find_books(books, config)
         # FIXME want to reload so the authors of newly-associated books appear
         if "authors" in what:
             find_authors(authors)
@@ -214,7 +214,7 @@ def find(what):
 
 
 # associate WorkIds with book IDs
-def find_books(books):
+def find_books(books, config):
     df = Collection.from_dir().categories(exclude=["articles"]).df  # include metadata
 
     author_ids = set(df.AuthorId.dropna().astype(int))
@@ -224,7 +224,7 @@ def find_books(books):
     df = df[df.Language == "en"]  # search doesn't work well with non-english books
 
     for book_id, book in df.sample(frac=1).iterrows():
-        resp = lookup_work_id(book, author_ids, work_ids)
+        resp = lookup_work_id(book, author_ids, work_ids, config)
         if not resp:
             continue
 
@@ -300,7 +300,7 @@ def main(args, config):
     old = Collection.from_dir(fixes=False).df
 
     if args.find:
-        find(args.find)
+        find(args.find, config)
 
     # rebuild things
     books = load_df("books")
