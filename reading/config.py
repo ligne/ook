@@ -286,17 +286,3 @@ class Config:
     def reset(self, conf=None):
         """Set to an empty configuration."""
         self._conf = conf or {}
-
-
-_CONFIG = Config.from_file()
-
-
-def config(key):
-    """Return the value of $key in the configuration."""
-    import inspect
-
-    curframe = inspect.currentframe()
-    caller = inspect.getouterframes(curframe, 2)[1]
-    print(f"{curframe.f_code.co_name}() called from {':'.join(map(str, caller[1:4]))}")
-
-    return _CONFIG(key)

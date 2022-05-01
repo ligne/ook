@@ -175,14 +175,6 @@ def test_merge_preferences():
 ################################################################################
 
 
-def test_config_import():
-    """Test the config import, as used in the codebase."""
-    from reading.config import config
-
-    assert config("goodreads.user"), "fetched a key that exists"
-    assert not config("blah.blah"), "'fetched' a key that does not exist"
-
-
 def test_config():
     """Test the config object."""
     config = Config(
