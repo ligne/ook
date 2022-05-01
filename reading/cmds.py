@@ -125,9 +125,7 @@ def main():
 
         reading.graph.main(args, config)
     if args.mode == "config":
-        import reading.config
-
-        reading.config.main(args)
+        print(config(args.key))
     if args.mode == "scheduled":
         import reading.suggestions
 

@@ -300,10 +300,3 @@ def config(key):
     print(f"{curframe.f_code.co_name}() called from {':'.join(map(str, caller[1:4]))}")
 
     return _CONFIG(key)
-
-
-################################################################################
-
-
-def main(args):
-    print(config(args.key))
