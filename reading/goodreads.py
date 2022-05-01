@@ -12,11 +12,11 @@ from dateutil.parser import parse
 import pandas as pd
 import requests
 
-from reading.config import category_patterns, config
+from reading.config import category_patterns
 from reading.series import interesting
 
 
-def get_books(user_id, api_key, start_date):
+def get_books(user_id, api_key, start_date, ignore_series):
     """Get all the books on the user's goodreads shelves."""
     page = 1
     books = []
@@ -43,7 +43,7 @@ def get_books(user_id, api_key, start_date):
             if book["Read"] < start_date:
                 continue
 
-            api_book = fetch_book(book["BookId"], api_key)
+            api_book = fetch_book(book["BookId"], api_key, ignore_series)
             books.append({**api_book, **book})
 
         r = x.find("reviews")
@@ -91,7 +91,7 @@ def process_review(r):
 ################################################################################
 
 # information that's only available through the book-specific endpoints.
-def fetch_book(book_id, api_key):
+def fetch_book(book_id, api_key, ignore_series):
     """Extract the information that's only available through the book-specific endpoints."""
     try:
         api_book = _fetch_book_api(book_id, api_key)
@@ -102,7 +102,7 @@ def fetch_book(book_id, api_key):
     book = _parse_book_api(api_book)
 
     # fetch series information
-    series_info = _parse_book_series(api_book, config("series.ignore"))
+    series_info = _parse_book_series(api_book, ignore_series)
     if series_info:
         series = _parse_series(
             _fetch_series(

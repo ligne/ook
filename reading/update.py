@@ -17,6 +17,7 @@ def update_goodreads(args, old, config):
         user_id=config("goodreads.user"),
         api_key=config("goodreads.key"),
         start_date=config("goodreads.start"),
+        ignore_series=config("series.ignore"),
     )
 
     if not args.ignore_changes:

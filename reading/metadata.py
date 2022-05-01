@@ -235,6 +235,7 @@ def find_books(books, config):
             fetch_book(
                 resp["BookId"],
                 config("goodreads.key"),
+                config("series.ignore"),
             )
         )
         books.loc[book_id, "Work"] = resp["Work"]
