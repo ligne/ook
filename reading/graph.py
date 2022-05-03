@@ -2,7 +2,6 @@
 
 """Draw pretty graphs."""
 
-import datetime
 import textwrap
 
 import matplotlib
@@ -451,11 +450,11 @@ def is_current_year(year):
     return int(today.year) == int(year)
 
 
-def _days_remaining(year):
-    if is_current_year(year):
-        return (datetime.datetime(int(year), 12, 31) - today).days
-    else:
-        return 365  # FIXME
+# calculate the number of days remaining in $year, assuming the date is $today
+def _days_remaining(year, today):
+    start = today if today.year == year else pd.Timestamp(year, 1, 1)
+    end = pd.Timestamp(year + 1, 1, 1)
+    return (end - start).days
 
 
 def scheduled_years(df):
@@ -484,7 +483,7 @@ def scheduled(config):
         p = df[df.Scheduled.dt.year == year].Pages
 
         pages_remaining = p.sum()
-        days_remaining = _days_remaining(year)
+        days_remaining = _days_remaining(year, today)
         days_required = pages_remaining / rate
         page_limit = days_remaining * rate
 
