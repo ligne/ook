@@ -473,7 +473,7 @@ def scheduled(config):
 
     years = scheduled_years(df)[:3]
 
-    _fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
+    fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
 
     for year, ax in zip(years, axes):
         p = df[df.Scheduled.dt.year == year].Pages
@@ -519,8 +519,7 @@ def scheduled(config):
             axr.set_yticklabels([])
 
     filename = "images/scheduled.png"
-    plt.savefig(filename, bbox_inches="tight")
-    plt.close()
+    fig.savefig(filename, bbox_inches="tight")
 
 
 # pylint: enable=too-many-locals
