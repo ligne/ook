@@ -446,10 +446,6 @@ def doy():
 ################################################################################
 
 
-def is_current_year(year):
-    return int(today.year) == int(year)
-
-
 # calculate the number of days remaining in $year, assuming the date is $today
 def _days_remaining(year, today):
     start = today if today.year == year else pd.Timestamp(year, 1, 1)
@@ -511,7 +507,7 @@ def scheduled(config):
         pd.DataFrame([pages], index=[year]).plot.bar(stacked=True, ax=ax, rot=0, legend=False)
 
         ax.axhline(page_limit)
-        if is_current_year(year):
+        if today.year == year:
             ax.axhspan(page_limit, page_limit * margin, color="k", alpha=0.1)
 
     # set the right-hand ticks.  no labels except on final column.  do this
