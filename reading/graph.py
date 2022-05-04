@@ -22,8 +22,6 @@ if True:  # pylint: disable=using-constant-test
 thresh = 1940
 
 ix = pd.DatetimeIndex(start="2016-01-01", end="today", freq="D")
-today = pd.Timestamp("today")
-tomorrow = today + pd.Timedelta("1 day")
 
 
 ################################################################################
@@ -151,6 +149,8 @@ def new_authors():
 
     plt.axhline(12, color="k", alpha=0.5)
 
+    today = pd.Timestamp("today")
+
     # prettify and save
     name = "new_authors"
     plt.grid(True)
@@ -171,6 +171,7 @@ def median_date():
     ).ffill().loc["2016":].plot()
 
     # set the top of the graph to the current year
+    today = pd.Timestamp("today")
     plt.ylim([plt.ylim()[0], today.year])
 
     # prettify and save
@@ -346,6 +347,8 @@ def nationality():
     ylim = plt.ylim()
     plt.ylim([min(ylim[0], 0), ylim[1] + 1])
 
+    today = pd.Timestamp("today")
+
     # prettify and save
     name = "nationalities"
     plt.grid(True)
@@ -363,6 +366,7 @@ def reading_rate():
 
     current_pages = df[df.Shelf == "currently-reading"].Pages.sum()
 
+    tomorrow = pd.Timestamp("today") + pd.Timedelta("1 day")
     reading = completed.copy()
     reading.loc[tomorrow] = current_pages
 
@@ -433,6 +437,7 @@ def doy():
     target = pd.Series({0: 0, 365: 12000}, index=range(366)).interpolate()
     df.sub(target, axis="index").plot()
 
+    today = pd.Timestamp("today")
     plt.axvline(today.dayofyear, color="k", alpha=0.5)
 
     # prettify and save
@@ -453,7 +458,7 @@ def _days_remaining(year, today):
     return (end - start).days
 
 
-def scheduled_years(df):
+def scheduled_years(df, today):
     # FIXME
     years = set(df.Scheduled.dt.year.tolist())
     return sorted(years | {today.year})
@@ -466,6 +471,8 @@ def scheduled(config):
     df = Collection.from_dir().df
     _set_schedules(df, config("scheduled"))
 
+    today = pd.Timestamp("today")
+
     # FIXME would this be useful as a Collection method?
     last_year = today - pd.Timedelta(days=365)
     rate = df[df.Read >= last_year].Pages.sum() / 365
@@ -473,7 +480,7 @@ def scheduled(config):
     df.loc[df.Shelf == "currently-reading", "Scheduled"] = today
     df = df.dropna(subset=["Scheduled"])
 
-    years = scheduled_years(df)[:3]
+    years = scheduled_years(df, today)[:3]
 
     fig, axes = plt.subplots(nrows=1, ncols=len(years), sharey=True)
 
