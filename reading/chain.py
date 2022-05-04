@@ -56,7 +56,6 @@ def _entries_for_sorting(entry):
 class Chain:
     """An ordered group of books."""
 
-    # FIXME use a Collection here?
     _df = attr.ib(repr=lambda df: f"[{len(df)} books]")
     order = attr.ib(default=Order.Published, repr=str)
     missing = attr.ib(default=Missing.Ignore, repr=str)
