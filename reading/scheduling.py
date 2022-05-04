@@ -8,9 +8,11 @@ import itertools
 import pandas as pd
 
 from .chain import Chain
+from .chain import _dates as chain_dates
+from .chain import _windows
 
 
-TODAY = datetime.date.today()
+TODAY = pd.Timestamp.today()
 
 # use cases:
 #   reading through an author (Haruki Murakami)
@@ -118,50 +120,16 @@ def _dates(
     last_read=None,
     date=TODAY,
 ):
-    date = pd.Timestamp(date)
-    windows = _windows(start, per_year, offset)
-
-    for window_start, window_end in windows:
-        # filter out windows that have passed
-        if window_end < date:
-            continue
-
-        # check if it's been read
-        if last_read:
-            if last_read > window_start and not force:
-                # skip to the next one.
-                window_start, window_end = next(windows)
-
-            # fix up the first one if necessary
-            next_read = last_read + pd.DateOffset(months=6)
-            if per_year == 1 and next_read > window_start:
-                window_start = next_read
-
-        yield window_start
-        break
-
-    # return the start of remaining windows
-    yield from (ii[0] for ii in windows)
+    yield from chain_dates(
+        _windows(start, per_year, offset),
+        per_year=per_year,
+        force=force,
+        last_read=last_read,
+        date=date,
+    )
 
 
 # pylint: enable=too-many-arguments
-
-
-# returns a stream of (start, end) dates which may or may not want a book
-# allocating to them, starting at the beginning of year $start
-def _windows(start, per_year=1, offset=1):
-    start = pd.Timestamp(str(start))
-
-    interval = 12 // per_year  # FIXME use divmod and check?
-    interval = pd.DateOffset(months=interval)
-
-    if offset > 1:
-        start += pd.DateOffset(months=offset - 1)
-
-    while True:
-        end = start + interval
-        yield (start, end)
-        start = end
 
 
 ################################################################################

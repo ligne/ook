@@ -3,9 +3,13 @@
 """Code for creating and operating on subsequences of books."""
 
 from enum import Enum
+import itertools
 
 import attr
 import pandas as pd
+
+
+TODAY = pd.Timestamp.today()
 
 
 class Order(Enum):
@@ -132,3 +136,55 @@ class Chain:
     def blocked(self):
         """Return a dataframe of books that are currently blocked by missing books."""
         # FIXME
+
+
+################################################################################
+
+
+# converts a stream of windows into a stream of dates for scheduling
+def _dates(
+    windows,
+    per_year=1,
+    last_read=None,
+    force=False,
+    date=TODAY,
+):
+    for window_start, window_end in windows:
+        # filter out windows that have passed
+        if window_end < date:
+            continue
+
+        # check if it's been read
+        if last_read:
+            if last_read > window_start and not force:
+                # skip to the next one.
+                window_start, window_end = next(windows)
+
+            # fix up the first one if necessary
+            next_read = last_read + pd.DateOffset(months=6)
+            if per_year == 1 and next_read > window_start:
+                window_start = next_read
+
+        yield window_start
+        break
+
+    # return the start of remaining windows
+    yield from (ii[0] for ii in windows)
+
+
+# returns a stream of (start, end) dates which may or may not want a book
+# allocating to them, starting at the beginning of year $start
+def _windows(start, per_year=1, offset=1):
+    # needs to be a string or it thinks it's nanoseconds-since-epoch
+    start = pd.Timestamp(str(start))
+
+    interval = 12 // per_year  # FIXME use divmod and check?
+    interval = pd.DateOffset(months=interval)
+
+    if offset > 1:
+        start += pd.DateOffset(months=offset - 1)
+
+    while True:
+        end = start + interval
+        yield (start, end)
+        start = end
