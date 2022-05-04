@@ -10,10 +10,12 @@ ignore=.git,data,old
 [MESSAGES CONTROL]
 
 enable=all
+# hide all non-critical errors in normal use (linter.sh will ignore these)
 disable=
         protected-access,
         locally-disabled,
         suppressed-message,
+        too-few-public-methods,
         #
         # possibly false positives?
         stop-iteration-return,
