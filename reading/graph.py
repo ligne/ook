@@ -466,7 +466,9 @@ def scheduled(config):
     df = Collection.from_dir().df
     _set_schedules(df, config("scheduled"))
 
-    rate = _pages_changed(df, "read", "Read").rolling(365).mean().iloc[-1]
+    # FIXME would this be useful as a Collection method?
+    last_year = today - pd.Timedelta(days=365)
+    rate = df[df.Read >= last_year].Pages.sum() / 365
 
     df.loc[df.Shelf == "currently-reading", "Scheduled"] = today
     df = df.dropna(subset=["Scheduled"])
