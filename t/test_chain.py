@@ -176,3 +176,47 @@ def test_remaining():
         "read",
         "to-read",
     }, "All but the read and unreadable shelves"
+
+
+################################################################################
+
+# re-order the fields to make the tests a bit neater
+def _format_schedule(df, sched):
+    return [
+        (
+            str(date.date()),
+            df.loc[book_id].Title,
+        )
+        for book_id, date in sched
+    ]
+
+
+# FIXME probably not needed once there's type annotations
+def test_scheduling_raw_output():
+    c = Collection.from_dir("t/data/2019-12-04")
+    df = c.df[c.df.SeriesId == 49118]
+    chain = Chain(df=df)
+
+    schedule = chain.schedule()
+
+    assert list(schedule) == [
+        (290574, pd.Timestamp("2022-01-01")),
+        (129135, pd.Timestamp("2023-01-01")),
+        (3091710, pd.Timestamp("2024-01-01")),
+        (9543421, pd.Timestamp("2025-01-01")),
+    ], "Got a sequence of (book_id, scheduled) pairs"
+
+
+def test_scheduling():
+    c = Collection.from_dir("t/data/2019-12-04")
+    df = c.df[c.df.SeriesId == 49118]
+    chain = Chain(df=df)
+
+    schedule = chain.schedule()
+
+    assert _format_schedule(df, schedule) == [
+        ("2022-01-01", "Inversions"),
+        ("2023-01-01", "Look to Windward"),
+        ("2024-01-01", "Matter"),
+        ("2025-01-01", "Surface Detail"),
+    ], "A basic schedule"

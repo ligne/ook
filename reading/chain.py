@@ -131,10 +131,24 @@ class Chain:
             return self.remaining
         raise ValueError(f"Unknown missing option {self.missing}")  # pragma: no cover
 
-    @property
-    def blocked(self):
-        """Return a dataframe of books that are currently blocked by missing books."""
-        # FIXME
+    ### Scheduling #############################################################
+
+    def schedule(self, start=None, per_year=1, offset=0, force=False, skip=0):
+        """Calculate a schedule for the books in this chain."""
+        if not start:
+            start = TODAY.year
+
+        windows = _windows(start, per_year, offset)
+        dates = _dates(
+            windows,
+            per_year=per_year,
+            last_read=self.last_read,
+            force=force,
+        )
+
+        dates = itertools.islice(dates, skip, None)
+
+        return zip(self.remaining.index, dates)
 
 
 ################################################################################
