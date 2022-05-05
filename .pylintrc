@@ -12,10 +12,13 @@ ignore=.git,data,old
 enable=all
 # hide all non-critical errors in normal use (linter.sh will ignore these)
 disable=
-        protected-access,
+        # known problems
         locally-disabled,
+        invalid-name,
         suppressed-message,
+        # not urgent
         too-few-public-methods,
+        too-many-arguments,
         #
         # possibly false positives?
         stop-iteration-return,
@@ -23,9 +26,6 @@ disable=
         # removed in bullseye
         bad-whitespace,
         bad-continuation,
-        # eventually:
-        invalid-name,
-        redefined-outer-name,
         # checked by flake8
         broad-except,
         line-too-long,
