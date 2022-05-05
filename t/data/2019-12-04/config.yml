@@ -1,6 +1,20 @@
 # vim: ts=2 : sw=2 : et
 kindle:
   words_per_page: 123
+scheduled:
+  # an author
+  - author: Haruki Murakami
+  # a series
+  - series: Languedoc
+  # an offset author
+  - author: Iain Banks
+    offset: 4
+  # several per year
+  - series: Discworld
+    per_year: 4
+  # start in the future
+  - series: Rougon-Macquart
+    start: 2024
 fixes:
     # a couple of basic examples
     - BookId: 20636970  # La Curée

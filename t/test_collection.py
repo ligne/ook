@@ -10,6 +10,7 @@ import pytest
 import yaml
 
 from reading.collection import Collection, _process_fixes, read_authorids, read_nationalities
+from reading.config import Config
 
 
 ################################################################################
@@ -375,6 +376,48 @@ def test_dedup_requires_merge():
     with pytest.raises(ValueError) as excinfo:
         Collection.from_dir("t/data/2019-12-04", merge=False, dedup=True)
     assert "merge" in str(excinfo.value)
+
+
+################################################################################
+
+# scheduling
+
+
+def test_set_empty_schedule():
+    """It's fine if there are no schedules configured."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    c.set_schedules([])
+    assert c
+
+
+def test_set_schedules_changed_something():
+    """When there's something to do, it has an effect on the Collection."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+
+    assert config("scheduled")
+
+    old_schedule = c.df.Scheduled.copy()
+    c.set_schedules(config("scheduled"))
+    assert (old_schedule != c.df.Scheduled).any(), "Some scheduled dates have changed"
+
+
+def test_set_schedules():
+    """It doesn't change the config."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+
+    c.set_schedules(config("scheduled"))
+
+    clean_config = Config.from_file("t/data/2019-12-04/config.yml")
+    assert config("scheduled") == clean_config("scheduled"), "The config is unchanged"
+
+
+def test_schedule_without_matches():
+    """It still works even if a schedule doesn't match anything."""
+    # FIXME should lint for this and/or fully-read ones?
+    c = Collection.from_dir("t/data/2019-12-04/")
+    c.set_schedules([{"author": "blabla"}])
 
 
 ################################################################################

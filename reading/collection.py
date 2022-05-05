@@ -7,6 +7,7 @@ import re
 import attr
 import pandas as pd
 
+from .chain import Chain
 from .config import Config, merge_preferences
 from .storage import load_df
 
@@ -187,6 +188,35 @@ class Collection:
             .set_index("BookId")
             .assign(Entry=None)  # FIXME do something about Entry?
         )
+
+    ### Scheduling #############################################################
+
+    def set_schedules(self, schedules):
+        """Set the schedules according to the rules in $schedules."""
+        pairs = []
+
+        for schedule in schedules:
+            # work out what we're scheduling
+            try:
+                if "author" in schedule:
+                    chain = Chain.from_author_name(self.all, schedule["author"])
+                elif "series" in schedule:
+                    chain = Chain.from_series_name(self.all, schedule["series"])
+            except IndexError:
+                continue
+
+            # schedule using the other arguments
+            pairs.extend(
+                chain.schedule(
+                    **{k: v for k, v in schedule.items() if k not in {"author", "series"}}
+                )
+            )
+
+        if pairs:
+            index, scheduled = zip(*pairs)
+            self._df.update(pd.Series(data=scheduled, index=index, name="Scheduled"))
+
+        return self
 
     ### Access #################################################################
 
