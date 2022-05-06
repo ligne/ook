@@ -251,6 +251,7 @@ def category_patterns():
 
 _DEFAULTS = {
     "kindle.words_per_page": 390,
+    "scheduled": [],
 }
 
 
