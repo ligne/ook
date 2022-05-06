@@ -435,6 +435,38 @@ def test_schedule_duplicated():
     assert (old != c.df.Scheduled).any(), "The schedules have changed"
 
 
+def test_scheduled_filter_in():
+    c = Collection.from_dir("t/data/2019-12-04/")
+
+    assert c.df.Scheduled.notna().any(), "Some books are scheduled"
+    assert c.scheduled().df.Scheduled.all(), "All the books are now scheduled"
+
+
+def test_scheduled_filter_out():
+    c = Collection.from_dir("t/data/2019-12-04/")
+
+    assert c.df.Scheduled.isna().any(), "Some books are unscheduled"
+    assert ~c.scheduled(exclude=True).df.Scheduled.any(), "None of the books are now scheduled"
+
+
+def test_scheduled_filter_comprehensive():
+    c = Collection.from_dir("t/data/2019-12-04/")
+
+    all_books = set(c.df.index)
+
+    scheduled_books = set(c.scheduled().df.index)
+    assert scheduled_books, "There are some scheduled books"
+    assert scheduled_books != all_books, "But not all of them are scheduled"
+
+    c.reset()
+
+    unscheduled_books = set(c.scheduled(exclude=True).df.index)
+    assert unscheduled_books, "There are some unscheduled books"
+    assert unscheduled_books != all_books
+
+    assert all_books == scheduled_books | unscheduled_books, "All books are included"
+
+
 ################################################################################
 
 # access

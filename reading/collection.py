@@ -272,6 +272,18 @@ class Collection:
             self._df["_Mask"] &= self._df.Borrowed == state
         return self
 
+    def scheduled(self, *, exclude=False):
+        """Filter the collection by scheduled status."""
+        self._df["_Mask"] &= self._df.Scheduled.notna() ^ exclude
+        return self
+
+    def scheduled_at(self, date):
+        """Select only books scheduled to be read at $date."""
+        self._df["_Mask"] &= (self._df.Scheduled.dt.year == date.year) & (
+            self._df.Scheduled <= date
+        )
+        return self
+
 
 ################################################################################
 
