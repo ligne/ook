@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 
 from .collection import Collection
-from .scheduling import _set_schedules
 
 
 # persuade isort that the backend needs to be set *before* plt is created
@@ -468,8 +467,8 @@ def scheduled_years(df, today):
 # pylint: disable=too-many-locals
 @graph
 def scheduled(config):
-    df = Collection.from_dir().df
-    _set_schedules(df, config("scheduled"))
+    c = Collection.from_dir().set_schedules(config("scheduled"))
+    df = c.df
 
     today = pd.Timestamp("today")
 
