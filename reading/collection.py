@@ -198,10 +198,11 @@ class Collection:
         for schedule in schedules:
             # work out what we're scheduling
             try:
+                # use _df directly here to avoid merging, which is (currently) very slow
                 if "author" in schedule:
-                    chain = Chain.from_author_name(self.all, schedule["author"])
+                    chain = Chain.from_author_name(self._df, schedule["author"])
                 elif "series" in schedule:
-                    chain = Chain.from_series_name(self.all, schedule["series"])
+                    chain = Chain.from_series_name(self._df, schedule["series"])
             except IndexError:
                 continue
 
