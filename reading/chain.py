@@ -187,7 +187,7 @@ def _dates(
 
 # returns a stream of (start, end) dates which may or may not want a book
 # allocating to them, starting at the beginning of year $start
-def _windows(start, per_year=1, offset=1):
+def _windows(start, per_year=1, offset=0):
     # needs to be a string or it thinks it's nanoseconds-since-epoch
     start = pd.Timestamp(str(start))
 
