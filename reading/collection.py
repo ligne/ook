@@ -214,7 +214,11 @@ class Collection:
 
         if pairs:
             index, scheduled = zip(*pairs)
-            self._df.update(pd.Series(data=scheduled, index=index, name="Scheduled"))
+            sched = pd.Series(data=scheduled, index=index, name="Scheduled")
+            if sched.index.duplicated().any():
+                # FIXME warn
+                sched = sched[~sched.index.duplicated(keep="last")]
+            self._df.update(sched)
 
         return self
 

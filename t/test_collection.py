@@ -420,6 +420,21 @@ def test_schedule_without_matches():
     c.set_schedules([{"author": "blabla"}])
 
 
+def test_schedule_duplicated():
+    c = Collection.from_dir("t/data/2019-12-04/")
+
+    old = c.df.Scheduled.copy()
+
+    c.set_schedules(
+        [
+            {"author": "Pratchett"},
+            {"series": "Discworld"},
+        ]
+    )
+
+    assert (old != c.df.Scheduled).any(), "The schedules have changed"
+
+
 ################################################################################
 
 # access
