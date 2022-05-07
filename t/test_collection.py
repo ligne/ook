@@ -420,6 +420,14 @@ def test_schedule_without_matches():
     c.set_schedules([{"author": "blabla"}])
 
 
+def test_schedule_without_selection():
+    """A schedule requires something to schedule."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    with pytest.raises(ValueError) as exc:
+        c.set_schedules([{"per_year": 4}])
+    assert "must specify at least one" in str(exc.value)
+
+
 def test_schedule_duplicated():
     c = Collection.from_dir("t/data/2019-12-04/")
 

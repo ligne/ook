@@ -203,6 +203,8 @@ class Collection:
                     chain = Chain.from_author_name(self._df, schedule["author"])
                 elif "series" in schedule:
                     chain = Chain.from_series_name(self._df, schedule["series"])
+                else:
+                    raise ValueError("Schedule must specify at least one of 'author' or 'series'")
             except IndexError:
                 continue
 
