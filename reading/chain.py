@@ -162,7 +162,7 @@ def _dates(
     force=False,
     date=TODAY,
 ):
-    for window_start, window_end in windows:
+    for window_start, window_end in windows:  # pragma: no branch
         # filter out windows that have passed
         if window_end < date:
             continue
@@ -182,7 +182,7 @@ def _dates(
         break
 
     # return the start of remaining windows
-    yield from (ii[0] for ii in windows)
+    yield from (ii[0] for ii in windows)  # pragma: no branch
 
 
 # returns a stream of (start, end) dates which may or may not want a book

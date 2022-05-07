@@ -134,7 +134,7 @@ def _dates(
 ################################################################################
 
 
-def main():
+def main():  # pragma: no cover
     from .collection import Collection
     from .config import Config
 
