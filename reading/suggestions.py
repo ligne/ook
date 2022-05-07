@@ -3,7 +3,6 @@
 from textwrap import fill
 
 from .collection import Collection, read_authorids, read_nationalities
-from .scheduling import scheduled_at, scheduled_books
 
 
 # return a list of the authors i'm currently reading, or have read recently
@@ -26,22 +25,17 @@ def _recent_author_ids(c, date):
 def scheduled(args, config):
     c = (
         Collection.from_dir(merge=True)
+        .set_schedules(config("scheduled"))
         .shelves(args.shelves)
         .languages(args.languages)
         .categories(args.categories)
         .borrowed(args.borrowed)
+        .scheduled_at(args.date)
     )
-    df = c.df
 
-    df = df.loc[
-        scheduled_at(
-            c.all,
-            args.date,
-            config("scheduled"),
-        ).index.intersection(df.index)
-    ]
-    df = df[df.Scheduled.dt.year == args.date.year]
     args.all = True  # no display limit on scheduled books
+
+    df = c.df
 
     df = _filter(df, args, c)
     df = _sort(df, args)
@@ -53,21 +47,23 @@ def scheduled(args, config):
 def main(args, config):
     c = (
         Collection.from_dir(merge=True)
+        .set_schedules(config("scheduled"))
         .shelves(args.shelves)
         .languages(args.languages)
         .categories(args.categories)
         .borrowed(args.borrowed)
+        # filter out scheduled books
+        .scheduled(exclude=True)
     )
+
     df = c.df
 
-    # filter out recently-read, scheduled, etc
+    # filter out recently-read
     df = df[~df.AuthorId.isin(_recent_author_ids(c, args.date))]
-    df = df[
-        ~(df.Scheduled.notnull() | scheduled_books(c.all, config("scheduled")).reindex(df.index))
-    ]
     # FIXME eventually filter out "blocked" books
 
-    # remove other books by scheduled authors
+    # remove other books by authors scheduled to be read this year
+    # FIXME should this be subsumed into .scheduled(exclude=True)?
     df = df[~df.AuthorId.isin(list(c.all[c.all.Scheduled.dt.year == args.date.year].AuthorId))]
 
     df = _filter(df, args, c)
