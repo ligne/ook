@@ -2,7 +2,6 @@
 
 """Code for scheduling books."""
 
-import datetime
 import itertools
 
 import pandas as pd
@@ -142,24 +141,51 @@ def main():
     config = Config.from_file()
     schedules = config("scheduled")
 
-    df = Collection.from_dir().shelves(exclude=["kindle", "to-read"]).df
-    df = df.drop_duplicates(["Work"])  # FIXME
+    c = Collection.from_dir().shelves(exclude=["kindle", "to-read"])
+    c.set_schedules(schedules)
 
-    scheduled(df, schedules)
+    df = c.df
+
+    for schedule in schedules:
+        # find the books
+        title = schedule.get("author") or schedule.get("series")
+        if "author" in schedule:
+            chain = Chain.from_author_name(df, schedule.pop("author"))
+        elif "series" in schedule:
+            chain = Chain.from_series_name(df, schedule.pop("series"))
+
+        # schedule using the other arguments
+        book_ids, _ = zip(*chain.schedule(**schedule))
+        print(title)
+        for book_id in book_ids:
+            print(
+                "{book.Scheduled:%F} {book.Title} ({book.Published:.0f})".format(
+                    book=df.loc[book_id]
+                )
+            )
+        print()
+
     print("----")
     print("This year:")
-    date = datetime.date(TODAY.year, 12, 31)
-    for _ix, row in scheduled_at(df, date, schedules).sort_values("Title").iterrows():
-        print(" *", row.Title)
+    date = pd.Timestamp(f"{TODAY.year}-12-31")
+    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
+        print(" *", book.Title)
     print("----")
+
+    c.reset()
+
     print("Next year:")
-    date = datetime.date(TODAY.year + 1, 12, 31)
-    for _ix, row in scheduled_at(df, date, schedules).sort_values("Title").iterrows():
-        print(" *", row.Title)
+    date = pd.Timestamp(f"{TODAY.year+1}-12-31")
+    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
+        print(" *", book.Title)
     print("----")
+
+    c.reset()
+
     print("CURRENT:")
-    for _ix, row in scheduled_at(df, TODAY, schedules).sort_values("Title").iterrows():
-        print(" *", row.Title)
+    date = pd.Timestamp.now()
+    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
+        print(" *", book.Title)
 
 
 if __name__ == "__main__":
