@@ -467,6 +467,55 @@ def test_scheduled_filter_comprehensive():
     assert all_books == scheduled_books | unscheduled_books, "All books are included"
 
 
+def test_scheduled_at():
+    c = Collection.from_dir("t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+
+    c.set_schedules(config("scheduled"))
+
+    assert not c.df.empty, "Got some books"
+    assert c.df.Scheduled.isna().any(), "Some of the books are unscheduled"
+
+    date = pd.Timestamp("2022-05-05")
+    c.scheduled_at(date)
+
+    assert not c.df.empty, "There are still some selected books"
+    assert (c.df.Scheduled.dt.year == date.year).all(), "All the selected books are this year"
+    assert (c.df.Scheduled <= date).all(), "All the selected books are scheduled before $date."
+
+    # FIXME check the unselected books look correct
+
+
+def test_scheduled_at_later():
+    """Try again, this time later on in the year."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+
+    c.set_schedules(config("scheduled"))
+
+    date = pd.Timestamp("2022-10-05")
+    c.scheduled_at(date)
+
+    assert not c.df.empty, "There are still some selected books"
+    assert (c.df.Scheduled.dt.year == date.year).all(), "All the selected books are this year"
+    assert (c.df.Scheduled <= date).all(), "All the selected books are scheduled before $date."
+
+
+def test_scheduled_at_different_year():
+    """It still works when the date is in a different year."""
+    c = Collection.from_dir("t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+
+    c.set_schedules(config("scheduled"))
+
+    date = pd.Timestamp("2030-10-05")
+    c.scheduled_at(date)
+
+    assert not c.df.empty, "There are still some selected books"
+    assert (c.df.Scheduled.dt.year == date.year).all(), "All the selected books are this year"
+    assert (c.df.Scheduled <= date).all(), "All the selected books are scheduled before $date."
+
+
 ################################################################################
 
 # access
