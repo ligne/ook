@@ -2,7 +2,10 @@
 
 """Find problems with the data in the collection."""
 
+import datetime as dt
+
 from jinja2 import Template
+import pandas as pd
 
 from .collection import Collection, _process_fixes
 
@@ -149,34 +152,37 @@ def lint_scheduled_misshelved():
 
 
 # scheduled books by authors i've already read this year
+# FIXME this doesn't actually work very well
 @linter
 def lint_overscheduled(config):
     """Multiple scheduled books by the same author."""
+    # get the automatically-scheduled books
     c = Collection.from_dir(merge=True)
+    c._df.Scheduled = pd.NaT
+    c.set_schedules(config("scheduled"))
+    automatic = c.df.Scheduled
+
+    df = Collection.from_dir(merge=True)
     df = c.df
 
-    import datetime
-    from reading.scheduling import _set_schedules
+    today = dt.date.today()
 
-    _set_schedules(df, config("scheduled"), col="Automatic")
-
-    today = datetime.date.today()
-
-    # not read or automatically scheduled this year
-    bad = set(
+    # get authors that are/have been read this calendar year, or are
+    # automatically scheduled this year
+    bad_authors = set(
         df[
             (df.Read.dt.year == today.year)
             | (df.Shelf == "currently-reading")
-            | (df.Automatic.dt.year == today.year)
+            | (automatic.dt.year == today.year)
         ].AuthorId
     )
 
-    # books that are manually scheduled but not in the list
+    # find books manually scheduled for this year that aren't in the bad list
     df = df[
-        df.Automatic.isnull()
-        & df.AuthorId.isin(bad)
+        automatic.isnull()
+        & df.AuthorId.isin(bad_authors)
         & (df.Scheduled.dt.year == today.year)
-        & (df.Shelf != "currently-reading")
+        & (df.Shelf != "currently-reading")  # too late now!
     ]
 
     return {
@@ -195,24 +201,21 @@ def lint_scheduling(config):
     """Mis-scheduled books."""
     c = Collection.from_dir()
 
-    df = c.df
+    got = c.df.Scheduled.copy()
+    c.set_schedules(config("scheduled"))
+    df = c.df.assign(Got=got)
 
-    from reading.scheduling import _set_schedules
-    import datetime
-
-    horizon = datetime.date.today().year + 3
-
-    _set_schedules(df, config("scheduled"), col="Expected")
-
-    df = df[df.Expected.notnull()]  # only automatically scheduled
-    df = df[df.Expected.dt.year < horizon]
-    df = df[df.Scheduled.dt.year != df.Expected.dt.year]
+    horizon = dt.date.today().year + 3
 
     return {
-        "df": df,
+        "df": df[
+            df.Scheduled.notna()
+            & (df.Scheduled.dt.year < horizon)
+            & (df.Got.dt.year != df.Scheduled.dt.year)
+        ],
         "template": """
 {%- for entry in df.itertuples() %}
-{{entry.Author}}, {{entry.Title}}:  {{entry.Expected.year}}, not {{entry.Scheduled.year}}
+{{entry.Author}}, {{entry.Title}}:  {{entry.Scheduled.year}}, not {{entry.Got.year}}
   https://www.goodreads.com/book/show/{{entry.Index}}
 {%- endfor %}
 
