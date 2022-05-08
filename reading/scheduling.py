@@ -30,52 +30,6 @@ TODAY = pd.Timestamp.today()
 #       identifying books for each scheduled year
 
 
-# FIXME remove this
-def scheduled(df, schedules):
-    for settings in schedules:
-        print(settings.get("author", settings.get("series")))
-        for date, book in _schedule(df, **settings):
-            book = df.loc[book]
-            print("{} {} ({:0.0f})".format(date.date(), book.Title, book["Published"]))
-        print()
-
-
-def scheduled_books(df, schedules):
-    """Return a boolean Series indicating whether each book is scheduled."""
-    # these are (mostly) books that are scheduled according to the rules, but
-    # too far ahead to be manually scheduled
-    s = pd.Series(False, df.index)
-
-    for settings in schedules:
-        if "author" in settings:
-            series = Chain.from_author_name(df, settings["author"])
-        elif "series" in settings:
-            series = Chain.from_series_name(df, settings["series"])
-
-        s.loc[series.remaining.index.intersection(df.index)] = True
-
-    return s
-
-
-# fix up df with the scheduled dates
-def _set_schedules(df, schedules, date=TODAY, col="Scheduled"):
-    for settings in schedules:
-        for d, book in _schedule(df, **settings, date=date):
-            df.loc[book, col] = d
-
-
-# books ready to be read
-#   FIXME delay if per_year == 1.  fix using most recent read date?
-def scheduled_at(df, date=TODAY, schedules=None):
-    assert schedules
-    date = pd.Timestamp(date)
-    _set_schedules(df, schedules, date)
-    return df[(df.Scheduled.dt.year == date.year) & (df.Scheduled <= date)].sort_values("Title")
-
-
-################################################################################
-
-
 # pylint: disable=too-many-arguments
 def _schedule(
     df,

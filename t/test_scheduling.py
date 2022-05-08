@@ -4,7 +4,7 @@ import itertools
 
 import pandas as pd
 
-from reading.scheduling import _dates, _schedule, _windows, scheduled_at
+from reading.scheduling import _dates, _schedule, _windows
 
 
 ###############################################################################
@@ -369,45 +369,3 @@ def test__schedule(collection):
     ], "Several per year but missed a slot"
 
     # FIXME other Series options get passed through?
-
-
-# format a dataframe schedule
-def _format_scheduled_df(sched):
-    return [row.Title for ix, row in sched.iterrows()]
-
-
-def test_scheduled_at(collection):
-    c = collection("2019-12-04", fixes=False)
-    df = c.df
-
-    s = [
-        {"author": "Haruki Murakami"},  # just an author
-        {"author": "Iain Banks", "offset": 4},  # offset
-        {"series": "Discworld", "per_year": 4},  # multiple
-        {"series": "Leatherstocking Tales", "start": 2020},  # start later
-        {"series": "Languedoc", "force": 2019},  # force
-    ]
-
-    # late this year
-    date = pd.Timestamp("2019-12-04")
-
-    assert _format_scheduled_df(scheduled_at(df, date=date, schedules=s)) == [
-        "La Conquête de Plassans",
-        "Sepulchre",
-    ], "One unread book, one forced"
-
-    # early next year
-    date = pd.Timestamp("2020-01-04")
-
-    assert _format_scheduled_df(scheduled_at(df, date=date, schedules=s)) == [
-        "Feersum Endjinn",
-        "La Faute de l'abbé Mouret",
-        "La Tulipe Noire",
-        "Le Fantôme de l'Opéra",
-        "Le Médecin De Campagne",
-        "Maskerade",
-        "Sepulchre",
-        "The Pioneers",
-        "The Sirens of Titan",
-        "Winter's Bone",
-    ]
