@@ -1,8 +1,12 @@
 # vim: ts=4 : sw=4 : et
 
-import pandas as pd
+import itertools
+from typing import Tuple
 
-from reading.chain import Chain, Missing, Order
+import pandas as pd
+import pytest
+
+from reading.chain import Chain, Missing, Order, _windows
 from reading.collection import Collection
 
 
@@ -176,6 +180,72 @@ def test_remaining():
         "read",
         "to-read",
     }, "All but the read and unreadable shelves"
+
+
+################################################################################
+
+
+@pytest.mark.parametrize(
+    "description,inputs,expected",
+    (
+        (
+            "One book per year",
+            (2018, 1, 0),
+            [
+                "2018-01-01 to 2019-01-01",
+                "2019-01-01 to 2020-01-01",
+                "2020-01-01 to 2021-01-01",
+            ],
+        ),
+        (
+            "Several books per year",
+            (2018, 4, 0),
+            [
+                "2018-01-01 to 2018-04-01",
+                "2018-04-01 to 2018-07-01",
+                "2018-07-01 to 2018-10-01",
+            ],
+        ),
+        (
+            "A different number of books per year",
+            (2018, 3, 0),
+            [
+                "2018-01-01 to 2018-05-01",
+                "2018-05-01 to 2018-09-01",
+                "2018-09-01 to 2019-01-01",
+            ],
+        ),
+        (
+            "Offset into the year",
+            (2018, 1, 10),
+            [
+                "2018-10-01 to 2019-10-01",
+                "2019-10-01 to 2020-10-01",
+                "2020-10-01 to 2021-10-01",
+            ],
+        ),
+        (
+            "Several books a year, but offset",
+            (2018, 2, 2),
+            [
+                "2018-02-01 to 2018-08-01",
+                "2018-08-01 to 2019-02-01",
+                "2019-02-01 to 2019-08-01",
+            ],
+        ),
+    ),
+)
+def test_windows(
+    description: str,
+    inputs: Tuple[int, int, int],
+    expected: Tuple[Tuple[int, int]],
+):
+    start, per_year, offset = inputs
+    windows = _windows(start, per_year, offset)
+
+    assert [
+        f"{win_start:%F} to {win_end:%F}" for win_start, win_end in itertools.islice(windows, 3)
+    ] == expected, description
 
 
 ################################################################################

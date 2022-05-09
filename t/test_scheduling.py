@@ -4,64 +4,7 @@ import itertools
 
 import pandas as pd
 
-from reading.scheduling import _dates, _schedule, _windows
-
-
-###############################################################################
-
-
-def _format_windows(it, count=5):
-    formatted = []
-    for row in itertools.islice(it, count):
-        formatted.append(tuple(str(x.date()) for x in row))
-    return formatted
-
-
-def test__windows():
-    it = _windows(2018)
-    assert _format_windows(it, 5) == [
-        ("2018-01-01", "2019-01-01"),
-        ("2019-01-01", "2020-01-01"),
-        ("2020-01-01", "2021-01-01"),
-        ("2021-01-01", "2022-01-01"),
-        ("2022-01-01", "2023-01-01"),
-    ], "One per year"
-
-    it = _windows(2018, per_year=4)
-    assert _format_windows(it) == [
-        ("2018-01-01", "2018-04-01"),
-        ("2018-04-01", "2018-07-01"),
-        ("2018-07-01", "2018-10-01"),
-        ("2018-10-01", "2019-01-01"),
-        ("2019-01-01", "2019-04-01"),
-    ], "Several per year"
-
-    it = _windows(2018, per_year=3)
-    assert _format_windows(it) == [
-        ("2018-01-01", "2018-05-01"),
-        ("2018-05-01", "2018-09-01"),
-        ("2018-09-01", "2019-01-01"),
-        ("2019-01-01", "2019-05-01"),
-        ("2019-05-01", "2019-09-01"),
-    ], "A different number per year"
-
-    it = _windows(2018, offset=10)
-    assert _format_windows(it) == [
-        ("2018-10-01", "2019-10-01"),
-        ("2019-10-01", "2020-10-01"),
-        ("2020-10-01", "2021-10-01"),
-        ("2021-10-01", "2022-10-01"),
-        ("2022-10-01", "2023-10-01"),
-    ], "Offset into the year"
-
-    it = _windows(2018, per_year=2, offset=2)
-    assert _format_windows(it) == [
-        ("2018-02-01", "2018-08-01"),
-        ("2018-08-01", "2019-02-01"),
-        ("2019-02-01", "2019-08-01"),
-        ("2019-08-01", "2020-02-01"),
-        ("2020-02-01", "2020-08-01"),
-    ], "Several a year, but offset"
+from reading.scheduling import _dates, _schedule
 
 
 ################################################################################
