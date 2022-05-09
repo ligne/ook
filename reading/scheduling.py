@@ -56,28 +56,6 @@ def main():  # pragma: no cover
             )
         print()
 
-    print("----")
-    print("This year:")
-    date = pd.Timestamp(f"{TODAY.year}-12-31")
-    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
-        print(" *", book.Title)
-    print("----")
-
-    c.reset()
-
-    print("Next year:")
-    date = pd.Timestamp(f"{TODAY.year+1}-12-31")
-    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
-        print(" *", book.Title)
-    print("----")
-
-    c.reset()
-
-    print("CURRENT:")
-    date = pd.Timestamp.now()
-    for book in c.scheduled_at(date).df.sort_values("Title").itertuples():
-        print(" *", book.Title)
-
 
 if __name__ == "__main__":
     main()
