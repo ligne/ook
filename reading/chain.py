@@ -144,6 +144,7 @@ class Chain:
             per_year=per_year,
             last_read=self.last_read,
             force=force,
+            date=TODAY,
         )
 
         dates = itertools.islice(dates, skip, None)
@@ -157,10 +158,10 @@ class Chain:
 # converts a stream of windows into a stream of dates for scheduling
 def _dates(
     windows,
-    per_year=1,
-    last_read=None,
-    force=False,
-    date=TODAY,
+    per_year,
+    last_read,
+    force,
+    date,
 ):
     for window_start, window_end in windows:  # pragma: no branch
         # filter out windows that have passed
@@ -187,7 +188,7 @@ def _dates(
 
 # returns a stream of (start, end) dates which may or may not want a book
 # allocating to them, starting at the beginning of year $start
-def _windows(start, per_year=1, offset=0):
+def _windows(start, per_year, offset):
     # needs to be a string or it thinks it's nanoseconds-since-epoch
     start = pd.Timestamp(str(start))
 
