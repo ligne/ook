@@ -477,3 +477,5 @@ def test_scheduling():
         ("2024-01-01", "Matter"),
         ("2025-01-01", "Surface Detail"),
     ], "A basic schedule"
+
+    # FIXME add more tests from 8580c313a468ebdd073d256cbf90884613882956 if it seems useful
