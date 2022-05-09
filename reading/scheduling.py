@@ -2,13 +2,11 @@
 
 """Code for scheduling books."""
 
-import itertools
-
 import pandas as pd
 
 from .chain import Chain
-from .chain import _dates as chain_dates
-from .chain import _windows
+from .collection import Collection
+from .config import Config
 
 
 TODAY = pd.Timestamp.today()
@@ -30,68 +28,7 @@ TODAY = pd.Timestamp.today()
 #       identifying books for each scheduled year
 
 
-# pylint: disable=too-many-arguments
-def _schedule(
-    df,
-    author=None,
-    series=None,
-    start=None,
-    per_year=1,
-    offset=0,
-    force=False,
-    skip=0,
-    date=TODAY,
-):
-    if author:
-        series = Chain.from_author_name(df, author)
-    elif series:
-        series = Chain.from_series_name(df, series)
-
-    if not start:
-        start = date.year
-
-    dates = _dates(
-        start,
-        per_year,
-        offset,
-        force,
-        last_read=series.last_read,
-        date=date,
-    )
-
-    dates = itertools.islice(dates, skip, None)
-
-    return zip(dates, series.remaining.index)
-
-
-# converts a stream of windows into a stream of dates for scheduling
-def _dates(
-    start,
-    per_year=1,
-    offset=1,
-    force=False,
-    last_read=None,
-    date=TODAY,
-):
-    yield from chain_dates(
-        _windows(start, per_year, offset),
-        per_year=per_year,
-        force=force,
-        last_read=last_read,
-        date=date,
-    )
-
-
-# pylint: enable=too-many-arguments
-
-
-################################################################################
-
-
 def main():  # pragma: no cover
-    from .collection import Collection
-    from .config import Config
-
     config = Config.from_file()
     schedules = config("scheduled")
 
