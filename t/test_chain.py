@@ -6,7 +6,7 @@ from typing import Tuple
 import pandas as pd
 import pytest
 
-from reading.chain import Chain, Missing, Order, _windows
+from reading.chain import Chain, Missing, Order, _dates, _windows
 from reading.collection import Collection
 
 
@@ -246,6 +246,193 @@ def test_windows(
     assert [
         f"{win_start:%F} to {win_end:%F}" for win_start, win_end in itertools.islice(windows, 3)
     ] == expected, description
+
+
+################################################################################
+
+
+@pytest.mark.parametrize(
+    "description,today,inputs,expected",
+    (
+        (
+            "Start of the year, default settings",
+            "2020-02-04",
+            {},
+            [
+                "2020-01-01",
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "Start of the year, several per year",
+            "2020-02-04",
+            {"per_year": 4},
+            [
+                "2020-01-01",
+                "2020-04-01",
+                "2020-07-01",
+            ],
+        ),
+        # start date
+        (
+            "Start of the year, start in a future year",
+            "2020-02-04",
+            {"start": 2022},
+            [
+                "2022-01-01",
+                "2023-01-01",
+                "2024-01-01",
+            ],
+        ),
+        (
+            "Start of the year, start this year",
+            "2020-02-04",
+            {"start": 2020},
+            [
+                "2020-01-01",
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "Start of the year, start in a past year",
+            "2020-02-04",
+            {"start": 2019},
+            [
+                "2020-01-01",
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        # previously-read
+        (
+            "Start of the year, read this year",
+            "2020-02-04",
+            {"last_read": "2020-01-04"},
+            [
+                "2021-01-01",
+                "2022-01-01",
+                "2023-01-01",
+            ],
+        ),
+        (
+            "Start of the year, read this year, but force",
+            "2020-02-04",
+            {"last_read": "2020-01-04", "force": True},
+            [
+                "2020-07-04",  # first is delayed
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "Start of the year, read late last year",
+            "2020-02-04",
+            {"last_read": "2019-12-04"},
+            [
+                "2020-06-04",  # first is delayed
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "Dates are only adjusted when per_year=1",
+            "2020-02-04",
+            {"per_year": 4, "last_read": "2019-12-04"},
+            [
+                "2020-01-01",
+                "2020-04-01",
+                "2020-07-01",
+            ],
+        ),
+        # starting later in the year
+        (
+            "Later in the year, skipped a window",
+            "2020-05-04",
+            {
+                "per_year": 4,
+            },
+            [
+                "2020-04-01",
+                "2020-07-01",
+                "2020-10-01",
+            ],
+        ),
+        # starting near the end of the year
+        (
+            "End of the year, default settings",
+            "2019-12-04",
+            {},
+            [
+                "2019-01-01",
+                "2020-01-01",
+                "2021-01-01",
+            ],
+        ),
+        (
+            "End of the year, several per year",
+            "2019-12-04",
+            {"per_year": 4},
+            [
+                "2019-10-01",
+                "2020-01-01",
+                "2020-04-01",
+            ],
+        ),
+        (
+            "End of the year, read this year",
+            "2019-12-04",
+            {"last_read": "2019-04-04"},
+            [
+                "2020-01-01",
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "End of the year, read late this year: next year is postponed",
+            "2019-12-04",
+            {"last_read": "2019-08-26"},
+            [
+                "2020-02-26",
+                "2021-01-01",
+                "2022-01-01",
+            ],
+        ),
+        (
+            "End of the year, read late this year: next year is postponed",
+            "2019-12-04",
+            {"per_year": 4},
+            [
+                "2019-10-01",
+                "2020-01-01",
+                "2020-04-01",
+            ],
+        ),
+    ),
+)
+def test_dates(description, today, inputs, expected):
+    today = pd.Timestamp(today)
+
+    start = inputs.get("start", today.year)
+    per_year = inputs.get("per_year", 1)
+    offset = inputs.get("offset", 0)
+    last_read = inputs.get("last_read", None)
+    force = inputs.get("force", False)
+
+    if last_read:
+        last_read = pd.Timestamp(last_read)
+
+    dates = _dates(
+        _windows(start, per_year, offset),
+        per_year=per_year,
+        last_read=last_read,
+        force=force,
+        date=today,
+    )
+
+    assert [f"{date:%F}" for date in itertools.islice(dates, 3)] == expected, description
 
 
 ################################################################################
