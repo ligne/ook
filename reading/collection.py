@@ -4,7 +4,6 @@
 
 import re
 from typing import List
-import warnings
 
 import attr
 import pandas as pd
@@ -259,26 +258,14 @@ class Collection:
 
     def shelves(self, selection=None, *, exclude: bool = False):
         """Filter the collection by shelf."""
-        if isinstance(exclude, list):  # pragma: no cover
-            warnings.warn("Using old-style arguments for c.shelves()", stacklevel=2)
-            selection = exclude
-        exclude = bool(exclude)
         return self._filter_list("Shelf", selection, exclude)
 
     def languages(self, selection=None, *, exclude: bool = False):
         """Filter the collection by language."""
-        if isinstance(exclude, list):  # pragma: no cover
-            warnings.warn("Using old-style arguments for c.languages()", stacklevel=2)
-            selection = exclude
-        exclude = bool(exclude)
         return self._filter_list("Language", selection, exclude)
 
     def categories(self, selection=None, *, exclude: bool = False):
         """Filter the collection by category."""
-        if isinstance(exclude, list):  # pragma: no cover
-            warnings.warn("Using old-style arguments for c.categories()", stacklevel=2)
-            selection = exclude
-        exclude = bool(exclude)
         return self._filter_list("Category", selection, exclude)
 
     def borrowed(self, state=None):
