@@ -3,6 +3,8 @@
 """Represents a collection of books."""
 
 import re
+from typing import List
+import warnings
 
 import attr
 import pandas as pd
@@ -250,27 +252,38 @@ class Collection:
 
     ### Filtering ##############################################################
 
-    def _filter_list(self, col, include, exclude):
-        if include:
-            self._df["_Mask"] &= self._df[col].isin(include)
-        if exclude:
-            self._df["_Mask"] &= ~self._df[col].isin(exclude)
+    def _filter_list(self, col: str, selection: List[str], exclude: bool):
+        if selection:
+            self._df["_Mask"] &= self._df[col].isin(selection) ^ exclude
         return self
 
-    def shelves(self, include=None, exclude=None):
+    def shelves(self, selection=None, *, exclude: bool = False):
         """Filter the collection by shelf."""
-        return self._filter_list("Shelf", include, exclude)
+        if isinstance(exclude, list):  # pragma: no cover
+            warnings.warn("Using old-style arguments for c.shelves()", stacklevel=2)
+            selection = exclude
+        exclude = bool(exclude)
+        return self._filter_list("Shelf", selection, exclude)
 
-    def languages(self, include=None, exclude=None):
+    def languages(self, selection=None, *, exclude: bool = False):
         """Filter the collection by language."""
-        return self._filter_list("Language", include, exclude)
+        if isinstance(exclude, list):  # pragma: no cover
+            warnings.warn("Using old-style arguments for c.languages()", stacklevel=2)
+            selection = exclude
+        exclude = bool(exclude)
+        return self._filter_list("Language", selection, exclude)
 
-    def categories(self, include=None, exclude=None):
+    def categories(self, selection=None, *, exclude: bool = False):
         """Filter the collection by category."""
-        return self._filter_list("Category", include, exclude)
+        if isinstance(exclude, list):  # pragma: no cover
+            warnings.warn("Using old-style arguments for c.categories()", stacklevel=2)
+            selection = exclude
+        exclude = bool(exclude)
+        return self._filter_list("Category", selection, exclude)
 
     def borrowed(self, state=None):
         """Filter the collection by borrowed status."""
+        # FIXME None so the caller doesn't have to care if it was actually set
         if state is not None:
             self._df["_Mask"] &= self._df.Borrowed == state
         return self
