@@ -378,9 +378,9 @@ def test_dedup_requires_merge():
     assert "merge" in str(excinfo.value)
 
 
-################################################################################
+### Scheduling #################################################################
 
-# scheduling
+# set schedule
 
 
 def test_set_empty_schedule():
@@ -443,10 +443,14 @@ def test_schedule_duplicated():
     assert (old != c.df.Scheduled).any(), "The schedules have changed"
 
 
+# scheduled filter
+
+
 def test_scheduled_filter_in():
     c = Collection.from_dir("t/data/2019-12-04/")
 
     assert c.df.Scheduled.notna().any(), "Some books are scheduled"
+    assert c.df.Scheduled.isna().any(), "Some books are unscheduled"
     assert c.scheduled().df.Scheduled.all(), "All the books are now scheduled"
 
 
@@ -473,6 +477,9 @@ def test_scheduled_filter_comprehensive():
     assert unscheduled_books != all_books
 
     assert all_books == scheduled_books | unscheduled_books, "All books are included"
+
+
+# scheduled_at filter
 
 
 def test_scheduled_at():
