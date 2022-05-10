@@ -27,7 +27,7 @@ def linter(func):
 @linter
 def lint_missing_pagecount():
     """Missing a pagecount."""
-    c = Collection.from_dir().shelves(exclude=["to-read"])
+    c = Collection.from_dir().shelves(["to-read"], exclude=True)
     return {
         "df": c.df[c.df.Pages.isnull()],
         "template": """
@@ -77,7 +77,7 @@ def lint_missing_category():
 @linter
 def lint_missing_published_date():
     """Missing a published date."""
-    c = Collection.from_dir().shelves(exclude=["kindle", "to-read"])
+    c = Collection.from_dir().shelves(["kindle", "to-read"], exclude=True)
 
     return {
         "df": c.df[c.df.Published.isnull()],
@@ -274,7 +274,7 @@ def lint_binding():
         "Board book",
         "Unknown Binding",
     ]
-    c = Collection.from_dir().shelves(exclude=["kindle"])
+    c = Collection.from_dir().shelves(["kindle"], exclude=True)
     return {
         "df": c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
         "template": """
@@ -292,7 +292,7 @@ def lint_binding():
 @linter
 def missing_nationality():
     """Missing author nationality."""
-    df = Collection.from_dir().shelves(exclude=["kindle"]).df
+    df = Collection.from_dir().shelves(["kindle"], exclude=True).df
 
     return {
         "df": df[df.Nationality.isnull()].sort_values(["Author", "Title"]),
@@ -308,7 +308,7 @@ def missing_nationality():
 @linter
 def missing_gender():
     """Missing author gender."""
-    df = Collection.from_dir().shelves(exclude=["kindle"]).df
+    df = Collection.from_dir().shelves(["kindle"], exclude=True).df
 
     return {
         "df": df[df.Gender.isnull()].sort_values(["Author", "Title"]),
