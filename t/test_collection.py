@@ -581,15 +581,15 @@ def test_filter_shelves():
 
     c = Collection.from_dir("t/data/2019-12-04")
 
-    c.shelves(exclude=["library"])
+    c.shelves(["library"], exclude=True)
     assert "library" not in set(c.df.Shelf), "Not the excluded shelf"
     assert "kindle" in set(c.df.Shelf), "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
-            Collection.from_dir("t/data/2019-12-04").shelves(exclude=["library"]).df,
-            Collection.from_dir("t/data/2019-12-04").shelves(include=["library"]).df,
+            Collection.from_dir("t/data/2019-12-04").shelves(["library"], exclude=True).df,
+            Collection.from_dir("t/data/2019-12-04").shelves(["library"]).df,
         ]
     )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
@@ -606,15 +606,15 @@ def test_filter_languages():
 
     c = Collection.from_dir("t/data/2019-12-04")
 
-    c.languages(exclude=["fr"])
+    c.languages(["fr"], exclude=True)
     assert "fr" not in set(c.df.Language), "Not the excluded language"
     assert "en" in set(c.df.Language), "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
-            Collection.from_dir("t/data/2019-12-04").languages(exclude=["fr"]).df,
-            Collection.from_dir("t/data/2019-12-04").languages(include=["fr"]).df,
+            Collection.from_dir("t/data/2019-12-04").languages(["fr"], exclude=True).df,
+            Collection.from_dir("t/data/2019-12-04").languages(["fr"]).df,
         ]
     )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
@@ -630,16 +630,17 @@ def test_filter_categories():
     assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected category"
 
     c = Collection.from_dir("t/data/2019-12-04")
+    c.categories(["novels"], exclude=True)
 
-    c.categories(exclude=["novels"])
-    assert "novels" not in set(c.df.Category), "Not the excluded category"
-    assert "articles" in set(c.df.Category), "Does include others"
+    remaining = set(c.df.Category)
+    assert "novels" not in remaining, "Not the excluded category"
+    assert "articles" in remaining, "Does include others"
 
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
-            Collection.from_dir("t/data/2019-12-04").categories(exclude=["novels"]).df,
-            Collection.from_dir("t/data/2019-12-04").categories(include=["novels"]).df,
+            Collection.from_dir("t/data/2019-12-04").categories(["novels"], exclude=True).df,
+            Collection.from_dir("t/data/2019-12-04").categories(["novels"]).df,
         ]
     )
     assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
@@ -666,8 +667,13 @@ def test_chaining():
         c.df, c.all[(c.all.Shelf == "pending") & c.all.Borrowed & (c.all.Language == "fr")]
     )
 
-    c = Collection.from_dir("t/data/2019-12-04")
-    c.shelves(["pending"]).categories(["graphic"]).languages(exclude=["fr"]).borrowed(False)
+    c = (
+        Collection.from_dir("t/data/2019-12-04")
+        .shelves(["pending"])
+        .categories(["graphic"])
+        .languages(["fr"], exclude=True)
+        .borrowed(False)
+    )
 
     assert_frame_equal(
         c.df,
