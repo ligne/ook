@@ -203,6 +203,27 @@ def test__process_fixes():
     assert pd.api.types.is_datetime64_dtype(_process_fixes(fixes).Read.dtypes)
 
 
+def test_duplicate_fixes() -> None:
+    fixes = _process_fixes(
+        [
+            {"BookId": 20636970, "Category": "novels"},
+            {"BookId": 20636970, "Pages": "567"},
+        ]
+    )
+
+    assert not fixes.index.has_duplicates, "No duplicates"
+
+    assert fixes.to_dict(orient="index") == {
+        20636970: {
+            "Category": np.nan,
+            "Pages": "567",
+        },
+    }
+
+
+# applying fixes
+
+
 def test_fixes():
     """Test fix application."""
 

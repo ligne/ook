@@ -55,6 +55,10 @@ def _process_fixes(fixes):
 
     fix_df = pd.DataFrame(fixes).set_index("BookId")
 
+    # remove any duplicates
+    # FIXME merge them
+    fix_df = fix_df[~fix_df.index.duplicated(keep="last")]
+
     # FIXME looks like an upstream bug...
     # https://stackoverflow.com/questions/34667108/ignore-dates-and-times-while-parsing-yaml
     for column in ["Added", "Read", "Started"]:
