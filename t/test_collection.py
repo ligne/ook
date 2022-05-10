@@ -574,24 +574,42 @@ def test_read():
     )  # Same result even with a filtered frame
 
 
-################################################################################
+### Filters ####################################################################
+
+# shelves
 
 
-def test_filter_shelves():
-    """Test the shelves() method."""
+def test_shelves_filter_noop() -> None:
+    """Using shelves() without any selection is a noop."""
+    assert_frame_equal(
+        Collection.from_dir("t/data/2019-12-04").shelves().df,
+        Collection.from_dir("t/data/2019-12-04").df,
+    )
+
+
+def test_shelves_filter_in() -> None:
+    """Use shelves() to filter books in."""
     c = Collection.from_dir("t/data/2019-12-04")
-    c2 = Collection.from_dir("t/data/2019-12-04")
 
-    assert_frame_equal(c.shelves().df, c2.df)  # no argument makes it a no-op
+    c.shelves(["library"])
 
-    assert set(c.shelves(["library"]).df.Shelf) == {"library"}, "Only the selected shelf"
+    remaining = set(c.df.Shelf)
+    assert remaining == {"library"}, "Only the selected shelf"
 
+
+def test_shelves_filter_out() -> None:
+    """Use shelves() to filter books out."""
     c = Collection.from_dir("t/data/2019-12-04")
 
     c.shelves(["library"], exclude=True)
-    assert "library" not in set(c.df.Shelf), "Not the excluded shelf"
-    assert "kindle" in set(c.df.Shelf), "Does include others"
 
+    remaining = set(c.df.Shelf)
+    assert "library" not in remaining, "Not the excluded shelf"
+    assert "kindle" in remaining, "Does include others"
+
+
+def test_shelves_filter_comprehensive() -> None:
+    """All the books are either included or excluded."""
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
@@ -599,24 +617,43 @@ def test_filter_shelves():
             Collection.from_dir("t/data/2019-12-04").shelves(["library"]).df,
         ]
     )
-    assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+    assert_frame_equal(df, c.df, check_like=True)  # the rows get mixed up
 
 
-def test_filter_languages():
-    """Test the language() method."""
+# languages
+
+
+def test_languages_filter_noop() -> None:
+    """Using languages() without any selection is a noop."""
+    assert_frame_equal(
+        Collection.from_dir("t/data/2019-12-04").languages().df,
+        Collection.from_dir("t/data/2019-12-04").df,
+    )
+
+
+def test_languages_filter_in() -> None:
+    """Use languages() to filter books in."""
     c = Collection.from_dir("t/data/2019-12-04")
-    c2 = Collection.from_dir("t/data/2019-12-04")
 
-    assert_frame_equal(c.languages().df, c2.df)  # no argument makes it a no-op
+    c.languages(["fr"])
 
-    assert set(c.languages(["fr"]).df.Language) == {"fr"}, "Only the selected language"
+    remaining = set(c.df.Language)
+    assert remaining == {"fr"}, "Only the selected language"
 
+
+def test_languages_filter_out() -> None:
+    """Use languages() to filter books out."""
     c = Collection.from_dir("t/data/2019-12-04")
 
     c.languages(["fr"], exclude=True)
-    assert "fr" not in set(c.df.Language), "Not the excluded language"
-    assert "en" in set(c.df.Language), "Does include others"
 
+    remaining = set(c.df.Language)
+    assert "fr" not in remaining, "Not the excluded language"
+    assert "en" in remaining, "Does include others"
+
+
+def test_languages_filter_comprehensive() -> None:
+    """All the books are either included or excluded."""
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
@@ -624,25 +661,43 @@ def test_filter_languages():
             Collection.from_dir("t/data/2019-12-04").languages(["fr"]).df,
         ]
     )
-    assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+    assert_frame_equal(df, c.df, check_like=True)  # the rows get mixed up
 
 
-def test_filter_categories():
-    """Test the categories() method."""
+# categories
+
+
+def test_categories_filter_noop() -> None:
+    """Using categories() without any selection is a noop."""
+    assert_frame_equal(
+        Collection.from_dir("t/data/2019-12-04").categories().df,
+        Collection.from_dir("t/data/2019-12-04").df,
+    )
+
+
+def test_categories_filter_in() -> None:
+    """Use categories() to filter books in."""
     c = Collection.from_dir("t/data/2019-12-04")
-    c2 = Collection.from_dir("t/data/2019-12-04")
 
-    assert_frame_equal(c.categories().df, c2.df)  # no argument makes it a no-op
+    c.categories(["novels"])
 
-    assert set(c.categories(["novels"]).df.Category) == {"novels"}, "Only the selected category"
+    remaining = set(c.df.Category)
+    assert remaining == {"novels"}, "Only the selected category"
 
+
+def test_categories_filter_out() -> None:
+    """Use categories() to filter books out."""
     c = Collection.from_dir("t/data/2019-12-04")
+
     c.categories(["novels"], exclude=True)
 
     remaining = set(c.df.Category)
     assert "novels" not in remaining, "Not the excluded category"
     assert "articles" in remaining, "Does include others"
 
+
+def test_categories_filter_comprehensive() -> None:
+    """All the books are either included or excluded."""
     c = Collection.from_dir("t/data/2019-12-04")
     df = pd.concat(
         [
@@ -650,30 +705,59 @@ def test_filter_categories():
             Collection.from_dir("t/data/2019-12-04").categories(["novels"]).df,
         ]
     )
-    assert_frame_equal(df, c.df, check_like=True)  # A ∪ ¬A = U, though the rows get mixed up
+    assert_frame_equal(df, c.df, check_like=True)  # the rows get mixed up
 
 
-def test_filter_borrowed():
-    """Test the borrowed() method."""
+# borrowed
+
+
+def test_borrowed_filter_noop() -> None:
+    """Using borrowed() without any selection is a noop."""
     c = Collection.from_dir("t/data/2019-12-04")
-    assert set(c.borrowed().df.Borrowed) == {True, False}
 
+    c.borrowed()
+
+    remaining = set(c.df.Borrowed)
+    assert remaining == {True, False}
+
+
+def test_borrowed_filter_in() -> None:
+    """Use borrowed() to filter books in."""
     c = Collection.from_dir("t/data/2019-12-04")
-    assert set(c.borrowed(True).df.Borrowed) == {True}
 
+    c.borrowed(True)
+
+    remaining = set(c.df.Borrowed)
+    assert remaining == {True}
+
+
+def test_borrowed_filter_out() -> None:
+    """Use borrowed() to filter books out."""
     c = Collection.from_dir("t/data/2019-12-04")
-    assert set(c.borrowed(False).df.Borrowed) == {False}
+
+    c.borrowed(False)
+
+    remaining = set(c.df.Borrowed)
+    assert remaining == {False}
 
 
-def test_chaining():
+# chaining filters
+
+
+def test_chaining() -> None:
     """Test that filters chain correctly."""
-    c = Collection.from_dir("t/data/2019-12-04")
-    c.shelves(["pending"]).borrowed(True).languages(["fr"])
+    c = (
+        Collection.from_dir("t/data/2019-12-04")
+        .shelves(["pending"])
+        .borrowed(True)
+        .languages(["fr"])
+    )
 
     assert_frame_equal(
         c.df, c.all[(c.all.Shelf == "pending") & c.all.Borrowed & (c.all.Language == "fr")]
     )
 
+    # again with different filters
     c = (
         Collection.from_dir("t/data/2019-12-04")
         .shelves(["pending"])
