@@ -12,8 +12,8 @@ from .config import Config, merge_preferences
 from .storage import load_df
 
 
-pd.options.display.max_rows = None
-pd.options.display.width = None
+pd.set_option("display.max_rows", None)
+pd.set_option("display.width", None)
 
 
 ################################################################################
