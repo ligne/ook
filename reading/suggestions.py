@@ -26,9 +26,9 @@ def scheduled(args, config):
     c = (
         Collection.from_dir(merge=True)
         .set_schedules(config("scheduled"))
-        .shelves(args.shelves)
-        .languages(args.languages)
-        .categories(args.categories)
+        .shelves(*args.shelves)
+        .languages(*args.languages)
+        .categories(*args.categories)
         .borrowed(args.borrowed)
         .scheduled_at(args.date)
     )
@@ -48,9 +48,9 @@ def main(args, config):
     c = (
         Collection.from_dir(merge=True)
         .set_schedules(config("scheduled"))
-        .shelves(args.shelves)
-        .languages(args.languages)
-        .categories(args.categories)
+        .shelves(*args.shelves)
+        .languages(*args.languages)
+        .categories(*args.categories)
         .borrowed(args.borrowed)
         # filter out scheduled books
         .scheduled(exclude=True)

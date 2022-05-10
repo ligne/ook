@@ -32,7 +32,7 @@ def main():  # pragma: no cover
     config = Config.from_file()
     schedules = config("scheduled")
 
-    c = Collection.from_dir().shelves(["kindle", "to-read"], exclude=True)
+    c = Collection.from_dir().shelves("kindle", "to-read", exclude=True)
     c.set_schedules(schedules)
 
     df = c.df

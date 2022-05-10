@@ -3,7 +3,7 @@
 """Represents a collection of books."""
 
 import re
-from typing import List
+from typing import Sequence
 
 import attr
 import pandas as pd
@@ -251,20 +251,20 @@ class Collection:
 
     ### Filtering ##############################################################
 
-    def _filter_list(self, col: str, selection: List[str], exclude: bool):
+    def _filter_list(self, col: str, selection: Sequence[str], exclude: bool):
         if selection:
             self._df["_Mask"] &= self._df[col].isin(selection) ^ exclude
         return self
 
-    def shelves(self, selection=None, *, exclude: bool = False):
+    def shelves(self, *selection: str, exclude: bool = False):
         """Filter the collection by shelf."""
         return self._filter_list("Shelf", selection, exclude)
 
-    def languages(self, selection=None, *, exclude: bool = False):
+    def languages(self, *selection: str, exclude: bool = False):
         """Filter the collection by language."""
         return self._filter_list("Language", selection, exclude)
 
-    def categories(self, selection=None, *, exclude: bool = False):
+    def categories(self, *selection: str, exclude: bool = False):
         """Filter the collection by category."""
         return self._filter_list("Category", selection, exclude)
 

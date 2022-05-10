@@ -27,7 +27,7 @@ def linter(func):
 @linter
 def lint_missing_pagecount():
     """Missing a pagecount."""
-    c = Collection.from_dir().shelves(["to-read"], exclude=True)
+    c = Collection.from_dir().shelves("to-read", exclude=True)
     return {
         "df": c.df[c.df.Pages.isnull()],
         "template": """
@@ -42,7 +42,7 @@ def lint_missing_pagecount():
 @linter
 def lint_words_per_page():
     """Unusual words per page."""
-    c = Collection.from_dir(fixes=None, merge=True).shelves(["kindle"])
+    c = Collection.from_dir(fixes=None, merge=True).shelves("kindle")
 
     df = c.df
     df["wpp"] = df.Words / df.Pages
@@ -77,7 +77,7 @@ def lint_missing_category():
 @linter
 def lint_missing_published_date():
     """Missing a published date."""
-    c = Collection.from_dir().shelves(["kindle", "to-read"], exclude=True)
+    c = Collection.from_dir().shelves("kindle", "to-read", exclude=True)
 
     return {
         "df": c.df[c.df.Published.isnull()],
@@ -93,7 +93,7 @@ def lint_missing_published_date():
 @linter
 def lint_dates():
     """Finished date before Started date."""
-    c = Collection.from_dir().shelves(["read"])
+    c = Collection.from_dir().shelves("read")
     return {
         "df": c.df[c.df.Read < c.df.Started],
         "template": """
@@ -138,7 +138,7 @@ def lint_missing_language():
 @linter
 def lint_scheduled_misshelved():
     """Scheduled books on wrong shelves."""
-    c = Collection.from_dir().shelves(["read", "currently-reading", "to-read"])
+    c = Collection.from_dir().shelves("read", "currently-reading", "to-read")
     return {
         "df": c.df[c.df.Scheduled.notnull()],
         "template": """
@@ -274,7 +274,7 @@ def lint_binding():
         "Board book",
         "Unknown Binding",
     ]
-    c = Collection.from_dir().shelves(["kindle"], exclude=True)
+    c = Collection.from_dir().shelves("kindle", exclude=True)
     return {
         "df": c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
         "template": """
@@ -292,7 +292,7 @@ def lint_binding():
 @linter
 def missing_nationality():
     """Missing author nationality."""
-    df = Collection.from_dir().shelves(["kindle"], exclude=True).df
+    df = Collection.from_dir().shelves("kindle", exclude=True).df
 
     return {
         "df": df[df.Nationality.isnull()].sort_values(["Author", "Title"]),
@@ -308,7 +308,7 @@ def missing_nationality():
 @linter
 def missing_gender():
     """Missing author gender."""
-    df = Collection.from_dir().shelves(["kindle"], exclude=True).df
+    df = Collection.from_dir().shelves("kindle", exclude=True).df
 
     return {
         "df": df[df.Gender.isnull()].sort_values(["Author", "Title"]),
@@ -324,7 +324,7 @@ def missing_gender():
 @linter
 def lint_missing_borrowed():
     """Not at home but not marked as borrowed."""
-    c = Collection.from_dir().shelves(["elsewhere", "library"]).borrowed(False)
+    c = Collection.from_dir().shelves("elsewhere", "library").borrowed(False)
     return {
         "df": c.df,
         "template": """
@@ -339,7 +339,7 @@ def lint_missing_borrowed():
 @linter
 def lint_extraneous_borrowed():
     """To-read but marked as borrowed."""
-    c = Collection.from_dir().shelves(["to-read"]).borrowed(True)
+    c = Collection.from_dir().shelves("to-read").borrowed(True)
     return {
         "df": c.df,
         "template": """
@@ -354,7 +354,7 @@ def lint_extraneous_borrowed():
 @linter
 def lint_needs_returning():
     """Borrowed books to return."""
-    c = Collection.from_dir().shelves(["read"]).borrowed(True)
+    c = Collection.from_dir().shelves("read").borrowed(True)
     return {
         "df": c.df,
         "template": """
@@ -369,7 +369,7 @@ def lint_needs_returning():
 @linter
 def lint_not_rated():
     """Read but not yet rated."""
-    c = Collection.from_dir().shelves(["read"])
+    c = Collection.from_dir().shelves("read")
     return {
         "df": c.df[c.df.Rating == 0].sort_values("Read"),
         "template": """

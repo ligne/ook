@@ -18,7 +18,7 @@ def _filter_parser():
         choices=SHELVES,
         default=(SHELVES - {"to-read"}),
     )
-    parser.add_argument("--languages", nargs="+")
+    parser.add_argument("--languages", nargs="+", default=())
     parser.add_argument(
         "--categories",
         nargs="+",

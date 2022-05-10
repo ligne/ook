@@ -137,7 +137,7 @@ def increase():
 # number of new authors a year
 @graph
 def new_authors():
-    authors = Collection.from_dir().shelves(["read"]).df
+    authors = Collection.from_dir().shelves("read").df
     first = authors.set_index("Read").sort_index().Author.drop_duplicates()
     first = first.resample("D").count().reindex(ix).fillna(0)
     first.rolling(window=365, min_periods=0).sum().plot()
@@ -161,7 +161,7 @@ def new_authors():
 
 @graph
 def median_date():
-    read = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
+    read = Collection.from_dir().shelves("read").df.dropna(subset=["Published"])
 
     read = read.set_index("Read").Published.resample("D").mean()
 
@@ -183,7 +183,7 @@ def median_date():
 
 @graph
 def length():
-    read = Collection.from_dir().shelves(["read"]).df
+    read = Collection.from_dir().shelves("read").df
     read = read.set_index("Read").Pages.resample("D").mean()
     read.rolling(window=365, min_periods=0).mean().reindex(ix).ffill().loc["2016":].plot()
 
@@ -198,7 +198,7 @@ def length():
 # ratio of old/new books
 @graph
 def oldness():
-    df = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Published"])
+    df = Collection.from_dir().shelves("read").df.dropna(subset=["Published"])
 
     df = (
         pd.DataFrame(
@@ -234,7 +234,7 @@ def oldness():
 
 @graph
 def gender():
-    df = Collection.from_dir().shelves(["read"]).df
+    df = Collection.from_dir().shelves("read").df
     df.Gender = df.Gender.fillna("missing")
 
     df = (
@@ -263,7 +263,7 @@ def gender():
 
 @graph
 def language():
-    df = Collection.from_dir().shelves(["read"]).df
+    df = Collection.from_dir().shelves("read").df
 
     df.Language = df.Language.fillna("unknown")
     df = (
@@ -291,7 +291,7 @@ def language():
 
 @graph
 def category():
-    df = Collection.from_dir().shelves(["read"]).df
+    df = Collection.from_dir().shelves("read").df
 
     df.Category = df.Category.fillna("unknown")
     df = (
@@ -320,7 +320,7 @@ def category():
 # plot total/new nationalities over the preceding year
 @graph
 def nationality():
-    df = Collection.from_dir().shelves(["read"]).df
+    df = Collection.from_dir().shelves("read").df
 
     # how many new nationalities a year
     authors = df.set_index("Read").sort_index()
@@ -388,7 +388,7 @@ def reading_rate():
 
 @graph
 def rate_area():
-    df = Collection.from_dir().shelves(["read"]).df
+    df = Collection.from_dir().shelves("read").df
 
     df["ppd"] = df.Pages / ((df.Read - df.Started).dt.days + 1)
 
@@ -416,7 +416,7 @@ def rate_area():
 
 @graph
 def doy():
-    df = Collection.from_dir().shelves(["read"]).df.dropna(subset=["Read"])
+    df = Collection.from_dir().shelves("read").df.dropna(subset=["Read"])
 
     df["Year"] = df.Read.dt.year
     df["Day of Year"] = df.Read.dt.dayofyear
