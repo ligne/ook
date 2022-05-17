@@ -5,9 +5,8 @@ import shutil
 from jinja2 import Template
 import pandas as pd
 
-from .collection import Collection, _ebook_parse_title
+from .collection import Collection, _ebook_parse_title, rebuild_metadata
 from .compare import compare
-from .config import df_columns, metadata_prefer
 from .goodreads import fetch_book, search_title
 from .storage import load_df, save_df
 from .wikidata import entity, wd_search
@@ -269,39 +268,6 @@ def find_authors(authors):
 ################################################################################
 
 
-def rebuild(books, works, authors):
-    """Rebuild the metadata and return it as a dataframe."""
-    prefer_work_cols = metadata_prefer("work")
-    prefer_book_cols = metadata_prefer("book")
-
-    # add in any missing columns, to make things easier
-    books = books.reindex(columns=df_columns("metadata"))
-
-    # create an empty dataframe the right size
-    metadata = pd.DataFrame().reindex_like(books)
-
-    # fill in one set of columns
-    metadata.update(books[prefer_work_cols])
-    metadata.update(works[prefer_work_cols])
-
-    # fill in the other
-    metadata.update(works[prefer_book_cols])
-    metadata.update(books[prefer_book_cols])
-
-    # populate the author metadata
-    metadata.update(
-        metadata[metadata.AuthorId.isin(authors.index)].AuthorId.apply(
-            lambda x: authors.loc[x, ["Gender", "Nationality"]]
-        )
-    )
-
-    # filter out no-op changes and empty rows
-    return metadata[books != metadata].dropna(how="all", axis="index")
-
-
-################################################################################
-
-
 def main(args, config):
     old = Collection.from_dir(fixes=False).df
 
@@ -321,8 +287,8 @@ def main(args, config):
 
     # this has to be done in two parts, because pandas does not like indexes
     # containing multiple types
-    gr_metadata = rebuild(load_df("goodreads"), books, authors)
-    ebook_metadata = rebuild(load_df("ebooks"), books, authors)
+    gr_metadata = rebuild_metadata(load_df("goodreads"), books, authors)
+    ebook_metadata = rebuild_metadata(load_df("ebooks"), books, authors)
 
     new.update(gr_metadata)
     new.update(ebook_metadata)

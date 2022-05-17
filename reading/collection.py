@@ -9,7 +9,7 @@ import attr
 import pandas as pd
 
 from .chain import Chain
-from .config import Config, merge_preferences
+from .config import Config, df_columns, merge_preferences, metadata_prefer
 from .storage import load_df
 
 
@@ -18,6 +18,42 @@ pd.set_option("display.width", None)
 
 
 ################################################################################
+
+
+def rebuild_metadata(
+    books: pd.DataFrame, works: pd.DataFrame, authors: pd.DataFrame
+) -> pd.DataFrame:
+    """Rebuild the metadata and return it as a dataframe."""
+    prefer_work_cols = metadata_prefer("work")
+    prefer_book_cols = metadata_prefer("book")
+
+    # add in any missing columns, to make things easier
+    books = books.reindex(columns=df_columns("metadata"))
+
+    # create an empty dataframe the right size
+    metadata = pd.DataFrame().reindex_like(books)
+
+    # fill in one set of columns
+    metadata.update(books[prefer_work_cols])
+    metadata.update(works[prefer_work_cols])
+
+    # fill in the other
+    metadata.update(works[prefer_book_cols])
+    metadata.update(books[prefer_book_cols])
+
+    # populate the author metadata
+    metadata.update(
+        metadata[metadata.AuthorId.isin(authors.index)].AuthorId.apply(
+            lambda x: authors.loc[x, ["Gender", "Nationality"]]
+        )
+    )
+
+    # filter out no-op changes and empty rows
+    return metadata[books != metadata].dropna(how="all", axis="index")
+
+
+################################################################################
+
 
 # split ebook titles into title, subtitle and volume parts, since they tend to
 # be unusably messy

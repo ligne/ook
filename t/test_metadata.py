@@ -5,14 +5,8 @@ import re
 
 import pytest
 
-from reading.metadata import (
-    FullExit,
-    SaveExit,
-    _list_book_choices,
-    _read_choice,
-    confirm_author,
-    rebuild,
-)
+from reading.collection import rebuild_metadata
+from reading.metadata import FullExit, SaveExit, _list_book_choices, _read_choice, confirm_author
 from reading.storage import load_df, save_df
 from reading.wikidata import Entity
 
@@ -409,7 +403,7 @@ def test_rebuild(tmp_path):
 
     metadata_csv = tmp_path / "metadata.csv"
 
-    save_df("metadata", rebuild(books, works, authors), metadata_csv)
+    save_df("metadata", rebuild_metadata(books, works, authors), metadata_csv)
 
     assert (
         metadata_csv.read_text()
