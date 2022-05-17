@@ -208,6 +208,20 @@ class Collection:
 
         return cls(df, **kwargs)
 
+    @classmethod
+    def assemble(
+        cls, bases: Sequence[pd.DataFrame], overlays: Sequence[pd.DataFrame], **kwargs
+    ) -> "Collection":
+        """Assemble a Collection from $bases and $overlays."""
+        df = pd.concat(bases, sort=False)
+
+        # FIXME use reindex to expand it to give it the right columnns
+        df = df.assign(Gender=None, Nationality=None)
+
+        for overlay in overlays:
+            df.update(overlay)
+        return cls(df, **kwargs)
+
     def reset(self):
         """Reset the state of the collection."""
         self._df["_Mask"] = True
