@@ -23,6 +23,9 @@ disable=
         # possibly false positives?
         stop-iteration-return,
         useless-suppression,
+        # false positives in storage.py
+        no-member,
+        unsupported-assignment-operation,
         # removed in bullseye
         bad-whitespace,
         bad-continuation,
