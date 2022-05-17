@@ -7,7 +7,7 @@ import pandas as pd
 from .collection import Collection, _process_fixes, expand_ebooks
 from .compare import compare
 from .goodreads import get_books
-from .scrape import rebuild, scrape
+from .scrape import scrape
 from .storage import load_df, save_df
 from .wordcounts import process
 
@@ -47,7 +47,7 @@ def update_scrape(args, old, config):
     c = Collection.from_dir(fixes=None)
     df = c.df
 
-    fixes = rebuild(scrape(config("goodreads.html")), df)
+    fixes = scrape(path=config("goodreads.html"), base=load_df("goodreads"), old=load_df("scraped"))
 
     if not args.ignore_changes:
         save_df("scraped", fixes)
@@ -56,7 +56,7 @@ def update_scrape(args, old, config):
 
     compare(old, new)
 
-    return new
+    return fixes
 
 
 ################################################################################

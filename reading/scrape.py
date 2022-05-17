@@ -9,8 +9,6 @@ from bs4 import BeautifulSoup
 import dateutil
 import pandas as pd
 
-from .storage import load_df
-
 
 #################################################################################
 
@@ -59,7 +57,7 @@ def _get_date(review, field):
 ################################################################################
 
 
-def scrape(fname):
+def _scrape(fname: str) -> pd.DataFrame:
     with open(fname) as fh:
         soup = BeautifulSoup(fh, "lxml")
 
@@ -80,11 +78,8 @@ def scrape(fname):
     return fix_df[~fix_df.index.duplicated()]
 
 
-def rebuild(new: pd.DataFrame, base: pd.DataFrame, old: pd.DataFrame = None) -> pd.DataFrame:
-    if old is None:
-        # load the existing fixes FIXME make this compulsory
-        old = load_df("scraped")
-
+# merge $new into $old, then remove everything that is unchanged from $base
+def _rebuild(base: pd.DataFrame, old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
     # merge in the new data
     fixes = pd.concat(
         [
@@ -109,3 +104,8 @@ def rebuild(new: pd.DataFrame, base: pd.DataFrame, old: pd.DataFrame = None) -> 
         .dropna(how="all", axis="columns")
         .sort_index()
     )
+
+
+def scrape(path: str, old: pd.DataFrame, base: pd.DataFrame) -> pd.DataFrame:
+    """Return an overlay for the goodreads table scraped from the HTML at $path."""
+    return _rebuild(base, old, new=_scrape(path))
