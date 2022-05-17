@@ -1,105 +1,95 @@
 # vim: ts=4 : sw=4 : et
 
-"""The update command."""
+"""Code for updating the collection in various ways."""
 
 import pandas as pd
 
-from .collection import Collection, _process_fixes, expand_ebooks
+from .collection import Collection, _process_fixes, expand_ebooks, rebuild_metadata
 from .compare import compare
-from .goodreads import get_books
+from .goodreads import get_books, update_books
 from .scrape import scrape
-from .storage import load_df, save_df
+from .storage import Store
+from .wikidata import fetch_entities
 from .wordcounts import process
 
 
-def update_goodreads(args, old, config):
-    new = get_books(
-        user_id=config("goodreads.user"),
-        api_key=config("goodreads.key"),
-        start_date=config("goodreads.start"),
-        ignore_series=config("series.ignore"),
+# FIXME improve this signature?
+def main(args, config):
+    """Update the store from various sources, and optionally save."""
+    store = Store()
+
+    if args.goodreads:
+        store.goodreads = get_books(
+            user_id=config("goodreads.user"),
+            api_key=config("goodreads.key"),
+            start_date=config("goodreads.start"),
+            ignore_series=config("series.ignore"),
+        )
+        # FIXME update series
+
+    if args.kindle:
+        store.ebooks = process(
+            store.ebooks,
+            config("kindle.directory"),
+            force=args.force,
+        )
+
+    if args.scrape:
+        store.scraped = scrape(
+            config("goodreads.html"),
+            store.scraped,
+            store.goodreads,
+        )
+
+    if args.metadata:
+        store.books = update_books(
+            store.books,
+            store.ebooks,
+            api_key=config("goodreads.key"),
+            ignore_series=config("series.ignore"),
+        )
+        authors = store.authors
+        authors.update(pd.DataFrame(fetch_entities(authors.QID)).set_index("AuthorId"))
+        store.authors = authors
+
+    # rebuild the metadata now the updates are complete. goodreads and ebooks
+    # have to be done separately, because pandas does not like indexes
+    # containing multiple types
+    #
+    # first merge in the author fixes
+    # FIXME it would be nice if these could fix goodread author data, but
+    # without imposing the wikidata names (which don't play well with pen
+    # names, etc.)
+    fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
+    authors = store.authors.reindex(store.authors.index | fixes.index)
+    authors.update(fixes)
+    # now actually rebuild each piece
+    store.ebook_metadata = rebuild_metadata(
+        store.ebooks,
+        store.books,
+        authors,
+    )
+    store.gr_metadata = rebuild_metadata(
+        store.goodreads,
+        store.books,
+        authors,
     )
 
-    if not args.ignore_changes:
-        save_df("goodreads", new)
+    compare(
+        old=Collection.from_dir().df,
+        new=Collection.assemble(
+            bases=[
+                store.goodreads,
+                expand_ebooks(store.ebooks, config("kindle.words_per_page")),
+            ],
+            overlays=[
+                store.scraped,
+                store.ebook_metadata,
+                store.gr_metadata,
+                _process_fixes(config("fixes")),
+            ],
+        ).df,
+    )
 
-    compare(old, new)
-
-    # FIXME update series
-
-    return new
-
-
-def update_kindle(args, old, config):
-    new = process(old, config("kindle.directory"), force=args.force)
-
-    if not args.ignore_changes:
-        save_df("ebooks", new)
-
-    compare(old, new, use_work=False)
-
-    return new
-
-
-def update_scrape(args, old, config):
-    old = Collection.from_dir().df
-
-    c = Collection.from_dir(fixes=None)
-    df = c.df
-
-    fixes = scrape(path=config("goodreads.html"), base=load_df("goodreads"), old=load_df("scraped"))
-
-    if not args.ignore_changes:
-        save_df("scraped", fixes)
-
-    new = Collection.from_dir().df
-
-    compare(old, new)
-
-    return fixes
-
-
-################################################################################
-
-
-def main(args, config):
-    old = Collection.from_dir().df
-
-    goodreads = load_df("goodreads")
-    ebooks = load_df("ebooks")
-    scraped = load_df("scraped")
-    books = load_df("books")
-    authors = load_df("authors")
-
-    # update the base layers
-    if args.goodreads:
-        goodreads = update_goodreads(args, goodreads, config)
-    if args.kindle:
-        ebooks = update_kindle(args, ebooks, config)
-
-    # assign/derive the additional ebook columns
-    ebooks = expand_ebooks(ebooks, config("kindle.words_per_page"))
-
-    # update the overlays
-    if args.scrape:
-        scraped = update_scrape(args, scraped, config)
-
-    # assemble the basic collection
-    new = pd.concat([goodreads, ebooks], sort=False)
-
-    # apply the various layers of fixes
-    new.update(scraped)
-    # FIXME
-    new.update(load_df("metadata", fname="data/metadata-ebooks.csv"))
-    new.update(load_df("metadata", fname="data/metadata-gr.csv"))
-    new.update(_process_fixes(config("fixes")))
-
-    compare(old, new)
-
-    # save if necessary
     if args.save:
-        save_df("goodreads", goodreads, fname="shadow/goodreads.csv")
-        save_df("ebooks", ebooks, fname="shadow/ebooks.csv")
-        save_df("scraped", scraped, fname="shadow/scraped.csv")
-        save_df("books", books, fname="shadow/books.csv")
-        save_df("authors", authors, fname="shadow/authors.csv")
+        store.save("shadow")

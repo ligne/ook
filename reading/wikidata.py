@@ -127,6 +127,28 @@ class Entity:
 
 ################################################################################
 
+
+def fetch_entities(qids):
+    """Make a best-effort attempt to retrieve the entities with these QIDs."""
+    for index, qid in qids.items():
+        try:
+            e = entity(qid)
+        except json.decoder.JSONDecodeError as exc:
+            print(f"Error: {qid}: {exc}")
+            continue  # FIXME or retry?
+
+        yield {
+            "AuthorId": index,
+            "QID": e.qid,
+            "Author": e.label,
+            "Nationality": e.nationality,
+            "Gender": e.gender,
+            "Description": e.description,
+        }
+
+
+################################################################################
+
 if __name__ == "__main__":
     from pprint import pprint
 

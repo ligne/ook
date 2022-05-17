@@ -6,6 +6,7 @@ from functools import reduce
 import operator
 import re
 import time
+from typing import List
 from xml.etree import ElementTree
 
 from dateutil.parser import parse
@@ -178,6 +179,43 @@ def _parse_book_series(xml, ignore):
 def interesting(entry, series):
     """Return False if the series is deemed uninteresting."""
     return set(entry.split("|")) != set(series["Entries"])
+
+
+################################################################################
+
+
+def _refresh_books(books: pd.DataFrame, api_key: str, ignore_series: List[int]) -> pd.DataFrame:
+    new = {}
+
+    for book in books.itertuples():
+        try:
+            new_book = fetch_book(
+                book.BookId,
+                api_key,
+                ignore_series,
+            )
+        except ElementTree.ParseError:
+            # when the book_id is no longer valid, it simply...returns the HTML
+            # page instead. there is no way to recover from just the work ID, however
+            print(f"Error fetching {book.BookId} from the API.")
+            continue
+        except requests.exceptions.TooManyRedirects:
+            # boring temporary error that can be ignored
+            continue
+
+        new[book.Index] = new_book
+
+    return pd.DataFrame.from_dict(new, orient="index")
+
+
+def update_books(
+    books: pd.DataFrame, ebooks: pd.DataFrame, api_key: str, ignore_series: List[int]
+) -> pd.DataFrame:
+    """Fetch the latest API data for all the books in $books that are also in $ebooks."""
+    # remove books that are no longer being tracked
+    books = books.loc[books.index & ebooks.index]
+    books.update(_refresh_books(books, api_key, ignore_series))
+    return books
 
 
 ################################################################################
