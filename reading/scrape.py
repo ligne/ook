@@ -75,7 +75,9 @@ def scrape(fname):
             }
         )
 
-    return pd.DataFrame(books).set_index("BookId")
+    # remove the duplicates
+    fix_df = pd.DataFrame(books).set_index("BookId")
+    return fix_df[~fix_df.index.duplicated()]
 
 
 def rebuild(new: pd.DataFrame, base: pd.DataFrame, old: pd.DataFrame = None) -> pd.DataFrame:
