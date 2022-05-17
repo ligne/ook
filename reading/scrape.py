@@ -80,30 +80,18 @@ def _scrape(fname: str) -> pd.DataFrame:
 
 # merge $new into $old, then remove everything that is unchanged from $base
 def _rebuild(base: pd.DataFrame, old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
-    # merge in the new data
-    fixes = pd.concat(
-        [
-            # the old rows that aren't in the new entries
-            old.loc[old.index.difference(new.index)],
-            # all the new entries
-            new,
-        ],
-        sort=False,
-    )
-
-    # trim off scraped books that aren't being tracked
-    fixes = fixes.loc[fixes.index.intersection(base.index)]
+    # remove stale entries from the old scraped table, then mix in the new data
+    fixes = old.reindex_like(base)
+    fixes.update(new)
 
     # remove no-op changes and empty bits
     #
-    # FIXME just want df.isnull() for non-date columns? otherwise can
+    # FIXME just want base.isnull() for non-date columns? otherwise can
     # overwrite changes from the API
-    return (
-        fixes[base.reindex_like(fixes) != fixes]
-        .dropna(how="all", axis="index")
-        .dropna(how="all", axis="columns")
-        .sort_index()
-    )
+    fixes = fixes.dropna(how="all", axis="index").dropna(how="all", axis="columns")
+    base = base.reindex_like(fixes)
+
+    return fixes.where(base != fixes).dropna(how="all", axis="index")
 
 
 def scrape(path: str, old: pd.DataFrame, base: pd.DataFrame) -> pd.DataFrame:
