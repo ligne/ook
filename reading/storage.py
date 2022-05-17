@@ -2,6 +2,11 @@
 
 """Functions for loading and storing dataframes as csv."""
 
+from functools import partial
+from pathlib import Path
+from typing import Dict, Union
+
+import attr
 import pandas as pd
 
 from .config import date_columns, df_columns
@@ -33,3 +38,57 @@ def save_df(name, df, fname=None):
         columns=df_columns(name),
         float_format="%.20g",
     )
+
+
+################################################################################
+
+
+@attr.s
+class Store:
+    """Load and store data."""
+
+    directory: Path = attr.ib(default="data", converter=Path, repr=str)
+    _tables: Dict[str, pd.DataFrame] = attr.ib(factory=dict, init=False, repr=False)
+
+    def _getter(self, name: str) -> pd.DataFrame:
+        kind = name.split("-")[0]
+        return self._tables.get(name, load_df(kind, fname=f"{self.directory}/{name}.csv"))
+
+    # the arguments have to be in a strange order or partial does weird things with them
+    def _setter(self, value: pd.DataFrame, name: str) -> None:
+        self._tables[name] = value
+
+    goodreads = property(
+        partial(_getter, name="goodreads"),
+        partial(_setter, name="goodreads"),
+    )
+    ebooks = property(
+        partial(_getter, name="ebooks"),
+        partial(_setter, name="ebooks"),
+    )
+    scraped = property(
+        partial(_getter, name="scraped"),
+        partial(_setter, name="scraped"),
+    )
+    authors = property(
+        partial(_getter, name="authors"),
+        partial(_setter, name="authors"),
+    )
+    books = property(
+        partial(_getter, name="books"),
+        partial(_setter, name="books"),
+    )
+    ebook_metadata = property(
+        partial(_getter, name="metadata-ebooks"),
+        partial(_setter, name="metadata-ebooks"),
+    )
+    gr_metadata = property(
+        partial(_getter, name="metadata-gr"),
+        partial(_setter, name="metadata-gr"),
+    )
+
+    def save(self, directory: Union[Path, str]) -> None:
+        """Save the tables to $directory."""
+        for name, table in self._tables.items():
+            kind = name.split("-")[0]
+            save_df(kind, table, f"{directory}/{name}.csv")
