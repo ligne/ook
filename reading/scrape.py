@@ -78,19 +78,23 @@ def _scrape(fname: str) -> pd.DataFrame:
     return fix_df[~fix_df.index.duplicated()]
 
 
-# merge $new into $old, then remove everything that is unchanged from $base
 def _rebuild(base: pd.DataFrame, old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
-    # remove stale entries from the old scraped table, then mix in the new data
-    fixes = old.reindex_like(base)
+    fixes = base.copy()  # copy just to be safe
+
+    # add the old data first, so it's possible to update from only a subset of
+    # the books (since the goodreads page is slow to load in its entirety)
+    #
+    # FIXME just want base.isnull() for non-date columns? otherwise can
+    # overwrite more recent data from the API. fixes.update(overwrite=False)
+    # would do this.
+    #
+    # FIXME the started/read dates are no longer as useful as they used to be,
+    # since the API started reflecting the dates set in the review, rather than
+    # the points when that book was marked currently-reading/read.
+    fixes.update(old)
     fixes.update(new)
 
     # remove no-op changes and empty bits
-    #
-    # FIXME just want base.isnull() for non-date columns? otherwise can
-    # overwrite changes from the API
-    fixes = fixes.dropna(how="all", axis="index").dropna(how="all", axis="columns")
-    base = base.reindex_like(fixes)
-
     return fixes.where(base != fixes).dropna(how="all", axis="index")
 
 
