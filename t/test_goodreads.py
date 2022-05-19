@@ -82,6 +82,7 @@ def test__parse_book_api():
         "Published": 1891,
         "Pages": 542.0,
         "Category": "novels",
+        "Work": 417025,
     }
 
     r = ElementTree.parse("t/data/book/3602116.xml")
@@ -93,6 +94,7 @@ def test__parse_book_api():
         "Published": 397,
         "Pages": 311,
         "Category": "non-fiction",
+        "Work": 1427207,
     }
 
     r = ElementTree.parse("t/data/book/38290.xml")
@@ -104,6 +106,7 @@ def test__parse_book_api():
         "Published": 1823,
         "Pages": 496,
         "Category": "novels",
+        "Work": 443966,
     }
 
     r = ElementTree.parse("t/data/book/17999159.xml")
@@ -118,6 +121,7 @@ def test__parse_book_api():
         "Published": 2013,
         "Pages": 369,
         "Category": "non-fiction",  # FIXME should be 'graphic'
+        "Work": 24510592,
     }
 
 

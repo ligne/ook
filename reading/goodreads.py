@@ -154,6 +154,7 @@ def _parse_book_api(xml):
         "Author": re.sub(" +", " ", xml.find("book/authors/author/name").text),
         "AuthorId": int(xml.find("book/authors/author/id").text),
         "Title": xml.find("book/title").text,
+        "Work": int(xml.find("book/work/id").text),
         "Language": lang,
         "Published": float(xml.find("book/work/original_publication_year").text or "nan"),
         "Pages": float(xml.find("book/num_pages").text or "nan"),
