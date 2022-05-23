@@ -71,6 +71,7 @@ def arg_parser():
     update.add_argument("--metadata", action="store_true")
 
     metadata = subparsers.add_parser("metadata")
+    metadata.add_argument("-n", "--ignore-changes", action="store_false", dest="save")
     metadata_choices = ["books", "authors"]
     metadata.add_argument("--find", nargs="?", const=metadata_choices, choices=metadata_choices)
     # FIXME some way of selecting a particular BookId
