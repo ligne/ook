@@ -104,6 +104,9 @@ def _process_fixes(fixes):
     return fix_df
 
 
+# FIXME make words_per_page optional and/or set in the constructor? it's not
+# always relevant(?) and it would allow this to be done automatically in the
+# Store...
 def expand_ebooks(ebooks, words_per_page):
     """Set default/derived columns on the ebooks dataframe."""
     return ebooks.assign(
