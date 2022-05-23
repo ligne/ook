@@ -4,6 +4,7 @@ import datetime
 import shlex
 from typing import Any
 
+import pandas as pd
 import pytest
 
 from reading.cmds import arg_parser
@@ -106,13 +107,14 @@ def test_metadata_args() -> None:
     assert args.find == "books"
     _parse_bad_cmdline("ook metadata --find blah")
 
-    # general options
 
+def test_general_options() -> None:
     args = _parse_cmdline("ook --date 2020-01-01 suggest")
-    assert str(args.date.date()) == "2020-01-01"
+    assert isinstance(args.date, pd.Timestamp), "It's automatically pandas-friendly"
+    assert f"{args.date:%F}" == "2020-01-01"
 
     args = _parse_cmdline("ook --date 2022-10-10 suggest")
-    assert str(args.date.date()) == "2022-10-10"
+    assert f"{args.date:%F}" == "2022-10-10"
 
     args = _parse_cmdline("ook suggest")
     assert args.date.date() == datetime.date.today(), "Defaults to today's date"
