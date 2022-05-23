@@ -8,7 +8,7 @@ import pandas as pd
 from .collection import Collection, _ebook_parse_title, rebuild_metadata
 from .compare import compare
 from .goodreads import fetch_book, search_title
-from .storage import load_df, save_df
+from .storage import Store, load_df, save_df
 from .wikidata import entity, wd_search
 
 
@@ -269,32 +269,35 @@ def find_authors(authors):
 
 
 def main(args, config):
-    old = Collection.from_dir(fixes=False).df
+    """Interactively search for metadata, and optionally save the results."""
+    store = Store()
 
+    # FIXME pass in the Store so find_authors can include those of the newly-found books
+    # FIXME do this check in cmds.py
     if args.find:
         find(args.find, config)
 
-    # rebuild things
-    books = load_df("books")
-
-    # load the authors and add in the fixes
-    authors = load_df("authors")
+    # merge in the author fixes
     fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
-    authors = authors.reindex(authors.index.union(fixes.index))
+    authors = store.authors
+    authors = authors.reindex(authors.index | fixes.index)
     authors.update(fixes)
+    # actually rebuild it
+    store.ebook_metadata = rebuild_metadata(
+        store.ebooks,
+        store.books,
+        authors,
+    )
+    store.gr_metadata = rebuild_metadata(
+        store.goodreads,
+        store.books,
+        authors,
+    )
 
-    new = Collection.from_dir(metadata=False, fixes=False).df
+    compare(
+        old=Collection.from_dir().df,
+        new=Collection.from_store(store, config).df,
+    )
 
-    # this has to be done in two parts, because pandas does not like indexes
-    # containing multiple types
-    gr_metadata = rebuild_metadata(load_df("goodreads"), books, authors)
-    ebook_metadata = rebuild_metadata(load_df("ebooks"), books, authors)
-
-    new.update(gr_metadata)
-    new.update(ebook_metadata)
-
-    compare(old, new)
-
-    if not args.ignore_changes:
-        save_df("metadata", ebook_metadata, fname="data/metadata-ebooks.csv")
-        save_df("metadata", gr_metadata, fname="data/metadata-gr.csv")
+    if args.save:
+        store.save("shadow")
