@@ -89,8 +89,14 @@ def test_update_args():
     assert not args.kindle, "...but kindle is still not"
 
 
-def test_metadata_args():
-    assert _parse_cmdline("ook metadata")
+def test_metadata_args() -> None:
+    args = _parse_cmdline("ook metadata")
+    assert args, "Doesn't do very much, but it works"
+    assert args.save is True, "save by default"
+
+    args = _parse_cmdline("ook metadata -n")
+    assert args.save is False, "-n prevents saving"
+
     args = _parse_cmdline("ook metadata --find")
     assert args.find == ["books", "authors"]
     args = _parse_cmdline("ook metadata --find authors")
