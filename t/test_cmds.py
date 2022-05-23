@@ -2,17 +2,18 @@
 
 import datetime
 import shlex
+from typing import Any
 
 import pytest
 
 from reading.cmds import arg_parser
 
 
-def _parse_cmdline(line):
+def _parse_cmdline(line: str) -> Any:
     return arg_parser().parse_args(shlex.split(line)[1:])
 
 
-def _parse_bad_cmdline(line):
+def _parse_bad_cmdline(line: str) -> None:
     with pytest.raises(SystemExit):
         _parse_cmdline(line)
 
