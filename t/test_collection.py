@@ -392,11 +392,10 @@ def test_dedup():
     assert c.dedup is True, "Enabled dedup"
 
 
-def test_dedup_requires_merge():
+def test_dedup_requires_merge() -> None:
     """Deduplication currently requires merge to be enabled."""
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError, match="merge"):
         Collection.from_dir("t/data/2019-12-04", merge=False, dedup=True)
-    assert "merge" in str(excinfo.value)
 
 
 ### Scheduling #################################################################
@@ -441,12 +440,11 @@ def test_schedule_without_matches():
     c.set_schedules([{"author": "blabla"}])
 
 
-def test_schedule_without_selection():
+def test_schedule_without_selection() -> None:
     """A schedule requires something to schedule."""
     c = Collection.from_dir("t/data/2019-12-04/")
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(ValueError, match="must specify at least one"):
         c.set_schedules([{"per_year": 4}])
-    assert "must specify at least one" in str(exc.value)
 
 
 def test_schedule_duplicated():
