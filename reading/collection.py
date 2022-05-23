@@ -3,14 +3,14 @@
 """Represents a collection of books."""
 
 import re
-from typing import Sequence
+from typing import List, Sequence
 
 import attr
 import pandas as pd
 
 from .chain import Chain
 from .config import Config, df_columns, merge_preferences, metadata_prefer
-from .storage import load_df
+from .storage import Store, load_df
 
 
 pd.set_option("display.max_rows", None)
@@ -210,6 +210,21 @@ class Collection:
             df.update(_process_fixes(config("fixes")))
 
         return cls(df, **kwargs)
+
+    @classmethod
+    def from_store(cls, store: Store, config: Config, fixes=True, metadata=True, **kwargs):
+        """Create a Collection from a Store object."""
+        bases = [
+            store.goodreads,
+            expand_ebooks(store.ebooks, config("kindle.words_per_page")),
+        ]
+        overlays: List[pd.DataFrame] = []
+        if metadata:
+            overlays += [store.ebook_metadata, store.gr_metadata]
+        if fixes:
+            overlays += [store.scraped, _process_fixes(config("fixes"))]
+
+        return cls.assemble(bases=bases, overlays=overlays, **kwargs)
 
     @classmethod
     def assemble(

@@ -4,7 +4,7 @@
 
 import pandas as pd
 
-from .collection import Collection, _process_fixes, expand_ebooks, rebuild_metadata
+from .collection import Collection, rebuild_metadata
 from .compare import compare
 from .goodreads import get_books, update_books
 from .scrape import scrape
@@ -77,18 +77,7 @@ def main(args, config):
 
     compare(
         old=Collection.from_dir().df,
-        new=Collection.assemble(
-            bases=[
-                store.goodreads,
-                expand_ebooks(store.ebooks, config("kindle.words_per_page")),
-            ],
-            overlays=[
-                store.scraped,
-                store.ebook_metadata,
-                store.gr_metadata,
-                _process_fixes(config("fixes")),
-            ],
-        ).df,
+        new=Collection.from_store(store, config).df,
     )
 
     if args.save:
