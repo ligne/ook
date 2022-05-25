@@ -3,7 +3,7 @@
 """Represents a collection of books."""
 
 import re
-from typing import Sequence
+from typing import List, Sequence
 
 import attr
 import pandas as pd
@@ -218,7 +218,7 @@ class Collection:
             store.goodreads,
             expand_ebooks(store.ebooks, config("kindle.words_per_page")),
         ]
-        overlays = []
+        overlays: List[pd.DataFrame] = []
         if metadata:
             overlays += [store.ebook_metadata, store.gr_metadata]
         if fixes:
