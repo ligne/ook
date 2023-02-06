@@ -20,7 +20,7 @@ if True:  # pylint: disable=using-constant-test
 # the cutoff year before which books are considered "old".
 thresh = 1940
 
-ix = pd.DatetimeIndex(start="2016-01-01", end="today", freq="D")
+ix = pd.date_range(start="2016-01-01", end="today", freq="D")
 
 
 ################################################################################
