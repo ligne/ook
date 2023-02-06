@@ -470,14 +470,16 @@ def test_scheduled_filter_in():
 
     assert c.df.Scheduled.notna().any(), "Some books are scheduled"
     assert c.df.Scheduled.isna().any(), "Some books are unscheduled"
-    assert c.scheduled().df.Scheduled.all(), "All the books are now scheduled"
+    assert c.scheduled().df.Scheduled.notna().all(), "All the books are now scheduled"
 
 
 def test_scheduled_filter_out():
     c = Collection.from_dir("t/data/2019-12-04/")
 
     assert c.df.Scheduled.isna().any(), "Some books are unscheduled"
-    assert ~c.scheduled(exclude=True).df.Scheduled.any(), "None of the books are now scheduled"
+    assert (
+        ~c.scheduled(exclude=True).df.Scheduled.notna().any()
+    ), "None of the books are now scheduled"
 
 
 def test_scheduled_filter_comprehensive():
