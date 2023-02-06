@@ -234,8 +234,8 @@ def lint_duplicates():
     df = Collection.from_dir(merge=True).df
 
     # FIXME move this into the Collection and make it non-manky
-    df = df.groupby("Work").filter(lambda x: len(x) > 1)
-    df = df.groupby("Work").aggregate(
+    df = df.groupby("Work", as_index=False).filter(lambda x: len(x) > 1)
+    df = df.groupby("Work", as_index=False).aggregate(
         {
             "Author": "first",
             "Title": "first",
