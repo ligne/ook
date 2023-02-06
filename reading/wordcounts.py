@@ -3,12 +3,12 @@
 """Code for gathering ebooks, their metadata and length."""
 
 from pathlib import Path
-from subprocess import CalledProcessError, check_output, run
+from subprocess import CalledProcessError, run
+import sys
 from tempfile import NamedTemporaryFile
 
 import attr
 import pandas as pd
-import yaml
 
 
 # return a file (which may be the original) containing the contents of $path
@@ -41,35 +41,21 @@ def _count_words(textfile):
 
 # gathers metadata from the ebook.  annoyingly, calibre doesn't support
 # Python3, and there aren't many other easy options...
-def _read_metadata(path):
-    return yaml.safe_load(
-        check_output(
-            [
-                "python2",
-                "-c",
-                """
-import os, sys, yaml
+def _read_metadata(path) -> dict[str, str]:
+    sys.path.insert(0, "/usr/lib/calibre")
+    sys.resources_location = "/usr/share/calibre"
+    sys.extensions_location = "/usr/lib/calibre/calibre/plugins"
 
-sys.path.insert(0, '/usr/lib/calibre')
-sys.resources_location  = '/usr/share/calibre'
-sys.extensions_location = '/usr/lib/calibre/calibre/plugins'
+    from calibre.ebooks.metadata.meta import get_metadata
 
-from calibre.ebooks.metadata.meta import get_metadata
-
-path = sys.argv[1]
-ext = os.path.splitext(path)[-1][1:]
-ext = ext in ['txt', 'pdf'] and ext or 'mobi'
-mi = get_metadata(open(path, 'r+b'), ext, force_read_metadata=True)
-print(yaml.safe_dump({
-    'Title':     mi.get('title'),
-    'Authors':   mi.get('authors'),
-    'Languages': mi.get('languages'),
-}))
-""",
-                str(path),
-            ]
-        )
-    )
+    ext = path.suffix[1:]
+    ext = ext if ext in ["txt", "pdf"] else "mobi"
+    mi = get_metadata(open(path, "r+b"), ext, force_read_metadata=True)
+    return {
+        "Title": mi.get("title"),
+        "Authors": mi.get("authors"),
+        "Languages": mi.get("languages"),
+    }
 
 
 @attr.s
