@@ -437,6 +437,7 @@ def test_dates(description, today, inputs, expected):
 
 ################################################################################
 
+
 # re-order the fields to make the tests a bit neater
 def _format_schedule(df, sched):
     return [

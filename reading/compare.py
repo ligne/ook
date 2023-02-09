@@ -15,6 +15,7 @@ ignore_columns = [
 
 ################################################################################
 
+
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old, new, use_work=True):
@@ -76,6 +77,7 @@ def _compare_without_work(old, new):
 
 
 ################################################################################
+
 
 # formatting for a book that's been added/removed/changed
 def _added(book):
@@ -194,6 +196,7 @@ def _finished(book):
 
 
 ################################################################################
+
 
 if __name__ == "__main__":
     from .collection import Collection

@@ -36,6 +36,7 @@ def graph(func):
 
 ################################################################################
 
+
 # from shelf, in direction = date added/read.
 def _pages_changed(df, shelf, direction):
     return (

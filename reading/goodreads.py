@@ -90,6 +90,7 @@ def process_review(r):
 
 ################################################################################
 
+
 # information that's only available through the book-specific endpoints.
 def fetch_book(book_id, api_key, ignore_series):
     """Extract the information that's only available through the book-specific endpoints."""

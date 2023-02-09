@@ -25,6 +25,7 @@ class FullExit(Exception):
 
 ################################################################################
 
+
 # formats a list of book search results
 def _list_book_choices(results, author_ids, work_ids):
     (width, _) = shutil.get_terminal_size()

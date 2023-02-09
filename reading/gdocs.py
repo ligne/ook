@@ -20,6 +20,7 @@ CREDS_FILE = "data/credentials.json"
 
 ################################################################################
 
+
 # authenticate
 def get_session():
     """Return a Google Docs session, requesting access if necessary."""
@@ -65,6 +66,7 @@ def submit_changes(session, doc_id, payload):
 
 
 ################################################################################
+
 
 # parse the document's content into something that can be compared
 #
