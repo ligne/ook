@@ -20,15 +20,9 @@ disable=
         too-few-public-methods,
         too-many-arguments,
         #
-        # possibly false positives?
-        stop-iteration-return,
-        useless-suppression,
-        # false positives in storage.py
-        no-member,
-        unsupported-assignment-operation,
-        # removed in bullseye
-        bad-whitespace,
-        bad-continuation,
+        # false positive in metadata.py
+        unsubscriptable-object,
+        #
         # checked by flake8
         broad-except,
         line-too-long,
