@@ -1,5 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
+import datetime
 import itertools
 from typing import Tuple
 
@@ -239,7 +240,7 @@ def test_windows(
     description: str,
     inputs: Tuple[int, int, int],
     expected: Tuple[Tuple[int, int]],
-):
+) -> None:
     start, per_year, offset = inputs
     windows = _windows(start, per_year, offset)
 
@@ -439,7 +440,10 @@ def test_dates(description, today, inputs, expected) -> None:
 
 
 # re-order the fields to make the tests a bit neater
-def _format_schedule(df, sched):
+def _format_schedule(
+    df: pd.DataFrame,
+    sched: list[tuple[int, datetime.date]],
+) -> list[tuple[str, str]]:
     return [
         (
             str(date.date()),
