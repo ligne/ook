@@ -512,7 +512,7 @@ def test_scheduled_at():
     assert not c.df.empty, "Got some books"
     assert c.df.Scheduled.isna().any(), "Some of the books are unscheduled"
 
-    date = pd.Timestamp("2022-05-05")
+    date = pd.Timestamp("2023-05-05")
     c.scheduled_at(date)
 
     assert not c.df.empty, "There are still some selected books"
@@ -529,7 +529,7 @@ def test_scheduled_at_later():
 
     c.set_schedules(config("scheduled"))
 
-    date = pd.Timestamp("2022-10-05")
+    date = pd.Timestamp("2023-10-05")
     c.scheduled_at(date)
 
     assert not c.df.empty, "There are still some selected books"
