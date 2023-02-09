@@ -5,7 +5,7 @@ import json
 from reading.wikidata import Entity, _format_search_results, _uc_first
 
 
-def test__uc_first():
+def test__uc_first() -> None:
     tests = [
         ["test", "Test"],
         ["Test", "Test"],
@@ -22,7 +22,7 @@ def test__uc_first():
 ################################################################################
 
 
-def test_format_search_results():
+def test_format_search_results() -> None:
     with open("t/data/wikidata/search/george-sand.json") as fh:
         j = json.load(fh)
 
@@ -65,7 +65,7 @@ def test_format_search_results():
     ]
 
 
-def test_format_search_results_no_results():
+def test_format_search_results_no_results() -> None:
     with open("t/data/wikidata/search/justin-pearce.json") as fh:
         j = json.load(fh)
 
@@ -75,12 +75,12 @@ def test_format_search_results_no_results():
 ################################################################################
 
 
-def _load_json(qid):
+def _load_json(qid: str):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
         return json.load(fh)["entities"][qid]
 
 
-def test_entity():
+def test_entity() -> None:
     entity = Entity(_load_json("Q12807"))
     assert entity.qid == "Q12807"
     assert entity.label == "Umberto Eco"
@@ -110,7 +110,7 @@ def test_entity():
     assert entity.description == "", "Empty description"
 
 
-def test_entity_collective():
+def test_entity_collective() -> None:
     entity = Entity(_load_json("Q2662892"))
     assert entity.qid == "Q2662892"
     assert entity.label == "Boileau-Narcejac"

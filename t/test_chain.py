@@ -13,7 +13,7 @@ from reading.collection import Collection
 ################################################################################
 
 
-def test_chain():
+def test_chain() -> None:
     """General tests."""
     c = Collection.from_dir("t/data/2019-12-04")
 
@@ -28,7 +28,7 @@ def test_chain():
     ), "Legible __repr__ for the Chain"
 
 
-def test_from_series_id():
+def test_from_series_id() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_series_id(c.all, 49118)
@@ -37,7 +37,7 @@ def test_from_series_id():
     assert s.missing == Missing.Ignore, "Missing books are ignored by default"
 
 
-def test_from_series_name():
+def test_from_series_name() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_series_name(c.all, "Culture")
@@ -48,7 +48,7 @@ def test_from_series_name():
     # FIXME missing/duplicate series names
 
 
-def test_from_author_id():
+def test_from_author_id() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_author_id(c.all, 3354)
@@ -57,7 +57,7 @@ def test_from_author_id():
     assert s.missing == Missing.Ignore, "Authors have no missing books to ignore"
 
 
-def test_from_author_name():
+def test_from_author_name() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_author_name(c.all, "Murakami")
@@ -68,7 +68,7 @@ def test_from_author_name():
     # FIXME missing/duplicate author names
 
 
-def test_chain_options():
+def test_chain_options() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_series_id(c.all, 49118, order=Order.Published)
@@ -80,7 +80,7 @@ def test_chain_options():
 ################################################################################
 
 
-def test_read():
+def test_read() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_author_name(c.all, "Murakami")
@@ -96,7 +96,7 @@ def test_read():
 ################################################################################
 
 
-def test_currently_reading():
+def test_currently_reading() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_author_name(c.all, "Vonnegut")
@@ -109,7 +109,7 @@ def test_currently_reading():
 ################################################################################
 
 
-def test_last_read():
+def test_last_read() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     s = Chain.from_author_name(c.all, "Gaston Leroux")
@@ -125,7 +125,7 @@ def test_last_read():
 ################################################################################
 
 
-def test_sort():
+def test_sort() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     # shuffle them up a bit
@@ -144,7 +144,7 @@ def test_sort():
     assert values == sorted(values), "Sorted by added date"
 
 
-def test_numeric_sort():
+def test_numeric_sort() -> None:
     """Ensure the entries are sorted numerically rather than as alphabetically."""
     c = Collection.from_dir("t/data/2019-12-04")
 
@@ -155,7 +155,7 @@ def test_numeric_sort():
 ################################################################################
 
 
-def test_remaining():
+def test_remaining() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     # shuffle them up a bit
@@ -412,7 +412,7 @@ def test_windows(
         ),
     ),
 )
-def test_dates(description, today, inputs, expected):
+def test_dates(description, today, inputs, expected) -> None:
     today = pd.Timestamp(today)
 
     start = inputs.get("start", today.year)
@@ -450,7 +450,7 @@ def _format_schedule(df, sched):
 
 
 # FIXME probably not needed once there's type annotations
-def test_scheduling_raw_output():
+def test_scheduling_raw_output() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
     df = c.df[c.df.SeriesId == 49118]
     chain = Chain(df=df)
@@ -465,7 +465,7 @@ def test_scheduling_raw_output():
     ], "Got a sequence of (book_id, scheduled) pairs"
 
 
-def test_scheduling():
+def test_scheduling() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
     df = c.df[c.df.SeriesId == 49118]
     chain = Chain(df=df)

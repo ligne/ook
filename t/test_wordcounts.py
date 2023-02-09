@@ -17,7 +17,7 @@ from reading.wordcounts import (
 ################################################################################
 
 
-def test__ignore_item(tmp_path):
+def test__ignore_item(tmp_path) -> None:
     p = tmp_path / "item.mobi"
     p.touch()
     assert not _ignore_item(p), "Interesting path"
@@ -39,7 +39,7 @@ def test__ignore_item(tmp_path):
     assert _ignore_item(p), "Ignored extension"
 
 
-def _populate_dir(basedir, dirname, files):
+def _populate_dir(basedir, dirname, files) -> None:
     try:
         (basedir / dirname).mkdir()
     except FileExistsError:
@@ -49,7 +49,7 @@ def _populate_dir(basedir, dirname, files):
         (basedir / dirname / fname).touch()
 
 
-def test_get_ebooks(tmp_path):
+def test_get_ebooks(tmp_path) -> None:
     # create the directories
     _populate_dir(tmp_path, "articles", ["art1.azw3", "art2.txt", "art3.pdf"])
     _populate_dir(tmp_path, ".", ["article4.azw3", "item.kfx"])
@@ -79,23 +79,23 @@ ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
 @pytest.mark.slow
 @pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
-def test__as_text(path):
+def test__as_text(path) -> None:
     assert _as_text(path) == path.with_suffix(".txt").read_bytes()
 
 
-def test_missing_ebook_convert(monkeypatch):
+def test_missing_ebook_convert(monkeypatch) -> None:
     monkeypatch.setenv("PATH", "/no/such/path")
     path = Path("t/data/ebooks/supernatural.mobi")
     assert _as_text(path) is None, "Missing ebook-convert command"
 
 
-def test_ebook_invalid(tmp_path):
+def test_ebook_invalid(tmp_path) -> None:
     path = tmp_path / "blah.mobi"
     path.write_bytes(b"blah")
     assert _as_text(path) is None, "Error converting the ebook"
 
 
-def test__count_words():
+def test__count_words() -> None:
     assert _count_words(None) is None, "Works when there was a problem converting"
     assert _count_words("") == 0
     assert _count_words("word") == 1
@@ -106,7 +106,7 @@ def test__count_words():
 ################################################################################
 
 
-def test__read_metadata():
+def test__read_metadata() -> None:
     path = Path("t/data/ebooks/supernatural.mobi")
     assert _read_metadata(path) == {
         "Authors": ["H. P. Lovecraft"],
@@ -129,7 +129,7 @@ def test__read_metadata():
     }, "Metadata with diacritical marks"
 
 
-def test_metadata():
+def test_metadata() -> None:
     m = Metadata(
         {
             "Authors": ["H. P. Lovecraft"],

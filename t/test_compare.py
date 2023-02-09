@@ -13,7 +13,7 @@ df = c.df.fillna("")
 ################################################################################
 
 
-def test__added():
+def test__added() -> None:
     assert (
         _added(df.loc[26570162])
         == """
@@ -36,7 +36,7 @@ Added Ancillary Mercy by Ann Leckie to shelf 'pending'
     ), "Added book with series"
 
 
-def test__removed():
+def test__removed() -> None:
     assert (
         _removed(df.loc[26570162])
         == """
@@ -45,7 +45,7 @@ Removed The Monk by Matthew Lewis from shelf 'pending'
     ), "Removed book"
 
 
-def test__started():
+def test__started() -> None:
     assert (
         _started(df.loc[26570162])
         == """
@@ -57,7 +57,7 @@ Started The Monk by Matthew Lewis
     ), "Started book"
 
 
-def test__finished():
+def test__finished() -> None:
     assert (
         _finished(df.loc[491030])
         == """
@@ -86,7 +86,7 @@ Finished A Few Notes on the Culture by Iain M. Banks
     ), "Read in one day"
 
 
-def test__changed():
+def test__changed() -> None:
     b1 = df.loc[26570162]
 
     # FIXME should do nothing if they're both equal?

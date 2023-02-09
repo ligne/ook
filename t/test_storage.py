@@ -9,7 +9,7 @@ from reading.collection import Collection
 from reading.storage import Store, load_df, save_df
 
 
-def test_load_df():
+def test_load_df() -> None:
     df = load_df("authors")
     assert df is not None, "Loaded an existing dataframe"
 
@@ -17,7 +17,7 @@ def test_load_df():
     assert df.empty, "Loaded a dataframe from a missing file"
 
 
-def test_save_df(tmp_path):
+def test_save_df(tmp_path) -> None:
     df = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False).df
 
     # pick out a few books

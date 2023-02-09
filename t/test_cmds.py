@@ -19,7 +19,7 @@ def _parse_bad_cmdline(line: str) -> None:
         _parse_cmdline(line)
 
 
-def test_arg_parser():
+def test_arg_parser() -> None:
     assert arg_parser(), "got something"
 
     # test various commands (a) parse, (b) look vaguely sensible
@@ -65,7 +65,7 @@ def test_arg_parser():
     assert "articles" not in args.categories
 
 
-def test_update_args():
+def test_update_args() -> None:
     args = _parse_cmdline("ook update")
     assert args, "Doesn't do very much, but it works"
     assert args.save is True, "save by default"

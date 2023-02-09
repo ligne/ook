@@ -10,7 +10,7 @@ from reading.config import (
 )
 
 
-def test_df_colums():
+def test_df_colums() -> None:
     assert df_columns("goodreads") == [
         "Author",
         "AuthorId",
@@ -79,7 +79,7 @@ def test_df_colums():
     ], "Columns for metadata.csv"
 
 
-def test_date_columns():
+def test_date_columns() -> None:
     assert date_columns("goodreads") == [
         "Scheduled",
         "Added",
@@ -91,7 +91,7 @@ def test_date_columns():
 ################################################################################
 
 
-def test_category_patterns():
+def test_category_patterns() -> None:
     (patterns, guesses) = category_patterns()
     assert patterns == [
         ["graphic", "graphic-novels", "comics", "graphic-novel"],
@@ -124,7 +124,7 @@ def test_category_patterns():
 ################################################################################
 
 
-def test_metadata_prefer():
+def test_metadata_prefer() -> None:
     assert metadata_prefer("work") == [
         "Author",
         "AuthorId",
@@ -143,7 +143,7 @@ def test_metadata_prefer():
 ################################################################################
 
 
-def test_merge_preferences():
+def test_merge_preferences() -> None:
     assert merge_preferences() == {
         "Added": "min",
         "Author": "first",
@@ -175,7 +175,7 @@ def test_merge_preferences():
 ################################################################################
 
 
-def test_config():
+def test_config() -> None:
     """Test the config object."""
     config = Config(
         {
@@ -198,7 +198,7 @@ def test_config():
     assert Config.from_file("/does/not/exist"), "created from a missing file"
 
 
-def test_config_reset():
+def test_config_reset() -> None:
     """Test the reset method."""
     config = Config({"key": "value"})
     assert config("key") == "value", "key exists"

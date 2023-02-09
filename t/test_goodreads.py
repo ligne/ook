@@ -16,7 +16,7 @@ from reading.goodreads import (
 )
 
 
-def test_process_review():
+def test_process_review() -> None:
     r = ElementTree.parse("t/data/review/1629171100.xml")
     assert reading.goodreads.process_review(r) == {
         "AuthorId": 12476,
@@ -72,7 +72,7 @@ def test_process_review():
     }
 
 
-def test__parse_book_api():
+def test__parse_book_api() -> None:
     r = ElementTree.parse("t/data/book/115069.xml")
     assert reading.goodreads._parse_book_api(r) == {
         "Author": "Émile Zola",
@@ -125,7 +125,7 @@ def test__parse_book_api():
     }
 
 
-def test__parse_book_series():
+def test__parse_book_series() -> None:
     r = ElementTree.parse("t/data/book/115069.xml")
     assert _parse_book_series(r, []) == {
         "SeriesId": 40441,
@@ -158,7 +158,7 @@ def test__parse_book_series():
     }, "Book with multiple entries"
 
 
-def test__get_authors():
+def test__get_authors() -> None:
     assert reading.goodreads._get_authors(
         [
             ("Agnes Owens", "108420", None),
@@ -263,7 +263,7 @@ def test__get_authors():
     ) == ("Fabien Vehlmann", "761380")
 
 
-def test__get_category():
+def test__get_category() -> None:
     assert _get_category([]) == "", "No shelves"
     assert _get_category(["short-stories"]) == "short-stories", "Shelf is the category name"
     assert _get_category(["something", "short-stories"]) == "short-stories", "Not the first shelf"
@@ -272,13 +272,13 @@ def test__get_category():
     assert _get_category(["blah", "linguistics"]) == "non-fiction", "Had to make a guess"
 
 
-def test_interesting():
+def test_interesting() -> None:
     assert interesting("1", {"Entries": ["1", "2", "3"]})
     assert not interesting("1", {"Entries": ["1"]})
     assert not interesting("1|2", {"Entries": ["1", "2"]})
 
 
-def test__parse_series():
+def test__parse_series() -> None:
     r = ElementTree.parse("t/data/series/40441.xml")
     assert _parse_series(r) == {
         "Series": "Les Rougon-Macquart",
@@ -287,14 +287,14 @@ def test__parse_series():
     }, "Parsed a normal series"
 
 
-def test__get_entry():
+def test__get_entry() -> None:
     assert _get_entry("1") == 1
     assert _get_entry("3") == 3
     assert _get_entry("1.1") is None
     assert _get_entry("1 of 2") == 1
 
 
-def test__parse_entries():
+def test__parse_entries() -> None:
     assert _parse_entries("1") == [1]
     assert _parse_entries("1-2") == [1, 2]
     assert _parse_entries("2-4") == [2, 3, 4]
