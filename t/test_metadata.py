@@ -11,7 +11,7 @@ from reading.storage import load_df, save_df
 from reading.wikidata import Entity
 
 
-def _colour_to_string(colour):
+def _colour_to_string(colour: str) -> str:
     styles = ["RESET", "BOLD", "FAINT", "ITALIC", "REVERSE"]
     codes = ["BLACK", "RED", "GREEN", "YELLOW", "BLUE", "MAGENTA", "CYAN", "WHITE"]
     effects = {
@@ -27,15 +27,15 @@ def _colour_to_string(colour):
     return effects[effect] + codes[int(code)]
 
 
-def _decode_colourspec(match):
+def _decode_colourspec(match: re.Match) -> str:
     return "<" + ";".join([_colour_to_string(colour) for colour in match.group(1).split(";")]) + ">"
 
 
-def decode_colour(string):
+def decode_colour(string: str) -> str:
     return re.sub("\033" + r"\[([0-9;]*)m", _decode_colourspec, string)
 
 
-def test_decode_colour():
+def test_decode_colour() -> None:
     assert decode_colour("") == ""
     assert decode_colour("blah") == "blah"
     assert decode_colour("\033[0m") == "<RESET>"
@@ -47,7 +47,7 @@ def test_decode_colour():
 #################################################################################
 
 
-def test__list_book_choices():
+def test__list_book_choices() -> None:
     # nothing
     assert _list_book_choices([], set(), set()) == ""
 
@@ -284,7 +284,7 @@ def _raise(exception):
     raise exception
 
 
-def test__read_choice(monkeypatch):
+def test__read_choice(monkeypatch) -> None:
     length = 3
 
     monkeypatch.setattr("builtins.input", lambda prompt: "1")
@@ -321,7 +321,7 @@ def test__read_choice(monkeypatch):
     assert _read_choice(length) == "1", "Request the help message"
 
 
-def test__read_choice_output(monkeypatch, capsys):
+def test__read_choice_output(monkeypatch, capsys) -> None:
     length = 3
 
     monkeypatch.setattr("builtins.input", lambda prompt: "1")
@@ -349,12 +349,12 @@ Q - exit without saving
 ################################################################################
 
 
-def _load_json(qid):
+def _load_json(qid: str):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
         return json.load(fh)["entities"][qid]
 
 
-def test_confirm_author_reject(monkeypatch, capsys):
+def test_confirm_author_reject(monkeypatch, capsys) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "n")
 
     entity = Entity(_load_json("Q12807"))
@@ -370,7 +370,7 @@ def test_confirm_author_reject(monkeypatch, capsys):
     assert author is None
 
 
-def test_confirm_author_accept(monkeypatch):
+def test_confirm_author_accept(monkeypatch) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "y")
 
     entity = Entity(_load_json("Q12807"))
@@ -384,7 +384,7 @@ def test_confirm_author_accept(monkeypatch):
     }
 
 
-def test_confirm_author_default_accepts(monkeypatch):
+def test_confirm_author_default_accepts(monkeypatch) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "")
 
     entity = Entity(_load_json("Q12807"))
@@ -395,7 +395,7 @@ def test_confirm_author_default_accepts(monkeypatch):
 ################################################################################
 
 
-def test_rebuild(tmp_path):
+def test_rebuild(tmp_path) -> None:
     """Test the rebuild() function."""
     books = load_df("ebooks", dirname="t/data/2019-12-04/")
     works = load_df("books", dirname="t/data/2019-12-04/")
