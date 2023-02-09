@@ -172,7 +172,7 @@ def _dates(
         if last_read:
             if last_read > window_start and not force:
                 # skip to the next one.
-                window_start, window_end = next(windows)
+                window_start, window_end = next(windows)  # pylint: disable=stop-iteration-return
 
             # fix up the first one if necessary
             next_read = last_read + pd.DateOffset(months=6)
