@@ -16,7 +16,7 @@ from reading.config import Config
 ################################################################################
 
 
-def test_read_authorids():
+def test_read_authorids() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     assert read_authorids(c) == {
@@ -35,7 +35,7 @@ def test_read_authorids():
     assert 2778055 in read_authorids(c), "Author in currently-reading is included"
 
 
-def test_read_nationalities():
+def test_read_nationalities() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
     assert read_nationalities(c) == {"fr", "us", "jp", "gb"}
@@ -44,7 +44,7 @@ def test_read_nationalities():
 ################################################################################
 
 
-def test_collection():
+def test_collection() -> None:
     """General tests."""
     c = Collection.from_dir("/does/not/exist")
     assert c, "Created an empty collection"
@@ -61,7 +61,7 @@ def test_collection():
     ), "Legible __repr__ for a collection with books"
 
 
-def test_kindle_books():
+def test_kindle_books() -> None:
     """Tests specific to ebooks."""
     c = Collection.from_dir("t/data/2019-12-04/")
     df = c.all
@@ -75,7 +75,7 @@ def test_kindle_books():
     assert str(b.Added.date()) == "2013-02-06", "Added date is sensible"
 
 
-def test_collection_columns():
+def test_collection_columns() -> None:
     """Test the columns are present and correct."""
     columns = [
         "Author",
@@ -111,7 +111,7 @@ def test_collection_columns():
     assert list(c._df.columns) == columns, "All the columns are still there when metadata is off"
 
 
-def test_column_contents():
+def test_column_contents() -> None:
     """Test the columns have reasonable dtypes."""
     df = Collection.from_dir("t/data/2019-12-04")._df
     b = df.loc[2366570]  # Les Chouans
@@ -140,7 +140,7 @@ def test_column_contents():
     }
 
 
-def test_reset():
+def test_reset() -> None:
     """Test the reset() method."""
     c1 = Collection.from_dir("t/data/2019-12-04")
     c2 = Collection.from_dir("t/data/2019-12-04")
@@ -159,7 +159,7 @@ def test_reset():
 # fixes/metadata
 
 
-def test__process_fixes():
+def test__process_fixes() -> None:
     """Test the fix munging function."""
     assert _process_fixes({}).empty, "No fixes to apply"
 
@@ -224,7 +224,7 @@ def test_duplicate_fixes() -> None:
 # applying fixes
 
 
-def test_fixes():
+def test_fixes() -> None:
     """Test fix application."""
 
     c_with = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=True)
@@ -256,7 +256,7 @@ def test_fixes():
     # FIXME also scraped.csv
 
 
-def test_metadata():
+def test_metadata() -> None:
     """Test metadata application."""
     c_with = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=True)
     c_wout = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False)
@@ -275,7 +275,7 @@ def test_metadata():
     assert c_with.all.loc["novels/b869w.mobi"].Author == "Emily Brontë"
 
 
-def test_fix_metadata_precedence():
+def test_fix_metadata_precedence() -> None:
     c_with = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=True)
     c_fixes = Collection.from_dir("t/data/2019-12-04", fixes=True, metadata=True)
 
@@ -289,7 +289,7 @@ def test_fix_metadata_precedence():
 # merging guts
 
 
-def test_merged():
+def test_merged() -> None:
     """General tests of the guts of the merge process."""
     c = Collection.from_dir("t/data/merging/")
 
@@ -302,7 +302,7 @@ def test_merged():
     assert set(df.index) < set(df_clean.index), "Remaining index values are unchanged"
 
 
-def test_merged_goodreads():
+def test_merged_goodreads() -> None:
     """Simple case: a goodreads book."""
     c = Collection.from_dir("t/data/merging/")
     df = c._merged()
@@ -320,7 +320,7 @@ def test_merged_goodreads():
     assert not book.Entry  # unset until i decide what to do with it
 
 
-def test_merged_kindle():
+def test_merged_kindle() -> None:
     """Simple case: a kindle book."""
     c = Collection.from_dir("t/data/merging/")
     df = c._merged()
@@ -333,7 +333,7 @@ def test_merged_kindle():
     assert book["_Mask"], "Mask has been retained"
 
 
-def test_merged_added():
+def test_merged_added() -> None:
     """The earliest Added date is used."""
     c = Collection.from_dir("t/data/merging/")
     df = c._merged()
@@ -347,7 +347,7 @@ def test_merged_added():
 # merging
 
 
-def test_merge():
+def test_merge() -> None:
     """General merging tests."""
     c_un = Collection.from_dir("t/data/merging")
     assert c_un.dedup is False, "No merging by default"
@@ -358,14 +358,14 @@ def test_merge():
     assert_frame_equal(c._df, c_un._df)  # underlying dataframes are identical
 
 
-def test_merge_all():
+def test_merge_all() -> None:
     """Test merging."""
     c = Collection.from_dir("t/data/merging", merge=True)
 
     assert c.all is not None, "it didn't explode"
 
 
-def test_merge_df():
+def test_merge_df() -> None:
     """Test merging."""
     c = Collection.from_dir("t/data/merging", merge=True)
 
@@ -382,7 +382,7 @@ def test_merge_df():
 # deduplication
 
 
-def test_dedup():
+def test_dedup() -> None:
     """Test deduplication."""
     c = Collection.from_dir("t/data/2019-12-04")
     assert c.dedup is False, "No dedup by default"
@@ -403,14 +403,14 @@ def test_dedup_requires_merge() -> None:
 # set schedule
 
 
-def test_set_empty_schedule():
+def test_set_empty_schedule() -> None:
     """It's fine if there are no schedules configured."""
     c = Collection.from_dir("t/data/2019-12-04/")
     c.set_schedules([])
     assert c
 
 
-def test_set_schedules_changed_something():
+def test_set_schedules_changed_something() -> None:
     """When there's something to do, it has an effect on the Collection."""
     c = Collection.from_dir("t/data/2019-12-04/")
     config = Config.from_file("t/data/2019-12-04/config.yml")
@@ -422,7 +422,7 @@ def test_set_schedules_changed_something():
     assert (old_schedule != c.df.Scheduled).any(), "Some scheduled dates have changed"
 
 
-def test_set_schedules():
+def test_set_schedules() -> None:
     """It doesn't change the config."""
     c = Collection.from_dir("t/data/2019-12-04/")
     config = Config.from_file("t/data/2019-12-04/config.yml")
@@ -433,7 +433,7 @@ def test_set_schedules():
     assert config("scheduled") == clean_config("scheduled"), "The config is unchanged"
 
 
-def test_schedule_without_matches():
+def test_schedule_without_matches() -> None:
     """It still works even if a schedule doesn't match anything."""
     # FIXME should lint for this and/or fully-read ones?
     c = Collection.from_dir("t/data/2019-12-04/")
@@ -447,7 +447,7 @@ def test_schedule_without_selection() -> None:
         c.set_schedules([{"per_year": 4}])
 
 
-def test_schedule_duplicated():
+def test_schedule_duplicated() -> None:
     c = Collection.from_dir("t/data/2019-12-04/")
 
     old = c.df.Scheduled.copy()
@@ -465,7 +465,7 @@ def test_schedule_duplicated():
 # scheduled filter
 
 
-def test_scheduled_filter_in():
+def test_scheduled_filter_in() -> None:
     c = Collection.from_dir("t/data/2019-12-04/")
 
     assert c.df.Scheduled.notna().any(), "Some books are scheduled"
@@ -473,7 +473,7 @@ def test_scheduled_filter_in():
     assert c.scheduled().df.Scheduled.notna().all(), "All the books are now scheduled"
 
 
-def test_scheduled_filter_out():
+def test_scheduled_filter_out() -> None:
     c = Collection.from_dir("t/data/2019-12-04/")
 
     assert c.df.Scheduled.isna().any(), "Some books are unscheduled"
@@ -482,7 +482,7 @@ def test_scheduled_filter_out():
     ), "None of the books are now scheduled"
 
 
-def test_scheduled_filter_comprehensive():
+def test_scheduled_filter_comprehensive() -> None:
     c = Collection.from_dir("t/data/2019-12-04/")
 
     all_books = set(c.df.index)
@@ -503,7 +503,7 @@ def test_scheduled_filter_comprehensive():
 # scheduled_at filter
 
 
-def test_scheduled_at():
+def test_scheduled_at() -> None:
     c = Collection.from_dir("t/data/2019-12-04/")
     config = Config.from_file("t/data/2019-12-04/config.yml")
 
@@ -522,7 +522,7 @@ def test_scheduled_at():
     # FIXME check the unselected books look correct
 
 
-def test_scheduled_at_later():
+def test_scheduled_at_later() -> None:
     """Try again, this time later on in the year."""
     c = Collection.from_dir("t/data/2019-12-04/")
     config = Config.from_file("t/data/2019-12-04/config.yml")
@@ -537,7 +537,7 @@ def test_scheduled_at_later():
     assert (c.df.Scheduled <= date).all(), "All the selected books are scheduled before $date."
 
 
-def test_scheduled_at_different_year():
+def test_scheduled_at_different_year() -> None:
     """It still works when the date is in a different year."""
     c = Collection.from_dir("t/data/2019-12-04/")
     config = Config.from_file("t/data/2019-12-04/config.yml")
@@ -557,7 +557,7 @@ def test_scheduled_at_different_year():
 # access
 
 
-def test_df():
+def test_df() -> None:
     """Test the .df property."""
     c = Collection.from_dir("t/data/2019-12-04/")
 
@@ -566,7 +566,7 @@ def test_df():
     # test with merging and dedup
 
 
-def test_all():
+def test_all() -> None:
     """Test the .all property."""
     c = Collection.from_dir("t/data/2019-12-04/")
 
@@ -576,7 +576,7 @@ def test_all():
     assert_frame_equal(df, c.shelves("read").all)  # .all is not affected by filters
 
 
-def test_read():
+def test_read() -> None:
     """Test the .read property."""
     c = Collection.from_dir("t/data/2019-12-04/")
 
