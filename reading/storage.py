@@ -1,6 +1,6 @@
 # vim: ts=4 : sw=4 : et
 
-"""Functions for loading and storing dataframes as csv."""
+"""Loading and storing dataframes."""
 
 from functools import partial
 from pathlib import Path
