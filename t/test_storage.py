@@ -107,7 +107,7 @@ def test_store_mistakes(tmp_path: Path) -> None:
     store = Store(tmp_path)
 
     with pytest.raises(AttributeError):
-        table = store.blabla
+        table = store.blabla  # pylint: disable=no-member
         assert not table
 
 

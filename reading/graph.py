@@ -15,7 +15,7 @@ from .collection import Collection
 # FIXME longer-term we should stop using the pyplot interface
 if True:  # pylint: disable=using-constant-test
     matplotlib.use("Agg")
-    import matplotlib.pyplot as plt  # pylint: disable=ungrouped-imports
+    import matplotlib.pyplot as plt  # pylint: disable=ungrouped-imports,useless-suppression
 
 # the cutoff year before which books are considered "old".
 thresh = 1940

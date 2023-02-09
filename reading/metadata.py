@@ -113,10 +113,10 @@ Q - exit without saving
     except EOFError:
         # Ctrl-D
         print()
-        raise SaveExit
+        raise SaveExit  # pylint: disable=raise-missing-from
     except KeyboardInterrupt:
         print()
-        raise FullExit
+        raise FullExit  # pylint: disable=raise-missing-from
 
     return c
 
