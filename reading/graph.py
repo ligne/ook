@@ -3,6 +3,7 @@
 """Draw pretty graphs."""
 
 import textwrap
+from typing import Callable, Union
 
 import matplotlib
 import numpy as np
@@ -28,8 +29,10 @@ ix = pd.date_range(start="2016-01-01", end="today", freq="D")
 
 _GRAPHS = {}
 
+GraphSpec = Union[Callable[[Config], None], Callable[[], None]]
 
-def graph(func):
+
+def graph(func: GraphSpec) -> GraphSpec:
     """Register a graph function."""
     _GRAPHS[func.__name__] = func
     return func
