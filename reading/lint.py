@@ -8,6 +8,7 @@ from jinja2 import Template
 import pandas as pd
 
 from .collection import Collection, _process_fixes
+from .config import Config
 
 
 ################################################################################
@@ -412,7 +413,7 @@ def lint_fixes(config):
 ################################################################################
 
 
-def main(args, config):
+def main(args, config: Config) -> None:
     for name, func in _LINTERS.items():
         if args.pattern and args.pattern not in name:
             continue

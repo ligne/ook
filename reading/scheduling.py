@@ -28,7 +28,7 @@ TODAY = pd.Timestamp.today()
 #       identifying books for each scheduled year
 
 
-def main():  # pragma: no cover
+def main() -> None:  # pragma: no cover
     config = Config.from_file()
     schedules = config("scheduled")
 

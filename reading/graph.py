@@ -541,7 +541,7 @@ def scheduled(config: Config) -> None:
 ################################################################################
 
 
-def main(args, config: Config):
+def main(args, config: Config) -> None:
     for name, func in _GRAPHS.items():
         if args.pattern and args.pattern not in name:
             continue

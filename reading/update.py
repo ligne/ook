@@ -6,6 +6,7 @@ import pandas as pd
 
 from .collection import Collection, rebuild_metadata
 from .compare import compare
+from .config import Config
 from .goodreads import get_books, update_books
 from .scrape import scrape
 from .storage import Store
@@ -14,7 +15,7 @@ from .wordcounts import process
 
 
 # FIXME improve this signature?
-def main(args, config):
+def main(args, config: Config) -> None:
     """Update the store from various sources, and optionally save."""
     store = Store()
 

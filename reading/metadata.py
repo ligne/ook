@@ -7,6 +7,7 @@ import pandas as pd
 
 from .collection import Collection, _ebook_parse_title, rebuild_metadata
 from .compare import compare
+from .config import Config
 from .goodreads import fetch_book, search_title
 from .storage import Store, load_df, save_df
 from .wikidata import entity, wd_search
@@ -269,7 +270,7 @@ def find_authors(authors):
 ################################################################################
 
 
-def main(args, config):
+def main(args, config: Config) -> None:
     """Interactively search for metadata, and optionally save the results."""
     store = Store()
 

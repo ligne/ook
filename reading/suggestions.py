@@ -3,6 +3,7 @@
 from textwrap import fill
 
 from .collection import Collection, read_authorids, read_nationalities
+from .config import Config
 
 
 # return a list of the authors i'm currently reading, or have read recently
@@ -22,7 +23,7 @@ def _recent_author_ids(c, date):
 ################################################################################
 
 
-def scheduled(args, config):
+def scheduled(args, config: Config) -> None:
     c = (
         Collection.from_dir(merge=True)
         .set_schedules(config("scheduled"))
@@ -44,7 +45,7 @@ def scheduled(args, config):
 
 
 # suggestions
-def main(args, config):
+def main(args, config: Config) -> None:
     c = (
         Collection.from_dir(merge=True)
         .set_schedules(config("scheduled"))
