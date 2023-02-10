@@ -43,8 +43,8 @@ def _count_words(textfile):
 # Python3, and there aren't many other easy options...
 def _read_metadata(path) -> dict[str, str]:
     sys.path.insert(0, "/usr/lib/calibre")
-    sys.resources_location = "/usr/share/calibre"
-    sys.extensions_location = "/usr/lib/calibre/calibre/plugins"
+    sys.resources_location = "/usr/share/calibre"  # type: ignore[attr-defined]
+    sys.extensions_location = "/usr/lib/calibre/calibre/plugins"  # type: ignore[attr-defined]
 
     from calibre.ebooks.metadata.meta import get_metadata
 
