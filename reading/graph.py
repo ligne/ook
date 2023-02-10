@@ -3,7 +3,7 @@
 """Draw pretty graphs."""
 
 import textwrap
-from typing import Callable, Union
+from typing import Callable, Literal, Union
 
 import matplotlib
 import numpy as np
@@ -42,7 +42,7 @@ def graph(func: GraphSpec) -> GraphSpec:
 
 
 # from shelf, in direction = date added/read.
-def _pages_changed(df, shelf, direction):
+def _pages_changed(df: pd.DataFrame, shelf: str, direction: Literal["Added", "Read"]) -> pd.Series:
     return (
         df[df.Shelf == shelf]
         .set_index([direction])
@@ -54,16 +54,16 @@ def _pages_changed(df, shelf, direction):
 
 
 # number of pages added by day
-def _pages_added(df, shelf):
+def _pages_added(df: pd.DataFrame, shelf: str) -> pd.Series:
     return _pages_changed(df, shelf, "Added").cumsum()
 
 
 # number of pages read by day
-def _pages_read(df):
+def _pages_read(df: pd.DataFrame) -> pd.Series:
     return _pages_changed(df, "read", "Read").cumsum()
 
 
-def save_image(df, name, start=None):
+def save_image(df: pd.DataFrame, name: str, start=None) -> None:
     df = df.loc[start:]
 
     df.plot()
@@ -456,13 +456,13 @@ def doy() -> None:
 
 
 # calculate the number of days remaining in $year, assuming the date is $today
-def _days_remaining(year, today):
+def _days_remaining(year, today) -> int:
     start = today if today.year == year else pd.Timestamp(year, 1, 1)
     end = pd.Timestamp(year + 1, 1, 1)
     return (end - start).days
 
 
-def scheduled_years(df, today):
+def scheduled_years(df: pd.DataFrame, today) -> list[int]:
     # FIXME
     years = set(df.Scheduled.dt.year.tolist())
     return sorted(years | {today.year})
