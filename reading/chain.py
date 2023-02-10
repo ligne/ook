@@ -56,9 +56,9 @@ def _entries_for_sorting(entry):
 class Chain:
     """An ordered group of books."""
 
-    _df = attr.ib(repr=lambda df: f"[{len(df)} books]")
-    order = attr.ib(default=Order.Published, repr=str)
-    missing = attr.ib(default=Missing.Ignore, repr=str)
+    _df: pd.DataFrame = attr.ib(repr=lambda df: f"[{len(df)} books]")
+    order: Order = attr.ib(default=Order.Published, repr=str)
+    missing: Missing = attr.ib(default=Missing.Ignore, repr=str)
 
     ############################################################################
 
