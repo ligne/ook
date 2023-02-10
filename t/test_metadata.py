@@ -27,7 +27,7 @@ def _colour_to_string(colour: str) -> str:
     return effects[effect] + codes[int(code)]
 
 
-def _decode_colourspec(match: re.Match) -> str:
+def _decode_colourspec(match: re.Match[str]) -> str:
     return "<" + ";".join([_colour_to_string(colour) for colour in match.group(1).split(";")]) + ">"
 
 
