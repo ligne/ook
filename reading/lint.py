@@ -162,8 +162,7 @@ def lint_overscheduled(config):
     c.set_schedules(config("scheduled"))
     automatic = c.df.Scheduled
 
-    df = Collection.from_dir(merge=True)
-    df = c.df
+    df = Collection.from_dir(merge=True).df
 
     today = dt.date.today()
 
