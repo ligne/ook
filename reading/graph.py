@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 
 from .collection import Collection
+from .config import Config
 
 
 # persuade isort that the backend needs to be set *before* plt is created
@@ -78,7 +79,7 @@ def save_image(df, name, start=None):
 # draw graphs of my backlog over time, both as a number of pages and scaled by
 # reading rate.
 @graph
-def backlog():
+def backlog() -> None:
     df = Collection.from_dir().df
 
     # FIXME _pages_added() can't see books added before 2016 without this
@@ -110,7 +111,7 @@ def backlog():
 
 
 @graph
-def increase():
+def increase() -> None:
     df = Collection.from_dir().df
 
     p = pd.DataFrame(
@@ -137,7 +138,7 @@ def increase():
 
 # number of new authors a year
 @graph
-def new_authors():
+def new_authors() -> None:
     authors = Collection.from_dir().shelves("read").df
     first = authors.set_index("Read").sort_index().Author.drop_duplicates()
     first = first.resample("D").count().reindex(ix).fillna(0)
@@ -161,7 +162,7 @@ def new_authors():
 
 
 @graph
-def median_date():
+def median_date() -> None:
     read = Collection.from_dir().shelves("read").df.dropna(subset=["Published"])
 
     read = read.set_index("Read").Published.resample("D").mean()
@@ -183,7 +184,7 @@ def median_date():
 
 
 @graph
-def length():
+def length() -> None:
     read = Collection.from_dir().shelves("read").df
     read = read.set_index("Read").Pages.resample("D").mean()
     read.rolling(window=365, min_periods=0).mean().reindex(ix).ffill().loc["2016":].plot()
@@ -198,7 +199,7 @@ def length():
 
 # ratio of old/new books
 @graph
-def oldness():
+def oldness() -> None:
     df = Collection.from_dir().shelves("read").df.dropna(subset=["Published"])
 
     df = (
@@ -234,7 +235,7 @@ def oldness():
 
 
 @graph
-def gender():
+def gender() -> None:
     df = Collection.from_dir().shelves("read").df
     df.Gender = df.Gender.fillna("missing")
 
@@ -263,7 +264,7 @@ def gender():
 
 
 @graph
-def language():
+def language() -> None:
     df = Collection.from_dir().shelves("read").df
 
     df.Language = df.Language.fillna("unknown")
@@ -291,7 +292,7 @@ def language():
 
 
 @graph
-def category():
+def category() -> None:
     df = Collection.from_dir().shelves("read").df
 
     df.Category = df.Category.fillna("unknown")
@@ -320,7 +321,7 @@ def category():
 
 # plot total/new nationalities over the preceding year
 @graph
-def nationality():
+def nationality() -> None:
     df = Collection.from_dir().shelves("read").df
 
     # how many new nationalities a year
@@ -360,7 +361,7 @@ def nationality():
 
 # plot reading rate so far.
 @graph
-def reading_rate():
+def reading_rate() -> None:
     df = Collection.from_dir().df
     completed = _pages_changed(df, "read", "Read")
 
@@ -388,7 +389,7 @@ def reading_rate():
 
 
 @graph
-def rate_area():
+def rate_area() -> None:
     df = Collection.from_dir().shelves("read").df
 
     df["ppd"] = df.Pages / ((df.Read - df.Started).dt.days + 1)
@@ -416,7 +417,7 @@ def rate_area():
 
 
 @graph
-def doy():
+def doy() -> None:
     df = Collection.from_dir().shelves("read").df.dropna(subset=["Read"])
 
     df["Year"] = df.Read.dt.year
@@ -467,7 +468,7 @@ def scheduled_years(df, today):
 # plot reading schedule against time left, with warnings.
 # pylint: disable=too-many-locals
 @graph
-def scheduled(config):
+def scheduled(config: Config) -> None:
     c = Collection.from_dir().set_schedules(config("scheduled"))
     df = c.df
 
@@ -537,7 +538,7 @@ def scheduled(config):
 ################################################################################
 
 
-def main(args, config):
+def main(args, config: Config):
     for name, func in _GRAPHS.items():
         if args.pattern and args.pattern not in name:
             continue
