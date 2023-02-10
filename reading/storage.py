@@ -47,7 +47,7 @@ def save_df(name, df, fname=None):
 class Store:
     """Load and store data."""
 
-    directory: Path = attr.ib(default="data", converter=Path, repr=str)
+    directory: Path = attr.ib(default=Path("data"), converter=Path, repr=str)
     _tables: Dict[str, pd.DataFrame] = attr.ib(factory=dict, init=False, repr=False)
 
     def _getter(self, name: str) -> pd.DataFrame:
