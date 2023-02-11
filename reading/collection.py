@@ -7,6 +7,7 @@ from typing import List, Sequence
 
 import attr
 import pandas as pd
+from typing_extensions import Self
 
 from .chain import Chain
 from .config import Config, df_columns, merge_preferences, metadata_prefer
@@ -184,7 +185,9 @@ class Collection:
     ############################################################################
 
     @classmethod
-    def from_dir(cls, csv_dir="data", fixes=True, metadata=True, **kwargs):
+    def from_dir(
+        cls, csv_dir: str = "data", fixes: bool = True, metadata: bool = True, **kwargs
+    ) -> Self:
         """Create a collection from the contents of $csv_dir."""
 
         config = Config.from_file(f"{csv_dir}/config.yml")
@@ -212,7 +215,9 @@ class Collection:
         return cls(df, **kwargs)
 
     @classmethod
-    def from_store(cls, store: Store, config: Config, fixes=True, metadata=True, **kwargs):
+    def from_store(
+        cls, store: Store, config: Config, fixes: bool = True, metadata: bool = True, **kwargs
+    ) -> Self:
         """Create a Collection from a Store object."""
         bases = [
             store.goodreads,
@@ -229,7 +234,7 @@ class Collection:
     @classmethod
     def assemble(
         cls, bases: Sequence[pd.DataFrame], overlays: Sequence[pd.DataFrame], **kwargs
-    ) -> "Collection":
+    ) -> Self:
         """Assemble a Collection from $bases and $overlays."""
         df = pd.concat(bases, sort=False)
 
