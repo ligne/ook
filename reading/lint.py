@@ -43,7 +43,7 @@ def lint_missing_pagecount():
 @linter
 def lint_words_per_page():
     """Unusual words per page."""
-    c = Collection.from_dir(fixes=None, merge=True).shelves("kindle")
+    c = Collection.from_dir(fixes=False, merge=True).shelves("kindle")
 
     df = c.df
     df["wpp"] = df.Words / df.Pages
@@ -386,7 +386,7 @@ def lint_not_rated():
 @linter
 def lint_fixes(config):
     """Unneeded fixes."""
-    c = Collection.from_dir(fixes=None)
+    c = Collection.from_dir(fixes=False)
 
     fixes = _process_fixes(config("fixes"))
     errors = []
