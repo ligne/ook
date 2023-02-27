@@ -2,7 +2,10 @@
 
 """Configuration."""
 
+from typing import Literal
+
 import attr
+from typing_extensions import Self
 import yaml
 
 
@@ -162,17 +165,17 @@ _COLUMNS = [
 
 
 # columns for various CSVs (eg goodreads, ebooks)
-def df_columns(store):
+def df_columns(store: str) -> list[str]:
     """Return a list of the columns that should be included in $store."""
     return [col["name"] for col in _COLUMNS if store in col["store"]]
 
 
-def date_columns(store):
+def date_columns(store: str) -> list[str]:
     """Return a list of the columns that should be treated as dates."""
     return [col["name"] for col in _COLUMNS if store in col["store"] and col.get("type") == "date"]
 
 
-def metadata_prefer(preference):
+def metadata_prefer(preference: Literal["work", "book"]) -> list[str]:
     """Return a list of columns whose values should be prioritised when assembling the metadata.
 
     Where $preference should be one of "work" (for the Goodreads work) or
@@ -181,7 +184,7 @@ def metadata_prefer(preference):
     return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
-def merge_preferences():
+def merge_preferences() -> dict[str, str]:
     """Return a dict specifying how volumes of the same book should be merged."""
     return {
         **{"BookId": "first"},
@@ -235,7 +238,7 @@ _CATEGORIES = {
 }
 
 
-def category_patterns():
+def category_patterns() -> tuple[list[str], list[str]]:
     patterns = []
     guesses = []
 
@@ -262,7 +265,7 @@ class Config:
     _conf = attr.ib()
 
     @classmethod
-    def from_file(cls, filename="data/config.yml"):
+    def from_file(cls, filename: str = "data/config.yml") -> Self:
         """Create from $filename."""
         try:
             with open(filename) as fh:
@@ -272,7 +275,7 @@ class Config:
 
         return cls(conf)
 
-    def __call__(self, key):
+    def __call__(self, key: str):
         value = self._conf
 
         for segment in key.split("."):
@@ -284,6 +287,6 @@ class Config:
 
         return value
 
-    def reset(self, conf=None):
+    def reset(self, conf=None) -> None:
         """Set to an empty configuration."""
         self._conf = conf or {}
