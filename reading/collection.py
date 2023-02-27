@@ -2,6 +2,7 @@
 
 """Represents a collection of books."""
 
+import datetime as dt
 import re
 from typing import List, Sequence
 
@@ -174,11 +175,11 @@ class Collection:
     dedup = attr.ib(default=False, kw_only=True)
 
     @dedup.validator
-    def _validate_dedup_has_merge(self, _attribute, _value):
+    def _validate_dedup_has_merge(self, _attribute, _value) -> None:
         if self.dedup and not self.merge:
             raise ValueError("dedup=True requires merge=True")
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         """Set up accounting for filtered books."""
         self.reset()
 
@@ -245,7 +246,7 @@ class Collection:
             df.update(overlay)
         return cls(df, **kwargs)
 
-    def reset(self):
+    def reset(self) -> Self:
         """Reset the state of the collection."""
         self._df["_Mask"] = True
         return self
@@ -269,7 +270,7 @@ class Collection:
 
     ### Scheduling #############################################################
 
-    def set_schedules(self, schedules):
+    def set_schedules(self, schedules) -> Self:
         """Set the schedules according to the rules in $schedules."""
         pairs = []
 
@@ -328,36 +329,36 @@ class Collection:
 
     ### Filtering ##############################################################
 
-    def _filter_list(self, col: str, selection: Sequence[str], exclude: bool):
+    def _filter_list(self, col: str, selection: Sequence[str], exclude: bool) -> Self:
         if selection:
             self._df["_Mask"] &= self._df[col].isin(selection) ^ exclude
         return self
 
-    def shelves(self, *selection: str, exclude: bool = False):
+    def shelves(self, *selection: str, exclude: bool = False) -> Self:
         """Filter the collection by shelf."""
         return self._filter_list("Shelf", selection, exclude)
 
-    def languages(self, *selection: str, exclude: bool = False):
+    def languages(self, *selection: str, exclude: bool = False) -> Self:
         """Filter the collection by language."""
         return self._filter_list("Language", selection, exclude)
 
-    def categories(self, *selection: str, exclude: bool = False):
+    def categories(self, *selection: str, exclude: bool = False) -> Self:
         """Filter the collection by category."""
         return self._filter_list("Category", selection, exclude)
 
-    def borrowed(self, state=None):
+    def borrowed(self, state: Optional[bool] = None) -> Self:
         """Filter the collection by borrowed status."""
         # FIXME None so the caller doesn't have to care if it was actually set
         if state is not None:
             self._df["_Mask"] &= self._df.Borrowed == state
         return self
 
-    def scheduled(self, *, exclude=False):
+    def scheduled(self, *, exclude: bool = False) -> Self:
         """Filter the collection by scheduled status."""
         self._df["_Mask"] &= self._df.Scheduled.notna() ^ exclude
         return self
 
-    def scheduled_at(self, date):
+    def scheduled_at(self, date: dt.date) -> Self:
         """Select only books scheduled to be read at $date."""
         self._df["_Mask"] &= (self._df.Scheduled.dt.year == date.year) & (
             self._df.Scheduled <= date
