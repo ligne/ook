@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import shutil
+from typing import Optional
 
 from jinja2 import Template
 import pandas as pd
@@ -76,7 +77,7 @@ def _list_author_choices(results):
 
 
 # prompts the user for a selection or other decision.
-def _read_choice(n):
+def _read_choice(n: int) -> Optional[str]:
     entries = [str(x + 1) for x in range(n)]
     others = list("sqQ")
 
