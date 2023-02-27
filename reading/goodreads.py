@@ -261,7 +261,7 @@ def _get_entry(string):
 
 
 # converts an entries string into a list of integers
-def _parse_entries(entries):
+def _parse_entries(entries) -> list[int]:
     if not isinstance(entries, str):
         return []
 
