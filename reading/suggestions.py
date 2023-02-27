@@ -2,13 +2,15 @@
 
 from textwrap import fill
 
+import pandas as pd
+
 from .collection import Collection, read_authorids, read_nationalities
 from .config import Config
 
 
 # return a list of the authors i'm currently reading, or have read recently
 # (this year, or within the last 6 months).
-def _recent_author_ids(c, date):
+def _recent_author_ids(c: Collection, date: pd.Timestamp) -> list[int]:
     df = c.all
 
     return list(
@@ -74,7 +76,7 @@ def main(args, config: Config) -> None:
 
 
 # do more filtering
-def _filter(df, args, c):
+def _filter(df: pd.DataFrame, args, c: Collection) -> pd.DataFrame:
     if args.old_authors:
         df = df[df.AuthorId.isin(read_authorids(c))]
     elif args.new_authors:
@@ -89,7 +91,7 @@ def _filter(df, args, c):
 
 
 # sort the suggestions
-def _sort(df, args):
+def _sort(df: pd.DataFrame, args) -> pd.DataFrame:
     if args.alpha:
         # FIXME use a more sortable version of the title
         df = df.sort_values(["Title", "Author"])
@@ -102,7 +104,7 @@ def _sort(df, args):
 
 
 # reduce the number of rows
-def _reduce(df, args):
+def _reduce(df: pd.DataFrame, args) -> pd.DataFrame:
     if not args.all:
         index = len(df.index) // 2
         s = args.size / 2
@@ -112,7 +114,7 @@ def _reduce(df, args):
 
 
 # print out the suggestions
-def _display(df, args):
+def _display(df: pd.DataFrame, args) -> None:
     if args.words:
         fmt = "{Words:4.0f}  {Title} ({Author})"
     else:
