@@ -2,8 +2,11 @@
 
 """Functions for interfacing with WikiData."""
 
+from __future__ import annotations
+
 import json
 import sys
+from typing import Optional
 
 import requests
 
@@ -29,7 +32,7 @@ def wd_search(term):
     )
 
 
-def _format_search_results(results):
+def _format_search_results(results) -> list[dict[str, str]]:
     return [
         {
             "Label": res["label"],
@@ -43,7 +46,7 @@ def _format_search_results(results):
 ###############################################################################
 
 
-def entity(qid):
+def entity(qid: str) -> Entity:
     """Return the Entity for $qid."""
     fname = "data/cache/wikidata/{}.json".format(qid)
     try:
@@ -62,16 +65,16 @@ class Entity:
     """Basic operations on a Wikidata entity."""
 
     # fetches an entity by its QID
-    def __init__(self, e):
+    def __init__(self, e) -> None:
         self.entity = e
 
     @property
-    def qid(self):
+    def qid(self) -> str:
         """Return the QID for the entity."""
         return self.entity["title"]
 
     @property
-    def gender(self):
+    def gender(self) -> Optional[str]:
         """Return the gender of the entity, or None if it doesn't exist."""
         try:
             return self.get_property("P21").label
@@ -79,7 +82,7 @@ class Entity:
             return None
 
     @property
-    def nationality(self):
+    def nationality(self) -> Optional[str]:
         """
         Return the nationality, or None if it doesn't exist.
 
@@ -100,7 +103,7 @@ class Entity:
         # use the name by default
         return _uc_first(e.label)
 
-    def get_property(self, name):
+    def get_property(self, name: str):
         """Return property $prop, in a hopefully useful form."""
         prop = self.entity["claims"][name][0]["mainsnak"]["datavalue"]
 
@@ -112,12 +115,12 @@ class Entity:
         return prop["value"]
 
     @property
-    def label(self):
+    def label(self) -> str:
         """Return the label."""
         return self.entity["labels"]["en"]["value"]
 
     @property
-    def description(self):
+    def description(self) -> str:
         """Return the description."""
         try:
             return _uc_first(self.entity["descriptions"]["en"]["value"])
