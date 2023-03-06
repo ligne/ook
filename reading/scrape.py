@@ -4,7 +4,9 @@
 
 import datetime
 import re
+from typing import Optional
 
+import bs4
 from bs4 import BeautifulSoup
 import dateutil
 import pandas as pd
@@ -13,7 +15,7 @@ import pandas as pd
 #################################################################################
 
 
-def book_id(review):
+def book_id(review: bs4.element.Tag) -> int:
     return int(
         re.search(
             r"/book/show/(\d+)",
@@ -22,35 +24,28 @@ def book_id(review):
     )
 
 
-def pages(review):
-    try:
-        return int(
-            re.search(
-                r"[\d,]+",
-                review.find(class_="num_pages").div.text,
-            )
-            .group(0)
-            .replace(",", "")
-        )
-    except AttributeError:
+def pages(review: bs4.element.Tag) -> Optional[int]:
+    if m := re.search(r"[\d,]+", review.find(class_="num_pages").div.text):
+        return int(m.group(0).replace(",", ""))
+    else:
         return None
 
 
-def started_date(review):
+def started_date(review: bs4.element.Tag) -> Optional[datetime.date]:
     return _get_date(review, "date_started_value")
 
 
-def read_date(review):
+def read_date(review: bs4.element.Tag) -> Optional[datetime.date]:
     return _get_date(review, "date_read_value")
 
 
-def _get_date(review, field):
-    try:
+def _get_date(review: bs4.element.Tag, field: str) -> Optional[datetime.date]:
+    if date_tag := review.find("span", class_=field):
         return dateutil.parser.parse(
-            review.find("span", class_=field).text,
+            date_tag.text,
             default=datetime.datetime(2018, 1, 1),
         )
-    except AttributeError:
+    else:
         return None
 
 
