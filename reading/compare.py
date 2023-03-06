@@ -2,8 +2,6 @@
 
 """Code for reporting the changes between two Collections or dataframes."""
 
-import sys
-
 from jinja2 import Template
 import pandas as pd
 
@@ -187,10 +185,26 @@ def _finished(book):
 
 
 if __name__ == "__main__":
-    from .collection import Collection
-    from .storage import load_df
+    import argparse
+
+    from reading.config import Config
+    from reading.storage import Store, load_df
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--goodreads")
+    parser.add_argument("--ebooks")
+
+    args = parser.parse_args()
+
+    store = Store()
+    if args.goodreads:
+        store.goodreads = load_df("goodreads", args.goodreads)
+    if args.ebooks:
+        store.ebooks = load_df("ebooks", args.ebooks)
+
+    config = Config.from_file()
 
     compare(
-        Collection(load_df("goodreads", sys.argv[1])),
-        Collection(load_df("goodreads", sys.argv[2])),
+        old=Collection.from_store(store, config),
+        new=Collection.from_dir(),
     )
