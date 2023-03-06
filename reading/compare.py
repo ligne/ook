@@ -7,6 +7,8 @@ import sys
 from jinja2 import Template
 import pandas as pd
 
+from reading.collection import Collection
+
 
 ignore_columns = [
     "AvgRating",
@@ -18,14 +20,13 @@ ignore_columns = [
 
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
-def compare(old, new, use_work=True):
+def compare(old: Collection, new: Collection) -> None:
     """Show how $old and $new dataframes differ, in a way that makes sense for ook."""
-    (old, new) = [df.fillna("") for df in (old, new)]
 
-    if use_work:
-        _compare_with_work(old, new)
-    else:
-        _compare_without_work(old, new)
+    _compare_with_work(
+        old.all.fillna(""),
+        new.all.fillna(""),
+    )
 
 
 def _compare_with_work(old, new):
@@ -61,19 +62,6 @@ def _compare_with_work(old, new):
             print(_added(_n.iloc[0]))
         else:
             print(_removed(_o.iloc[0]))
-
-
-def _compare_without_work(old, new):
-    for ix in old.index.intersection(new.index):
-        changed = _changed(old.loc[ix], new.loc[ix])
-        if changed:
-            print(changed)
-
-    idcs = old.index.symmetric_difference(new.index)
-    for ix in new.index.intersection(idcs):
-        print(_added(new.loc[ix]))
-    for ix in old.index.intersection(idcs):
-        print(_removed(old.loc[ix]))
 
 
 ################################################################################
@@ -203,6 +191,6 @@ if __name__ == "__main__":
     from .storage import load_df
 
     compare(
-        Collection(load_df("goodreads", sys.argv[1])).df.fillna(""),
-        Collection(load_df("goodreads", sys.argv[2])).df.fillna(""),
+        Collection(load_df("goodreads", sys.argv[1])),
+        Collection(load_df("goodreads", sys.argv[2])),
     )

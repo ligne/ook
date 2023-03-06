@@ -77,8 +77,8 @@ def main(args, config: Config) -> None:
     )
 
     compare(
-        old=Collection.from_dir().df,
-        new=Collection.from_store(store, config).df,
+        new=Collection.from_store(store, config),
+        old=Collection.from_dir(),
     )
 
     if args.save:

@@ -298,8 +298,8 @@ def main(args, config: Config) -> None:
     )
 
     compare(
-        old=Collection.from_dir().df,
-        new=Collection.from_store(store, config).df,
+        old=Collection.from_dir(),
+        new=Collection.from_store(store, config),
     )
 
     if args.save:
