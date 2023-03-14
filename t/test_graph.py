@@ -23,5 +23,5 @@ from reading.graph import _days_remaining
         (2024, "2024-02-29", 307),  # leap year
     ],
 )
-def test_days_remaining(year, today, expected) -> None:
+def test_days_remaining(year: int, today: str, expected: int) -> None:
     assert _days_remaining(year, pd.Timestamp(today)) == expected

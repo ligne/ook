@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import json
+from pathlib import Path
 import re
 
 import pytest
@@ -284,7 +285,7 @@ def _raise(exception):
     raise exception
 
 
-def test__read_choice(monkeypatch) -> None:
+def test__read_choice(monkeypatch: pytest.MonkeyPatch) -> None:
     length = 3
 
     monkeypatch.setattr("builtins.input", lambda prompt: "1")
@@ -321,7 +322,10 @@ def test__read_choice(monkeypatch) -> None:
     assert _read_choice(length) == "1", "Request the help message"
 
 
-def test__read_choice_output(monkeypatch, capsys) -> None:
+def test__read_choice_output(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     length = 3
 
     monkeypatch.setattr("builtins.input", lambda prompt: "1")
@@ -354,7 +358,10 @@ def _load_json(qid: str):
         return json.load(fh)["entities"][qid]
 
 
-def test_confirm_author_reject(monkeypatch, capsys) -> None:
+def test_confirm_author_reject(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "n")
 
     entity = Entity(_load_json("Q12807"))
@@ -370,7 +377,7 @@ def test_confirm_author_reject(monkeypatch, capsys) -> None:
     assert author is None
 
 
-def test_confirm_author_accept(monkeypatch) -> None:
+def test_confirm_author_accept(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "y")
 
     entity = Entity(_load_json("Q12807"))
@@ -384,7 +391,7 @@ def test_confirm_author_accept(monkeypatch) -> None:
     }
 
 
-def test_confirm_author_default_accepts(monkeypatch) -> None:
+def test_confirm_author_default_accepts(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr("builtins.input", lambda prompt: "")
 
     entity = Entity(_load_json("Q12807"))

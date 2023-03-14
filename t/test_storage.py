@@ -17,7 +17,7 @@ def test_load_df() -> None:
     assert df.empty, "Loaded a dataframe from a missing file"
 
 
-def test_save_df(tmp_path) -> None:
+def test_save_df(tmp_path: Path) -> None:
     df = Collection.from_dir("t/data/2019-12-04", fixes=False, metadata=False).df
 
     # pick out a few books

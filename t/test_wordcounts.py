@@ -17,7 +17,7 @@ from reading.wordcounts import (
 ################################################################################
 
 
-def test__ignore_item(tmp_path) -> None:
+def test__ignore_item(tmp_path: Path) -> None:
     p = tmp_path / "item.mobi"
     p.touch()
     assert not _ignore_item(p), "Interesting path"
@@ -39,7 +39,7 @@ def test__ignore_item(tmp_path) -> None:
     assert _ignore_item(p), "Ignored extension"
 
 
-def _populate_dir(basedir, dirname, files) -> None:
+def _populate_dir(basedir: Path, dirname: str, files: list[str]) -> None:
     try:
         (basedir / dirname).mkdir()
     except FileExistsError:
@@ -49,7 +49,7 @@ def _populate_dir(basedir, dirname, files) -> None:
         (basedir / dirname / fname).touch()
 
 
-def test_get_ebooks(tmp_path) -> None:
+def test_get_ebooks(tmp_path: Path) -> None:
     # create the directories
     _populate_dir(tmp_path, "articles", ["art1.azw3", "art2.txt", "art3.pdf"])
     _populate_dir(tmp_path, ".", ["article4.azw3", "item.kfx"])
@@ -79,17 +79,17 @@ ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
 @pytest.mark.slow
 @pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
-def test__as_text(path) -> None:
+def test__as_text(path: Path) -> None:
     assert _as_text(path) == path.with_suffix(".txt").read_bytes()
 
 
-def test_missing_ebook_convert(monkeypatch) -> None:
+def test_missing_ebook_convert(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("PATH", "/no/such/path")
     path = Path("t/data/ebooks/supernatural.mobi")
     assert _as_text(path) is None, "Missing ebook-convert command"
 
 
-def test_ebook_invalid(tmp_path) -> None:
+def test_ebook_invalid(tmp_path: Path) -> None:
     path = tmp_path / "blah.mobi"
     path.write_bytes(b"blah")
     assert _as_text(path) is None, "Error converting the ebook"
