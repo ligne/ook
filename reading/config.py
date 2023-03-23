@@ -260,7 +260,7 @@ _DEFAULTS = {
 
 @attr.s
 class Config:
-    """configuration."""
+    """Configuration."""
 
     _conf = attr.ib()
 
