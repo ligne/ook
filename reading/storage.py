@@ -4,7 +4,7 @@
 
 from functools import partial
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 import attr
 import pandas as pd
@@ -12,14 +12,18 @@ import pandas as pd
 from .config import date_columns, df_columns
 
 
-def _load_csv(name, columns, parse_dates=False):
+def _load_csv(
+    name: str,
+    columns: list[str],
+    parse_dates: Union[bool, list[str]] = False,
+) -> pd.DataFrame:
     try:
         return pd.read_csv(name, index_col=0, parse_dates=parse_dates)
     except FileNotFoundError:
         return pd.DataFrame(columns=columns)
 
 
-def load_df(name, fname=None, dirname=None):
+def load_df(name: str, fname: Optional[str] = None, dirname: Optional[str] = None) -> pd.DataFrame:
     """Load and return a dataframe of type $name, creating it if necessary."""
     if dirname:
         fname = f"{dirname}/{name}.csv"
@@ -31,7 +35,7 @@ def load_df(name, fname=None, dirname=None):
     )
 
 
-def save_df(name, df, fname=None):
+def save_df(name: str, df: pd.DataFrame, fname: Optional[Path] = None) -> None:
     """Save a dataframe of type $name in an aesthetic format."""
     df.sort_index().to_csv(
         fname or f"data/{name}.csv",
