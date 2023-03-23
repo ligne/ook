@@ -187,7 +187,11 @@ class Collection:
 
     @classmethod
     def from_dir(
-        cls, csv_dir: str = "data", fixes: bool = True, metadata: bool = True, **kwargs
+        cls,
+        csv_dir: str = "data",
+        fixes: bool = True,
+        metadata: bool = True,
+        **kwargs,
     ) -> Self:
         """Create a collection from the contents of $csv_dir."""
 
@@ -217,7 +221,12 @@ class Collection:
 
     @classmethod
     def from_store(
-        cls, store: Store, config: Config, fixes: bool = True, metadata: bool = True, **kwargs
+        cls,
+        store: Store,
+        config: Config,
+        fixes: bool = True,
+        metadata: bool = True,
+        **kwargs,
     ) -> Self:
         """Create a Collection from a Store object."""
         bases = [
@@ -234,7 +243,10 @@ class Collection:
 
     @classmethod
     def assemble(
-        cls, bases: Sequence[pd.DataFrame], overlays: Sequence[pd.DataFrame], **kwargs
+        cls,
+        bases: Sequence[pd.DataFrame],
+        overlays: Sequence[pd.DataFrame],
+        **kwargs,
     ) -> Self:
         """Assemble a Collection from $bases and $overlays."""
         df = pd.concat(bases, sort=False)
