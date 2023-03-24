@@ -184,7 +184,8 @@ def test__process_fixes() -> None:
     """
     )
 
-    assert _process_fixes(fixes).to_csv() == textwrap.dedent(
+    fixed = _process_fixes(fixes)
+    assert fixed.to_csv(columns=sorted(fixed.columns)) == textwrap.dedent(
         """\
         BookId,Category,Language,Read,Started
         20636970,,,2018-02-09,
