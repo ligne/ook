@@ -5,7 +5,7 @@ import json
 from reading.gdocs import _parse_doc, changes
 
 
-def test__parse_doc():
+def test__parse_doc() -> None:
     with open("t/data/docs/books1.json") as fh:
         doc = json.load(fh)
 
@@ -82,7 +82,7 @@ def test__parse_doc():
     ]
 
 
-def test_changes():
+def test_changes() -> None:
     with open("t/data/docs/books1.json") as fh:
         doc = json.load(fh)
 
