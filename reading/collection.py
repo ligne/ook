@@ -4,7 +4,7 @@
 
 import datetime as dt
 import re
-from typing import List, Sequence
+from typing import List, Optional, Sequence
 
 import attr
 import pandas as pd
