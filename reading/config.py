@@ -87,7 +87,7 @@ _COLUMNS = [
     },
     {
         "name": "Binding",
-        "store": ["goodreads"],
+        "store": ["goodreads", "scraped"],
         "merge": "first",
     },
     {

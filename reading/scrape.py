@@ -27,8 +27,14 @@ def book_id(review: bs4.element.Tag) -> int:
 def pages(review: bs4.element.Tag) -> Optional[int]:
     if m := re.search(r"[\d,]+", review.find(class_="num_pages").div.text):
         return int(m.group(0).replace(",", ""))
-    else:
-        return None
+    return None
+
+
+def binding(review: bs4.element.Tag) -> Optional[str]:
+    """Return the binding from $review, if present."""
+    if elem := review.find(class_="format"):
+        return next(elem.div.stripped_strings, None)
+    return None
 
 
 def started_date(review: bs4.element.Tag) -> Optional[datetime.date]:
@@ -45,8 +51,7 @@ def _get_date(review: bs4.element.Tag, field: str) -> Optional[datetime.date]:
             date_tag.text,
             default=datetime.datetime(2018, 1, 1),
         )
-    else:
-        return None
+    return None
 
 
 ################################################################################
@@ -65,6 +70,7 @@ def _scrape(fname: str) -> pd.DataFrame:
                 "Started": started_date(review),
                 "Read": read_date(review),
                 "Pages": pages(review),
+                "Binding": binding(review),
             }
         )
 

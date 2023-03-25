@@ -58,6 +58,7 @@ def test_df_colums() -> None:
     ], "Columns for authors.csv"
 
     assert df_columns("scraped") == [
+        "Binding",
         "Pages",
         "Started",
         "Read",
