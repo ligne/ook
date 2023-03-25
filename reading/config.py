@@ -238,7 +238,7 @@ _CATEGORIES = {
 }
 
 
-def category_patterns() -> tuple[list[str], list[str]]:
+def category_patterns() -> tuple[list[list[str]], list[list[str]]]:
     patterns = []
     guesses = []
 
