@@ -2,7 +2,7 @@
 
 """Configuration."""
 
-from typing import Literal
+from typing import Literal, TypedDict
 
 import attr
 from typing_extensions import Self
@@ -13,7 +13,22 @@ SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}
 CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
 
 
-_COLUMNS = [
+class ColumnBase(TypedDict):
+    """Required columns for a column."""
+
+    name: str
+    store: list[str]
+
+
+class Column(ColumnBase, total=False):
+    """Optional fields for a column."""
+
+    merge: str
+    prefer: Literal["book", "work"]
+    type: str
+
+
+_COLUMNS: list[Column] = [
     {
         "name": "QID",
         "store": ["authors"],
