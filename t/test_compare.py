@@ -1,16 +1,50 @@
 # vim: ts=4 : sw=4 : et
 
+from typing import Callable
+
 import pandas as pd
 
 from reading.collection import Collection
-from reading.compare import _added, _changed, _finished, _removed, _started
+from reading.compare import (
+    ChangedField,
+    ChangeDirection,
+    _added,
+    _changed,
+    _finished,
+    _removed,
+    _started,
+)
+
+
+CollectionFixture = Callable[[str], Collection]
+
+################################################################################
+
+
+def test_changed_field(collection: CollectionFixture) -> None:
+    c = collection("2019-12-04")
+    book = c.df.iloc[0]
+
+    value = book.Author
+    assert not pd.isna(value), "Got a non-null value"
+
+    na_value = book.Series
+    assert pd.isna(na_value), "Got a null value"
+
+    name = "blah"  # the exact name doesn't really matter
+
+    assert ChangedField(name, old=na_value, new=na_value).direction == ChangeDirection.MISSING
+    assert ChangedField(name, old=value, new=na_value).direction == ChangeDirection.UNSET
+    assert ChangedField(name, old=na_value, new=value).direction == ChangeDirection.SET
+    assert ChangedField(name, old=value, new=value).direction == ChangeDirection.UNCHANGED
+    assert ChangedField(name, old=value, new=value.lower()).direction == ChangeDirection.CHANGED
+
+
+################################################################################
 
 
 c = Collection.from_dir("t/data/2019-12-04")
 df = c.df.fillna("")
-
-
-################################################################################
 
 
 def test__added() -> None:

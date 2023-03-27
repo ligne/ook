@@ -2,6 +2,10 @@
 
 """Code for reporting the changes between two Collections or dataframes."""
 
+from enum import Enum
+from typing import Any, Optional
+
+from attr import define
 from jinja2 import Template
 import pandas as pd
 
@@ -11,6 +15,40 @@ from reading.collection import Collection
 ignore_columns = [
     "AvgRating",
 ]
+
+################################################################################
+
+
+class ChangeDirection(Enum):
+    """The direction of a field's change."""
+
+    SET = "set"
+    UNSET = "unset"
+    CHANGED = "changed"
+    UNCHANGED = "unchanged"
+    MISSING = "missing"
+
+
+@define
+class ChangedField:
+    """A single changed field."""
+
+    name: str
+    old: Any
+    new: Any
+
+    @property
+    def direction(self) -> ChangeDirection:
+        """Describe the type of field change that has occurred."""
+        if pd.isna(self.old) and pd.isna(self.new):
+            return ChangeDirection.MISSING
+        if pd.isna(self.old):
+            return ChangeDirection.SET
+        if pd.isna(self.new):
+            return ChangeDirection.UNSET
+        if self.old != self.new:
+            return ChangeDirection.CHANGED
+        return ChangeDirection.UNCHANGED
 
 
 ################################################################################
