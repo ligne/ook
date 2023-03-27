@@ -54,6 +54,86 @@ class ChangedField:
 ################################################################################
 
 
+class ChangeEvent(Enum):
+    """The type of change."""
+
+    STARTED = "started"
+    FINISHED = "finished"
+    ADDED = "added"
+    REMOVED = "removed"
+    MODIFIED = "modified"
+    UNMODIFIED = "unmodified"
+
+
+@define
+class Change:
+    """A change between two (hopefully equivalent) book entries."""
+
+    old: Optional[pd.Series]
+    new: Optional[pd.Series]
+
+    def change(self, field: str) -> ChangedField:
+        """Return an object representing the change of column $field."""
+        return ChangedField(
+            field,
+            self.old[field] if self.old is not None else None,
+            self.new[field] if self.new is not None else None,
+        )
+
+    @property
+    def is_added(self) -> bool:
+        """Indicate whether this book did not previously exist."""
+        return self.old is None
+
+    @property
+    def is_removed(self) -> bool:
+        """Indicate whether this book no longer exists."""
+        return self.new is None
+
+    @property
+    def is_started(self) -> bool:
+        """Indicate whether this book has just been started."""
+        shelf = self.change("Shelf")
+        return bool(shelf.old != shelf.new == "currently-reading")
+
+    @property
+    def is_finished(self) -> bool:
+        """Indicate whether this book has just been finished."""
+        shelf = self.change("Shelf")
+        return bool(shelf.old != shelf.new == "read")
+
+    @property
+    def is_modified(self) -> bool:
+        """Indicate whether fields in this book have been modified."""
+        # FIXME or would this be useful if it were more generally true?
+        return self.old is not None and self.new is not None and not self.old.equals(self.new)
+
+    @property
+    def event(self) -> ChangeEvent:
+        """Return an enum indicating what sort of change is involved."""
+        return (
+            ChangeEvent.STARTED
+            if self.is_started
+            else ChangeEvent.FINISHED
+            if self.is_finished
+            else ChangeEvent.ADDED
+            if self.is_added
+            else ChangeEvent.REMOVED
+            if self.is_removed
+            else ChangeEvent.MODIFIED
+            if self.is_modified
+            else ChangeEvent.UNMODIFIED
+        )
+
+    @property
+    def book(self) -> pd.Series:
+        """Return the most up-to-date version of this book."""
+        return self.new if self.new is not None else self.old
+
+
+################################################################################
+
+
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old: Collection, new: Collection) -> None:
