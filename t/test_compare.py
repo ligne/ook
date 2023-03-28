@@ -130,6 +130,28 @@ def test_change_added_and_started(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.STARTED
 
 
+def test_change_already_started(collection: CollectionFixture) -> None:
+    """It's only started the first time."""
+
+    c = collection("2019-12-04")
+
+    old = c.df.loc[1367071]
+    new = old
+
+    assert new.Title == old.Title == "Son Excellence Eugène Rougon"
+    assert new.Shelf == old.Shelf == "currently-reading"
+
+    change = Change(old, new)
+
+    assert change.is_added is False
+    assert change.is_removed is False
+    assert change.is_started is False
+    assert change.is_finished is False
+    assert change.is_modified is False  # this is definitely false
+
+    assert change.event == ChangeEvent.UNMODIFIED
+
+
 def test_change_finished(collection: CollectionFixture) -> None:
     """Existing book that's just been finished."""
 
@@ -173,6 +195,28 @@ def test_change_added_and_finished(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.FINISHED
 
 
+def test_change_already_finished(collection: CollectionFixture) -> None:
+    """It's only finished the first time."""
+
+    c = collection("2019-12-04")
+
+    old = c.df.loc[20636970]
+    new = old
+
+    assert new.Title == old.Title == "La Curée"
+    assert new.Shelf == old.Shelf == "read"
+
+    change = Change(old, new)
+
+    assert change.is_added is False
+    assert change.is_removed is False
+    assert change.is_started is False
+    assert change.is_finished is False
+    assert change.is_modified is False  # this is definitely false
+
+    assert change.event == ChangeEvent.UNMODIFIED
+
+
 def test_change_identical(collection: CollectionFixture) -> None:
     """Nothing has changed."""
 
@@ -193,6 +237,20 @@ def test_change_identical(collection: CollectionFixture) -> None:
     assert change.is_started is False
     assert change.is_finished is False
     assert change.is_modified is False
+
+
+def test_change_modified(collection: CollectionFixture) -> None:
+    """A field has changed in an existing book."""
+
+    old = c.df.loc[1367070]
+    new = old.copy()
+
+    new["Title"] = "New Title"
+    assert not old.equals(new), "The old and new books should be different"
+
+    change = Change(old, new)
+
+    assert change.is_modified is True
 
 
 ################################################################################
