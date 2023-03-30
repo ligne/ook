@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 import pandas as pd
+import pytest
 
 from reading.collection import Collection
 from reading.compare import (
@@ -66,197 +67,115 @@ def test_changed_field() -> None:
 ################################################################################
 
 
-def test_change_added() -> None:
-    """Added a book."""
+@pytest.mark.parametrize(
+    "change, event, predicates",
+    (
+        pytest.param(
+            Change(old=None, new=BOOK_UNREAD),
+            ChangeEvent.ADDED,
+            {
+                "is_added": True,
+            },
+            id="Added a book",
+        ),
+        pytest.param(
+            Change(old=BOOK_UNREAD, new=None),
+            ChangeEvent.REMOVED,
+            {
+                "is_removed": True,
+            },
+            id="Removed a book",
+        ),
+        pytest.param(
+            Change(old=BOOK_PENDING, new=BOOK_CURRENT),
+            ChangeEvent.STARTED,
+            {
+                "is_started": True,
+                "is_modified": True,
+            },
+            id="Existing book that's just been started",
+        ),
+        pytest.param(
+            Change(old=None, new=BOOK_CURRENT),
+            ChangeEvent.STARTED,
+            {
+                "is_added": True,
+                "is_started": True,
+            },
+            id="Newly-added book that's also just been started: started takes precedent",
+        ),
+        pytest.param(
+            Change(old=BOOK_CURRENT, new=BOOK_CURRENT),
+            ChangeEvent.UNMODIFIED,
+            {},
+            id="It's only started the first time",
+        ),
+        pytest.param(
+            Change(old=BOOK_CURRENT, new=BOOK_READ),
+            ChangeEvent.FINISHED,
+            {
+                "is_finished": True,
+                "is_modified": True,
+            },
+            id="Existing book that's just been finished.",
+        ),
+        pytest.param(
+            Change(old=None, new=BOOK_READ),
+            ChangeEvent.FINISHED,
+            {
+                "is_added": True,
+                "is_finished": True,
+            },
+            id="Newly-added book that's also just been finished: finished takes precedent",
+        ),
+        pytest.param(
+            Change(old=BOOK_READ, new=BOOK_READ),
+            ChangeEvent.UNMODIFIED,
+            {},
+            id="It's only finished the first time",
+        ),
+        pytest.param(
+            Change(old=BOOK_UNREAD, new=BOOK_UNREAD),
+            ChangeEvent.UNMODIFIED,
+            {},
+            id="Nothing has changed",
+        ),
+        pytest.param(
+            Change(old=BOOK_UNREAD, new=BOOK_MODIFIED),
+            ChangeEvent.MODIFIED,
+            {
+                "is_modified": True,
+            },
+            id="A field has changed in an existing book",
+        ),
+    ),
+)
+def test_change(change: Change, event: ChangeEvent, predicates: dict[str, bool]) -> None:
+    """Basic functionality of the Change class: predicates, event, book accessor."""
+
+    def check_predicates(
+        is_added: bool = False,
+        is_removed: bool = False,
+        is_started: bool = False,
+        is_finished: bool = False,
+        is_modified: bool = False,
+    ) -> None:
+        assert change.is_added is is_added
+        assert change.is_removed is is_removed
+        assert change.is_started is is_started
+        assert change.is_finished is is_finished
+        # FIXME would it be useful for is_modified also to be true for added/removed books?
+        assert change.is_modified is is_modified
+
+    assert change.event == event
+    check_predicates(**predicates)
 
-    old = None
-    new = BOOK_UNREAD
+    assert change.book.equals(
+        change.old if event == ChangeEvent.REMOVED else change.new
+    ), "the book property gives you the new one, unless it's missing"
 
-    change = Change(old, new)
 
-    assert change.is_added is True
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is False
-    assert change.is_modified is False  # FIXME or should that be true?
-
-    assert change.event == ChangeEvent.ADDED
-
-    assert change.book.equals(new), "the book property works when old is missing"
-
-
-def test_change_removed() -> None:
-    """Removed a book."""
-
-    old = BOOK_UNREAD
-    new = None
-
-    change = Change(old, new)
-
-    assert change.is_added is False
-    assert change.is_removed is True
-    assert change.is_started is False
-    assert change.is_finished is False
-    assert change.is_modified is False  # FIXME or should that be true?
-
-    assert change.event == ChangeEvent.REMOVED
-
-    assert change.book.equals(old), "the book property works when new is missing"
-
-
-def test_change_started() -> None:
-    """Existing book that's just been started."""
-
-    old = BOOK_PENDING
-    new = BOOK_CURRENT
-
-    assert old.Title == new.Title == "The Crow Road"
-
-    change = Change(old, new)
-
-    assert change.is_added is False
-    assert change.is_removed is False
-    assert change.is_started is True
-    assert change.is_finished is False
-    assert change.is_modified is True
-
-    assert change.event == ChangeEvent.STARTED
-
-
-def test_change_added_and_started() -> None:
-    """Newly-added book that's also just been started: started takes precedent."""
-
-    old = None
-    new = BOOK_CURRENT
-
-    assert new.Title == "The Crow Road"
-    assert new.Shelf == "currently-reading"
-
-    change = Change(old, new)
-
-    assert change.is_added is True
-    assert change.is_removed is False
-    assert change.is_started is True
-    assert change.is_finished is False
-    assert change.is_modified is False  # FIXME or should that be true?
-
-    assert change.event == ChangeEvent.STARTED
-
-
-def test_change_already_started() -> None:
-    """It's only started the first time."""
-
-    old = BOOK_CURRENT
-    new = BOOK_CURRENT
-
-    assert new.Title == old.Title == "The Crow Road"
-    assert new.Shelf == old.Shelf == "currently-reading"
-
-    change = Change(old, new)
-
-    assert change.is_added is False
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is False
-    assert change.is_modified is False  # this is definitely false
-
-    assert change.event == ChangeEvent.UNMODIFIED
-
-
-def test_change_finished() -> None:
-    """Existing book that's just been finished."""
-
-    old = BOOK_CURRENT
-    new = BOOK_READ
-
-    assert old.Title == new.Title == "The Crow Road"
-
-    change = Change(old, new)
-
-    assert change.is_added is False
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is True
-    assert change.is_modified is True
-
-    assert change.event == ChangeEvent.FINISHED
-
-
-def test_change_added_and_finished() -> None:
-    """Newly-added book that's also just been finished: finished takes precedent."""
-
-    old = None
-    new = BOOK_READ
-
-    assert new.Title == "The Crow Road"
-    assert new.Shelf == "read"
-
-    change = Change(old, new)
-
-    assert change.is_added is True
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is True
-    assert change.is_modified is False  # FIXME or should that be true?
-
-    assert change.event == ChangeEvent.FINISHED
-
-
-def test_change_already_finished() -> None:
-    """It's only finished the first time."""
-
-    old = BOOK_READ
-    new = BOOK_READ
-
-    assert new.Title == old.Title == "The Crow Road"
-    assert new.Shelf == old.Shelf == "read"
-
-    change = Change(old, new)
-
-    assert change.is_added is False
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is False
-    assert change.is_modified is False  # this is definitely false
-
-    assert change.event == ChangeEvent.UNMODIFIED
-
-
-def test_change_identical() -> None:
-    """Nothing has changed."""
-
-    old = BOOK_UNREAD
-    new = BOOK_UNREAD
-
-    change = Change(old, new)
-
-    assert change.old is change.new, "Old and new versions should be identical"
-
-    # null values do not equal themselves
-    assert pd.isna(new.Series), "There's a null value"
-
-    assert change.is_added is False
-    assert change.is_removed is False
-    assert change.is_started is False
-    assert change.is_finished is False
-    assert change.is_modified is False
-
-
-def test_change_modified() -> None:
-    """A field has changed in an existing book."""
-
-    old = BOOK_UNREAD
-    new = BOOK_MODIFIED
-
-    assert old.Title == "The Elephant Vanishes"
-    assert new.Title == "One Of Our Elephants Is Missing"
-
-    change = Change(old, new)
-
-    assert change.is_modified is True
-
-
-################################################################################
+#################################################################################
 
 
 df = c.df.fillna("")
