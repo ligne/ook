@@ -22,6 +22,8 @@ c = Collection.from_dir("t/data/2019-12-04")
 BOOK_UNREAD = c.df.loc[9556]
 assert BOOK_UNREAD.Title == "The Elephant Vanishes"
 assert BOOK_UNREAD.Shelf == "pending"
+# null values do not equal themselves
+assert pd.isna(BOOK_UNREAD.Series), "There's a null value"
 
 # a book with a modified field
 BOOK_MODIFIED = BOOK_UNREAD.replace(
