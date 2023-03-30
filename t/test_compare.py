@@ -1,7 +1,5 @@
 # vim: ts=4 : sw=4 : et
 
-from typing import Callable
-
 import pandas as pd
 
 from reading.collection import Collection
@@ -18,19 +16,40 @@ from reading.compare import (
 )
 
 
-CollectionFixture = Callable[[str], Collection]
+c = Collection.from_dir("t/data/2019-12-04")
+
+# an unread book
+BOOK_UNREAD = c.df.loc[9556]
+assert BOOK_UNREAD.Title == "The Elephant Vanishes"
+assert BOOK_UNREAD.Shelf == "pending"
+
+# a book with a modified field
+BOOK_MODIFIED = BOOK_UNREAD.replace(
+    "The Elephant Vanishes",
+    "One Of Our Elephants Is Missing",
+)
+assert not BOOK_MODIFIED.equals(BOOK_UNREAD), "They're not equal"
+assert BOOK_MODIFIED.Title != BOOK_UNREAD.Title, "The title is changed"
+assert BOOK_MODIFIED.Author == BOOK_UNREAD.Author, "The author has not changed"
+
+# a book moving from unread -> reading -> read
+BOOK_PENDING = c.df.loc[12021]
+BOOK_CURRENT = c.df.loc[12022]
+BOOK_READ = c.df.loc[12023]
+assert BOOK_PENDING.Title == BOOK_CURRENT.Title == BOOK_READ.Title == "The Crow Road"
+assert BOOK_PENDING.Shelf == "pending"
+assert BOOK_CURRENT.Shelf == "currently-reading"
+assert BOOK_READ.Shelf == "read"
+
 
 ################################################################################
 
 
-def test_changed_field(collection: CollectionFixture) -> None:
-    c = collection("2019-12-04")
-    book = c.df.iloc[0]
-
-    value = book.Author
+def test_changed_field() -> None:
+    value = BOOK_UNREAD.Author
     assert not pd.isna(value), "Got a non-null value"
 
-    na_value = book.Series
+    na_value = BOOK_UNREAD.Series
     assert pd.isna(na_value), "Got a null value"
 
     name = "blah"  # the exact name doesn't really matter
@@ -45,13 +64,11 @@ def test_changed_field(collection: CollectionFixture) -> None:
 ################################################################################
 
 
-def test_change_added(collection: CollectionFixture) -> None:
+def test_change_added() -> None:
     """Added a book."""
 
-    c = collection("2019-12-04")
-
     old = None
-    new = c.df.iloc[0]
+    new = BOOK_UNREAD
 
     change = Change(old, new)
 
@@ -66,12 +83,10 @@ def test_change_added(collection: CollectionFixture) -> None:
     assert change.book.equals(new), "the book property works when old is missing"
 
 
-def test_change_removed(collection: CollectionFixture) -> None:
+def test_change_removed() -> None:
     """Removed a book."""
 
-    c = collection("2019-12-04")
-
-    old = c.df.iloc[0]
+    old = BOOK_UNREAD
     new = None
 
     change = Change(old, new)
@@ -87,15 +102,13 @@ def test_change_removed(collection: CollectionFixture) -> None:
     assert change.book.equals(old), "the book property works when new is missing"
 
 
-def test_change_started(collection: CollectionFixture) -> None:
+def test_change_started() -> None:
     """Existing book that's just been started."""
 
-    c = collection("2019-12-04")
+    old = BOOK_PENDING
+    new = BOOK_CURRENT
 
-    old = c.df.loc[1367070]
-    new = c.df.loc[1367071]
-
-    assert old.Title == new.Title == "Son Excellence Eugène Rougon"
+    assert old.Title == new.Title == "The Crow Road"
 
     change = Change(old, new)
 
@@ -108,15 +121,13 @@ def test_change_started(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.STARTED
 
 
-def test_change_added_and_started(collection: CollectionFixture) -> None:
+def test_change_added_and_started() -> None:
     """Newly-added book that's also just been started: started takes precedent."""
 
-    c = collection("2019-12-04")
-
     old = None
-    new = c.df.loc[1367071]
+    new = BOOK_CURRENT
 
-    assert new.Title == "Son Excellence Eugène Rougon"
+    assert new.Title == "The Crow Road"
     assert new.Shelf == "currently-reading"
 
     change = Change(old, new)
@@ -130,15 +141,13 @@ def test_change_added_and_started(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.STARTED
 
 
-def test_change_already_started(collection: CollectionFixture) -> None:
+def test_change_already_started() -> None:
     """It's only started the first time."""
 
-    c = collection("2019-12-04")
+    old = BOOK_CURRENT
+    new = BOOK_CURRENT
 
-    old = c.df.loc[1367071]
-    new = old
-
-    assert new.Title == old.Title == "Son Excellence Eugène Rougon"
+    assert new.Title == old.Title == "The Crow Road"
     assert new.Shelf == old.Shelf == "currently-reading"
 
     change = Change(old, new)
@@ -152,13 +161,11 @@ def test_change_already_started(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.UNMODIFIED
 
 
-def test_change_finished(collection: CollectionFixture) -> None:
+def test_change_finished() -> None:
     """Existing book that's just been finished."""
 
-    c = collection("2019-12-04")
-
-    old = c.df.loc[12021]
-    new = c.df.loc[12022]
+    old = BOOK_CURRENT
+    new = BOOK_READ
 
     assert old.Title == new.Title == "The Crow Road"
 
@@ -173,15 +180,13 @@ def test_change_finished(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.FINISHED
 
 
-def test_change_added_and_finished(collection: CollectionFixture) -> None:
+def test_change_added_and_finished() -> None:
     """Newly-added book that's also just been finished: finished takes precedent."""
 
-    c = collection("2019-12-04")
-
     old = None
-    new = c.df.loc[20636970]
+    new = BOOK_READ
 
-    assert new.Title == "La Curée"
+    assert new.Title == "The Crow Road"
     assert new.Shelf == "read"
 
     change = Change(old, new)
@@ -195,15 +200,13 @@ def test_change_added_and_finished(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.FINISHED
 
 
-def test_change_already_finished(collection: CollectionFixture) -> None:
+def test_change_already_finished() -> None:
     """It's only finished the first time."""
 
-    c = collection("2019-12-04")
+    old = BOOK_READ
+    new = BOOK_READ
 
-    old = c.df.loc[20636970]
-    new = old
-
-    assert new.Title == old.Title == "La Curée"
+    assert new.Title == old.Title == "The Crow Road"
     assert new.Shelf == old.Shelf == "read"
 
     change = Change(old, new)
@@ -217,20 +220,18 @@ def test_change_already_finished(collection: CollectionFixture) -> None:
     assert change.event == ChangeEvent.UNMODIFIED
 
 
-def test_change_identical(collection: CollectionFixture) -> None:
+def test_change_identical() -> None:
     """Nothing has changed."""
 
-    c = collection("2019-12-04")
-
-    old = c.df.loc[20636970]
-    new = old
+    old = BOOK_UNREAD
+    new = BOOK_UNREAD
 
     change = Change(old, new)
 
     assert change.old is change.new, "Old and new versions should be identical"
 
-    # NA does not equal itself
-    assert pd.isna(new.Scheduled), "There's a <NA> value"
+    # null values do not equal themselves
+    assert pd.isna(new.Series), "There's a null value"
 
     assert change.is_added is False
     assert change.is_removed is False
@@ -239,14 +240,14 @@ def test_change_identical(collection: CollectionFixture) -> None:
     assert change.is_modified is False
 
 
-def test_change_modified(collection: CollectionFixture) -> None:
+def test_change_modified() -> None:
     """A field has changed in an existing book."""
 
-    old = c.df.loc[1367070]
-    new = old.copy()
+    old = BOOK_UNREAD
+    new = BOOK_MODIFIED
 
-    new["Title"] = "New Title"
-    assert not old.equals(new), "The old and new books should be different"
+    assert old.Title == "The Elephant Vanishes"
+    assert new.Title == "One Of Our Elephants Is Missing"
 
     change = Change(old, new)
 
@@ -256,7 +257,6 @@ def test_change_modified(collection: CollectionFixture) -> None:
 ################################################################################
 
 
-c = Collection.from_dir("t/data/2019-12-04")
 df = c.df.fillna("")
 
 
