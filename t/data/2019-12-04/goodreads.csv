@@ -6,6 +6,8 @@ BookId,Author,AuthorId,Title,Work,Shelf,Category,Scheduled,Borrowed,Series,Serie
 12012,Iain M. Banks,5807106,The Player of Games,1494157,read,novels,,False,Culture,49118,2,,1988,en,309,2016-04-18,2018-01-15,2018-01-29,4,4.2699999999999995737
 12014,Iain Banks,7628,Complicity,2132,pending,novels,2021-01-01,False,,,,Paperback,1993,en,313,2018-04-05,,,0,3.8500000000000000888
 12021,Iain Banks,7628,The Crow Road,950451,pending,novels,2020-01-01,False,,,,Paperback,1992,en,501,2016-04-18,,,0,4.0499999999999998224
+12022,Iain Banks,7628,The Crow Road,950451,currently-reading,novels,,False,,,,Paperback,1992,en,501,2016-04-18,2020-06-06,,0,4.0499999999999998224
+12023,Iain Banks,7628,The Crow Road,950451,read,novels,,False,,,,Paperback,1992,en,501,2016-04-18,2020-06-06,2020-06-13,5,4.0800000000000000711
 28417,Émile Zola,4750,La Bête humaine,101404,elsewhere,novels,,True,Les Rougon-Macquart,40441,17,Mass Market Paperback,1890,fr,462,2016-05-22,,,0,4.0599999999999996092
 38290,James Fenimore Cooper,9121,The Pioneers,443966,pending,novels,,False,The Leatherstocking Tales,81550,1,Paperback,1823,,496,2017-02-27,,,0,3.3900000000000001243
 47989,Terry Pratchett,1654,Night Watch,1712283,pending,novels,2021-01-01,False,Discworld,40650,29,,2002,en,480,2016-05-22,,,0,4.4900000000000002132
@@ -31,7 +33,6 @@ BookId,Author,AuthorId,Title,Work,Shelf,Category,Scheduled,Borrowed,Series,Serie
 525878,Kurt Vonnegut,2778055,Breakfast of Champions,2859378,pending,novels,,False,,,,Paperback,1973,en,296,2016-04-18,,,0,4.0700000000000002842
 535061,Iain Banks,7628,Whit,2133,pending,novels,,False,,,,,1995,en,455,2016-04-18,,,0,3.8100000000000000533
 567700,Iain M. Banks,5807106,The State of the Art,1280581,read,short-stories,,False,Culture,49118,4,,1991,en,216,2016-04-18,2018-12-13,2018-12-27,3,3.8399999999999998579
-567798,Iain M. Banks,5807106,The Algebraist,2465248,pending,novels,,False,,,,Paperback,2004,en,534,2016-05-20,,,0,4.0199999999999995737
 578703,Kate Mosse,9343,Labyrinth,1225097,read,novels,,False,Languedoc,43807,1,Paperback,2005,en,694,2016-04-18,2019-01-20,2019-02-07,3,3.5699999999999998401
 597033,Terry Pratchett,1654,Soul Music,1107935,read,novels,,False,Discworld,40650,16,Mass Market Paperback,1994,en,378,2016-05-12,2019-01-06,2019-01-20,4,4.0400000000000000355
 601238,Terry Pratchett,1654,The Colour of Magic,194190,read,novels,,False,Discworld,40650,1,Mass Market Paperback,1983,en,285,2016-01-11,2016-01-11,2016-01-16,3,3.9900000000000002132
@@ -92,7 +93,6 @@ BookId,Author,AuthorId,Title,Work,Shelf,Category,Scheduled,Borrowed,Series,Serie
 3091710,Iain M. Banks,5807106,Matter,871329,pending,novels,,False,Culture,49118,8,Paperback,2008,en,593,2017-04-03,,,0,4.0700000000000002842
 3110594,Colette Becker,60014,Zola: Le saut dans les étoiles,3141872,pending,,,False,,,,Paperback,,fr,,2017-04-06,,,0,0
 6250169,Terry Pratchett,1654,Unseen Academicals,6432996,pending,novels,2021-01-01,False,Discworld,40650,37,Hardcover,2009,en,417,2016-01-18,,,0,3.9900000000000002132
-6370766,Kurt Vonnegut,2778055,Armageddon in Retrospect,2891580,pending,short-stories,,False,,,,Paperback,2008,en,256,2016-04-18,,,0,3.9399999999999999467
 6388919,Fabien Vehlmann,761380,Jolies ténèbres,6577216,to-read,graphic,,False,,,,Hardcover,2009,fr,96,2016-06-17,,,0,3.8700000000000001066
 6731148,Terry Pratchett,1654,The Folklore of Discworld,2436219,elsewhere,non-fiction,,True,,,,Paperback,2008,en,469,2016-12-19,,,0,3.9799999999999999822
 7022275,Thomas Love Peacock,76177,Novels,6508315,pending,,,False,,,,Paperback,1948,,378,2016-05-21,,,0,4.5
