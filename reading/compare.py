@@ -302,11 +302,8 @@ def _finished(book):
 ################################################################################
 
 
-if __name__ == "__main__":
-    import argparse
-
-    from reading.config import Config
-    from reading.storage import Store, load_df
+def main() -> None:  # pragma: no cover
+    """Command-line interface for debugging."""
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--goodreads")
@@ -326,3 +323,12 @@ if __name__ == "__main__":
         old=Collection.from_store(store, config),
         new=Collection.from_dir(),
     )
+
+
+if __name__ == "__main__":
+    import argparse
+
+    from reading.config import Config
+    from reading.storage import Store, load_df
+
+    main()
