@@ -208,6 +208,45 @@ def test_formatted_value() -> None:
 #################################################################################
 
 
+def test_value_formats_extend() -> None:
+    """The format strings in a ValueFormats object can be replaced/extended."""
+
+    value_formats = ValueFormats()
+
+    assert value_formats.extend({}), "extend with no modifications"
+
+    value_formats.extend({"Blah": "%Y"})
+    assert value_formats.formats["Blah"] == "%Y", "Added a new format"
+
+    assert "Blah" not in ValueFormats().formats, "The class's formats are unchanged"
+
+    value_formats.extend({"float64": "0.3f"})
+    assert (
+        ValueFormats().formats["float64"] != value_formats.formats["float64"]
+    ), "Changed an existing format"
+
+
+def test_value_formats_find() -> None:
+    """Searching for a format string."""
+
+    value_formats = ValueFormats().extend({"AvgRating": ".2f"})
+
+    assert (
+        value_formats.find("Work", "float64") == "0.0f"
+    ), "Found a format string based on the dtype"
+
+    assert (
+        value_formats.find("AvgRating", "float64") == ".2f"
+    ), "Field takes precedent over the dtype"
+
+    assert (
+        value_formats.find("Blah", "123type") == ""
+    ), "Not found: empty string means format using str()"
+
+
+#################################################################################
+
+
 @pytest.mark.parametrize(
     "fmt, expected",
     [
