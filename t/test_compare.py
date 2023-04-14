@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+from typing import Any
+
 import pandas as pd
 import pytest
 
@@ -48,20 +50,32 @@ assert BOOK_READ.Shelf == "read"
 ################################################################################
 
 
-def test_changed_field() -> None:
-    value = BOOK_UNREAD.Author
-    assert not pd.isna(value), "Got a non-null value"
+NA_VALUE = BOOK_UNREAD.Series
+assert pd.isna(NA_VALUE), "Got a null value"
 
-    na_value = BOOK_UNREAD.Series
-    assert pd.isna(na_value), "Got a null value"
+VALUE = BOOK_UNREAD.Author
+assert not pd.isna(VALUE), "Got a non-null value"
+
+CHANGED_VALUE = VALUE.lower()
+assert VALUE != CHANGED_VALUE, "Got a changed, non-null value"
+
+
+@pytest.mark.parametrize(
+    "old_value, new_value, direction",
+    (
+        (NA_VALUE, NA_VALUE, ChangeDirection.MISSING),
+        (VALUE, NA_VALUE, ChangeDirection.UNSET),
+        (NA_VALUE, VALUE, ChangeDirection.SET),
+        (VALUE, VALUE, ChangeDirection.UNCHANGED),
+        (VALUE, CHANGED_VALUE, ChangeDirection.CHANGED),
+    ),
+)
+def test_changed_field(old_value: Any, new_value: Any, direction: ChangeDirection) -> None:
+    """All the permutations of changed fields."""
 
     name = "blah"  # the exact name doesn't really matter
 
-    assert ChangedField(name, old=na_value, new=na_value).direction == ChangeDirection.MISSING
-    assert ChangedField(name, old=value, new=na_value).direction == ChangeDirection.UNSET
-    assert ChangedField(name, old=na_value, new=value).direction == ChangeDirection.SET
-    assert ChangedField(name, old=value, new=value).direction == ChangeDirection.UNCHANGED
-    assert ChangedField(name, old=value, new=value.lower()).direction == ChangeDirection.CHANGED
+    assert ChangedField(name, old=old_value, new=new_value).direction == direction
 
 
 ################################################################################
