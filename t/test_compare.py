@@ -356,6 +356,24 @@ def test_formatted_header(change: Change, event: ChangeEvent, expected: str) -> 
     assert change_styler._header(change) == expected
 
 
+@pytest.mark.parametrize(
+    "field, expected",
+    (
+        pytest.param("Binding", "Binding: Paperback", id="Default statement format"),
+        pytest.param("Borrowed", "Borrowed is False", id="A custom statement format"),
+    ),
+)
+def test_formatted_statement(field: str, expected: str) -> None:
+    """Statement lines of various kinds."""
+
+    book = BOOK_READ
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    assert change_styler._statement(book, field) == expected
+
+
 #################################################################################
 
 

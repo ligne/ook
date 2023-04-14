@@ -218,6 +218,18 @@ class ChangeHeaderStyle(ValueFormats):
 
 
 @define
+class BookStatementStyle(ValueFormats):
+    """Format strings for statement lines."""
+
+    formats: Mapping[str, str] = {
+        "pages": "{Pages} pages",
+        "category": "{Category}",
+        "series": "{Series} series",
+        "borrowed": "Borrowed is {Borrowed}",
+    }
+
+
+@define
 class ChangeStyler:
     """Style a Change object."""
 
@@ -225,9 +237,19 @@ class ChangeStyler:
 
     # format strings
     headers = ChangeHeaderStyle()
+    statements = BookStatementStyle()
 
     def _header(self, change: Change) -> str:
         return self.formatter.format(self.headers.find(change.event.value), change.book)
+
+    def _statement(self, book: pd.Series, field: str) -> str:
+        fmt = self.statements.find(field.lower(), default="{field}: {value}")
+        value = FormattedValue(
+            book[field],
+            self.formatter.value_formats.find(field, str(self.formatter.dtypes[field])),
+        )
+
+        return self.formatter.format(fmt, book, field=field, value=value)
 
 
 ################################################################################
