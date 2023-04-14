@@ -237,11 +237,15 @@ def test_value_formats_find() -> None:
 
     assert (
         value_formats.find("AvgRating", "float64") == ".2f"
-    ), "Field takes precedent over the dtype"
+    ), "First term takes precedence over the second"
 
     assert (
-        value_formats.find("Blah", "123type") == ""
-    ), "Not found: empty string means format using str()"
+        value_formats.find("Blah") == ""
+    ), "Not found: default empty string means format using str()"
+
+    assert (
+        value_formats.find("Blah", default=".5") == ".5"
+    ), "Not found, using the chosen default instead"
 
 
 #################################################################################

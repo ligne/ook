@@ -163,9 +163,12 @@ class ValueFormats:
         self.formats = self.formats | changes
         return self
 
-    def find(self, field: str, dtype: str) -> str:
+    def find(self, *terms: str, default: str = "") -> str:
         """Return a suitable formatter string for the field, falling back on the dtype."""
-        return self.formats.get(field) or self.formats.get(str(dtype)) or ""
+        return next(
+            (self.formats[t] for t in terms if t in self.formats),
+            default,
+        )
 
 
 ################################################################################
