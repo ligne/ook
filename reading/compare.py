@@ -204,6 +204,35 @@ class BookFormatter(Formatter):
 ################################################################################
 
 
+@define
+class ChangeHeaderStyle(ValueFormats):
+    """Format strings for header lines."""
+
+    formats: dict[str, str] = {
+        "started": "Started {Title} by {Author}",
+        "finished": "Finished {Title} by {Author}",
+        "added": "Added {Title} by {Author} to {Shelf}",
+        "removed": "Removed {Title} by {Author} from {Shelf}",
+        "modified": "{Author}, {Title}",
+    }
+
+
+@define
+class ChangeStyler:
+    """Style a Change object."""
+
+    formatter: BookFormatter
+
+    # format strings
+    headers = ChangeHeaderStyle()
+
+    def _header(self, change: Change) -> str:
+        return self.formatter.format(self.headers.find(change.event.value), change.book)
+
+
+################################################################################
+
+
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old: Collection, new: Collection) -> None:

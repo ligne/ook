@@ -12,6 +12,7 @@ from reading.compare import (
     ChangedField,
     ChangeDirection,
     ChangeEvent,
+    ChangeStyler,
     FormattedValue,
     ValueFormats,
     _added,
@@ -303,6 +304,56 @@ def test_book_formatter_additional_args() -> None:
         formatter.format("I think {Title} is {opinion}", BOOK_READ, opinion="great")
         == "I think The Crow Road is great"
     )
+
+
+#################################################################################
+
+CHANGE_ADDED = Change(old=None, new=BOOK_UNREAD)
+CHANGE_REMOVED = Change(old=BOOK_UNREAD, new=None)
+CHANGE_STARTED = Change(old=BOOK_PENDING, new=BOOK_CURRENT)
+CHANGE_FINISHED = Change(old=BOOK_CURRENT, new=BOOK_READ)
+CHANGE_MODIFIED = Change(old=BOOK_UNREAD, new=BOOK_MODIFIED)
+
+
+@pytest.mark.parametrize(
+    "change, event, expected",
+    (
+        (
+            CHANGE_ADDED,
+            ChangeEvent.ADDED,
+            "Added The Elephant Vanishes by Haruki Murakami to pending",
+        ),
+        (
+            CHANGE_REMOVED,
+            ChangeEvent.REMOVED,
+            "Removed The Elephant Vanishes by Haruki Murakami from pending",
+        ),
+        (
+            CHANGE_STARTED,
+            ChangeEvent.STARTED,
+            "Started The Crow Road by Iain Banks",
+        ),
+        (
+            CHANGE_FINISHED,
+            ChangeEvent.FINISHED,
+            "Finished The Crow Road by Iain Banks",
+        ),
+        (
+            CHANGE_MODIFIED,
+            ChangeEvent.MODIFIED,
+            "Haruki Murakami, One Of Our Elephants Is Missing",
+        ),
+        # FIXME what about unmodified?
+    ),
+)
+def test_formatted_header(change: Change, event: ChangeEvent, expected: str) -> None:
+    """Header lines for each type of change."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    assert change.event == event
+    assert change_styler._header(change) == expected
 
 
 #################################################################################
