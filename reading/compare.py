@@ -10,6 +10,7 @@ from typing import Any, Optional, Union
 from attr import define
 from jinja2 import Template
 import pandas as pd
+from typing_extensions import Self
 
 from reading.collection import Collection
 
@@ -156,6 +157,11 @@ class ValueFormats:
         "datetime64[ns]": "%F",
         "float64": "0.0f",
     }
+
+    def extend(self, changes: dict[str, str]) -> Self:
+        """Amend the formats."""
+        self.formats = self.formats | changes
+        return self
 
     def find(self, field: str, dtype: str) -> str:
         """Return a suitable formatter string for the field, falling back on the dtype."""

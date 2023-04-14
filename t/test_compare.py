@@ -244,8 +244,7 @@ def test_formatted_value() -> None:
 def test_book_formatter(fmt: str, expected: str) -> None:
     """A BookFormatter substitutes fields in the format string."""
 
-    value_formats = ValueFormats()
-    value_formats.formats["Added"] = "%A %d %B %Y"  # FIXME this modifies the class variable!
+    value_formats = ValueFormats().extend({"Added": "%A %d %B %Y"})
 
     formatter = BookFormatter(c.df.dtypes, value_formats)
 
