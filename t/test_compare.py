@@ -11,6 +11,7 @@ from reading.compare import (
     ChangedField,
     ChangeDirection,
     ChangeEvent,
+    FormattedValue,
     _added,
     _changed,
     _finished,
@@ -187,6 +188,19 @@ def test_change(change: Change, event: ChangeEvent, predicates: dict[str, bool])
     assert change.book.equals(
         change.old if event == ChangeEvent.REMOVED else change.new
     ), "the book property gives you the new one, unless it's missing"
+
+
+#################################################################################
+
+
+def test_formatted_value() -> None:
+    """It can be formatted according to a default or overriden format."""
+
+    value = FormattedValue(1 / 3, "0.3f")
+    assert f"{value}" == "0.333", "Use the default format"
+
+    value = FormattedValue(1e6, "0.3f")
+    assert f"{value:_.0f}" == "1_000_000", "Override the default format"
 
 
 #################################################################################

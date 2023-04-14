@@ -134,6 +134,35 @@ class Change:
 ################################################################################
 
 
+@define
+class FormattedValue:
+    """A value that knows how to format itself."""
+
+    value: Any
+    default_format: str
+
+    def __format__(self, format_spec: str, /) -> str:
+        """Return a formatted version of $value, according to format_spec or using the default."""
+        return format(self.value, format_spec or self.default_format)
+
+
+@define
+class ValueFormats:
+    """Format specifications for individual values."""
+
+    formats: dict[str, str] = {
+        "datetime64[ns]": "%F",
+        "float64": "0.0f",
+    }
+
+    def find(self, field: str, dtype: str) -> str:
+        """Return a suitable formatter string for the field, falling back on the dtype."""
+        return self.formats.get(field) or self.formats.get(str(dtype)) or ""
+
+
+################################################################################
+
+
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old: Collection, new: Collection) -> None:
