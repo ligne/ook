@@ -153,7 +153,7 @@ class FormattedValue:
 class ValueFormats:
     """Format specifications for individual values."""
 
-    formats: dict[str, str] = {
+    formats: Mapping[str, str] = {
         "datetime64[ns]": "%F",
         "float64": "0.0f",
     }
@@ -208,7 +208,7 @@ class BookFormatter(Formatter):
 class ChangeHeaderStyle(ValueFormats):
     """Format strings for header lines."""
 
-    formats: dict[str, str] = {
+    formats: Mapping[str, str] = {
         "started": "Started {Title} by {Author}",
         "finished": "Finished {Title} by {Author}",
         "added": "Added {Title} by {Author} to {Shelf}",
