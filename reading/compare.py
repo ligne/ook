@@ -2,8 +2,10 @@
 
 """Code for reporting the changes between two Collections or dataframes."""
 
+from collections.abc import Mapping, Sequence
 from enum import Enum
-from typing import Any, Optional
+from string import Formatter
+from typing import Any, Optional, Union
 
 from attr import define
 from jinja2 import Template
@@ -158,6 +160,36 @@ class ValueFormats:
     def find(self, field: str, dtype: str) -> str:
         """Return a suitable formatter string for the field, falling back on the dtype."""
         return self.formats.get(field) or self.formats.get(str(dtype)) or ""
+
+
+################################################################################
+
+
+@define
+class BookFormatter(Formatter):
+    """Format books using format-strings."""
+
+    dtypes: pd.Series
+    value_formats: ValueFormats
+
+    def get_value(
+        self,
+        key: Union[int, str],
+        args: Sequence[Any],
+        kwargs: Mapping[str, FormattedValue],
+    ) -> FormattedValue:
+        """Convert a field name into the corresponding argument."""
+        if isinstance(key, int):
+            raise ValueError("Only string identifiers are supported.")
+
+        if key in kwargs:
+            return kwargs[key]
+
+        # otherwise it's a column name
+        return FormattedValue(
+            args[0][key],
+            self.value_formats.find(key, str(self.dtypes[key])),
+        )
 
 
 ################################################################################

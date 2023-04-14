@@ -7,11 +7,13 @@ import pytest
 
 from reading.collection import Collection
 from reading.compare import (
+    BookFormatter,
     Change,
     ChangedField,
     ChangeDirection,
     ChangeEvent,
     FormattedValue,
+    ValueFormats,
     _added,
     _changed,
     _finished,
@@ -201,6 +203,64 @@ def test_formatted_value() -> None:
 
     value = FormattedValue(1e6, "0.3f")
     assert f"{value:_.0f}" == "1_000_000", "Override the default format"
+
+
+#################################################################################
+
+
+@pytest.mark.parametrize(
+    "fmt, expected",
+    [
+        (
+            "Specific field format: {Added}",
+            "Specific field format: Monday 18 April 2016",
+        ),
+        (
+            "Default field format: {Read}",
+            "Default field format: 2020-06-13",
+        ),
+        (
+            "Default dtype format: {AvgRating}",
+            "Default dtype format: 4",
+        ),
+        (
+            "Overridden dtype format: {AvgRating:06.3f}",
+            "Overridden dtype format: 04.080",
+        ),
+        (
+            "Various formatting options are available: {Work:_.0f}",
+            "Various formatting options are available: 950_451",
+        ),
+        (
+            "Multiple fields: published is {Published} and binding is {Binding}",
+            "Multiple fields: published is 1992 and binding is Paperback",
+        ),
+        (
+            "No fields to replace at all",
+            "No fields to replace at all",
+        ),
+    ],
+)
+def test_book_formatter(fmt: str, expected: str) -> None:
+    """A BookFormatter substitutes fields in the format string."""
+
+    value_formats = ValueFormats()
+    value_formats.formats["Added"] = "%A %d %B %Y"  # FIXME this modifies the class variable!
+
+    formatter = BookFormatter(c.df.dtypes, value_formats)
+
+    assert formatter.format(fmt, BOOK_READ) == expected
+
+
+def test_book_formatter_additional_args() -> None:
+    """A BookFormatter also accepts kwargs."""
+
+    formatter = BookFormatter(c.df.dtypes, ValueFormats())
+
+    assert (
+        formatter.format("I think {Title} is {opinion}", BOOK_READ, opinion="great")
+        == "I think The Crow Road is great"
+    )
 
 
 #################################################################################
