@@ -181,6 +181,10 @@ class BookFormatter(Formatter):
     dtypes: pd.Series
     value_formats: ValueFormats
 
+    def format_value(self, field: str, value: Any) -> FormattedValue:
+        """Return a value that will format correctly."""
+        return FormattedValue(value, self.value_formats.find(field, str(self.dtypes[field])))
+
     def get_value(
         self,
         key: Union[int, str],
@@ -191,14 +195,8 @@ class BookFormatter(Formatter):
         if isinstance(key, int):
             raise ValueError("Only string identifiers are supported.")
 
-        if key in kwargs:
-            return kwargs[key]
-
-        # otherwise it's a column name
-        return FormattedValue(
-            args[0][key],
-            self.value_formats.find(key, str(self.dtypes[key])),
-        )
+        # if it's not in kwargs, assume it's a column name
+        return kwargs[key] if key in kwargs else self.format_value(key, args[0][key])
 
 
 ################################################################################
@@ -244,10 +242,7 @@ class ChangeStyler:
 
     def _statement(self, book: pd.Series, field: str) -> str:
         fmt = self.statements.find(field.lower(), default="{field}: {value}")
-        value = FormattedValue(
-            book[field],
-            self.formatter.value_formats.find(field, str(self.formatter.dtypes[field])),
-        )
+        value = self.formatter.format_value(field, book[field])
 
         return self.formatter.format(fmt, book, field=field, value=value)
 
