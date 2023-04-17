@@ -306,6 +306,18 @@ def test_book_formatter_additional_args() -> None:
     )
 
 
+def test_book_formatter_not_positional() -> None:
+    """Apart from the book, only keyword arguments are allowed."""
+
+    formatter = BookFormatter(c.df.dtypes, ValueFormats())
+
+    with pytest.raises(ValueError):
+        formatter.format("Integer argument specifiers are not allowed: {0}")
+
+    with pytest.raises(ValueError):
+        formatter.format("Neither are implicit argument specifiers: {}")
+
+
 #################################################################################
 
 CHANGE_ADDED = Change(old=None, new=BOOK_UNREAD)
