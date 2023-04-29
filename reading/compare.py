@@ -131,7 +131,8 @@ class Change:
     @property
     def book(self) -> pd.Series:
         """Return the most up-to-date version of this book."""
-        return self.new if self.new is not None else self.old
+        assert (book := self.new if self.new is not None else self.old) is not None
+        return book
 
 
 ################################################################################
