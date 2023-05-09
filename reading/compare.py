@@ -241,6 +241,21 @@ class BookStatementStyle(ValueFormats):
 
 
 @define
+class ChangedFieldStyle(ValueFormats):
+    """Format strings for changed fields."""
+
+    formats: Mapping[str, str] = {
+        "author": "Author changed from {old_value}",
+        "title": "Title changed from '{old_value}'",
+        # defaults
+        "set": "{field} set to {new_value}",
+        "unset": "{field} unset (previously {old_value})",
+        "missing": "{field} not found",
+        "changed": "{field}: {old_value} → {new_value}",
+    }
+
+
+@define
 class ChangeStyler:
     """Style a Change object."""
 
@@ -249,6 +264,7 @@ class ChangeStyler:
     # format strings
     header_style = ChangeHeaderStyle()
     statement_style = BookStatementStyle()
+    change_style = ChangedFieldStyle()
 
     def _header(self, change: Change) -> str:
         return self.formatter.format(self.header_style.find(change.event.value), change.book)
@@ -260,6 +276,19 @@ class ChangeStyler:
 
         return self.formatter.format(fmt, book, field=field, value=value)
 
+    def _change(self, changed_field: ChangedField) -> str:
+        field = changed_field.name
+
+        return self.formatter.format(
+            self.change_style.find(
+                field.lower(),
+                changed_field.direction.value,  # and others...
+                default="{field}: {old_value} → {new_value}",
+            ),
+            field=field,
+            old_value=self.formatter.format_value(field, changed_field.old),
+            new_value=self.formatter.format_value(field, changed_field.new),
+        )
 
 ################################################################################
 

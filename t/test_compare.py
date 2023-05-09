@@ -417,6 +417,42 @@ def test_formatted_statement(field: str, expected: str) -> None:
     assert change_styler._statement(book, field) == expected
 
 
+@pytest.mark.parametrize(
+    "changed_field, expected",
+    (
+        pytest.param(
+            ChangedField("AuthorId", pd.NA, 123),
+            "AuthorId set to 123",
+            id="Default format for set field",
+        ),
+        pytest.param(
+            ChangedField("Series", "Something", pd.NA),
+            "Series unset (previously Something)",
+            id="Default format for unset field",
+        ),
+        pytest.param(
+            ChangedField("Rating", 3, 4),
+            "Rating: 3 → 4",
+            id="Default format for changed field",
+        ),
+        (
+            ChangedField("Author", "Old Name", "New Name"),
+            "Author changed from Old Name",
+        ),
+        (
+            ChangedField("Title", "Old Title", "New Title"),
+            "Title changed from 'Old Title'",
+        ),
+    ),
+)
+def test_formatted_change(changed_field: ChangedField, expected: str) -> None:
+    """Changed fields of various kinds."""
+
+    change_styler = ChangeStyler(BookFormatter(c.df.dtypes, ValueFormats()))
+
+    assert change_styler._change(changed_field) == expected
+
+
 #################################################################################
 
 
