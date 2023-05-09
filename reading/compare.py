@@ -170,17 +170,18 @@ class ValueFormats:
         "datetime64[ns]": "%F",
         "float64": "0.0f",
     }
+    default: str = ""
 
     def extend(self, changes: dict[str, str]) -> Self:
         """Amend the formats."""
         self.formats = self.formats | changes
         return self
 
-    def find(self, *terms: str, default: str = "") -> str:
+    def find(self, *terms: str) -> str:
         """Return a suitable formatter string for the field, falling back on the dtype."""
         return next(
             (self.formats[t] for t in terms if t in self.formats),
-            default,
+            self.default,
         )
 
 
@@ -238,6 +239,7 @@ class BookStatementStyle(ValueFormats):
         "series": "{Series} series",
         "borrowed": "Borrowed is {Borrowed}",
     }
+    default: str = "{field}: {value}"
 
 
 @define
@@ -253,6 +255,7 @@ class ChangedFieldStyle(ValueFormats):
         "missing": "{field} not found",
         "changed": "{field}: {old_value} → {new_value}",
     }
+    default: str = "{field}: {old_value} → {new_value}"
 
 
 @define
@@ -270,7 +273,7 @@ class ChangeStyler:
         return self.formatter.format(self.header_style.find(change.event.value), change.book)
 
     def _statement(self, book: pd.Series, field: str) -> str:
-        fmt = self.statement_style.find(field.lower(), default="{field}: {value}")
+        fmt = self.statement_style.find(field.lower())
         # provide a formatted value, if the field exists
         value = self.formatter.format_value(field, book[field]) if field in book else None
 
@@ -283,7 +286,6 @@ class ChangeStyler:
             self.change_style.find(
                 field.lower(),
                 changed_field.direction.value,  # and others...
-                default="{field}: {old_value} → {new_value}",
             ),
             field=field,
             old_value=self.formatter.format_value(field, changed_field.old),

@@ -275,9 +275,8 @@ def test_value_formats_find() -> None:
         value_formats.find("Blah") == ""
     ), "Not found: default empty string means format using str()"
 
-    assert (
-        value_formats.find("Blah", default=".5") == ".5"
-    ), "Not found, using the chosen default instead"
+    value_formats.default = ".5"
+    assert value_formats.find("Blah") == ".5", "Not found, using the chosen default instead"
 
 
 #################################################################################
