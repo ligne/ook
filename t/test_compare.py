@@ -50,6 +50,9 @@ assert BOOK_PENDING.Shelf == "pending"
 assert BOOK_CURRENT.Shelf == "currently-reading"
 assert BOOK_READ.Shelf == "read"
 
+BOOK_CHANGED_AVG_RATING = BOOK_UNREAD.copy()
+BOOK_CHANGED_AVG_RATING["AvgRating"] = 4.0
+assert not BOOK_UNREAD.equals(BOOK_CHANGED_AVG_RATING), "They're not equal"
 
 ################################################################################
 
@@ -191,6 +194,34 @@ def test_change(change: Change, event: ChangeEvent, predicates: dict[str, bool])
     assert change.book.equals(
         change.old if event == ChangeEvent.REMOVED else change.new
     ), "the book property gives you the new one, unless it's missing"
+
+
+@pytest.mark.parametrize(
+    "change, changes",
+    (
+        pytest.param(Change(old=BOOK_PENDING, new=BOOK_PENDING), [], id="No changes"),
+        pytest.param(
+            Change(old=BOOK_UNREAD, new=BOOK_MODIFIED),
+            [
+                ChangedField(
+                    "Title",
+                    old="The Elephant Vanishes",
+                    new="One Of Our Elephants Is Missing",
+                )
+            ],
+            id="Changed Title",
+        ),
+        pytest.param(
+            Change(old=BOOK_UNREAD, new=BOOK_CHANGED_AVG_RATING),
+            [ChangedField("AvgRating", old=3.86, new=4.0)],
+            id="Changed AvgRating",
+        ),
+    ),
+)
+def test_change_fields(change: Change, changes: list[ChangedField]) -> None:
+    """Getting the changed fields from a Change object."""
+
+    assert change.changes() == changes
 
 
 #################################################################################

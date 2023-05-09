@@ -84,6 +84,11 @@ class Change:
         )
 
     @property
+    def _change_mask(self) -> pd.Series:
+        # which fields differ between old and new (which it assumes are both defined)
+        return ~((self.old == self.new) | (self.old.isna() & self.new.isna()))
+
+    @property
     def is_added(self) -> bool:
         """Indicate whether this book did not previously exist."""
         return self.old is None
@@ -127,6 +132,13 @@ class Change:
             if self.is_modified
             else ChangeEvent.UNMODIFIED
         )
+
+    def changes(self) -> list[ChangedField]:
+        """Return a ChangedField for each change."""
+        if self.is_modified:
+            mask = self._change_mask
+            return [self.change(field) for field in mask[mask].index]
+        return []
 
     @property
     def book(self) -> pd.Series:
