@@ -247,14 +247,14 @@ class ChangeStyler:
     formatter: BookFormatter
 
     # format strings
-    headers = ChangeHeaderStyle()
-    statements = BookStatementStyle()
+    header_style = ChangeHeaderStyle()
+    statement_style = BookStatementStyle()
 
     def _header(self, change: Change) -> str:
-        return self.formatter.format(self.headers.find(change.event.value), change.book)
+        return self.formatter.format(self.header_style.find(change.event.value), change.book)
 
     def _statement(self, book: pd.Series, field: str) -> str:
-        fmt = self.statements.find(field.lower(), default="{field}: {value}")
+        fmt = self.statement_style.find(field.lower(), default="{field}: {value}")
         value = self.formatter.format_value(field, book[field])
 
         return self.formatter.format(fmt, book, field=field, value=value)
