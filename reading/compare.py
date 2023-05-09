@@ -255,7 +255,8 @@ class ChangeStyler:
 
     def _statement(self, book: pd.Series, field: str) -> str:
         fmt = self.statement_style.find(field.lower(), default="{field}: {value}")
-        value = self.formatter.format_value(field, book[field])
+        # provide a formatted value, if the field exists
+        value = self.formatter.format_value(field, book[field]) if field in book else None
 
         return self.formatter.format(fmt, book, field=field, value=value)
 
