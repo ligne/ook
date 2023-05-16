@@ -455,6 +455,110 @@ def test_formatted_change(changed_field: ChangedField, expected: str) -> None:
 #################################################################################
 
 
+def test_styled_added() -> None:
+    """Styling added books."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    change = CHANGE_ADDED
+    expected = """
+Added The Elephant Vanishes by Haruki Murakami to pending
+  * short-stories
+  * 327 pages
+  * Language: en
+"""
+    assert change_styler.render(change) == expected[1:-1]  # remove a single newline from each end
+
+    # with series and entry
+    book = c.df.loc[115069]
+    change = Change(old=None, new=book)
+    expected = """
+Added L'Argent by Émile Zola to ebooks
+  * Les Rougon-Macquart series, book 18
+  * novels
+  * 542 pages
+  * Language: fr
+"""
+    assert change_styler.render(change) == expected[1:-1]
+
+    # Series but no Entry
+    book = c.df.loc[39073893]
+    change = Change(old=None, new=book)
+    expected = """
+Added La Dame de Monsoreau by Alexandre Dumas to pending
+  * The Last Valois series
+  * novels
+  * 991 pages
+  * Language: fr
+"""
+    assert change_styler.render(change) == expected[1:-1]
+
+
+def test_styled_change_removed() -> None:
+    """Styling removed books."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    change = CHANGE_REMOVED
+    assert (
+        change_styler.render(change)
+        == "Removed The Elephant Vanishes by Haruki Murakami from pending"
+    )
+
+
+def test_styled_modified() -> None:
+    """Styling modified books."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    change = CHANGE_MODIFIED
+    expected = """
+Haruki Murakami, One Of Our Elephants Is Missing
+  * Title changed from 'The Elephant Vanishes'
+"""
+    assert change_styler.render(change) == expected[1:-1]
+
+
+def test_styled_started() -> None:
+    """Styling started books."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    change = CHANGE_STARTED
+    expected = """
+Started The Crow Road by Iain Banks
+  * novels
+  * 501 pages
+  * Language: en
+"""
+    assert change_styler.render(change) == expected[1:-1]
+
+
+def test_styled_finished() -> None:
+    """Styling finished books."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    change = CHANGE_FINISHED
+    expected = """
+Finished The Crow Road by Iain Banks
+  * Rating: 5
+  * novels
+  * Published: 1992
+  * Language: en
+  * AvgRating: 4 → 4
+"""
+    assert change_styler.render(change) == expected[1:-1]
+
+
+#################################################################################
+
+
 df = c.df.fillna("")
 
 

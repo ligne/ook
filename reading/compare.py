@@ -237,6 +237,7 @@ class BookStatementStyle(ValueFormats):
         "pages": "{Pages} pages",
         "category": "{Category}",
         "series": "{Series} series",
+        "seriesentry": "{Series} series, book {Entry}",
         "borrowed": "Borrowed is {Borrowed}",
     }
     default: str = "{field}: {value}"
@@ -259,21 +260,36 @@ class ChangedFieldStyle(ValueFormats):
 
 
 @define
+class ChangeStyle:
+    """Define the styling options for a Change."""
+
+    header_formats = ChangeHeaderStyle()
+    statement_formats = BookStatementStyle()
+    change_formats = ChangedFieldStyle()
+    prefix: str = "  * "
+    # statements to display for each different type of change
+    # FIXME make this a ValueFormats object, with ChangeEvent/list[str]
+    statements: dict[str, list[str]] = {
+        "added": ["SeriesEntry", "Category", "Pages", "Language"],  # FIXME also borrowed!
+        "started": ["SeriesEntry", "Category", "Pages", "Language"],
+        "finished": ["Rating", "Category", "Published", "Language"],
+    }
+
+
+@define
 class ChangeStyler:
     """Style a Change object."""
 
     formatter: BookFormatter
-
-    # format strings
-    header_style = ChangeHeaderStyle()
-    statement_style = BookStatementStyle()
-    change_style = ChangedFieldStyle()
+    style: ChangeStyle = ChangeStyle()
 
     def _header(self, change: Change) -> str:
-        return self.formatter.format(self.header_style.find(change.event.value), change.book)
+        return self.formatter.format(
+            self.style.header_formats.find(change.event.value), change.book
+        )
 
     def _statement(self, book: pd.Series, field: str) -> str:
-        fmt = self.statement_style.find(field.lower())
+        fmt = self.style.statement_formats.find(field.lower())
         # provide a formatted value, if the field exists
         value = self.formatter.format_value(field, book[field]) if field in book else None
 
@@ -283,7 +299,7 @@ class ChangeStyler:
         field = changed_field.name
 
         return self.formatter.format(
-            self.change_style.find(
+            self.style.change_formats.find(
                 field.lower(),
                 changed_field.direction.value,  # and others...
             ),
@@ -291,6 +307,39 @@ class ChangeStyler:
             old_value=self.formatter.format_value(field, changed_field.old),
             new_value=self.formatter.format_value(field, changed_field.new),
         )
+
+    def render(self, change: Change) -> str:
+        """Return a string representing $change."""
+        statements = self.style.statements.get(change.event.value, [])
+        book = change.book
+
+        # header
+        lines = [self._header(change)]
+
+        # statements
+        for field in statements:
+            # special-case for SeriesEntry: it falls back to plain Series if
+            # Entry is null, and is skipped altogther if Series is also missing
+            if field == "SeriesEntry":
+                if pd.isna(book.Series):
+                    continue
+                if pd.isna(book.Entry):
+                    field = "Series"
+            lines.append(self.style.prefix + self._statement(book, field))
+
+        # these changes are implied by starting/finishing
+        if change.is_started or change.is_finished:
+            statements += ["Shelf", "Scheduled", "Started", "Read"]
+
+        # changed fields not in statements
+        if not (change.is_added or change.is_removed):
+            for changed_field in change.changes():
+                if changed_field.name in statements:
+                    continue
+                lines.append(self.style.prefix + self._change(changed_field))
+
+        return "\n".join(lines)
+
 
 ################################################################################
 
