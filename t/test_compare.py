@@ -191,9 +191,13 @@ def test_change(change: Change, event: ChangeEvent, predicates: dict[str, bool])
     assert change.event == event
     check_predicates(**predicates)
 
-    assert change.book.equals(
-        change.old if event == ChangeEvent.REMOVED else change.new
-    ), "the book property gives you the new one, unless it's missing"
+    book = change.book
+    assert book is not None, "The book property returned a book"
+
+    expected = change.old if event == ChangeEvent.REMOVED else change.new
+    assert expected is not None  # make mypy happy
+
+    assert book.equals(expected), "the book property gives you the new one, unless it's missing"
 
 
 @pytest.mark.parametrize(
