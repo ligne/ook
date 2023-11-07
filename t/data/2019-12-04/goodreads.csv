@@ -135,4 +135,4 @@ BookId,Author,AuthorId,Title,Work,Shelf,Category,Scheduled,Borrowed,Series,Serie
 31226479,Terry Pratchett,1654,Wyrd Sisters,1494222,read,novels,,False,Discworld,40650,6,Mass Market Paperback,1988,en,252,2016-05-13,2016-11-03,2016-11-14,5,4.1200000000000001066
 32828220,Paul Kincaid,550793,Modern Masters of Science Fiction: Iain M. Banks,53429417,to-read,non-fiction,,False,,,,Paperback,,,200,2018-03-12,,,0,3.7700000000000000178
 35476010,Ursula K. Le Guin,874602,Orsinia,48207822,elsewhere,short-stories,,True,,,,Paperback,,en,560,2018-12-25,,,0,4.1100000000000003197
-39073893,Alexandre Dumas,4785,La Dame de Monsoreau,2369834,pending,novels,,False,,,,Paperback,1847,fr,991,2018-03-07,,,0,4.2000000000000001776
+39073893,Alexandre Dumas,4785,La Dame de Monsoreau,2369834,pending,novels,,False,The Last Valois,55137,,Paperback,1846,fr,991,2018-03-07,,,0,4.2300000000000004263
