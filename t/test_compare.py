@@ -547,6 +547,15 @@ def test_styled(change: Change, expected: str) -> None:
     assert change_styler.render(change) == expected[1:-1]  # remove a single newline from each end
 
 
+def test_style_repeatable() -> None:
+    """Rendering the same change repeatedly produces the same result."""
+
+    book_formatter = BookFormatter(c.df.dtypes, ValueFormats())
+    change_styler = ChangeStyler(book_formatter)
+
+    assert change_styler.render(CHANGE_STARTED) == change_styler.render(CHANGE_STARTED)
+
+
 #################################################################################
 
 

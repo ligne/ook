@@ -310,7 +310,7 @@ class ChangeStyler:
 
     def render(self, change: Change) -> str:
         """Return a string representing $change."""
-        statements = self.style.statements.get(change.event.value, [])
+        statements = list(self.style.statements.get(change.event.value, []))
         book = change.book
 
         # header
