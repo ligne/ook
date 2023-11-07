@@ -330,6 +330,8 @@ class ChangeStyler:
         # these changes are implied by starting/finishing
         if change.is_started or change.is_finished:
             statements += ["Shelf", "Scheduled", "Started", "Read"]
+            # FIXME do want these...
+            statements += ["Duration", "Rate"]
 
         # changed fields not in statements
         if not (change.is_added or change.is_removed):
