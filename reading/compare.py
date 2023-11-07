@@ -12,10 +12,10 @@ from jinja2 import Template
 import pandas as pd
 from typing_extensions import Self
 
-from reading.collection import Collection
+from .collection import Collection
 
 
-ignore_columns = [
+IGNORE_COLUMNS = [
     "AvgRating",
 ]
 
@@ -282,6 +282,7 @@ class ChangeStyler:
 
     formatter: BookFormatter
     style: ChangeStyle = ChangeStyle()
+    ignore_columns: list[str] = IGNORE_COLUMNS
 
     def _header(self, change: Change) -> str:
         return self.formatter.format(
@@ -332,6 +333,7 @@ class ChangeStyler:
             statements += ["Shelf", "Scheduled", "Started", "Read"]
             # FIXME do want these...
             statements += ["Duration", "Rate"]
+        statements += self.ignore_columns
 
         # changed fields not in statements
         if not (change.is_added or change.is_removed):
@@ -416,8 +418,8 @@ def _removed(book):
     ).render(b=book)
 
 
-def _changed(old, new):
-    columns = [c for c in new.index if c not in ignore_columns]
+def _changed(old, new):  # pragma: no cover
+    columns = [c for c in new.index if c not in IGNORE_COLUMNS]
 
     old = old[columns]
     new = new[columns]

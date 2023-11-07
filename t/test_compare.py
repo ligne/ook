@@ -532,7 +532,6 @@ Finished The Crow Road by Iain Banks
   * novels
   * Published: 1992
   * Language: en
-  * AvgRating: 4 → 4
 """,
             id="Styling a Finished book",
         ),
