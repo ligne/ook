@@ -101,6 +101,8 @@ def test_collection_columns() -> None:
         "Words",
         "Gender",
         "Nationality",
+        "Duration",
+        "Rate",
         "_Mask",  # FIXME
     ]
 

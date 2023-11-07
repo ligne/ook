@@ -180,7 +180,14 @@ class Collection:
             raise ValueError("dedup=True requires merge=True")
 
     def __attrs_post_init__(self) -> None:
-        """Set up accounting for filtered books."""
+        """Set up calculated columns and accounting for filtered books."""
+        df = self._df
+        # cast to timedelta or it explodes when there are no read books
+        duration = (df.Read - df.Started).astype("timedelta64[ns]").dt.days + 1
+        self._df = df.assign(
+            Duration=duration,
+            Rate=round(df.Pages / duration),
+        )
         self.reset()
 
     ############################################################################
