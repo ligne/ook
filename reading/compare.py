@@ -382,7 +382,7 @@ def _compare_with_work(old, new):
         .values
     )
 
-    for ix in wids:
+    for ix in sorted(wids):
         _o = old[old["Work"] == ix]
         _n = new[new["Work"] == ix]
 
@@ -391,7 +391,11 @@ def _compare_with_work(old, new):
             if changed:
                 print(changed)
         elif not _n.empty:
-            print(_added(_n.iloc[0]))
+            book = _n.iloc[0]
+            if book.Shelf == "read":
+                print(_finished(book))
+            else:
+                print(_added(_n.iloc[0]))
         else:
             print(_removed(_o.iloc[0]))
 
@@ -503,12 +507,12 @@ def _started(book):
 def _finished(book):
     return Template(
         """Finished {{b.Title}} by {{b.Author}}
-  * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days}} days)
+  * {{b.Started.date()}} → {{b.Read.date()}} ({{(b.Read - b.Started).days + 1}} days)
   {%- if b.Pages|int %}
   * {{b.Pages|int}} pages, {{(b.Pages / ((b.Read - b.Started).days + 1))|round|int}} pages/day
   {%- endif %}
   * Rating: {{b.Rating|int}}
-  * Category: {{b.Category}}
+  * {{b.Category}}
   * Published: {{b.Published|int}}
   * Language: {{b.Language}}
 """
