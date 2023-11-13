@@ -367,7 +367,7 @@ CHANGE_MODIFIED = Change(old=BOOK_UNREAD, new=BOOK_MODIFIED)
         (
             CHANGE_ADDED,
             ChangeEvent.ADDED,
-            "Added The Elephant Vanishes by Haruki Murakami to pending",
+            "Added The Elephant Vanishes by Haruki Murakami to shelf 'pending'",
         ),
         (
             CHANGE_REMOVED,
@@ -440,7 +440,7 @@ def test_formatted_statement(field: str, expected: str) -> None:
         ),
         (
             ChangedField("Author", "Old Name", "New Name"),
-            "Author changed from Old Name",
+            "Author changed from 'Old Name'",
         ),
         (
             ChangedField("Title", "Old Title", "New Title"),
@@ -466,7 +466,7 @@ def test_formatted_change(changed_field: ChangedField, expected: str) -> None:
         pytest.param(
             CHANGE_ADDED,
             """
-Added The Elephant Vanishes by Haruki Murakami to pending
+Added The Elephant Vanishes by Haruki Murakami to shelf 'pending'
   * short-stories
   * 327 pages
   * Language: en
@@ -476,8 +476,8 @@ Added The Elephant Vanishes by Haruki Murakami to pending
         pytest.param(
             Change(old=None, new=c.df.loc[115069]),
             """
-Added L'Argent by Émile Zola to ebooks
-  * Les Rougon-Macquart series, book 18
+Added L'Argent by Émile Zola to shelf 'ebooks'
+  * Les Rougon-Macquart series, Book 18
   * novels
   * 542 pages
   * Language: fr
@@ -487,7 +487,7 @@ Added L'Argent by Émile Zola to ebooks
         pytest.param(
             Change(old=None, new=c.df.loc[39073893]),
             """
-Added La Dame de Monsoreau by Alexandre Dumas to pending
+Added La Dame de Monsoreau by Alexandre Dumas to shelf 'pending'
   * The Last Valois series
   * novels
   * 991 pages
@@ -528,6 +528,8 @@ Started The Crow Road by Iain Banks
             CHANGE_FINISHED,
             """
 Finished The Crow Road by Iain Banks
+  * 2020-06-06 → 2020-06-13 (8 days)
+  * 501 pages, 63 pages/day
   * Rating: 5
   * novels
   * Published: 1992
@@ -610,10 +612,10 @@ def test__finished() -> None:
         _finished(df.loc[491030])
         == """
 Finished The Bridge by Iain Banks
-  * 2016-07-19 → 2016-08-10 (22 days)
+  * 2016-07-19 → 2016-08-10 (23 days)
   * 288 pages, 13 pages/day
   * Rating: 4
-  * Category: novels
+  * novels
   * Published: 1986
   * Language: en
 """.strip()
@@ -624,10 +626,10 @@ Finished The Bridge by Iain Banks
         _finished(df.loc[25965499])
         == """
 Finished A Few Notes on the Culture by Iain M. Banks
-  * 2018-12-31 → 2018-12-31 (0 days)
+  * 2018-12-31 → 2018-12-31 (1 days)
   * 17 pages, 17 pages/day
   * Rating: 4
-  * Category: non-fiction
+  * non-fiction
   * Published: 1994
   * Language: en
 """.strip()
