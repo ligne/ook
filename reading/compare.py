@@ -223,7 +223,7 @@ class ChangeHeaderStyle(ValueFormats):
     formats: Mapping[str, str] = {
         "started": "Started {Title} by {Author}",
         "finished": "Finished {Title} by {Author}",
-        "added": "Added {Title} by {Author} to {Shelf}",
+        "added": "Added {Title} by {Author} to shelf '{Shelf}'",
         "removed": "Removed {Title} by {Author} from {Shelf}",
         "modified": "{Author}, {Title}",
     }
@@ -237,8 +237,10 @@ class BookStatementStyle(ValueFormats):
         "pages": "{Pages} pages",
         "category": "{Category}",
         "series": "{Series} series",
-        "seriesentry": "{Series} series, book {Entry}",
+        "seriesentry": "{Series} series, Book {Entry}",
         "borrowed": "Borrowed is {Borrowed}",
+        "duration": "{Started} → {Read} ({Duration} days)",
+        "rate": "{Pages} pages, {Rate} pages/day",
     }
     default: str = "{field}: {value}"
 
@@ -248,7 +250,7 @@ class ChangedFieldStyle(ValueFormats):
     """Format strings for changed fields."""
 
     formats: Mapping[str, str] = {
-        "author": "Author changed from {old_value}",
+        "author": "Author changed from '{old_value}'",
         "title": "Title changed from '{old_value}'",
         # defaults
         "set": "{field} set to {new_value}",
@@ -272,7 +274,7 @@ class ChangeStyle:
     statements: dict[str, list[str]] = {
         "added": ["SeriesEntry", "Category", "Pages", "Language"],  # FIXME also borrowed!
         "started": ["SeriesEntry", "Category", "Pages", "Language"],
-        "finished": ["Rating", "Category", "Published", "Language"],
+        "finished": ["Duration", "Rate", "Rating", "Category", "Published", "Language"],
     }
 
 
