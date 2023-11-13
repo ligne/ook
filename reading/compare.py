@@ -446,14 +446,14 @@ def _changed(old, new):  # pragma: no cover
 {%- for col in new.index -%}
   {%- if old[col] != new[col] %}
 
-      {%- if old[col] and not new[col] %}
+      {%- if old[col] and not new[col] and col != "Borrowed" %}
         {%- if col in ('Scheduled') %}
   * Unscheduled for {{old[col].year}}
         {%- else %}
   * {{col}} unset (previously {{old[col]}})
         {%- endif %}
 
-      {%- elif new[col] and not old[col] %}
+      {%- elif new[col] and not old[col] and old[col] != 0 %}
         {%- if col in ('Scheduled') %}
   * {{col}} for {{new[col].year}}
         {%- elif new[col] is number %}
