@@ -372,7 +372,7 @@ CHANGE_MODIFIED = Change(old=BOOK_UNREAD, new=BOOK_MODIFIED)
         (
             CHANGE_REMOVED,
             ChangeEvent.REMOVED,
-            "Removed The Elephant Vanishes by Haruki Murakami from pending",
+            "Removed The Elephant Vanishes by Haruki Murakami from shelf 'pending'",
         ),
         (
             CHANGE_STARTED,
@@ -499,7 +499,7 @@ Added La Dame de Monsoreau by Alexandre Dumas to shelf 'pending'
         pytest.param(
             CHANGE_REMOVED,
             """
-Removed The Elephant Vanishes by Haruki Murakami from pending
+Removed The Elephant Vanishes by Haruki Murakami from shelf 'pending'
 """,
             id="Styling a Removed book",
         ),

@@ -169,6 +169,7 @@ class ValueFormats:
     formats: Mapping[str, str] = {
         "datetime64[ns]": "%F",
         "float64": "0.0f",
+        "Scheduled": "%Y",
     }
     default: str = ""
 
@@ -224,7 +225,7 @@ class ChangeHeaderStyle(ValueFormats):
         "started": "Started {Title} by {Author}",
         "finished": "Finished {Title} by {Author}",
         "added": "Added {Title} by {Author} to shelf '{Shelf}'",
-        "removed": "Removed {Title} by {Author} from {Shelf}",
+        "removed": "Removed {Title} by {Author} from shelf '{Shelf}'",
         "modified": "{Author}, {Title}",
     }
 
@@ -252,6 +253,8 @@ class ChangedFieldStyle(ValueFormats):
     formats: Mapping[str, str] = {
         "author": "Author changed from '{old_value}'",
         "title": "Title changed from '{old_value}'",
+        "scheduled_set": "Scheduled for {new_value}",
+        "scheduled_unset": "Unscheduled for {old_value}",
         # defaults
         "set": "{field} set to {new_value}",
         "unset": "{field} unset (previously {old_value})",
@@ -303,6 +306,7 @@ class ChangeStyler:
 
         return self.formatter.format(
             self.style.change_formats.find(
+                f"{field.lower()}_{changed_field.direction.value}",
                 field.lower(),
                 changed_field.direction.value,  # and others...
             ),
@@ -334,7 +338,24 @@ class ChangeStyler:
         if change.is_started or change.is_finished:
             statements += ["Shelf", "Scheduled", "Started", "Read"]
             # FIXME do want these...
-            statements += ["Duration", "Rate"]
+            statements += [
+                "Added",
+                "Binding",
+                "Borrowed",
+                "Duration",
+                "Entry",
+                "Gender",
+                "Nationality",
+                "Pages",
+                "Published",
+                "Rate",
+                "Series",
+                "SeriesId",
+                "Title",
+                "Author",
+                "AuthorId",
+                "Work",
+            ]
         statements += self.ignore_columns
 
         # changed fields not in statements
@@ -408,7 +429,7 @@ def _added(book):
     return Template(
         """Added {{b.Title}} by {{b.Author}} to shelf '{{b.Shelf}}'
 {%- if b.Series %}
-  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry|int}}{%endif %}
+  * {{b.Series}} series{% if b.Entry %}, Book {{b.Entry}}{%endif %}
 {%- endif %}
   * {% if b.Category %}{{b.Category}}{% else %}Category not found{% endif %}
   * {% if "Pages" in b %}{{b.Pages|int}} pages{% else %}{{b.Words|int}} words{% endif %}
@@ -449,6 +470,10 @@ def _changed(old, new):  # pragma: no cover
       {%- if old[col] and not new[col] and col != "Borrowed" %}
         {%- if col in ('Scheduled') %}
   * Unscheduled for {{old[col].year}}
+        {%- elif old[col] is number %}
+  * {{col}} unset (previously {{old[col]|int}})
+        {%- elif col in ('Started') %}
+  * {{col}} unset (previously {{old[col].date()}})
         {%- else %}
   * {{col}} unset (previously {{old[col]}})
         {%- endif %}
