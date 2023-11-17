@@ -408,14 +408,18 @@ def _compare_with_work(old, new):
         _n = new[new["Work"] == ix]
 
         if not _o.empty and not _n.empty:
-            changed = _changed(_o.iloc[0], _n.iloc[0])
-            if changed:
-                print(changed)
+            if len(_o) == 1 and len(_n) == 2 and _o.index[0] == _n.index[1]:
+                print(_added(_n.iloc[0]))
+            else:
+                if changed := _changed(_o.iloc[0], _n.iloc[0]):
+                    print(changed)
         elif not _n.empty:
             book = _n.iloc[0]
             if book.Shelf == "read":
                 print(_finished(book))
-            else:
+            elif book.Shelf == "currently-reading":
+                print(_started(book))
+            elif _n.index[0] not in seen:
                 print(_added(_n.iloc[0]))
         else:
             print(_removed(_o.iloc[0]))
