@@ -371,11 +371,61 @@ class ChangeStyler:
 ################################################################################
 
 
+def _compare(styler, c_old, c_new) -> None:
+    """Compare two Collections and print the formatted results."""
+    old = c_old.all.convert_dtypes()
+    new = c_new.all.convert_dtypes()
+
+    common_indices = old.index.intersection(new.index)
+    new_indices = new.index.difference(old.index)
+    old_indices = old.index.difference(new.index)
+
+    # changed
+    for ix in common_indices:
+        change = Change(old.loc[ix], new.loc[ix])
+        mask = change._change_mask
+        if change.is_modified and list(mask[mask].index) != ["AvgRating"]:
+            print(styler.render(change))
+
+    # added/removed/changed edition
+
+    # filter out entries that have already been dealt with, and select on Work
+    # instead of BookId
+    old = old.loc[old_indices].set_index("Work", drop=False)
+    new = new.loc[new_indices].set_index("Work", drop=False)
+
+    common_indices = old.index.intersection(new.index)
+    new_indices = new.index.difference(old.index)
+    old_indices = old.index.difference(new.index)
+
+    changes = {}
+
+    # added
+    for ix in new_indices:
+        change = Change(None, new.loc[ix])
+        # print(styler.render(change))
+        changes[ix] = styler.render(change)
+
+    # removed
+    for ix in old_indices:
+        change = Change(old.loc[ix], None)
+        # print(styler.render(change))
+        changes[ix] = styler.render(change)
+
+    # general changes
+    for ix in common_indices:
+        change = Change(old.loc[ix], new.loc[ix])
+        # print(styler.render(change))
+        changes[ix] = styler.render(change)
+
+    for ix, change in sorted(changes.items()):
+        print(change)
+
+
 # work out what books have been added, removed, had their edition changed, or
 # have updates.
 def compare(old: Collection, new: Collection) -> None:
     """Show how $old and $new dataframes differ, in a way that makes sense for ook."""
-
     _compare_with_work(
         old.all.fillna(""),
         new.all.fillna(""),
