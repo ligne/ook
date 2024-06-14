@@ -21,11 +21,11 @@ def test_chain() -> None:
     s = Chain(df=c.all)
 
     assert s, "Created a Chain"
-    assert s.order == Order.Published, "Default is to use published order"
-    assert s.missing == Missing.Ignore, "Default is to ignore"
+    assert s.order == Order.PUBLISHED, "Default is to use published order"
+    assert s.missing == Missing.IGNORE, "Default is to ignore"
 
     assert (
-        repr(s) == "Chain(_df=[157 books], order=Order.Published, missing=Missing.Ignore)"
+        repr(s) == "Chain(_df=[157 books], order=Order.PUBLISHED, missing=Missing.IGNORE)"
     ), "Legible __repr__ for the Chain"
 
 
@@ -34,8 +34,8 @@ def test_from_series_id() -> None:
 
     s = Chain.from_series_id(c.all, 49118)
     assert s, "Created a Chain from a SeriesId"
-    assert s.order == Order.Series, "Series are read in order"
-    assert s.missing == Missing.Ignore, "Missing books are ignored by default"
+    assert s.order == Order.SERIES, "Series are read in order"
+    assert s.missing == Missing.IGNORE, "Missing books are ignored by default"
 
 
 def test_from_series_name() -> None:
@@ -43,8 +43,8 @@ def test_from_series_name() -> None:
 
     s = Chain.from_series_name(c.all, "Culture")
     assert s, "Created a Chain from a series name"
-    assert s.order == Order.Series, "Series are read in order"
-    assert s.missing == Missing.Ignore, "Missing books are ignored by default"
+    assert s.order == Order.SERIES, "Series are read in order"
+    assert s.missing == Missing.IGNORE, "Missing books are ignored by default"
 
     # FIXME missing/duplicate series names
 
@@ -54,8 +54,8 @@ def test_from_author_id() -> None:
 
     s = Chain.from_author_id(c.all, 3354)
     assert s, "Created a Chain from an AuthorId"
-    assert s.order == Order.Published, "Authors are read in published order by default"
-    assert s.missing == Missing.Ignore, "Authors have no missing books to ignore"
+    assert s.order == Order.PUBLISHED, "Authors are read in published order by default"
+    assert s.missing == Missing.IGNORE, "Authors have no missing books to ignore"
 
 
 def test_from_author_name() -> None:
@@ -63,8 +63,8 @@ def test_from_author_name() -> None:
 
     s = Chain.from_author_name(c.all, "Murakami")
     assert s, "Created a Chain from an author name"
-    assert s.order == Order.Published, "Authors are read in published order by default"
-    assert s.missing == Missing.Ignore, "Authors have no missing books to ignore"
+    assert s.order == Order.PUBLISHED, "Authors are read in published order by default"
+    assert s.missing == Missing.IGNORE, "Authors have no missing books to ignore"
 
     # FIXME missing/duplicate author names
 
@@ -72,8 +72,8 @@ def test_from_author_name() -> None:
 def test_chain_options() -> None:
     c = Collection.from_dir("t/data/2019-12-04")
 
-    s = Chain.from_series_id(c.all, 49118, order=Order.Published)
-    assert s.order == Order.Published, "Can override the order of series"
+    s = Chain.from_series_id(c.all, 49118, order=Order.PUBLISHED)
+    assert s.order == Order.PUBLISHED, "Can override the order of series"
 
     # FIXME no alternative Missing values to test
 
@@ -132,15 +132,15 @@ def test_sort() -> None:
     # shuffle them up a bit
     books = c.df[c.df.Series.str.contains("Culture", na=False)].sort_values("Title")
 
-    s = Chain(df=books, order=Order.Published)
+    s = Chain(df=books, order=Order.PUBLISHED)
     values = list(s.sort()._df.Published)
     assert values == sorted(values), "Sorted by published date"
 
-    s.order = Order.Series
+    s.order = Order.SERIES
     values = list(s.sort()._df.Entry)
     assert values == sorted(values), "Sorted by entry"
 
-    s.order = Order.Added
+    s.order = Order.ADDED
     values = list(s.sort()._df.Added)
     assert values == sorted(values), "Sorted by added date"
 
@@ -173,7 +173,7 @@ def test_remaining() -> None:
         "to-read",
     }
 
-    s = Chain(df=books, order=Order.Published)
+    s = Chain(df=books, order=Order.PUBLISHED)
 
     remaining = s.remaining
     assert set(remaining.Shelf) == all_shelves - {

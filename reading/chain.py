@@ -15,9 +15,9 @@ TODAY = pd.Timestamp.today()
 class Order(Enum):
     """Sorting options for a Chain."""
 
-    Series = 0
-    Published = 1
-    Added = 2
+    SERIES = "series"
+    PUBLISHED = "published"
+    ADDED = "added"
 
 
 # missing books (for series only)
@@ -28,7 +28,7 @@ class Order(Enum):
 class Missing(Enum):
     """How to handle missing entries in a Series-based Chain."""
 
-    Ignore = 0
+    IGNORE = "ignore"
 
 
 ################################################################################
@@ -57,29 +57,29 @@ class Chain:
     """An ordered group of books."""
 
     _df: pd.DataFrame = attr.ib(repr=lambda df: f"[{len(df)} books]")
-    order: Order = attr.ib(default=Order.Published, repr=str)
-    missing: Missing = attr.ib(default=Missing.Ignore, repr=str)
+    order: Order = attr.ib(default=Order.PUBLISHED, repr=str)
+    missing: Missing = attr.ib(default=Missing.IGNORE, repr=str)
 
     ############################################################################
 
     @classmethod
-    def from_series_id(cls, df, series_id, order=Order.Series, missing=Missing.Ignore):
+    def from_series_id(cls, df, series_id, order=Order.SERIES, missing=Missing.IGNORE):
         """Create from a SeriesId."""
         return cls(df=df[df.SeriesId == series_id], order=order, missing=missing)
 
     @classmethod
-    def from_series_name(cls, df, name, order=Order.Series, missing=Missing.Ignore):
+    def from_series_name(cls, df, name, order=Order.SERIES, missing=Missing.IGNORE):
         """Create from a Series name."""
         series_id = series_id_from_name(df, name)
         return cls.from_series_id(df, series_id, order=order, missing=missing)
 
     @classmethod
-    def from_author_id(cls, df, author_id, order=Order.Published):
+    def from_author_id(cls, df, author_id, order=Order.PUBLISHED):
         """Create from an AuthorId."""
-        return cls(df=df[df.AuthorId == author_id], order=order, missing=Missing.Ignore)
+        return cls(df=df[df.AuthorId == author_id], order=order, missing=Missing.IGNORE)
 
     @classmethod
-    def from_author_name(cls, df, name, order=Order.Published):
+    def from_author_name(cls, df, name, order=Order.PUBLISHED):
         """Create from an Author name."""
         author_id = author_id_from_name(df, name)
         return cls.from_author_id(df, author_id, order=order)
@@ -106,18 +106,19 @@ class Chain:
 
     def sort(self):
         """Sort the books in-place."""
-        if self.order == Order.Series:
+        if self.order == Order.SERIES:
             entries = self._df.Entry.str.split("|").apply(_entries_for_sorting)
             self._df = self._df.iloc[entries.argsort()]
-        elif self.order == Order.Published:
+        elif self.order == Order.PUBLISHED:
             self._df = self._df.sort_values("Published")
-        elif self.order == Order.Added:
+        elif self.order == Order.ADDED:
             self._df = self._df.sort_values("Added")
         else:
             raise ValueError(f"Unknown sort option {self.order}")  # pragma: no cover
 
         return self
 
+    # FIXME these should just return the index
     @property
     def remaining(self):
         """Return a dataframe of the books that are still to be read, in the order to read them."""
@@ -127,7 +128,7 @@ class Chain:
     @property
     def readable(self):
         """Return a dataframe of readable books in order."""
-        if self.missing == Missing.Ignore:
+        if self.missing == Missing.IGNORE:
             return self.remaining
         raise ValueError(f"Unknown missing option {self.missing}")  # pragma: no cover
 
