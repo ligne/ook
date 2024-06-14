@@ -8,7 +8,7 @@ from typing import Optional
 
 import bs4
 from bs4 import BeautifulSoup
-import dateutil
+from dateutil import parser as du_parser  # https://github.com/python/typeshed/issues/9377
 import pandas as pd
 
 
@@ -47,7 +47,7 @@ def read_date(review: bs4.element.Tag) -> Optional[datetime.date]:
 
 def _get_date(review: bs4.element.Tag, field: str) -> Optional[datetime.date]:
     if date_tag := review.find("span", class_=field):
-        return dateutil.parser.parse(
+        return du_parser.parse(
             date_tag.text,
             default=datetime.datetime(2018, 1, 1),
         )
