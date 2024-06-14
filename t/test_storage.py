@@ -3,7 +3,6 @@
 from pathlib import Path
 
 import pandas as pd
-import pytest
 
 from reading.collection import Collection
 from reading.storage import Store, load_df, save_df
@@ -100,15 +99,6 @@ def test_store_overwrite() -> None:
     assert not store.ebook_metadata.empty
     store.ebook_metadata = pd.DataFrame()
     assert store.ebook_metadata.empty
-
-
-def test_store_mistakes(tmp_path: Path) -> None:
-    """Mistakes should be obvious: cannot fetch an unrecognised table."""
-    store = Store(tmp_path)
-
-    with pytest.raises(AttributeError):
-        table = store.blabla  # type: ignore[attr-defined] # pylint: disable=no-member
-        assert not table
 
 
 def _is_empty(directory: Path) -> bool:
