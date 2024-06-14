@@ -273,8 +273,10 @@ def lint_binding():
         "Relié",
         "Board book",
         "Unknown Binding",
+        "Pocket Book",
     ]
     c = Collection.from_dir().shelves("kindle", exclude=True)
+    # FIXME check that ebooks aren't on weird shelves
     return {
         "df": c.df[~(c.df.Binding.isin(good_bindings) | c.df.Binding.isnull())],
         "template": """
