@@ -36,12 +36,12 @@ class Missing(Enum):
 
 def author_id_from_name(df, name):
     """Get the AuthorId from a name."""
-    return list(df[df.Author.str.contains(name, na=False)].AuthorId)[0]
+    return list(df[df.Author.str.contains(name, na=False, regex=False)].AuthorId)[0]
 
 
 def series_id_from_name(df, name):
     """Get the SeriesId from a name."""
-    return list(df[df.Series.str.contains(name, na=False)].SeriesId)[0]
+    return list(df[df.Series.str.contains(name, na=False, regex=False)].SeriesId)[0]
 
 
 # convert a list of entries as integers
