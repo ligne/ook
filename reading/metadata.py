@@ -67,7 +67,7 @@ def _list_author_choices(results):
         """
 {%- for entry in results %}
   {%- if loop.first %}\033[1m{% endif %} {{loop.index}}. {%- if loop.first %}\033[0m{% endif %}
- {%- if True %} {{entry.Label}}{% endif %}
+ {%- if True %} {{entry.Label}} ({{entry.QID}}){% endif %}
     {%- if entry.Description %}
     {{entry.Description}}
     {%- endif %}
