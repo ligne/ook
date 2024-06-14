@@ -117,7 +117,11 @@ class Entity:
     @property
     def label(self) -> str:
         """Return the label."""
-        return self.entity["labels"]["en"]["value"]
+        try:
+            return self.entity["labels"]["en"]["value"]
+        except KeyError:
+            print(f"https://www.wikidata.org/wiki/{self.qid}")
+            return ""
 
     @property
     def description(self) -> str:
