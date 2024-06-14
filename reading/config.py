@@ -10,7 +10,7 @@ import yaml
 
 
 SHELVES = {"pending", "elsewhere", "library", "ebooks", "kindle", "to-read"}
-CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "articles"}
+CATEGORIES = {"novels", "short-stories", "non-fiction", "graphic", "poetry", "articles"}
 
 
 class ColumnBase(TypedDict):
@@ -284,6 +284,8 @@ class Config:
         """Create from $filename."""
         try:
             with open(filename) as fh:
+                # from yaml import CSafeLoader
+                # conf = yaml.load(fh, Loader=CSafeLoader)
                 conf = yaml.safe_load(fh)
         except FileNotFoundError:
             conf = {}
