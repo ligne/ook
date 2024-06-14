@@ -5,19 +5,13 @@
 import textwrap
 from typing import Callable, Literal, Union
 
-import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 from .collection import Collection
 from .config import Config
 
-
-# persuade isort that the backend needs to be set *before* plt is created
-# FIXME longer-term we should stop using the pyplot interface
-if True:  # pylint: disable=using-constant-test
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt  # pylint: disable=ungrouped-imports,useless-suppression
 
 # the cutoff year before which books are considered "old".
 thresh = 1940
