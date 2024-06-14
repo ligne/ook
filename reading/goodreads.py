@@ -6,7 +6,7 @@ from functools import reduce
 import operator
 import re
 import time
-from typing import List
+from typing import List, Mapping
 from xml.etree import ElementTree
 
 from dateutil.parser import parse
@@ -24,18 +24,25 @@ def get_books(user_id, api_key, start_date, ignore_series):
     start_date = pd.Timestamp(start_date)
 
     while True:
-        url = f"https://www.goodreads.com/review/list/{user_id}.xml"
-        r = requests.get(
-            url,
-            params={
-                "key": api_key,
-                "v": 2,
-                "per_page": 100,
-                "page": page,
-            },
-        )
+        # url = f"https://www.goodreads.com/review/list/{user_id}.xml"
+        # r = requests.get(
+        #    url,
+        #    params={
+        #        "key": api_key,
+        #        "v": 2,
+        #        "per_page": 100,
+        #        "page": page,
+        #    },
+        # )
+        # with open(f"data/cache/reviews-{page:02d}.xml", "wb") as fh:
+        #    fh.write(r.content)
+        #
+        # x = ElementTree.fromstring(r.content)
 
-        x = ElementTree.fromstring(r.content)
+        from pathlib import Path
+
+        reviews_file = Path(f"tmp_cache/reviews/{page:03d}.xml")
+        x = ElementTree.fromstring(reviews_file.read_text())
 
         for r in x.findall("reviews/"):
             book = process_review(r)
@@ -68,6 +75,11 @@ def process_review(r):
     sched = [s.get("name") for s in r.findall("shelves/") if re.match(r"^\d{4}$", s.get("name"))]
     scheduled = pd.Timestamp(len(sched) and min(sched) or None)
 
+    shelf = r.find("shelves/shelf[@exclusive='true']").get("name")
+    started = (
+        _get_date(r, "started_at") if shelf in ["currently-reading", "read"] else pd.Timestamp(None)
+    )
+
     row = {
         "BookId": int(r.find("book/id").text),
         "Work": int(r.find("book/work/id").text),
@@ -75,11 +87,11 @@ def process_review(r):
         "AuthorId": int(r.find("book/authors/author/id").text),
         "Title": r.find("book/title_without_series").text,
         "Added": _get_date(r, "date_added"),
-        "Started": _get_date(r, "started_at"),
+        "Started": started,
         "Read": _get_date(r, "read_at"),
         "AvgRating": float(r.find("book/average_rating").text),
         "Rating": int(r.find("rating").text),
-        "Shelf": r.find("shelves/shelf[@exclusive='true']").get("name"),
+        "Shelf": shelf,
         "Binding": r.find("book/format").text,
         "Scheduled": scheduled,
         "Borrowed": bool(r.findall("shelves/shelf[@name='borrowed']")),
@@ -111,7 +123,12 @@ def fetch_book(book_id, api_key, ignore_series):
                 api_key,
             )
         )
-        if interesting(series_info["Entry"], series):
+
+        # set it from the series API if it's missing from the book API. sigh.
+        if not series_info["Entry"]:
+            series_info["Entry"] = series["Works"].get(book["Work"])
+
+        if series_info["Entry"] and interesting(series_info["Entry"], series):
             book.update(series_info)
 
     return book
@@ -119,6 +136,7 @@ def fetch_book(book_id, api_key, ignore_series):
 
 def _fetch_book_api(book_id, api_key):
     fname = "data/cache/book/{}.xml".format(book_id)
+    fname = f"tmp_cache/books/{book_id}.xml"
     try:
         with open(fname) as fh:
             xml = fh.read()
@@ -169,7 +187,7 @@ def _parse_book_series(xml, ignore):
         series_name = series.find("series/title").text.strip()
         entry = series.find("user_position").text
 
-        if entry and series_id not in ignore:
+        if series_id not in ignore:
             return {
                 "SeriesId": series_id,
                 "Series": series_name,
@@ -225,6 +243,7 @@ def update_books(
 
 def _fetch_series(series_id, api_key):
     fname = "data/cache/series/{}.xml".format(series_id)
+    fname = f"tmp_cache/series/{series_id}.xml"
     try:
         with open(fname) as fh:
             xml = fh.read()
@@ -241,13 +260,24 @@ def _fetch_series(series_id, api_key):
 
 
 def _parse_series(xml):
+    # all the entries associated with this series
     entries = []
+    # map from the Work ID to the associated Entry string, so we can fill it in
+    # when it's missing from the book API data
+    works: Mapping[int, str] = {}
+
     for work in xml.find("series/series_works"):
         entries.extend(_parse_entries(work.find("user_position").text))
+        if work_id := int(work.find("work/id").text):
+            works[work_id] = "|".join(
+                str(x) for x in _parse_entries(work.find("user_position").text)
+            )
+
     return {
         "Series": xml.find("series/title").text.strip(),
         "Count": xml.find("series/primary_work_count").text,
         "Entries": [str(x) for x in sorted(set(entries))],
+        "Works": works,
     }
 
 
