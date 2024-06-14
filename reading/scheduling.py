@@ -40,14 +40,20 @@ def main() -> None:  # pragma: no cover
     for schedule in schedules:
         # find the books
         title = schedule.get("author") or schedule.get("series")
+        print(title)
+
         if "author" in schedule:
             chain = Chain.from_author_name(df, schedule.pop("author"))
         elif "series" in schedule:
             chain = Chain.from_series_name(df, schedule.pop("series"))
 
+        if chain.remaining.empty:
+            print("!!! Finished !!!")
+            print()
+            continue
+
         # schedule using the other arguments
         book_ids, _ = zip(*chain.schedule(**schedule))
-        print(title)
         for book_id in book_ids:
             print(
                 "{book.Scheduled:%F} {book.Title} ({book.Published:.0f})".format(
