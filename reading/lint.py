@@ -11,6 +11,9 @@ from .collection import Collection, _process_fixes
 from .config import Config
 
 
+# FIXME also lint the config: schedules set to start in the past, that don't
+# match any books, etc.
+
 ################################################################################
 
 _LINTERS = {}
@@ -49,7 +52,7 @@ def lint_words_per_page():
     df["wpp"] = df.Words / df.Pages
 
     return {
-        "df": df[(df.wpp < 150) | (df.wpp > 700) & (df.Pages > 10)],
+        "df": df[(df.wpp < 150) | (df.wpp > 700)],
         "template": """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}
@@ -210,6 +213,8 @@ def lint_scheduling(config):
     return {
         "df": df[
             df.Scheduled.notna()
+            # FIXME this doesn't work if the start date is set beyond horizon,
+            # but using Got doesn't work if the book hasn't been tagged yet
             & (df.Scheduled.dt.year < horizon)
             & (df.Got.dt.year != df.Scheduled.dt.year)
         ],
@@ -244,6 +249,24 @@ def lint_duplicates():
         }
     )
     df = df.groupby("Work").filter(lambda x: ~x.Shelf.isin(acceptable))
+
+    # deduplicate first and try again...
+    _df = Collection.from_dir(merge=True).df
+    _df = _df[_df.duplicated(subset=["Work"], keep=False)]
+    _df = _df.groupby("Work", as_index=False).aggregate(
+        {
+            "Author": "first",
+            "Title": "first",
+            "Work": "first",
+            "Shelf": lambda x: ", ".join(list(x)),
+        }
+    )
+    _df = _df.groupby("Work").filter(lambda x: ~x.Shelf.isin(acceptable))
+
+    if not df.equals(_df):
+        print("duplicates:")
+        print(f"old={df}")
+        print(f"new={_df}")
 
     return {
         "df": df,
@@ -433,16 +456,11 @@ def main(args, config: Config) -> None:
             print(report)
             continue
 
-        if not len(report["df"]):  # pylint: disable=len-as-condition
+        if len(report["df"]) == 0:
             continue
 
-        title = func.__doc__
-        if title.endswith("."):
-            title = title[:-1]
+        title = func.__doc__ or func.__name__
+        print(f"=== {title.removesuffix('.')} ===")
 
-        print(f"=== {title} ===")
-
-        if "template" not in report:
-            continue
-
-        print(Template(report["template"]).render(df=report["df"]))
+        if "template" in report:
+            print(Template(report["template"]).render(df=report["df"]))
