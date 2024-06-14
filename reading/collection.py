@@ -217,8 +217,8 @@ class Collection:
         df = df.assign(Gender=None, Nationality=None)
 
         if metadata:
-            df.update(load_df("metadata", fname="data/metadata-ebooks.csv"))
-            df.update(load_df("metadata", fname="data/metadata-gr.csv"))
+            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-ebooks.csv"))
+            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-gr.csv"))
 
         if fixes:
             df.update(load_df("scraped", dirname=csv_dir))
