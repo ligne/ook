@@ -22,15 +22,14 @@ pd.set_option("display.width", None)
 ################################################################################
 
 
-def rebuild_metadata(
-    books: pd.DataFrame, works: pd.DataFrame, authors: pd.DataFrame
-) -> pd.DataFrame:
-    """Rebuild the metadata and return it as a dataframe."""
+def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.DataFrame:
     prefer_work_cols = metadata_prefer("work")
     prefer_book_cols = metadata_prefer("book")
 
     # add in any missing columns, to make things easier
-    books = books.reindex(columns=df_columns("metadata"))
+    books = ebooks.reindex(columns=df_columns("metadata"))
+    # FIXME
+    books = books.drop(["Gender", "Nationality"], axis="columns")
 
     # create an empty dataframe the right size
     metadata = pd.DataFrame().reindex_like(books)
@@ -43,15 +42,44 @@ def rebuild_metadata(
     metadata.update(works[prefer_book_cols])
     metadata.update(books[prefer_book_cols])
 
-    # populate the author metadata
-    metadata.update(
-        metadata[metadata.AuthorId.isin(authors.index)].AuthorId.apply(
-            lambda x: authors.loc[x, ["Gender", "Nationality"]]
-        )
+    return metadata[books != metadata].dropna(how="all", axis="index")
+
+
+def _author_overlay(
+    base: pd.DataFrame, authors: pd.DataFrame, author_fixes: pd.DataFrame
+) -> pd.DataFrame:
+    authors = authors.reindex(authors.index | author_fixes.index)
+    authors.update(author_fixes)
+    return base[base.AuthorId.isin(authors.index)].AuthorId.apply(
+        lambda x: authors.loc[x, ["Gender", "Nationality"]]
     )
 
-    # filter out no-op changes and empty rows
-    return metadata[books != metadata].dropna(how="all", axis="index")
+
+def rebuild_metadata(store: Store, config: Config) -> Store:
+    """Refresh the metadata tables in $store."""
+    author_fixes = pd.DataFrame(config("authors"))
+    if not author_fixes.empty:
+        author_fixes = author_fixes.set_index("AuthorId")
+    authors = store.authors
+    # fixed_authors = authors.reindex(authors.index | author_fixes.index)
+
+    # goodreads and ebooks have to be done separately, because pandas does not
+    # like indexes containing multiple types
+
+    # ebooks
+    base = store.ebooks.reindex(columns=df_columns("metadata"))
+    metadata = base.copy()
+    metadata.update(_ebook_metadata_overlay(metadata, store.books))
+    metadata.update(_author_overlay(metadata, authors, author_fixes))
+    store.ebook_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
+
+    # goodreads
+    base = store.goodreads.reindex(columns=df_columns("metadata"))
+    metadata = base.copy()
+    metadata.update(_author_overlay(metadata, authors, author_fixes))
+    store.gr_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
+
+    return store
 
 
 ################################################################################

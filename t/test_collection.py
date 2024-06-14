@@ -9,8 +9,16 @@ from pandas.testing import assert_frame_equal
 import pytest
 import yaml
 
-from reading.collection import Collection, _process_fixes, read_authorids, read_nationalities
+from reading.collection import (
+    Collection,
+    _author_overlay,
+    _ebook_metadata_overlay,
+    _process_fixes,
+    read_authorids,
+    read_nationalities,
+)
 from reading.config import Config
+from reading.storage import Store
 
 
 ################################################################################
@@ -154,6 +162,100 @@ def test_reset() -> None:
 
     c2.reset()
     assert_frame_equal(c1.df, c2.df)  # Reset dataframe is the same again
+
+
+### Overlays ###################################################################
+
+
+# transpose for more reasonable line lengths
+# FIXME try to_markdown()?
+def _stringify_df(df: pd.DataFrame) -> str:
+    df = df.reset_index()
+    stringified = df.T.to_string(float_format="{:.1f}".format, header=False)
+    return f"\n{stringified}\n"
+
+
+# ebook metadata
+
+
+def test_ebook_metadata_overlay() -> None:
+    store = Store("t/data/overlays/")
+
+    got = _stringify_df(_ebook_metadata_overlay(store.ebooks, store.books))
+    print(got)
+
+    assert (
+        got
+        == """
+BookId     novels/pg155.mobi  novels/pg82.mobi
+Author                   NaN      Walter Scott
+AuthorId              4012.0            4345.0
+Title                    NaN               NaN
+Work               1044477.0         1039021.0
+Series                   NaN   Waverley Novels
+SeriesId                 NaN          142177.0
+Entry                    NaN                 5
+Published             1868.0            1819.0
+Language                 NaN               NaN
+Pages                  528.0             541.0
+"""
+    )
+
+
+# author metadata
+
+
+def test_author_overlay() -> None:
+    """Creating an overlay for the author metadata."""
+    store = Store("t/data/overlays/")
+
+    got = _stringify_df(
+        _author_overlay(store.goodreads, store.authors, pd.DataFrame()),
+    )
+    print(got)
+
+    # 819: added all the metadata
+    # 2049: is completely missing
+    # 6217: got some different metadata
+    # 9556: some data missing
+    # 2294321: some data is wrong
+    assert (
+        got
+        == """
+BookId        819    6217  9556  2294321
+Gender       male  female   NaN     male
+Nationality    us      no    jp       ht
+"""
+    )
+
+
+def test_author_overlay_fixed() -> None:
+    """Creating an overlay from the author metadata, plus manual fixes."""
+    store = Store("t/data/overlays/")
+
+    author_fixes = [
+        {"AuthorId": 1377, "Gender": "male"},  # missing value
+        {"AuthorId": 1624, "Nationality": "us"},  # incorrect value
+    ]
+    author_fixes = pd.DataFrame(author_fixes).set_index("AuthorId")
+    print(author_fixes)
+
+    got = _stringify_df(
+        _author_overlay(store.goodreads, store.authors, author_fixes),
+    )
+    print(got)
+
+    # 2049: is included now it has some metadata
+    # 9556: some data is still missing
+    # 2294321: incorrect data has been fixed
+    assert (
+        got
+        == """
+BookId        819  2049    6217  9556  2294321
+Gender       male  male  female   NaN     male
+Nationality    us   NaN      no    jp       us
+"""
+    )
 
 
 ################################################################################

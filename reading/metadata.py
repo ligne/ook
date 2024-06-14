@@ -280,22 +280,7 @@ def main(args, config: Config) -> None:
     if args.find:
         find(args.find, config)
 
-    # merge in the author fixes
-    fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
-    authors = store.authors
-    authors = authors.reindex(authors.index | fixes.index)
-    authors.update(fixes)
-    # actually rebuild it
-    store.ebook_metadata = rebuild_metadata(
-        store.ebooks,
-        store.books,
-        authors,
-    )
-    store.gr_metadata = rebuild_metadata(
-        store.goodreads,
-        store.books,
-        authors,
-    )
+    store = rebuild_metadata(store, config)
 
     compare(
         old=Collection.from_dir(),
@@ -303,4 +288,4 @@ def main(args, config: Config) -> None:
     )
 
     if args.save:
-        store.save("shadow")
+        store.save("data")

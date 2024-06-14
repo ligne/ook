@@ -7,8 +7,9 @@ import re
 import pytest
 
 from reading.collection import rebuild_metadata
+from reading.config import Config
 from reading.metadata import FullExit, SaveExit, _list_book_choices, _read_choice, confirm_author
-from reading.storage import load_df, save_df
+from reading.storage import Store
 from reading.wikidata import Entity
 
 
@@ -402,15 +403,14 @@ def test_confirm_author_default_accepts(monkeypatch: pytest.MonkeyPatch) -> None
 ################################################################################
 
 
-def test_rebuild(tmp_path) -> None:
+def test_rebuild(tmp_path: Path) -> None:
     """Test the rebuild() function."""
-    books = load_df("ebooks", dirname="t/data/2019-12-04/")
-    works = load_df("books", dirname="t/data/2019-12-04/")
-    authors = load_df("authors", dirname="t/data/2019-12-04/")
+    config = Config.from_file("t/data/2019-12-04/config.yml")
+    store = Store("t/data/2019-12-04/")
 
-    metadata_csv = tmp_path / "metadata.csv"
+    rebuild_metadata(store, config).save(tmp_path)
 
-    save_df("metadata", rebuild_metadata(books, works, authors), metadata_csv)
+    metadata_csv = tmp_path / "metadata-ebooks.csv"
 
     assert (
         metadata_csv.read_text()

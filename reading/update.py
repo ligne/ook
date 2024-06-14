@@ -53,28 +53,8 @@ def main(args, config: Config) -> None:
         authors.update(pd.DataFrame(fetch_entities(authors.QID)).set_index("AuthorId"))
         store.authors = authors
 
-    # rebuild the metadata now the updates are complete. goodreads and ebooks
-    # have to be done separately, because pandas does not like indexes
-    # containing multiple types
-    #
-    # first merge in the author fixes
-    # FIXME it would be nice if these could fix goodread author data, but
-    # without imposing the wikidata names (which don't play well with pen
-    # names, etc.)
-    fixes = pd.DataFrame(config("authors")).set_index("AuthorId")
-    authors = store.authors.reindex(store.authors.index | fixes.index)
-    authors.update(fixes)
-    # now actually rebuild each piece
-    store.ebook_metadata = rebuild_metadata(
-        store.ebooks,
-        store.books,
-        authors,
-    )
-    store.gr_metadata = rebuild_metadata(
-        store.goodreads,
-        store.books,
-        authors,
-    )
+    # rebuild the metadata now the updates are complete.
+    store = rebuild_metadata(store, config)
 
     compare(
         new=Collection.from_store(store, config),
@@ -82,4 +62,5 @@ def main(args, config: Config) -> None:
     )
 
     if args.save:
-        store.save("shadow")
+        store.save("data")
+    store.save("blah")
