@@ -1,6 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
 from jinja2 import Template
+import pandas as pd
 
 from .collection import Collection
 from .config import Config
@@ -43,7 +44,11 @@ def prefix(book):
             ("\N{Circled Latin Capital Letter L}" if book.Shelf == "library" else ""),
             ("\N{Circled Latin Capital Letter S}" if book.Category == "short-stories" else ""),
             ("\N{Circled Latin Capital Letter N}" if book.Category == "non-fiction" else ""),
-            (flag("FR") if book.Language == "fr" else ""),
+            (
+                flag(book.Language.upper())
+                if pd.notna(book.Language) and book.Language != "en"
+                else ""
+            ),
         ]
     )
     return f"{string} " if string else ""
