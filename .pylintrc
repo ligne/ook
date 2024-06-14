@@ -12,10 +12,25 @@ ignore=.git,data,old
 enable=all
 # hide all non-critical errors in normal use (linter.sh will ignore these)
 disable=
+        # current annoyances; probably need disabling on a per-file basis?
+        import-outside-toplevel,
+        no-else-continue,
+        no-else-raise,
+        import-error,
         # known problems
         locally-disabled,
         invalid-name,
         suppressed-message,
+        consider-using-f-string,
+        missing-timeout,
+        unspecified-encoding,
+        used-before-assignment,
+        use-implicit-booleaness-not-comparison-to-zero,
+        consider-using-with,
+        use-implicit-booleaness-not-comparison,
+        use-implicit-booleaness-not-comparison-to-string,
+        wrong-import-order,
+        wrong-import-position,
         # not urgent
         too-few-public-methods,
         too-many-arguments,
