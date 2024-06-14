@@ -17,6 +17,7 @@ from reading.compare import (
     ValueFormats,
     _added,
     _changed,
+    _compare,
     _finished,
     _removed,
     _started,
@@ -220,6 +221,7 @@ def test_change(change: Change, event: ChangeEvent, predicates: dict[str, bool])
             [ChangedField("AvgRating", old=3.86, new=4.0)],
             id="Changed AvgRating",
         ),
+        # "expected" changes (shelf in a started/finished book, fully-added/removed, AvgRating, etc)
     ),
 )
 def test_change_fields(change: Change, changes: list[ChangedField]) -> None:
@@ -455,6 +457,15 @@ def test_formatted_change(changed_field: ChangedField, expected: str) -> None:
 
     assert change_styler._change(changed_field) == expected
 
+    #  # Scheduled column
+    #  ("Scheduled", pd.NA, pd.Timestamp("2024-01-01"), "Scheduled for 2024"),
+    #  ("Scheduled", pd.Timestamp("2024-01-01"), pd.NA, "Unscheduled for 2024"),
+    #  # Borrowed column
+    #  ("Borrowed", False, True, "Borrowed set"),
+    #  ("Borrowed", True, False, "Borrowed unset"),
+    #  # Default missing
+    #  ("Category", pd.NA, pd.NA, "Category not found"),
+
 
 #################################################################################
 
@@ -555,6 +566,50 @@ def test_style_repeatable() -> None:
     change_styler = ChangeStyler(book_formatter)
 
     assert change_styler.render(CHANGE_STARTED) == change_styler.render(CHANGE_STARTED)
+
+
+#################################################################################
+
+
+def test_compare_column_order() -> None:
+    """Compare works regardless of column order."""
+
+    columns = sorted(c.df.columns)
+    assert columns != list(c.df.columns), "The column order has been changed"
+
+    c_old = Collection(c.df)
+    c_new = Collection(c.df[columns])
+
+    _compare(c_old, c_new)
+    assert True, "Comparison completed ok"
+
+
+def test_duplicate_work_added_removed() -> None:
+    """Multiple works with the same Work ID being added/removed at the same time."""
+
+    styler = ChangeStyler(BookFormatter(c.df.dtypes, ValueFormats()))
+
+    c_old = Collection(c.df.loc[[12021, 12022]])
+    c_new = Collection(c.df.loc[[]])  # an empty Collection
+
+    assert [styler.render(change) for change in _compare(c_old, c_new)] == [
+        "Removed The Crow Road by Iain Banks from shelf 'pending'",
+        "Removed The Crow Road by Iain Banks from shelf 'currently-reading'",
+    ]
+
+    # swap them round
+    c_old, c_new = c_new, c_old
+
+    assert [styler.render(change) for change in _compare(c_old, c_new)] == [
+        """Added The Crow Road by Iain Banks to shelf 'pending'
+  * novels
+  * 501 pages
+  * Language: en""",
+        """Started The Crow Road by Iain Banks
+  * novels
+  * 501 pages
+  * Language: en""",
+    ]
 
 
 #################################################################################

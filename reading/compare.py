@@ -5,7 +5,7 @@
 from collections.abc import Mapping, Sequence
 from enum import Enum
 from string import Formatter
-from typing import Any, Optional, Union
+from typing import Any, Iterable, Optional, Union
 
 from attr import define
 from jinja2 import Template
@@ -198,6 +198,9 @@ class BookFormatter(Formatter):
 
     def format_value(self, field: str, value: Any) -> FormattedValue:
         """Return a value that will format correctly."""
+        if pd.isna(value):
+            # FIXME probably want to handle this at a higher level for more useful output?
+            return FormattedValue(value, "")
         return FormattedValue(value, self.value_formats.find(field, str(self.dtypes[field])))
 
     def get_value(
@@ -242,6 +245,7 @@ class BookStatementStyle(ValueFormats):
         "borrowed": "Borrowed is {Borrowed}",
         "duration": "{Started} → {Read} ({Duration} days)",
         "rate": "{Pages} pages, {Rate} pages/day",
+        "missing": "{field} is missing",
     }
     default: str = "{field}: {value}"
 
@@ -295,9 +299,29 @@ class ChangeStyler:
         )
 
     def _statement(self, book: pd.Series, field: str) -> str:
-        fmt = self.style.statement_formats.find(field.lower())
+        if field in book:
+            value = self.formatter.format_value(field, book[field])
+        else:
+            value = None
+
+        if pd.isna(value):
+            fmt = self.style.statement_formats.find("missing")
+        else:
+            fmt = self.style.statement_formats.find(field.lower())
+
+        # print(fmt)
+
+        # return self.formatter.format(fmt, book, field=field, value=value)
+
         # provide a formatted value, if the field exists
         value = self.formatter.format_value(field, book[field]) if field in book else None
+
+        # FIXME can this be used to make SeriesEntry neater?
+        format_keys = (f"{field.lower()}_missing", "missing") if pd.isna(value) else field.lower()
+        fmt = self.style.statement_formats.find(*format_keys)
+
+        value = self.formatter.format_value(field, book[field]) if field in book else None
+        fmt = self.style.statement_formats.find(field.lower())
 
         return self.formatter.format(fmt, book, field=field, value=value)
 
@@ -371,21 +395,25 @@ class ChangeStyler:
 ################################################################################
 
 
-def _compare(styler, c_old, c_new) -> None:
-    """Compare two Collections and print the formatted results."""
+# actually perform the comparison
+def _compare(c_old: Collection, c_new: Collection) -> Iterable[Change]:
     old = c_old.all.convert_dtypes()
     new = c_new.all.convert_dtypes()
+
+    # FIXME
+    old = old.reindex(columns=new.columns)
 
     common_indices = old.index.intersection(new.index)
     new_indices = new.index.difference(old.index)
     old_indices = old.index.difference(new.index)
 
     # changed
-    for ix in common_indices:
-        change = Change(old.loc[ix], new.loc[ix])
-        mask = change._change_mask
-        if change.is_modified and list(mask[mask].index) != ["AvgRating"]:
-            print(styler.render(change))
+    for index in common_indices:
+        change = Change(old.loc[index], new.loc[index])
+        # FIXME
+        mask = change._change_mask  # pylint: disable=protected-access
+        if change.is_modified and mask.drop(IGNORE_COLUMNS).any():
+            yield change
 
     # added/removed/changed edition
 
@@ -398,46 +426,63 @@ def _compare(styler, c_old, c_new) -> None:
     new_indices = new.index.difference(old.index)
     old_indices = old.index.difference(new.index)
 
-    changes = {}
-
     # added
-    for ix in new_indices:
-        change = Change(None, new.loc[ix])
-        # print(styler.render(change))
-        changes[ix] = styler.render(change)
+    for index in new_indices:
+        added = new.loc[index]
+        if isinstance(added, pd.Series):
+            yield Change(None, added)
+        else:
+            yield from (Change(None, book) for _, book in added.iterrows())
 
     # removed
-    for ix in old_indices:
-        change = Change(old.loc[ix], None)
-        # print(styler.render(change))
-        changes[ix] = styler.render(change)
+    for index in old_indices:
+        removed = old.loc[index]
+        if isinstance(removed, pd.Series):
+            yield Change(removed, None)
+        else:
+            yield from (Change(book, None) for _, book in removed.iterrows())
 
     # general changes
-    for ix in common_indices:
-        change = Change(old.loc[ix], new.loc[ix])
-        # print(styler.render(change))
-        changes[ix] = styler.render(change)
-
-    for ix, change in sorted(changes.items()):
-        print(change)
+    for index in common_indices:
+        yield Change(old.loc[index], new.loc[index])
 
 
-# work out what books have been added, removed, had their edition changed, or
-# have updates.
-def compare(old: Collection, new: Collection) -> None:
-    """Show how $old and $new dataframes differ, in a way that makes sense for ook."""
-    _compare_with_work(
-        old.all.fillna(""),
-        new.all.fillna(""),
+def compare(old: Collection, new: Collection) -> None:  # pragma: no cover
+    """Compare two Collections and print the formatted results."""
+    # FIXME customise this using the config
+    styler = ChangeStyler(BookFormatter(new.df.dtypes, ValueFormats()))
+
+    try:
+        changes = list(_compare(old, new))
+    except Exception:  # pylint: disable=broad-except
+        import traceback
+
+        print(traceback.format_exc())
+        changes = []
+
+    if changes:
+        print("\n".join(styler.render(change) for change in changes))
+        print("----")
+
+    changes = list(
+        _compare_with_work(
+            old.all.fillna(""),
+            new.all.fillna(""),
+        )
     )
+    if changes:
+        print("\n".join(changes))
 
 
-def _compare_with_work(old, new):
+def _compare_with_work(old, new):  # pragma: no cover
+    seen = set()
+
     # changed
     for ix in old.index.intersection(new.index):
+        seen.add(ix)
         changed = _changed(old.loc[ix], new.loc[ix])
         if changed:
-            print(changed)
+            yield changed
 
     # added/removed/changed edition
     idcs = old.index.symmetric_difference(new.index)
@@ -459,20 +504,20 @@ def _compare_with_work(old, new):
 
         if not _o.empty and not _n.empty:
             if len(_o) == 1 and len(_n) == 2 and _o.index[0] == _n.index[1]:
-                print(_added(_n.iloc[0]))
+                yield _added(_n.iloc[0])
             else:
                 if changed := _changed(_o.iloc[0], _n.iloc[0]):
-                    print(changed)
+                    yield changed
         elif not _n.empty:
             book = _n.iloc[0]
             if book.Shelf == "read":
-                print(_finished(book))
+                yield _finished(book)
             elif book.Shelf == "currently-reading":
-                print(_started(book))
+                yield _started(book)
             elif _n.index[0] not in seen:
-                print(_added(_n.iloc[0]))
+                yield _added(_n.iloc[0])
         else:
-            print(_removed(_o.iloc[0]))
+            yield _removed(_o.iloc[0])
 
 
 ################################################################################
@@ -627,7 +672,7 @@ def main() -> None:  # pragma: no cover
 if __name__ == "__main__":
     import argparse
 
-    from reading.config import Config
-    from reading.storage import Store, load_df
+    from .config import Config
+    from .storage import Store, load_df
 
     main()
