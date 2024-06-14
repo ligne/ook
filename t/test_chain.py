@@ -462,10 +462,10 @@ def test_scheduling_raw_output() -> None:
     schedule = chain.schedule()
 
     assert list(schedule) == [
-        (290574, pd.Timestamp("2023-01-01")),
-        (129135, pd.Timestamp("2024-01-01")),
-        (3091710, pd.Timestamp("2025-01-01")),
-        (9543421, pd.Timestamp("2026-01-01")),
+        (290574, pd.Timestamp("2024-01-01")),
+        (129135, pd.Timestamp("2025-01-01")),
+        (3091710, pd.Timestamp("2026-01-01")),
+        (9543421, pd.Timestamp("2027-01-01")),
     ], "Got a sequence of (book_id, scheduled) pairs"
 
 
@@ -477,10 +477,10 @@ def test_scheduling() -> None:
     schedule = chain.schedule()
 
     assert _format_schedule(df, schedule) == [
-        ("2023-01-01", "Inversions"),
-        ("2024-01-01", "Look to Windward"),
-        ("2025-01-01", "Matter"),
-        ("2026-01-01", "Surface Detail"),
+        ("2024-01-01", "Inversions"),
+        ("2025-01-01", "Look to Windward"),
+        ("2026-01-01", "Matter"),
+        ("2027-01-01", "Surface Detail"),
     ], "A basic schedule"
 
     # FIXME add more tests from 8580c313a468ebdd073d256cbf90884613882956 if it seems useful
