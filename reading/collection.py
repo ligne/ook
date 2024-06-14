@@ -115,9 +115,9 @@ def expand_ebooks(ebooks, words_per_page):
         Shelf="kindle",
         Borrowed=False,
         Binding="ebook",
-        Pages=lambda df: df.Words / words_per_page,
+        Pages=round(ebooks.Words / words_per_page),
         # FIXME not needed?
-        Author=lambda df: df.Author.fillna(""),
+        Author=ebooks.Author.fillna(""),
     )
 
 
