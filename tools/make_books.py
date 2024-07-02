@@ -8,6 +8,16 @@ import argparse
 import datetime as dt
 
 from attrs import define
+from faker import Faker
+import pandas as pd
+
+
+CORE_SHELVES = ["to-read", "currently-reading", "read"]
+
+SHELVES = CORE_SHELVES + ["pending", "elsewhere", "library"]
+GENDERS = ["male", "female", "non-binary"]
+CATEGORIES = ["novels", "short-stories", "non-fiction", "graphic"]
+BINDINGS = ["Paperback", "Hardback"]
 
 
 ###############################################################################
@@ -45,7 +55,39 @@ class Book:
 ###############################################################################
 
 
-def make_books(size: int) -> int:
+def _make_book(faker: Faker) -> Book:
+    return Book(
+        BookId=faker.random_int(1_000, 1_000_000_000),
+        Author=faker.name(),
+        AuthorId=faker.random_int(1_000, 10_000_000),
+        Title=faker.sentence()[:-1],
+        Work=faker.random_int(1_000, 10_000_000),
+        Shelf=faker.random_element(SHELVES),
+        Category=faker.optional.random_element(CATEGORIES),
+        Scheduled=None,
+        Borrowed=False,
+        Series=None,
+        SeriesId=None,
+        Entry=None,
+        Binding=faker.random_element(BINDINGS),
+        Published=faker.optional.year(),
+        Language=faker.optional.language_code(),
+        Pages=faker.random_int(1, 1500),
+        Added=faker.date_between("-10y", "today"),
+        Started=None,
+        Read=None,
+        Rating=None,
+        Words=None,
+        Gender=faker.optional.random_element(GENDERS),
+        Nationality=faker.optional.random_element([faker.country(), faker.country_code().lower()]),
+    )
+
+
+def make_books(faker: Faker, size: int) -> int:
+    books = [_make_book(faker) for _ in range(size)]
+
+    print(books)
+
     return 0
 
 
@@ -62,7 +104,9 @@ def arg_parser() -> argparse.ArgumentParser:
 if __name__ == "__main__":
     args = arg_parser().parse_args()
 
-    exit(make_books(args.size))
+    faker = Faker()
+
+    exit(make_books(faker, args.size))
 
 
 # vim: ts=4 : sw=4 : et
