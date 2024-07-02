@@ -6,7 +6,9 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+from typing import Sequence
 
+import attrs
 from attrs import define
 from faker import Faker
 import pandas as pd
@@ -24,12 +26,20 @@ BINDINGS = ["Paperback", "Hardback"]
 
 
 @define
+class Author:
+    """Represent an author."""
+
+    Author: str
+    AuthorId: int
+    Gender: str | None
+    Nationality: str | None
+
+
+@define
 class Book:
     """Represent a book."""
 
     BookId: int
-    Author: str
-    AuthorId: int
     Title: str
     Work: int
     Shelf: str
@@ -48,18 +58,34 @@ class Book:
     Read: dt.date | None
     Rating: int | None
     Words: int | None
-    Gender: str | None
-    Nationality: str | None
+
+    _author: Author
 
 
 ###############################################################################
 
 
-def _make_book(faker: Faker) -> Book:
+def _make_authors(faker: Faker, size: int) -> Sequence[Author]:
+    return [
+        Author(
+            Author=faker.name(),
+            AuthorId=faker.random_int(1_000, 10_000_000),
+            Gender=faker.optional.random_element(GENDERS),
+            Nationality=faker.optional.random_element(
+                [
+                    faker.country(),
+                    faker.country_code().lower(),
+                ]
+            ),
+        )
+        for _ in range(size)
+    ]
+
+
+def _make_book(faker: Faker, author: Author) -> Book:
     return Book(
+        author=author,
         BookId=faker.random_int(1_000, 1_000_000_000),
-        Author=faker.name(),
-        AuthorId=faker.random_int(1_000, 10_000_000),
         Title=faker.sentence()[:-1],
         Work=faker.random_int(1_000, 10_000_000),
         Shelf=faker.random_element(SHELVES),
@@ -78,13 +104,14 @@ def _make_book(faker: Faker) -> Book:
         Read=None,
         Rating=None,
         Words=None,
-        Gender=faker.optional.random_element(GENDERS),
-        Nationality=faker.optional.random_element([faker.country(), faker.country_code().lower()]),
     )
 
 
 def make_books(faker: Faker, size: int) -> int:
-    books = [_make_book(faker) for _ in range(size)]
+    author_count = max(1, size // 3)
+
+    authors = _make_authors(faker, author_count)
+    books = [_make_book(faker, faker.random_element(authors)) for _ in range(size)]
 
     print(books)
 
