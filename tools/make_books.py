@@ -6,11 +6,12 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-from typing import Sequence
+from typing import Literal, Sequence
 
 import attrs
 from attrs import define
 from faker import Faker
+import numpy as np
 import pandas as pd
 
 
@@ -36,13 +37,42 @@ class Author:
 
 
 @define
+class UnreadBook:
+    Shelf: Literal["to-read"] | str
+    Added: dt.date
+    Started: None
+    Read: None
+    Rating: None
+
+
+@define
+class CurrentBook:
+    Shelf: Literal["currently-reading"]
+    Added: dt.date
+    Started: dt.date
+    Read: None
+    Rating: None
+
+
+@define
+class FinishedBook:
+    Shelf: Literal["read"]
+    Added: dt.date
+    Started: dt.date
+    Read: dt.date
+    Rating: int | None
+
+
+BookStatus = UnreadBook | CurrentBook | FinishedBook
+
+
+@define
 class Book:
     """Represent a book."""
 
     BookId: int
     Title: str
     Work: int
-    Shelf: str
     Category: str | None
     Scheduled: dt.date | None
     Borrowed: bool
@@ -53,15 +83,12 @@ class Book:
     Published: int | None
     Language: str | None
     Pages: int | None
-    Added: dt.date
-    Started: dt.date | None
-    Read: dt.date | None
-    Rating: int | None
     Words: int | None
 
     _author: Author
+    _status: BookStatus
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict:  # type: ignore[type-arg]
         ret = []
         for k, v in attrs.asdict(self).items():
             if k.startswith("_"):
@@ -91,13 +118,42 @@ def _make_authors(faker: Faker, size: int) -> Sequence[Author]:
     ]
 
 
-def _make_book(faker: Faker, author: Author) -> Book:
+def _make_status(faker: Faker) -> BookStatus:
+    shelf = np.random.choice(SHELVES)
+    added = faker.date_between("-10y", "today")
+
+    if shelf == "read":
+        started, read = sorted(
+            [
+                faker.date_between(added, "today"),
+                faker.date_between(added, "today"),
+            ]
+        )
+        return FinishedBook(
+            shelf,
+            Added=added,
+            Started=started,
+            Read=read,
+            Rating=faker.optional.random_int(1, 5),
+        )
+    if shelf == "currently-reading":
+        return CurrentBook(
+            shelf,
+            Added=added,
+            Started=faker.date_between(added, "today"),
+            Read=None,
+            Rating=None,
+        )
+    return UnreadBook(shelf, Added=added, Started=None, Read=None, Rating=None)
+
+
+def _make_book(faker: Faker, author: Author, status: BookStatus) -> Book:
     return Book(
         author=author,
+        status=status,
         BookId=faker.random_int(1_000, 1_000_000_000),
         Title=faker.sentence()[:-1],
         Work=faker.random_int(1_000, 10_000_000),
-        Shelf=faker.random_element(SHELVES),
         Category=faker.optional.random_element(CATEGORIES),
         Scheduled=None,
         Borrowed=False,
@@ -108,10 +164,6 @@ def _make_book(faker: Faker, author: Author) -> Book:
         Published=faker.optional.year(),
         Language=faker.optional.language_code(),
         Pages=faker.random_int(1, 1500),
-        Added=faker.date_between("-10y", "today"),
-        Started=None,
-        Read=None,
-        Rating=None,
         Words=None,
     )
 
@@ -120,7 +172,9 @@ def make_books(faker: Faker, size: int) -> int:
     author_count = max(1, size // 3)
 
     authors = _make_authors(faker, author_count)
-    books = [_make_book(faker, faker.random_element(authors)) for _ in range(size)]
+    books = [
+        _make_book(faker, faker.random_element(authors), _make_status(faker)) for _ in range(size)
+    ]
 
     print([book.to_dict() for book in books])
 
