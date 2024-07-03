@@ -61,6 +61,15 @@ class Book:
 
     _author: Author
 
+    def to_dict(self) -> dict:
+        ret = []
+        for k, v in attrs.asdict(self).items():
+            if k.startswith("_"):
+                ret.extend(v.items())
+            else:
+                ret.append((k, v))
+        return dict(ret)
+
 
 ###############################################################################
 
@@ -113,7 +122,7 @@ def make_books(faker: Faker, size: int) -> int:
     authors = _make_authors(faker, author_count)
     books = [_make_book(faker, faker.random_element(authors)) for _ in range(size)]
 
-    print(books)
+    print([book.to_dict() for book in books])
 
     return 0
 
