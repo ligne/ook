@@ -2,6 +2,8 @@
 
 """Code for reporting the changes between two Collections or dataframes."""
 
+from __future__ import annotations
+
 from collections.abc import Mapping, Sequence
 from enum import Enum
 from string import Formatter

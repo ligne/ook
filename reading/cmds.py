@@ -2,6 +2,8 @@
 
 """Main entry point for the application. Argument parsing and dispatch."""
 
+from __future__ import annotations
+
 import argparse
 
 import pandas as pd

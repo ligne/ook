@@ -2,6 +2,8 @@
 
 """Output to Google Docs."""
 
+from __future__ import annotations
+
 from difflib import SequenceMatcher
 import json
 import pickle

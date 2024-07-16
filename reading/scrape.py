@@ -2,6 +2,8 @@
 
 """Scrape information that's in the goodreads books list but missing from the API(!!)."""
 
+from __future__ import annotations
+
 import datetime
 import re
 from typing import Optional

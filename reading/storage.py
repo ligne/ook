@@ -2,6 +2,8 @@
 
 """Loading and storing dataframes."""
 
+from __future__ import annotations
+
 from functools import partial
 from pathlib import Path
 from typing import Dict, Optional, Union

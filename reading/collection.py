@@ -2,6 +2,8 @@
 
 """Represents a collection of books."""
 
+from __future__ import annotations
+
 import datetime as dt
 import re
 from typing import List, Optional, Sequence

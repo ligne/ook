@@ -2,6 +2,8 @@
 
 """Code for interacting with the Goodreads API."""
 
+from __future__ import annotations
+
 from functools import reduce
 import operator
 import re

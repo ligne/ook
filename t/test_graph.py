@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+from __future__ import annotations
+
 import pandas as pd
 import pytest
 

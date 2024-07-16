@@ -2,6 +2,8 @@
 
 """Fixtures and helpers for testing."""
 
+from __future__ import annotations
+
 import pytest
 
 from reading.collection import Collection

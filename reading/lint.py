@@ -2,6 +2,8 @@
 
 """Find problems with the data in the collection."""
 
+from __future__ import annotations
+
 import datetime as dt
 
 from jinja2 import Template

@@ -2,6 +2,8 @@
 
 """Draw pretty graphs."""
 
+from __future__ import annotations
+
 import textwrap
 from typing import Callable, Literal, Union
 

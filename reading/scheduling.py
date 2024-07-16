@@ -2,6 +2,8 @@
 
 """Code for scheduling books."""
 
+from __future__ import annotations
+
 import pandas as pd
 
 from .chain import Chain

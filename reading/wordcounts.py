@@ -2,6 +2,8 @@
 
 """Code for gathering ebooks, their metadata and length."""
 
+from __future__ import annotations
+
 from pathlib import Path
 from subprocess import CalledProcessError, run
 import sys

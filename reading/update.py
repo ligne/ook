@@ -2,6 +2,8 @@
 
 """Code for updating the collection in various ways."""
 
+from __future__ import annotations
+
 import pandas as pd
 
 from .collection import Collection, rebuild_metadata

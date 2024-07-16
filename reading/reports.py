@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+from __future__ import annotations
+
 from jinja2 import Template
 import pandas as pd
 

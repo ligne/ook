@@ -2,6 +2,8 @@
 
 """Code for creating and operating on subsequences of books."""
 
+from __future__ import annotations
+
 from enum import Enum
 import itertools
 

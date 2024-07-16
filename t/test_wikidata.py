@@ -1,5 +1,7 @@
 # vim: ts=4 : sw=4 : et
 
+from __future__ import annotations
+
 import json
 
 from reading.wikidata import Entity, _format_search_results, _uc_first
