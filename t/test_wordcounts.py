@@ -40,13 +40,12 @@ def test__ignore_item(tmp_path: Path) -> None:
 
 
 def _populate_dir(basedir: Path, dirname: str, files: list[str]) -> None:
-    try:
-        (basedir / dirname).mkdir()
-    except FileExistsError:
-        pass
+    directory = basedir / dirname
+
+    directory.mkdir(exist_ok=True)
 
     for fname in files:
-        (basedir / dirname / fname).touch()
+        (directory / fname).touch()
 
 
 def test_get_ebooks(tmp_path: Path) -> None:
