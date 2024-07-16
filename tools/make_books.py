@@ -17,7 +17,7 @@ import pandas as pd
 
 CORE_SHELVES = ["to-read", "currently-reading", "read"]
 
-SHELVES = CORE_SHELVES + ["pending", "elsewhere", "library"]
+SHELVES = [*CORE_SHELVES, "pending", "elsewhere", "library"]
 GENDERS = ["male", "female", "non-binary"]
 CATEGORIES = ["novels", "short-stories", "non-fiction", "graphic"]
 BINDINGS = ["Paperback", "Hardback"]
