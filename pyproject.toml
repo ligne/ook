@@ -1,4 +1,11 @@
+[project]
+requires-python = ">=3.9"
+
 [tool.black]
 line-length = 100
 target-version = ['py39']
 quiet = true
+
+[tool.ruff]
+line-length = 100
+
