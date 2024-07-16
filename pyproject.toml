@@ -1,9 +1,16 @@
 [project]
 requires-python = ">=3.9"
 
+
 [tool.black]
 line-length = 100
 quiet = true
+
+
+[tool.pytest.ini_options]
+testpaths = 't/'
+pythonpath = '.'
+
 
 [tool.ruff]
 line-length = 100
