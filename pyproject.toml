@@ -40,6 +40,7 @@ extend-select = [
 	# Pylint. FIXME condense these all into "PL"
 	"PLC", "PLE",
 	"FLY",
+	"PERF",
 ]
 
 [tool.ruff.lint.isort]
