@@ -29,6 +29,7 @@ extend-select = [
 	"ICN",
 	"LOG",
 	"G",
+	"PIE",
 	"PYI",
 	"PT",
 	"Q",

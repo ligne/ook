@@ -203,10 +203,7 @@ def metadata_prefer(preference: Literal["work", "book"]) -> list[str]:
 
 def merge_preferences() -> dict[str, str]:
     """Return a dict specifying how volumes of the same book should be merged."""
-    return {
-        **{"BookId": "first"},
-        **{col["name"]: col["merge"] for col in _COLUMNS if "merge" in col},
-    }
+    return {"BookId": "first"} | {col["name"]: col["merge"] for col in _COLUMNS if "merge" in col}
 
 
 ################################################################################
