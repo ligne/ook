@@ -34,6 +34,7 @@ extend-select = [
 	"PT",
 	"Q",
 	"RSE",
+	"SLF",
 	"SLOT",
 	"TID",
 	"INT",
@@ -41,6 +42,12 @@ extend-select = [
 	"PLC", "PLE",
 	"FLY",
 	"PERF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# relax the rules in tests
+"**/t/*.py" = [
+        "SLF001",  # Access to private attributes
 ]
 
 [tool.ruff.lint.isort]

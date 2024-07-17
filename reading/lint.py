@@ -164,7 +164,7 @@ def lint_overscheduled(config):
     """Multiple scheduled books by the same author."""
     # get the automatically-scheduled books
     c = Collection.from_dir(merge=True)
-    c._df.Scheduled = pd.NaT  # pylint: disable=protected-access
+    c._df.Scheduled = pd.NaT  # pylint: disable=protected-access  # noqa: SLF001
     c.set_schedules(config("scheduled"))
     automatic = c.df.Scheduled
 

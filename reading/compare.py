@@ -413,7 +413,7 @@ def _compare(c_old: Collection, c_new: Collection) -> Iterable[Change]:
     for index in common_indices:
         change = Change(old.loc[index], new.loc[index])
         # FIXME
-        mask = change._change_mask  # pylint: disable=protected-access
+        mask = change._change_mask  # pylint: disable=protected-access  # noqa: SLF001
         if change.is_modified and mask.drop(IGNORE_COLUMNS).any():
             yield change
 
