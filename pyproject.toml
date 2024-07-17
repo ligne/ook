@@ -15,6 +15,31 @@ pythonpath = '.'
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint]
+extend-select = [
+	"W",
+	"I",
+	"YTT",
+	"A",
+	"C4",
+	"T10",
+	"EXE",
+	"FA",
+	"ISC",
+	"ICN",
+	"LOG",
+	"G",
+	"PYI",
+	"Q",
+	"RSE",
+	"SLOT",
+	"TID",
+	"INT",
+	# Pylint. FIXME condense these all into "PL"
+	"PLC", "PLE",
+	"FLY",
+]
+
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
 lines-after-imports = 2
