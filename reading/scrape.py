@@ -63,18 +63,16 @@ def _scrape(fname: str) -> pd.DataFrame:
     with open(fname) as fh:
         soup = BeautifulSoup(fh, "lxml")
 
-    books = []
-
-    for review in soup.find_all(id=re.compile(r"^review_\d+")):
-        books.append(
-            {
-                "BookId": book_id(review),
-                "Started": started_date(review),
-                "Read": read_date(review),
-                "Pages": pages(review),
-                "Binding": binding(review),
-            }
-        )
+    books = [
+        {
+            "BookId": book_id(review),
+            "Started": started_date(review),
+            "Read": read_date(review),
+            "Pages": pages(review),
+            "Binding": binding(review),
+        }
+        for review in soup.find_all(id=re.compile(r"^review_\d+"))
+    ]
 
     # remove the duplicates
     fix_df = pd.DataFrame(books).set_index("BookId")
