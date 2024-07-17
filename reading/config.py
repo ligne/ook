@@ -297,12 +297,12 @@ class Config:
     def __call__(self, key: str):
         value = self._conf
 
-        for segment in key.split("."):
-            try:
+        try:
+            for segment in key.split("."):
                 value = value[segment]
-            except KeyError:
-                # TODO use defaults and/or emit warning
-                return _DEFAULTS.get(key)
+        except KeyError:
+            # TODO use defaults and/or emit warning
+            return _DEFAULTS.get(key)
 
         return value
 
