@@ -292,7 +292,7 @@ def test_value_formats_find() -> None:
 
 @pytest.mark.parametrize(
     "fmt, expected",
-    [
+    (
         (
             "Specific field format: {Added}",
             "Specific field format: Monday 18 April 2016",
@@ -321,7 +321,7 @@ def test_value_formats_find() -> None:
             "No fields to replace at all",
             "No fields to replace at all",
         ),
-    ],
+    ),
 )
 def test_book_formatter(fmt: str, expected: str) -> None:
     """A BookFormatter substitutes fields in the format string."""
@@ -349,10 +349,12 @@ def test_book_formatter_not_positional() -> None:
 
     formatter = BookFormatter(c.df.dtypes, ValueFormats())
 
-    with pytest.raises(ValueError):
+    error_message = "Only string identifiers are supported"
+
+    with pytest.raises(ValueError, match=error_message):
         formatter.format("Integer argument specifiers are not allowed: {0}")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=error_message):
         formatter.format("Neither are implicit argument specifiers: {}")
 
 

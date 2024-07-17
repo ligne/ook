@@ -78,7 +78,7 @@ ebook_paths = list(Path("t/data/ebooks").iterdir())
 ebook_names = [path.name for path in Path("t/data/ebooks").iterdir()]
 
 
-@pytest.mark.slow
+@pytest.mark.slow()
 @pytest.mark.parametrize("path", ebook_paths, ids=ebook_names)
 def test__as_text(path: Path) -> None:
     assert _as_text(path) == path.with_suffix(".txt").read_bytes()
