@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import random
 from typing import Literal, Sequence
 
 import attrs
@@ -67,6 +68,33 @@ BookStatus = UnreadBook | CurrentBook | FinishedBook
 
 
 @define
+class SeriesEntry:
+    Series: str
+    SeriesId: int
+    Entry: str | int
+
+
+@define
+class _NoSeries:
+    Series: None = None
+    SeriesId: None = None
+    Entry: None = None
+
+
+NoSeries = _NoSeries()
+
+
+@define
+class SeriesSpec:
+    Series: str
+    SeriesId: int
+    size: int
+
+    def entries(self) -> list[SeriesEntry]:
+        return [SeriesEntry(self.Series, self.SeriesId, entry + 1) for entry in range(self.size)]
+
+
+@define
 class Book:
     """Represent a book."""
 
@@ -76,9 +104,6 @@ class Book:
     Category: str | None
     Scheduled: dt.date | None
     Borrowed: bool
-    Series: str | None
-    SeriesId: str | None
-    Entry: str | int | None
     Binding: str | None
     Published: int | None
     Language: str | None
@@ -87,6 +112,7 @@ class Book:
 
     _author: Author
     _status: BookStatus
+    _series: SeriesEntry | _NoSeries
 
     def to_dict(self) -> dict:  # type: ignore[type-arg]
         ret = []
@@ -147,19 +173,22 @@ def _make_status(faker: Faker) -> BookStatus:
     return UnreadBook(shelf, Added=added, Started=None, Read=None, Rating=None)
 
 
-def _make_book(faker: Faker, author: Author, status: BookStatus) -> Book:
+def _make_book(
+    faker: Faker,
+    author: Author,
+    status: BookStatus,
+    series: SeriesEntry | _NoSeries = NoSeries,
+) -> Book:
     return Book(
         author=author,
         status=status,
+        series=series,
         BookId=faker.random_int(1_000, 1_000_000_000),
         Title=faker.sentence()[:-1],
         Work=faker.random_int(1_000, 10_000_000),
         Category=faker.optional.random_element(CATEGORIES),
         Scheduled=None,
         Borrowed=False,
-        Series=None,
-        SeriesId=None,
-        Entry=None,
         Binding=faker.random_element(BINDINGS),
         Published=faker.optional.year(),
         Language=faker.optional.language_code(),
@@ -168,15 +197,45 @@ def _make_book(faker: Faker, author: Author, status: BookStatus) -> Book:
     )
 
 
+###############################################################################
+
+
+def make_series(faker: Faker, author: Author, size: int) -> list[Book]:
+    series = SeriesSpec(
+        Series=faker.sentence(4)[:-1],
+        SeriesId=random.randint(1_000, 1_000_000),
+        size=random.randint(1, size),
+    )
+
+    # for each entry, create a random book
+    # FIXME or skip it
+    return [_make_book(faker, author, _make_status(faker), entry) for entry in series.entries()]
+
+
 def make_books(faker: Faker, size: int) -> int:
     author_count = max(1, size // 3)
 
-    authors = _make_authors(faker, author_count)
-    books = [
-        _make_book(faker, faker.random_element(authors), _make_status(faker)) for _ in range(size)
-    ]
+    books: list[Book] = []
+    remaining = size
 
-    print([book.to_dict() for book in books])
+    authors = _make_authors(faker, author_count)
+
+    # create some series. approximately 25%
+    while remaining > int(size * 0.75):
+        series = make_series(faker, random.choice(authors), size=random.randint(1, 10))
+        books.extend(series)
+        remaining -= len(series)
+
+    books.extend(
+        [
+            _make_book(faker, faker.random_element(authors), _make_status(faker))
+            for _ in range(remaining)
+        ]
+    )
+
+    pd.set_option("display.max_rows", None)
+    pd.set_option("display.width", None)
+    print(pd.DataFrame.from_dict([book.to_dict() for book in books]))
 
     return 0
 
