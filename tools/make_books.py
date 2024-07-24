@@ -22,6 +22,7 @@ SHELVES = [*CORE_SHELVES, "pending", "elsewhere", "library"]
 GENDERS = ["male", "female", "non-binary"]
 CATEGORIES = ["novels", "short-stories", "non-fiction", "graphic"]
 BINDINGS = ["Paperback", "Hardback"]
+LANGUAGES = ["en", "fr"]
 
 
 ###############################################################################
@@ -109,6 +110,7 @@ class Book:
     Language: str | None
     Pages: int | None
     Words: int | None
+    AvgRating: float
 
     _author: Author
     _status: BookStatus
@@ -186,14 +188,15 @@ def _make_book(
         BookId=faker.random_int(1_000, 1_000_000_000),
         Title=faker.sentence()[:-1],
         Work=faker.random_int(1_000, 10_000_000),
-        Category=faker.optional.random_element(CATEGORIES),
+        Category=faker.optional.random_element(CATEGORIES, prob=0.1),
         Scheduled=None,
         Borrowed=False,
         Binding=faker.random_element(BINDINGS),
         Published=faker.optional.year(),
-        Language=faker.optional.language_code(),
+        Language=faker.optional.random_element(LANGUAGES, prob=0.1),
         Pages=faker.random_int(1, 1500),
         Words=None,
+        AvgRating=np.random.uniform(1, 5)
     )
 
 
