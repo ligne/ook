@@ -20,6 +20,8 @@ from reading.config import category_patterns
 
 def get_books(user_id, api_key, start_date, ignore_series):
     """Get all the books on the user's goodreads shelves."""
+    del user_id  # unused argument
+
     page = 1
     books = []
 
