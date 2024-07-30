@@ -650,6 +650,10 @@ def _finished(book):
 
 def main() -> None:  # pragma: no cover
     """Command-line interface for debugging."""
+    import argparse
+
+    from .config import Config
+    from .storage import Store, load_df
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--goodreads")
@@ -672,9 +676,4 @@ def main() -> None:  # pragma: no cover
 
 
 if __name__ == "__main__":
-    import argparse
-
-    from .config import Config
-    from .storage import Store, load_df
-
     main()
