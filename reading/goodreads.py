@@ -277,6 +277,9 @@ def _parse_series(xml):
                 str(x) for x in _parse_entries(work.find("user_position").text)
             )
 
+    if all(entry == "" for entry in works.values()):
+        works = {work: str(index + 1) for index, work in enumerate(works.keys())}
+
     return {
         "Series": xml.find("series/title").text.strip(),
         "Count": xml.find("series/primary_work_count").text,
