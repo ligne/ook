@@ -215,8 +215,19 @@ def make_series(faker: Faker, author: Author, size: int) -> list[Book]:
     )
 
     # for each entry, create a random book
-    # FIXME or skip it
+    # FIXME or skip it. sample $size from a larger number
     return [_make_book(faker, author, _make_status(faker), entry) for entry in series.entries()]
+
+
+def _create_scraped(df: pd.DataFrame) -> pd.DataFrame:
+    # BookId,Binding,Pages
+    return pd.DataFrame(
+        {
+            column: df[column].where(np.random.random(size=len(df)) < 0.1)
+            for column in ("Binding", "Pages")
+        },
+        index=df.index,
+    ).assign(Started=None, Read=None)
 
 
 def make_books(faker: Faker, size: int) -> int:
