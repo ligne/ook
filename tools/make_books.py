@@ -34,8 +34,10 @@ class Author:
 
     Author: str
     AuthorId: int
+    QID: str | None
     Gender: str | None
     Nationality: str | None
+    Description: str | None
 
 
 @define
@@ -134,6 +136,7 @@ def _make_authors(faker: Faker, size: int) -> Sequence[Author]:
         Author(
             Author=faker.name(),
             AuthorId=faker.random_int(1_000, 10_000_000),
+            QID=f"Q{faker.random_int(1_000, 10_000_000)}",
             Gender=faker.optional.random_element(GENDERS),
             Nationality=faker.optional.random_element(
                 [
@@ -141,6 +144,7 @@ def _make_authors(faker: Faker, size: int) -> Sequence[Author]:
                     faker.country_code().lower(),
                 ]
             ),
+            Description=faker.sentence(),
         )
         for _ in range(size)
     ]
@@ -196,7 +200,7 @@ def _make_book(
         Language=faker.optional.random_element(LANGUAGES, prob=0.1),
         Pages=faker.random_int(1, 1500),
         Words=None,
-        AvgRating=np.random.uniform(1, 5)
+        AvgRating=np.random.uniform(1, 5),
     )
 
 
@@ -236,9 +240,26 @@ def make_books(faker: Faker, size: int) -> int:
         ]
     )
 
-    pd.set_option("display.max_rows", None)
-    pd.set_option("display.width", None)
-    print(pd.DataFrame.from_dict([book.to_dict() for book in books]))
+    books = pd.DataFrame.from_dict([book.to_dict() for book in books]).set_index("BookId")
+
+    import sys
+
+    sys.path.insert(0, ".")
+    from reading.storage import Store
+
+    s = Store()
+
+    s.goodreads = books
+    s.scraped = _create_scraped(books).dropna(how="all")
+
+    # print(pd.DataFrame.from_dict([attrs.asdict(author) for author in authors]))
+    s.authors = (
+        pd.DataFrame.from_dict(attrs.asdict(author) for author in authors)
+        .dropna(subset=["QID"])
+        .set_index("AuthorId")
+    )
+
+    s.save("data/")
 
     return 0
 
