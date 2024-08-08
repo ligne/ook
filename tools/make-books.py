@@ -49,10 +49,10 @@ AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
 
 
 @pa.check_output(AUTHOR_BASE_SCHEMA)
-def _generate_authors(size: int):
+def _generate_authors(size: int) -> pd.DataFrame:
     return pd.DataFrame(
         {
-            "AuthorId": rng.choice(np.arange(1_000, 10_000_000), size=size),
+            "AuthorId": rng.choice(np.arange(1_000, 10_000_000), size=size, replace=False),
             "Author": [faker.name() for _ in range(size)],
         }
     )
