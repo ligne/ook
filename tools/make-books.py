@@ -9,6 +9,7 @@ import argparse
 from faker import Faker
 import numpy as np
 import pandas as pd
+import pandera as pa
 
 from reading.storage import Store
 
@@ -24,7 +25,29 @@ GENDERS = ["male", "female", "non-binary"]
 
 ###############################################################################
 
+AUTHOR_BASE_SCHEMA = pa.DataFrameSchema(
+    columns={
+        "AuthorId": pa.Column(int, pa.Check.gt(0), nullable=False, unique=True),
+        "Author": pa.Column(str),
+    },
+    strict=True,
+)
 
+
+AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
+    {
+        "QID": pa.Column(str, pa.Check.str_matches(r"^Q\d+$")),
+        "Nationality": pa.Column(str, nullable=True),
+        "Gender": pa.Column(str, nullable=True),
+        "Description": pa.Column(str),
+    }
+).set_index(["AuthorId"])
+
+
+###############################################################################
+
+
+@pa.check_output(AUTHOR_BASE_SCHEMA)
 def _generate_authors(size: int):
     return pd.DataFrame(
         {
@@ -37,12 +60,18 @@ def _generate_authors(size: int):
 ###############################################################################
 
 
+@pa.check_output(AUTHOR_SCHEMA)
+@pa.check_input(AUTHOR_BASE_SCHEMA)
 def make_authors_table(authors, size: int):
-    return authors.sample(n=size).assign(
-        QID=np.char.add("Q", rng.choice(np.arange(1_000, 1_000_000), size=size).astype(str)),
-        Gender=rng.choice(GENDERS, size=size),
-        Nationality=[faker.country_code().lower() for _ in range(size)],
-        Description=[faker.sentence() for _ in range(size)],
+    return (
+        authors.sample(n=size)
+        .assign(
+            QID=np.char.add("Q", rng.choice(np.arange(1_000, 1_000_000), size=size).astype(str)),
+            Gender=rng.choice(GENDERS, size=size),
+            Nationality=[faker.country_code().lower() for _ in range(size)],
+            Description=[faker.sentence() for _ in range(size)],
+        )
+        .set_index("AuthorId")
     )
 
 
