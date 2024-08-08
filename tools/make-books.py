@@ -65,7 +65,7 @@ def _generate_authors(size: int):
 @pa.check_input(AUTHOR_BASE_SCHEMA)
 def make_authors_table(authors, size: int):
     return (
-        authors.sample(n=size)
+        authors.sample(n=size, random_state=rng)
         .assign(
             QID=np.char.add("Q", rng.choice(np.arange(1_000, 1_000_000), size=size).astype(str)),
             Gender=rng.choice(GENDERS, size=size),
