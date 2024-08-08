@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+from pathlib import Path
 
 from faker import Faker
 import numpy as np
@@ -75,7 +76,7 @@ def make_authors_table(authors, size: int):
     )
 
 
-def make_books(size: int) -> int:
+def make_books(size: int) -> Store:
     store = Store()
 
     author_count = size // 3
@@ -85,7 +86,7 @@ def make_books(size: int) -> int:
 
     store.authors = make_authors_table(authors, authors_size)
 
-    return 0
+    return store
 
 
 ###############################################################################
@@ -93,6 +94,7 @@ def make_books(size: int) -> int:
 
 def arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("size", type=int, default=10)
 
     return parser
@@ -101,7 +103,14 @@ def arg_parser() -> argparse.ArgumentParser:
 if __name__ == "__main__":
     args = arg_parser().parse_args()
 
-    exit(make_books(args.size))
+    if not args.output.is_dir():
+        print(f"Output: {args.output} is not a directory.")
+        exit(1)
+
+    store = make_books(args.size)
+    store.save(args.output)
+
+    exit(0)
 
 
 # vim: ts=4 : sw=4 : et
