@@ -23,6 +23,8 @@ faker = Faker("en")
 faker.seed_instance(seed)
 
 GENDERS = ["male", "female", "non-binary"]
+STANDARD_SHELVES = ["to-read", "currently-reading", "read"]
+SHELVES = [*STANDARD_SHELVES, "pending", "library", "elsewhere"]
 
 ###############################################################################
 
@@ -45,6 +47,36 @@ AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
 ).set_index(["AuthorId"])
 
 
+STATUS_SCHEMA = pa.DataFrameSchema(
+    columns={
+        "Shelf": pa.Column(str),
+        "Added": pa.Column("datetime64[ns]"),
+        "Started": pa.Column("datetime64[ns]", nullable=True),
+        "Read": pa.Column("datetime64[ns]", nullable=True),
+        "Rating": pa.Column(
+            float,
+            checks=[
+                pa.Check.ge(1),
+                pa.Check.le(5),
+                pa.Check(lambda s: s.round() == s),
+            ],
+            nullable=True,
+        ),
+        "Borrowed": pa.Column(bool),
+    },
+    strict=True,
+    checks=[
+        pa.Check(
+            lambda df: (df.Started.isna() | (df.Started >= df.Added))
+            & (df.Read.isna() | (df.Read >= df.Started))
+        ),
+        pa.Check(lambda df: (df.Shelf == "read") ^ df.Rating.isna()),
+        pa.Check(lambda df: (df.Shelf == "read") ^ df.Read.isna()),
+        pa.Check(lambda df: df.Shelf.isin(["read", "currently-reading"]) ^ df.Started.isna()),
+    ],
+)
+
+
 ###############################################################################
 
 
@@ -58,12 +90,32 @@ def _generate_authors(size: int) -> pd.DataFrame:
     )
 
 
+@pa.check_output(STATUS_SCHEMA)
+def _generate_statuses(size: int) -> pd.DataFrame:
+    shelf = rng.choice(SHELVES, size)
+    dates = np.datetime64("today") - np.sort(rng.integers(3650, size=(3, size)), axis=0)
+
+    statuses = pd.DataFrame({"Shelf": shelf})
+    statuses = statuses.assign(
+        Added=dates[2],
+        Started=np.where(
+            statuses.Shelf.isin(["read", "currently-reading"]),
+            dates[1],
+            np.datetime64("nat"),
+        ),
+        Read=np.where(statuses.Shelf == "read", dates[0], np.datetime64("nat")),
+        Rating=np.where(statuses.Shelf == "read", rng.integers(1, 5, size), np.nan),
+        Borrowed=np.where(statuses.Shelf.isin(["elsewhere", "library"]), True, False),
+    )
+    return statuses
+
+
 ###############################################################################
 
 
 @pa.check_output(AUTHOR_SCHEMA)
 @pa.check_input(AUTHOR_BASE_SCHEMA)
-def make_authors_table(authors, size: int):
+def make_authors_table(authors, size: int) -> pd.DataFrame:
     return (
         authors.sample(n=size, random_state=rng)
         .assign(
@@ -83,6 +135,7 @@ def make_books(size: int) -> Store:
     authors_size = round(author_count * 0.9)
 
     authors = _generate_authors(author_count)
+    statuses = _generate_statuses(size)
 
     store.authors = make_authors_table(authors, authors_size)
 

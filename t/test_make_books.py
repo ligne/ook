@@ -21,3 +21,10 @@ def test_make_authors_table() -> None:
 
     assert len(authors) == 3
     mb.AUTHOR_SCHEMA.validate(authors, lazy=True)
+
+
+def test__generate_statuses() -> None:
+    statuses = mb._generate_statuses(3)
+
+    assert len(statuses) == 3
+    mb.STATUS_SCHEMA.validate(statuses, lazy=True)
