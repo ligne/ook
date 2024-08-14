@@ -25,6 +25,9 @@ faker.seed_instance(seed)
 GENDERS = ["male", "female", "non-binary"]
 STANDARD_SHELVES = ["to-read", "currently-reading", "read"]
 SHELVES = [*STANDARD_SHELVES, "pending", "library", "elsewhere"]
+CATEGORIES = ["novels", "short-stories", "non-fiction", "graphic"]
+BINDINGS = ["Paperback", "Hardback"]
+LANGUAGES = ["en", "fr"]
 
 ###############################################################################
 
@@ -77,6 +80,29 @@ STATUS_SCHEMA = pa.DataFrameSchema(
 )
 
 
+GOODREADS_SCHEMA = pa.DataFrameSchema(
+    columns=STATUS_SCHEMA.columns
+    | {
+        "BookId": pa.Column(int, unique=True),
+        "AuthorId": pa.Column(int),
+        "Author": pa.Column(str),
+        "Title": pa.Column(str),
+        "Work": pa.Column(int),
+        "Category": pa.Column(str, nullable=True),
+        "Scheduled": pa.Column("datetime64", nullable=True),
+        "Series": pa.Column(str, nullable=True),
+        "SeriesId": pa.Column(float, nullable=True),
+        "Entry": pa.Column(object, nullable=True),
+        "Binding": pa.Column(str, nullable=True),
+        "Published": pa.Column(float, nullable=True),
+        "Language": pa.Column(str, nullable=True),
+        "Pages": pa.Column(float, nullable=True),
+        "AvgRating": pa.Column(float, checks=pa.Check.in_range(1, 5)),
+    },
+    strict=True,
+).set_index(["BookId"])
+
+
 ###############################################################################
 
 
@@ -115,7 +141,7 @@ def _generate_statuses(size: int) -> pd.DataFrame:
 
 @pa.check_output(AUTHOR_SCHEMA)
 @pa.check_input(AUTHOR_BASE_SCHEMA)
-def make_authors_table(authors, size: int) -> pd.DataFrame:
+def make_authors_table(authors: pd.DataFrame, size: int) -> pd.DataFrame:
     return (
         authors.sample(n=size, random_state=rng)
         .assign(
@@ -128,6 +154,39 @@ def make_authors_table(authors, size: int) -> pd.DataFrame:
     )
 
 
+@pa.check_output(GOODREADS_SCHEMA)
+@pa.check_input(AUTHOR_BASE_SCHEMA)
+def make_goodreads_table(authors: pd.DataFrame, size: int) -> pd.DataFrame:
+    return pd.concat(
+        [
+            pd.DataFrame(
+                {
+                    "BookId": rng.choice(
+                        np.arange(1_000_000, 10_000_000),
+                        size=size,
+                        replace=False,
+                    ),
+                    "Title": [faker.sentence()[:-1] for _ in range(size)],
+                    "Work": rng.choice(np.arange(1_000, 10_000_000), size=size, replace=False),
+                    "Category": rng.choice(CATEGORIES, size=size),
+                    "Scheduled": pd.NaT,
+                    "Series": pd.NA,
+                    "SeriesId": np.nan,
+                    "Entry": pd.NA,
+                    "Binding": rng.choice(BINDINGS, size=size),
+                    "Published": rng.integers(-500, 2020, size=size).astype(float),
+                    "Language": rng.choice(LANGUAGES, size=size),
+                    "Pages": rng.integers(50, 2_000, size=size).astype(float),
+                    "AvgRating": np.round(rng.uniform(1, 5, size=size), 2),
+                }
+            ),
+            _generate_statuses(size),
+            authors.sample(n=size, replace=True, random_state=rng, ignore_index=True),
+        ],
+        axis="columns",
+    ).set_index("BookId")
+
+
 def make_books(size: int) -> Store:
     store = Store()
 
@@ -135,9 +194,9 @@ def make_books(size: int) -> Store:
     authors_size = round(author_count * 0.9)
 
     authors = _generate_authors(author_count)
-    statuses = _generate_statuses(size)
 
     store.authors = make_authors_table(authors, authors_size)
+    store.goodreads = make_goodreads_table(authors, size)
 
     return store
 

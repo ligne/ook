@@ -28,3 +28,11 @@ def test__generate_statuses() -> None:
 
     assert len(statuses) == 3
     mb.STATUS_SCHEMA.validate(statuses, lazy=True)
+
+
+def test_make_goodreads_table() -> None:
+    author_ids = mb._generate_authors(10)
+    goodreads = mb.make_goodreads_table(author_ids, 10)
+
+    assert len(goodreads) == 10
+    mb.GOODREADS_SCHEMA.validate(goodreads, lazy=True)
