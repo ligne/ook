@@ -80,6 +80,40 @@ STATUS_SCHEMA = pa.DataFrameSchema(
 )
 
 
+EBOOK_SCHEMA = pa.DataFrameSchema(
+    {
+        "BookId": pa.Column(str, unique=True),
+        "Author": pa.Column(str),
+        "Title": pa.Column(str),
+        "Category": pa.Column(str),
+        "Language": pa.Column(str),
+        "Words": pa.Column(int),
+        "Added": pa.Column("datetime64"),
+    },
+    strict=True,
+).set_index(["BookId"])
+
+
+BOOK_SCHEMA = pa.DataFrameSchema(
+    {
+        "KindleId": pa.Column(str, unique=True),
+        "BookId": pa.Column(int, unique=True),
+        "Author": pa.Column(str),
+        "AuthorId": pa.Column(int),
+        "Title": pa.Column(str),
+        "Work": pa.Column(int),
+        "Category": pa.Column(str, nullable=True),
+        "Series": pa.Column(str, nullable=True),
+        "SeriesId": pa.Column(float, nullable=True),
+        "Entry": pa.Column(object, nullable=True),
+        "Published": pa.Column(float, nullable=True),
+        "Language": pa.Column(str, nullable=True),
+        "Pages": pa.Column(float, nullable=True),
+    },
+    strict=True,
+).set_index(["KindleId"])
+
+
 GOODREADS_SCHEMA = pa.DataFrameSchema(
     columns=STATUS_SCHEMA.columns
     | {
@@ -187,6 +221,56 @@ def make_goodreads_table(authors: pd.DataFrame, size: int) -> pd.DataFrame:
     ).set_index("BookId")
 
 
+@pa.check_output(EBOOK_SCHEMA)
+def make_ebooks_table(size: int) -> pd.DataFrame:
+    return (
+        pd.DataFrame(
+            {
+                "Author": [faker.name() for _ in range(size)],
+                "Title": [faker.sentence()[:-1] for _ in range(size)],
+                "Category": rng.choice(CATEGORIES, size=size),
+                "Language": rng.choice(LANGUAGES, size=size),
+                "Words": rng.integers(1000, 1_000_000, size=size),
+                "Added": np.datetime64("today") - rng.integers(3650, size=size),
+            }
+        )
+        .assign(
+            BookId=lambda df: df.Category.str.cat(
+                [
+                    faker.word() + rng.integers(10_000_000).astype(str) + ".mobi"
+                    for _ in range(size)
+                ],
+                sep="/",
+            )
+        )
+        .set_index("BookId")
+    )
+
+
+@pa.check_output(BOOK_SCHEMA)
+@pa.check_input(EBOOK_SCHEMA)
+def make_books_table(ebooks, authors, size: int) -> pd.DataFrame:
+    return pd.concat(
+        [
+            ebooks.assign(Pages=ebooks.Words / 300)
+            .drop(columns=["Words", "Added"])
+            .sample(n=size, random_state=rng)
+            .reset_index()
+            .rename(columns={"BookId": "KindleId"})
+            .assign(
+                BookId=rng.choice(np.arange(1_000, 1_000_000), size=size, replace=False),
+                Work=rng.choice(np.arange(1_000, 10_000_000), size=size, replace=False),
+                Published=rng.integers(-500, 2020, size=size).astype(float),
+                Series=pd.NA,
+                SeriesId=np.nan,
+                Entry=pd.NA,
+            ),
+            authors.sample(n=size, replace=True, random_state=rng, ignore_index=True),
+        ],
+        axis="columns",
+    ).set_index("KindleId")
+
+
 def make_books(size: int) -> Store:
     store = Store()
 
@@ -195,8 +279,14 @@ def make_books(size: int) -> Store:
 
     authors = _generate_authors(author_count)
 
+    ebooks_size = size // 7
+    goodreads_size = size - ebooks_size
+    books_size = round(ebooks_size * 0.9)
+
     store.authors = make_authors_table(authors, authors_size)
-    store.goodreads = make_goodreads_table(authors, size)
+    store.goodreads = make_goodreads_table(authors, goodreads_size)
+    store.ebooks = make_ebooks_table(ebooks_size)
+    store.books = make_books_table(store.ebooks, authors, books_size)
 
     return store
 
