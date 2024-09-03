@@ -11,6 +11,7 @@ from faker import Faker
 import numpy as np
 import pandas as pd
 import pandera as pa
+import yaml
 
 from reading.storage import Store
 
@@ -302,10 +303,55 @@ def make_scraped_table(goodreads) -> pd.DataFrame:
     ).dropna(how="all")
 
 
+def make_config(author_ids, size: int, store: Store):
+    fixed_books = store.goodreads.sample(frac=0.4)
+    book_fixes = pd.concat(
+        [
+            fixed_books[column].sample(frac=fraction)
+            for column, fraction in {
+                "Language": 0.75,
+                "Title": 0.04,
+                "Published": 0.2,
+                "Category": 0.1,
+                "Pages": 0.04,
+            }.items()
+        ],
+        axis="columns",
+    ).sort_index()
+
+    fixed_authors = store.authors.sample(frac=0.03)
+    author_fixes = pd.concat(
+        [
+            fixed_authors[column].sample(frac=fraction)
+            for column, fraction in {
+                "Gender": 0.75,
+                "Nationality": 0.85,
+                "Author": 0.01,
+            }.items()
+        ],
+        axis="columns",
+    ).sort_index()
+
+    return {
+        "fixes": [
+            {
+                k: (int(v) if k in ("Published", "Pages") else v)
+                for k, v in record.items()
+                if not pd.isna(v)
+            }
+            for record in book_fixes.reset_index().to_dict(orient="records")
+        ],
+        "authors": [
+            {k: v for k, v in record.items() if not pd.isna(v)}
+            for record in author_fixes.reset_index().to_dict(orient="records")
+        ],
+    }
+
+
 def make_books(size: int) -> Store:
     store = Store()
 
-    author_count = size // 1.5
+    author_count = int(size // 1.5)
     authors_size = round(author_count * 0.9)
 
     authors = _generate_authors(author_count)
@@ -320,7 +366,9 @@ def make_books(size: int) -> Store:
     store.ebooks = make_ebooks_table(ebooks_size)
     store.books = make_books_table(store.ebooks, authors, books_size)
 
-    return store
+    config = make_config(authors, size, store)
+
+    return store, config
 
 
 ###############################################################################
@@ -341,8 +389,10 @@ if __name__ == "__main__":
         print(f"Output: {args.output} is not a directory.")
         exit(1)
 
-    store = make_books(args.size)
+    store, config = make_books(args.size)
     store.save(args.output)
+    with open("blah/config1.yaml", "w") as fh:
+        fh.write(yaml.dump(config))
 
     exit(0)
 
