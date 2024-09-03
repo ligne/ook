@@ -38,6 +38,7 @@ AUTHOR_BASE_SCHEMA = pa.DataFrameSchema(
         "Author": pa.Column(str),
     },
     strict=True,
+    unique_column_names=True,
 )
 
 AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
@@ -46,7 +47,7 @@ AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
         "Nationality": pa.Column(str, nullable=True),
         "Gender": pa.Column(str, nullable=True),
         "Description": pa.Column(str),
-    }
+    },
 ).set_index(["AuthorId"])
 
 AUTHOR_FIX_SCHEMA = pa.DataFrameSchema(
@@ -57,6 +58,7 @@ AUTHOR_FIX_SCHEMA = pa.DataFrameSchema(
         "Nationality": pa.Column(str, nullable=True),
     },
     strict=True,
+    unique_column_names=True,
 ).set_index(["AuthorId"])
 
 STATUS_SCHEMA = pa.DataFrameSchema(
@@ -77,6 +79,7 @@ STATUS_SCHEMA = pa.DataFrameSchema(
         "Borrowed": pa.Column(bool),
     },
     strict=True,
+    unique_column_names=True,
     checks=[
         pa.Check(
             lambda df: (df.Started.isna() | (df.Started >= df.Added))
@@ -99,6 +102,7 @@ EBOOK_SCHEMA = pa.DataFrameSchema(
         "Added": pa.Column("datetime64"),
     },
     strict=True,
+    unique_column_names=True,
 ).set_index(["BookId"])
 
 BOOK_SCHEMA = pa.DataFrameSchema(
@@ -118,6 +122,7 @@ BOOK_SCHEMA = pa.DataFrameSchema(
         "Pages": pa.Column(float, nullable=True),
     },
     strict=True,
+    unique_column_names=True,
 ).set_index(["KindleId"])
 
 GOODREADS_SCHEMA = pa.DataFrameSchema(
@@ -140,6 +145,7 @@ GOODREADS_SCHEMA = pa.DataFrameSchema(
         "AvgRating": pa.Column(float, checks=pa.Check.in_range(1, 5)),
     },
     strict=True,
+    unique_column_names=True,
 ).set_index(["BookId"])
 
 SCRAPED_SCHEMA = pa.DataFrameSchema(
@@ -149,6 +155,7 @@ SCRAPED_SCHEMA = pa.DataFrameSchema(
         "Pages": pa.Column(float, nullable=True),
     },
     #    strict=True,
+    unique_column_names=True,
 ).set_index(["BookId"])
 
 BOOK_FIX_SCHEMA = pa.DataFrameSchema(
@@ -161,6 +168,7 @@ BOOK_FIX_SCHEMA = pa.DataFrameSchema(
         "Pages": pa.Column(float, nullable=True),
     },
     strict=True,
+    unique_column_names=True,
 ).set_index(["BookId"])
 
 ###############################################################################
@@ -279,7 +287,7 @@ def make_books_table(ebooks, authors, size: int) -> pd.DataFrame:
     return pd.concat(
         [
             ebooks.assign(Pages=ebooks.Words / 300)
-            .drop(columns=["Words", "Added"])
+            .drop(columns=["Words", "Added", "Author"])
             .sample(n=size, random_state=rng)
             .reset_index()
             .rename(columns={"BookId": "KindleId"})
