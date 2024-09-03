@@ -374,7 +374,7 @@ def make_config(author_ids, size: int, store: Store):
 def make_books(size: int) -> Store:
     store = Store()
 
-    author_count = int(size // 1.5)
+    author_count = round(size * 0.66)
     authors_size = round(author_count * 0.9)
 
     authors = _generate_authors(author_count)
