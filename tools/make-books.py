@@ -137,6 +137,16 @@ GOODREADS_SCHEMA = pa.DataFrameSchema(
 ).set_index(["BookId"])
 
 
+SCRAPED_SCHEMA = pa.DataFrameSchema(
+    {
+        "BookId": pa.Column(int, unique=True),
+        "Binding": pa.Column(str, nullable=True),
+        "Pages": pa.Column(float, nullable=True),
+    },
+    #    strict=True,
+).set_index(["BookId"])
+
+
 ###############################################################################
 
 
@@ -271,6 +281,27 @@ def make_books_table(ebooks, authors, size: int) -> pd.DataFrame:
     ).set_index("KindleId")
 
 
+@pa.check_output(SCRAPED_SCHEMA)
+@pa.check_input(GOODREADS_SCHEMA)
+def make_scraped_table(goodreads) -> pd.DataFrame:
+    size = len(goodreads)
+    return pd.DataFrame(
+        {
+            "Binding": np.where(
+                rng.random(size=size) > 0.06, rng.choice(BINDINGS, size=size), None
+            ),
+            "Pages": np.where(
+                rng.random(size=size) > 0.5,
+                rng.integers(50, 2_000, size=size).astype(float),
+                np.nan,
+            ),
+            "Started": None,
+            "Read": None,
+        },
+        index=goodreads.index,
+    ).dropna(how="all")
+
+
 def make_books(size: int) -> Store:
     store = Store()
 
@@ -285,6 +316,7 @@ def make_books(size: int) -> Store:
 
     store.authors = make_authors_table(authors, authors_size)
     store.goodreads = make_goodreads_table(authors, goodreads_size)
+    store.scraped = make_scraped_table(store.goodreads)
     store.ebooks = make_ebooks_table(ebooks_size)
     store.books = make_books_table(store.ebooks, authors, books_size)
 
