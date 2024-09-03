@@ -40,7 +40,6 @@ AUTHOR_BASE_SCHEMA = pa.DataFrameSchema(
     strict=True,
 )
 
-
 AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
     {
         "QID": pa.Column(str, pa.Check.str_matches(r"^Q\d+$")),
@@ -50,6 +49,15 @@ AUTHOR_SCHEMA = AUTHOR_BASE_SCHEMA.add_columns(
     }
 ).set_index(["AuthorId"])
 
+AUTHOR_FIX_SCHEMA = pa.DataFrameSchema(
+    {
+        "Author": pa.Column(str, nullable=True),
+        "AuthorId": pa.Column(int),
+        "Gender": pa.Column(str, nullable=True),
+        "Nationality": pa.Column(str, nullable=True),
+    },
+    strict=True,
+).set_index(["AuthorId"])
 
 STATUS_SCHEMA = pa.DataFrameSchema(
     columns={
@@ -80,7 +88,6 @@ STATUS_SCHEMA = pa.DataFrameSchema(
     ],
 )
 
-
 EBOOK_SCHEMA = pa.DataFrameSchema(
     {
         "BookId": pa.Column(str, unique=True),
@@ -93,7 +100,6 @@ EBOOK_SCHEMA = pa.DataFrameSchema(
     },
     strict=True,
 ).set_index(["BookId"])
-
 
 BOOK_SCHEMA = pa.DataFrameSchema(
     {
@@ -113,7 +119,6 @@ BOOK_SCHEMA = pa.DataFrameSchema(
     },
     strict=True,
 ).set_index(["KindleId"])
-
 
 GOODREADS_SCHEMA = pa.DataFrameSchema(
     columns=STATUS_SCHEMA.columns
@@ -137,7 +142,6 @@ GOODREADS_SCHEMA = pa.DataFrameSchema(
     strict=True,
 ).set_index(["BookId"])
 
-
 SCRAPED_SCHEMA = pa.DataFrameSchema(
     {
         "BookId": pa.Column(int, unique=True),
@@ -147,6 +151,17 @@ SCRAPED_SCHEMA = pa.DataFrameSchema(
     #    strict=True,
 ).set_index(["BookId"])
 
+BOOK_FIX_SCHEMA = pa.DataFrameSchema(
+    {
+        "BookId": pa.Column(int),
+        "Language": pa.Column(str, nullable=True),
+        "Title": pa.Column(str, nullable=True),
+        "Published": pa.Column(float, nullable=True),
+        "Category": pa.Column(str, nullable=True),
+        "Pages": pa.Column(float, nullable=True),
+    },
+    strict=True,
+).set_index(["BookId"])
 
 ###############################################################################
 
@@ -303,9 +318,11 @@ def make_scraped_table(goodreads) -> pd.DataFrame:
     ).dropna(how="all")
 
 
-def make_config(author_ids, size: int, store: Store):
-    fixed_books = store.goodreads.sample(frac=0.4)
-    book_fixes = pd.concat(
+@pa.check_output(BOOK_FIX_SCHEMA)
+@pa.check_input(GOODREADS_SCHEMA)
+def make_book_fixes(goodreads, size):
+    fixed_books = goodreads.sample(frac=0.4)
+    return pd.concat(
         [
             fixed_books[column].sample(frac=fraction)
             for column, fraction in {
@@ -319,32 +336,38 @@ def make_config(author_ids, size: int, store: Store):
         axis="columns",
     ).sort_index()
 
-    fixed_authors = store.authors.sample(frac=0.03)
-    author_fixes = pd.concat(
-        [
-            fixed_authors[column].sample(frac=fraction)
+
+@pa.check_output(AUTHOR_FIX_SCHEMA)
+@pa.check_input(AUTHOR_SCHEMA)
+def make_author_fixes(authors, author_ids, size):
+    fixed_authors = authors.sample(frac=0.03)
+    return pd.DataFrame(
+        {
+            column: fixed_authors[column].sample(frac=fraction)
             for column, fraction in {
                 "Gender": 0.75,
                 "Nationality": 0.85,
                 "Author": 0.01,
             }.items()
-        ],
-        axis="columns",
+        },
     ).sort_index()
 
+
+def _tidy_for_yaml(df) -> list[dict]:
+    return [
+        {
+            k: (int(v) if k in ("Published", "Pages") else v)
+            for k, v in record.items()
+            if not pd.isna(v)
+        }
+        for record in df.reset_index().to_dict(orient="records")
+    ]
+
+
+def make_config(author_ids, size: int, store: Store):
     return {
-        "fixes": [
-            {
-                k: (int(v) if k in ("Published", "Pages") else v)
-                for k, v in record.items()
-                if not pd.isna(v)
-            }
-            for record in book_fixes.reset_index().to_dict(orient="records")
-        ],
-        "authors": [
-            {k: v for k, v in record.items() if not pd.isna(v)}
-            for record in author_fixes.reset_index().to_dict(orient="records")
-        ],
+        "fixes": _tidy_for_yaml(make_book_fixes(store.goodreads, size)),
+        "authors": _tidy_for_yaml(make_author_fixes(store.authors, author_ids, size)),
     }
 
 
