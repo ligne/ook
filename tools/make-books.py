@@ -274,7 +274,7 @@ def make_books_table(ebooks, authors, size: int) -> pd.DataFrame:
 def make_books(size: int) -> Store:
     store = Store()
 
-    author_count = size // 3
+    author_count = size // 1.5
     authors_size = round(author_count * 0.9)
 
     authors = _generate_authors(author_count)
