@@ -18,13 +18,6 @@ from reading.config import Config
 from reading.storage import Store
 
 
-seed = 1
-
-rng = np.random.default_rng(seed)
-
-faker = Faker("en")
-faker.seed_instance(seed)
-
 GENDERS = ["male", "female", "non-binary"]
 STANDARD_SHELVES = ["to-read", "currently-reading", "read"]
 SHELVES = [*STANDARD_SHELVES, "pending", "library", "elsewhere"]
@@ -331,10 +324,10 @@ def make_scraped_table(goodreads) -> pd.DataFrame:
 @pa.check_output(BOOK_FIX_SCHEMA)
 @pa.check_input(GOODREADS_SCHEMA)
 def make_book_fixes(goodreads, size):
-    fixed_books = goodreads.sample(frac=0.4)
+    fixed_books = goodreads.sample(frac=0.4, random_state=rng)
     return pd.concat(
         [
-            fixed_books[column].sample(frac=fraction)
+            fixed_books[column].sample(frac=fraction, random_state=rng)
             for column, fraction in {
                 "Language": 0.75,
                 "Title": 0.04,
@@ -350,10 +343,10 @@ def make_book_fixes(goodreads, size):
 @pa.check_output(AUTHOR_FIX_SCHEMA)
 @pa.check_input(AUTHOR_SCHEMA)
 def make_author_fixes(authors, author_ids, size):
-    fixed_authors = authors.sample(frac=0.03)
+    fixed_authors = authors.sample(frac=0.03, random_state=rng)
     return pd.DataFrame(
         {
-            column: fixed_authors[column].sample(frac=fraction)
+            column: fixed_authors[column].sample(frac=fraction, random_state=rng)
             for column, fraction in {
                 "Gender": 0.75,
                 "Nationality": 0.85,
@@ -412,6 +405,7 @@ def make_books(size: int) -> Store:
 def arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--seed", type=int)
     parser.add_argument("size", type=int, default=10)
 
     return parser
@@ -423,6 +417,10 @@ if __name__ == "__main__":
     if not args.output.is_dir():
         print(f"Output: {args.output} is not a directory.")
         exit(1)
+
+    faker = Faker("en")
+    faker.seed_instance(args.seed)
+    rng = np.random.Generator(np.random.PCG64DXSM(args.seed))
 
     store, config = make_books(args.size)
     store.save(args.output)
