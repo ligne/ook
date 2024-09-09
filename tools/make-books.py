@@ -424,8 +424,7 @@ if __name__ == "__main__":
 
     store, config = make_books(args.size)
     store.save(args.output)
-    with open("blah/config1.yaml", "w") as fh:
-        fh.write(yaml.dump(config))
+    (args.output / "config.yml").write_text(yaml.dump(config))
 
     exit(0)
 
