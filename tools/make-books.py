@@ -406,7 +406,7 @@ def arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--seed", type=int)
-    parser.add_argument("size", type=int, default=10)
+    parser.add_argument("--size", type=int, default=100)
 
     return parser
 
