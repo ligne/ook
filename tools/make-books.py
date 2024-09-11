@@ -240,7 +240,7 @@ def make_goodreads_table(authors: pd.DataFrame, size: int) -> pd.DataFrame:
                     "Published": rng.integers(-500, 2020, size=size).astype(float),
                     "Language": rng.choice(LANGUAGES, size=size),
                     "Pages": rng.integers(50, 2_000, size=size).astype(float),
-                    "AvgRating": np.round(rng.uniform(1, 5, size=size), 2),
+                    "AvgRating": rng.integers(100, 501, size=size) / 100,
                 }
             ),
             _generate_statuses(size),
