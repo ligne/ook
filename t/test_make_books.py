@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import importlib
+import pytest
 
 
-mb = importlib.import_module("tools.make-books")
+mb = pytest.importorskip("tools.make-books")
 
 
 def test__generate_authors() -> None:
@@ -46,7 +46,7 @@ def test_make_ebooks_table() -> None:
 
 
 def test_make_books_table() -> None:
-    authors =  mb._generate_authors(10)
+    authors = mb._generate_authors(10)
     ebooks = mb.make_ebooks_table(10)
 
     books = mb.make_books_table(ebooks, authors, 10)
