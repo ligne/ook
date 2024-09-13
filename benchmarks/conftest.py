@@ -31,6 +31,7 @@ def _generate_metadata(collection_path: Path) -> None:
         rebuild_metadata(Store(collection_path), Config.from_file(collection_path / "config.yml"))
 
 
+@pytest.fixture()
 def collection(collection_path: Path) -> Collection:
     """Return each of the benchmark collections in Collection form."""
     return Collection.from_store(
