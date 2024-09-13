@@ -32,6 +32,12 @@ def _generate_metadata(collection_path: Path) -> None:
 
 
 @pytest.fixture()
+def collection_store(collection_path: Path) -> Store:
+    """Return each of the benchmark collections as a Store."""
+    return Store(collection_path)
+
+
+@pytest.fixture()
 def collection(collection_path: Path) -> Collection:
     """Return each of the benchmark collections in Collection form."""
     return Collection.from_store(
