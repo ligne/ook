@@ -57,6 +57,7 @@ def arg_parser():
     # common options
     parser.add_argument("--date", type=pd.Timestamp, default=pd.Timestamp("today"))
     parser.add_argument("-f", "--force", action="store_true")
+    parser.add_argument("--data-dir", type=str, default="data/")
 
     # output options
 

@@ -29,7 +29,7 @@ def _recent_author_ids(c: Collection, date: pd.Timestamp) -> list[int]:
 
 def scheduled(args, config: Config) -> None:
     c = (
-        Collection.from_dir(merge=True)
+        Collection.from_dir(args.data_dir, merge=True)
         .set_schedules(config("scheduled"))
         .shelves(*args.shelves)
         .languages(*args.languages)
@@ -51,7 +51,7 @@ def scheduled(args, config: Config) -> None:
 # suggestions
 def main(args, config: Config) -> None:
     c = (
-        Collection.from_dir(merge=True)
+        Collection.from_dir(args.data_dir, merge=True)
         .set_schedules(config("scheduled"))
         .shelves(*args.shelves)
         .languages(*args.languages)
