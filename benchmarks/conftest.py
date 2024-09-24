@@ -28,7 +28,9 @@ def _generate_metadata(collection_path: Path) -> None:
     from reading.collection import rebuild_metadata
 
     if not (collection_path / "metadata-ebooks.csv").exists():
-        rebuild_metadata(Store(collection_path), Config.from_file(collection_path / "config.yml"))
+        store = Store(collection_path)
+        rebuild_metadata(store, Config.from_file(collection_path / "config.yml"))
+        store.save(collection_path)
 
 
 @pytest.fixture()
