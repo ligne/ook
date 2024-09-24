@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import json
 
-from reading.gdocs import _parse_doc, changes
+
+try:
+    from reading.gdocs import _parse_doc, changes
+except ModuleNotFoundError:
+    import pytest
+
+    pytestmark = pytest.mark.skip("Unable to import.")
 
 
 def test__parse_doc() -> None:

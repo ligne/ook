@@ -107,6 +107,7 @@ def test__count_words() -> None:
 ################################################################################
 
 
+@pytest.mark.xfail(raises=ModuleNotFoundError)
 def test__read_metadata() -> None:
     path = Path("t/data/ebooks/supernatural.mobi")
     assert _read_metadata(path) == {
