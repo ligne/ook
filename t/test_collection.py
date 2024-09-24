@@ -198,7 +198,6 @@ Series                   NaN   Waverley Novels
 SeriesId                 NaN          142177.0
 Entry                    NaN                 5
 Published             1868.0            1819.0
-Language                 NaN               NaN
 Pages                  528.0             541.0
 """
     )

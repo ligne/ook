@@ -116,8 +116,7 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Language",
-        "store": ["goodreads", "ebooks", "books", "metadata"],
-        "prefer": "book",
+        "store": ["goodreads", "ebooks"],
         "merge": "first",
     },
     {

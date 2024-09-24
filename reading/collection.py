@@ -26,7 +26,6 @@ pd.set_option("display.width", None)
 
 def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.DataFrame:
     prefer_work_cols = metadata_prefer("work")
-    prefer_book_cols = metadata_prefer("book")
 
     # add in any missing columns, to make things easier
     books = ebooks.reindex(columns=df_columns("metadata"))
@@ -39,10 +38,6 @@ def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.Dat
     # fill in one set of columns
     metadata.update(books[prefer_work_cols])
     metadata.update(works[prefer_work_cols])
-
-    # fill in the other
-    metadata.update(works[prefer_book_cols])
-    metadata.update(books[prefer_book_cols])
 
     return metadata[books != metadata].dropna(how="all", axis="index")
 
