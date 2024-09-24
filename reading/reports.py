@@ -34,7 +34,7 @@ def _process_report(report):
 
 def flag(code):
     """Convert a string into the corresponding Unicode flag."""
-    offset = ord("\N{Regional Indicator Symbol Letter A}") - ord("A")
+    offset = ord("\N{REGIONAL INDICATOR SYMBOL LETTER A}") - ord("A")
     return chr(ord(code[0]) + offset) + chr(ord(code[1]) + offset)
 
 
@@ -43,9 +43,9 @@ def prefix(book):
     """Return a prefix representing noteworthy properties of $book."""
     string = "".join(
         [
-            ("\N{Circled Latin Capital Letter L}" if book.Shelf == "library" else ""),
-            ("\N{Circled Latin Capital Letter S}" if book.Category == "short-stories" else ""),
-            ("\N{Circled Latin Capital Letter N}" if book.Category == "non-fiction" else ""),
+            ("\N{CIRCLED LATIN CAPITAL LETTER L}" if book.Shelf == "library" else ""),
+            ("\N{CIRCLED LATIN CAPITAL LETTER S}" if book.Category == "short-stories" else ""),
+            ("\N{CIRCLED LATIN CAPITAL LETTER N}" if book.Category == "non-fiction" else ""),
             (
                 flag(book.Language.upper())
                 if pd.notna(book.Language) and book.Language != "en"
