@@ -45,10 +45,13 @@ def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.Dat
 def _author_overlay(
     base: pd.DataFrame, authors: pd.DataFrame, author_fixes: pd.DataFrame
 ) -> pd.DataFrame:
-    authors = authors.reindex(authors.index | author_fixes.index)
+    authors = authors.reindex(authors.index.union(author_fixes.index))
     authors.update(author_fixes)
-    return base[base.AuthorId.isin(authors.index)].AuthorId.apply(
-        lambda x: authors.loc[x, ["Gender", "Nationality"]]
+    return (
+        base[["AuthorId"]]
+        .join(authors[["Gender", "Nationality"]], on="AuthorId", how="inner")
+        .drop(columns="AuthorId")
+        .sort_index()
     )
 
 
