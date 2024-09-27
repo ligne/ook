@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Literal, TypedDict
 
 import attr
@@ -278,7 +279,7 @@ class Config:
     _conf = attr.ib()
 
     @classmethod
-    def from_file(cls, filename: str = "data/config.yml") -> Self:
+    def from_file(cls, filename: str | Path = "data/config.yml") -> Self:
         """Create from $filename."""
         try:
             with open(filename) as fh:
