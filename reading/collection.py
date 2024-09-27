@@ -25,26 +25,6 @@ pd.set_option("display.width", None)
 ################################################################################
 
 
-def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.DataFrame:
-    return ebooks[[]].join(works.drop(columns=["BookId", "Category"]), how="left")
-
-
-def _author_overlay(
-    base: pd.DataFrame, authors: pd.DataFrame, author_fixes: pd.DataFrame
-) -> pd.DataFrame:
-    authors = authors.reindex(authors.index.union(author_fixes.index))
-    authors.update(author_fixes)
-    return (
-        base[["AuthorId"]]
-        .join(authors[["Gender", "Nationality"]], on="AuthorId", how="inner")
-        .drop(columns="AuthorId")
-        .sort_index()
-    )
-
-
-################################################################################
-
-
 # split ebook titles into title, subtitle and volume parts, since they tend to
 # be unusably messy
 def _ebook_parse_title(title):
@@ -212,17 +192,21 @@ class Collection:
 
         df = pd.concat([gr_df, ebooks_df], sort=False)
 
-        # Ensure the additional columns exist in any case
-        # FIXME use reindex to expand it to give it the right columnns
-        df = df.assign(Gender=None, Nationality=None)
-
         if metadata:
             author_fixes = pd.DataFrame(config("authors"))
             if not author_fixes.empty:
                 author_fixes = author_fixes.set_index("AuthorId")
 
-            df.update(_ebook_metadata_overlay(store.ebooks, store.books))
-            df.update(_author_overlay(df, store.authors, author_fixes))
+            df.update(
+                ebooks_df[[]].join(store.books.drop(columns=["BookId", "Category"]), how="left")
+            )
+
+            authors = store.authors
+            authors = authors.reindex(authors.index.union(author_fixes.index))
+            authors.update(author_fixes)
+            df = df.join(authors[["Gender", "Nationality"]], on="AuthorId", how="left")
+        else:
+            df = df.assign(Gender=None, Nationality=None)
 
         if fixes:
             df.update(store.scraped)
