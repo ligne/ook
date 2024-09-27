@@ -42,33 +42,6 @@ def _author_overlay(
     )
 
 
-def rebuild_metadata(store: Store, config: Config) -> Store:
-    """Refresh the metadata tables in $store."""
-    author_fixes = pd.DataFrame(config("authors"))
-    if not author_fixes.empty:
-        author_fixes = author_fixes.set_index("AuthorId")
-    authors = store.authors
-    # fixed_authors = authors.reindex(authors.index | author_fixes.index)
-
-    # goodreads and ebooks have to be done separately, because pandas does not
-    # like indexes containing multiple types
-
-    # ebooks
-    base = store.ebooks.reindex(columns=df_columns("metadata"))
-    metadata = base.copy()
-    metadata.update(_ebook_metadata_overlay(metadata, store.books))
-    metadata.update(_author_overlay(metadata, authors, author_fixes))
-    store.ebook_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
-
-    # goodreads
-    base = store.goodreads.reindex(columns=df_columns("metadata"))
-    metadata = base.copy()
-    metadata.update(_author_overlay(metadata, authors, author_fixes))
-    store.gr_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
-
-    return store
-
-
 ################################################################################
 
 

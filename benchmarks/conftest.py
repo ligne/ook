@@ -22,17 +22,6 @@ def collection_path(request: pytest.FixtureRequest) -> Path:
     return Path("benchmarks/data/collections", request.param)
 
 
-@pytest.fixture(autouse=True)
-def _generate_metadata(collection_path: Path) -> None:
-    """Ensure the metadata files have been generated before starting."""
-    from reading.collection import rebuild_metadata
-
-    if not (collection_path / "metadata-ebooks.csv").exists():
-        store = Store(collection_path)
-        rebuild_metadata(store, Config.from_file(collection_path / "config.yml"))
-        store.save(collection_path)
-
-
 @pytest.fixture()
 def collection_store(collection_path: Path) -> Store:
     """Return each of the benchmark collections as a Store."""
