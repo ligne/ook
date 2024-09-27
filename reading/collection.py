@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import datetime as dt
+from pathlib import Path
 import re
 from typing import List, Optional, Sequence
 
@@ -215,30 +216,13 @@ class Collection:
         **kwargs,
     ) -> Self:
         """Create a collection from the contents of $csv_dir."""
-
-        config = Config.from_file(f"{csv_dir}/config.yml")
-
-        gr_df = load_df("goodreads", dirname=csv_dir)
-        ebooks_df = expand_ebooks(
-            load_df("ebooks", dirname=csv_dir),
-            words_per_page=config("kindle.words_per_page"),
+        return cls.from_store(
+            store=Store(csv_dir),
+            config=Config.from_file(Path(csv_dir, "config.yml")),
+            fixes=fixes,
+            metadata=metadata,
+            **kwargs,
         )
-
-        df = pd.concat([gr_df, ebooks_df], sort=False)
-
-        # Ensure the additional columns exist in any case
-        # FIXME use reindex to expand it to give it the right columnns
-        df = df.assign(Gender=None, Nationality=None)
-
-        if metadata:
-            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-ebooks.csv"))
-            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-gr.csv"))
-
-        if fixes:
-            df.update(load_df("scraped", dirname=csv_dir))
-            df.update(_process_fixes(config("fixes")))
-
-        return cls(df, **kwargs)
 
     @classmethod
     def from_store(
@@ -250,33 +234,23 @@ class Collection:
         **kwargs,
     ) -> Self:
         """Create a Collection from a Store object."""
-        bases = [
-            store.goodreads,
-            expand_ebooks(store.ebooks, config("kindle.words_per_page")),
-        ]
-        overlays: List[pd.DataFrame] = []
-        if metadata:
-            overlays += [store.ebook_metadata, store.gr_metadata]
-        if fixes:
-            overlays += [store.scraped, _process_fixes(config("fixes"))]
+        gr_df = store.goodreads
+        ebooks_df = expand_ebooks(store.ebooks, words_per_page=config("kindle.words_per_page"))
 
-        return cls.assemble(bases=bases, overlays=overlays, **kwargs)
+        df = pd.concat([gr_df, ebooks_df], sort=False)
 
-    @classmethod
-    def assemble(
-        cls,
-        bases: Sequence[pd.DataFrame],
-        overlays: Sequence[pd.DataFrame],
-        **kwargs,
-    ) -> Self:
-        """Assemble a Collection from $bases and $overlays."""
-        df = pd.concat(bases, sort=False)
-
+        # Ensure the additional columns exist in any case
         # FIXME use reindex to expand it to give it the right columnns
         df = df.assign(Gender=None, Nationality=None)
 
-        for overlay in overlays:
-            df.update(overlay)
+        if metadata:
+            df.update(store.ebook_metadata)
+            df.update(store.gr_metadata)
+
+        if fixes:
+            df.update(store.scraped)
+            df.update(_process_fixes(config("fixes")))
+
         return cls(df, **kwargs)
 
     def reset(self) -> Self:
