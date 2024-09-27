@@ -244,8 +244,12 @@ class Collection:
         df = df.assign(Gender=None, Nationality=None)
 
         if metadata:
-            df.update(store.ebook_metadata)
-            df.update(store.gr_metadata)
+            author_fixes = pd.DataFrame(config("authors"))
+            if not author_fixes.empty:
+                author_fixes = author_fixes.set_index("AuthorId")
+
+            df.update(_ebook_metadata_overlay(store.ebooks, store.books))
+            df.update(_author_overlay(df, store.authors, author_fixes))
 
         if fixes:
             df.update(store.scraped)
