@@ -27,7 +27,6 @@ class Column(ColumnBase, total=False):
     """Optional fields for a column."""
 
     merge: str
-    prefer: Literal["book", "work"]
     type: str
 
 
@@ -43,26 +42,22 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Author",
-        "store": ["goodreads", "ebooks", "books", "authors", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "ebooks", "books", "authors"],
         "merge": "first",
     },
     {
         "name": "AuthorId",
-        "store": ["goodreads", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books"],
         "merge": "first",
     },
     {
         "name": "Title",
-        "store": ["goodreads", "ebooks", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "ebooks", "books"],
         "merge": "first",
     },
     {
         "name": "Work",
-        "store": ["goodreads", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books"],
         "merge": "first",
     },
     {
@@ -88,20 +83,17 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Series",
-        "store": ["goodreads", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books"],
         "merge": "first",
     },
     {
         "name": "SeriesId",
-        "store": ["goodreads", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books"],
         "merge": "first",
     },
     {
         "name": "Entry",
-        "store": ["goodreads", "books", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books"],
     },
     {
         "name": "Binding",
@@ -110,9 +102,8 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Published",
-        "store": ["goodreads", "books", "metadata"],
+        "store": ["goodreads", "books"],
         # Can't convert Published to a date as pandas' range isn't big enough
-        "prefer": "work",
         "merge": "first",
     },
     {
@@ -122,8 +113,7 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Pages",
-        "store": ["goodreads", "books", "scraped", "metadata"],
-        "prefer": "work",
+        "store": ["goodreads", "books", "scraped"],
         "merge": "sum",
     },
     {
@@ -161,12 +151,12 @@ _COLUMNS: list[Column] = [
     },
     {
         "name": "Gender",
-        "store": ["authors", "metadata"],
+        "store": ["authors"],
         "merge": "first",
     },
     {
         "name": "Nationality",
-        "store": ["authors", "metadata"],
+        "store": ["authors"],
         "merge": "first",
     },
     {
@@ -190,15 +180,6 @@ def df_columns(store: str) -> list[str]:
 def date_columns(store: str) -> list[str]:
     """Return a list of the columns that should be treated as dates."""
     return [col["name"] for col in _COLUMNS if store in col["store"] and col.get("type") == "date"]
-
-
-def metadata_prefer(preference: Literal["work", "book"]) -> list[str]:
-    """Return a list of columns whose values should be prioritised when assembling the metadata.
-
-    Where $preference should be one of "work" (for the Goodreads work) or
-    "book" (for the ebook).
-    """
-    return [col["name"] for col in _COLUMNS if col.get("prefer") == preference]
 
 
 def merge_preferences() -> dict[str, str]:

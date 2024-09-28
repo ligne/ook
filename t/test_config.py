@@ -8,7 +8,6 @@ from reading.config import (
     date_columns,
     df_columns,
     merge_preferences,
-    metadata_prefer,
 )
 
 
@@ -47,7 +46,6 @@ def test_df_colums() -> None:
         "SeriesId",
         "Entry",
         "Published",
-        "Language",
         "Pages",
     ], "Columns for books.csv"
 
@@ -65,21 +63,6 @@ def test_df_colums() -> None:
         "Started",
         "Read",
     ], "Columns for scraped.csv"
-
-    assert df_columns("metadata") == [
-        "Author",
-        "AuthorId",
-        "Title",
-        "Work",
-        "Series",
-        "SeriesId",
-        "Entry",
-        "Published",
-        "Language",
-        "Pages",
-        "Gender",
-        "Nationality",
-    ], "Columns for metadata.csv"
 
 
 def test_date_columns() -> None:
@@ -122,25 +105,6 @@ def test_category_patterns() -> None:
         ],
         ["novels", "fiction"],
     ]
-
-
-################################################################################
-
-
-def test_metadata_prefer() -> None:
-    assert metadata_prefer("work") == [
-        "Author",
-        "AuthorId",
-        "Title",
-        "Work",
-        "Series",
-        "SeriesId",
-        "Entry",
-        "Published",
-        "Pages",
-    ], "Prefer the goodreads work's metadata"
-
-    assert metadata_prefer("book") == ["Language"], "Prefer the ebook's metadata"
 
 
 ################################################################################
