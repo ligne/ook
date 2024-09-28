@@ -72,10 +72,6 @@ def test_empty_store(tmp_path: Path) -> None:
     assert isinstance(store.goodreads, pd.DataFrame), "Got a dataframe"
     assert store.goodreads.empty, "There was no data on disk so it created one"
 
-    # the metadata stores are a bit more complicated
-    assert isinstance(store.gr_metadata, pd.DataFrame), "Got a dataframe"
-    assert store.gr_metadata.empty, "There was no data on disk so it created one"
-
 
 def test_existing_store() -> None:
     """When there is already data in the store."""
@@ -85,22 +81,12 @@ def test_existing_store() -> None:
     assert isinstance(ebooks, pd.DataFrame), "Got a dataframe"
     assert "novels/pg13947.mobi" in ebooks.index, "There are books in the dataframe"
 
-    # the metadata stores are a bit more complicated
-    ebook_metadata = store.ebook_metadata
-    assert isinstance(ebook_metadata, pd.DataFrame), "Got a dataframe"
-    assert "non-fiction/pg14154.mobi" in ebook_metadata.index, "There are books in the dataframe"
-
-
 def test_store_overwrite() -> None:
     store = Store("t/data/2019-12-04")
 
     assert not store.ebooks.empty
     store.ebooks = pd.DataFrame()
     assert store.ebooks.empty
-
-    assert not store.ebook_metadata.empty
-    store.ebook_metadata = pd.DataFrame()
-    assert store.ebook_metadata.empty
 
 
 def _is_empty(directory: Path) -> bool:
