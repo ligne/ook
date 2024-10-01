@@ -7,14 +7,14 @@ from __future__ import annotations
 import datetime as dt
 from pathlib import Path
 import re
-from typing import List, Optional, Sequence
+from typing import Optional, Sequence
 
 import attr
 import pandas as pd
 from typing_extensions import Self
 
 from .chain import Chain
-from .config import Config, df_columns, merge_preferences
+from .config import Config, merge_preferences
 from .storage import Store, load_df
 
 

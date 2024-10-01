@@ -3,14 +3,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import re
 
 import pytest
 
-from reading.config import Config
 from reading.metadata import FullExit, SaveExit, _list_book_choices, _read_choice, confirm_author
-from reading.storage import Store
 from reading.wikidata import Entity
 
 

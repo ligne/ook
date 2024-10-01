@@ -13,7 +13,6 @@ import pandas as pd
 import pandera as pa
 import yaml
 
-from reading.config import Config
 from reading.storage import Store
 
 

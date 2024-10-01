@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal, TypedDict
+from typing import TypedDict
 
 import attr
 from typing_extensions import Self
