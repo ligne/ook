@@ -193,20 +193,16 @@ class Collection:
         df = pd.concat([gr_df, ebooks_df], sort=False)
 
         if metadata:
-            author_fixes = pd.DataFrame(config("authors"))
-            if not author_fixes.empty:
-                author_fixes = author_fixes.set_index("AuthorId")
-
             df.update(
                 ebooks_df[[]].join(store.books.drop(columns=["BookId", "Category"]), how="left")
             )
 
-            authors = store.authors
+        authors = store.authors
+        if fixes and (author_fixes := config("authors")):
+            author_fixes = pd.DataFrame(author_fixes).set_index("AuthorId")
             authors = authors.reindex(authors.index.union(author_fixes.index))
             authors.update(author_fixes)
-            df = df.join(authors[["Gender", "Nationality"]], on="AuthorId", how="left")
-        else:
-            df = df.assign(Gender=None, Nationality=None)
+        df = df.join(authors[["Gender", "Nationality"]], on="AuthorId", how="left")
 
         if fixes:
             df.update(store.scraped)
