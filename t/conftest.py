@@ -9,19 +9,6 @@ import pytest
 from reading.collection import Collection
 
 
-@pytest.fixture()
-def collection():
-    """Return a collection factory."""
-
-    def _get_collection(name: str, fixes: bool = False, **kwargs) -> Collection:
-        return Collection.from_dir(f"t/data/{name}/", fixes, **kwargs)
-
-    return _get_collection
-
-
-################################################################################
-
-
 def pytest_addoption(parser) -> None:
     parser.addoption("--runslow", action="store_true", default=False, help="run slow tests")
 
