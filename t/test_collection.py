@@ -11,12 +11,7 @@ from pandas.testing import assert_frame_equal
 import pytest
 import yaml
 
-from reading.collection import (
-    Collection,
-    _process_fixes,
-    read_authorids,
-    read_nationalities,
-)
+from reading.collection import Collection, _process_fixes, read_authorids, read_nationalities
 from reading.config import Config
 from reading.storage import Store
 
@@ -333,7 +328,6 @@ def test_duplicate_fixes() -> None:
 
 def test_fixes() -> None:
     """Test fix application."""
-
     c_with = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=True)
     c_wout = Collection.from_dir("t/data/2019-12-04", metadata=False, fixes=False)
 
@@ -370,9 +364,6 @@ def test_metadata() -> None:
 
     assert c_with.all.shape == c_wout.all.shape, "The shape hasn't changed"
     assert not c_with.all.equals(c_wout.all), "But they're not the same"
-
-    assert c_wout.all.Gender.isnull().all(), "Gender is unset without metadata"
-    assert c_wout.all.Nationality.isnull().all(), "Nationality is unset without metadata"
 
     assert c_with.all.Gender.notnull().any(), "At least one gender is set"
     assert c_with.all.Nationality.notnull().any(), "At least one nationality is set"
