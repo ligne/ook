@@ -10,6 +10,14 @@ quiet = true
 [tool.pytest.ini_options]
 testpaths = 't/'
 pythonpath = '.'
+xfail_strict = true
+filterwarnings = [
+    # make Deprecations fatal
+    "error::DeprecationWarning",
+    "error::FutureWarning",
+    # expected from the app
+    "ignore:Duplicate works in series:UserWarning",
+]
 
 
 [tool.ruff]
