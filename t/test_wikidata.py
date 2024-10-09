@@ -82,7 +82,9 @@ def _load_entity(qid: str):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
         return Entity(json.load(fh)["entities"][qid])
 
+
 reading.wikidata.entity = _load_entity
+
 
 def test_entity() -> None:
     entity = _load_entity("Q12807")

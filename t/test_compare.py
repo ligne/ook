@@ -610,6 +610,7 @@ def test_added_removed() -> None:
   * Language: en""",
     ]
 
+
 def test_duplicate_work_added_removed() -> None:
     """Multiple works with the same Work ID being added/removed at the same time."""
 

@@ -81,6 +81,7 @@ def test_existing_store() -> None:
     assert isinstance(ebooks, pd.DataFrame), "Got a dataframe"
     assert "novels/pg13947.mobi" in ebooks.index, "There are books in the dataframe"
 
+
 def test_store_overwrite() -> None:
     store = Store("t/data/2019-12-04")
 
