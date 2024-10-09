@@ -54,7 +54,7 @@ def lint_words_per_page():
     df["wpp"] = df.Words / df.Pages
 
     return {
-        "df": df[(df.wpp < 150) | (df.wpp > 700)],
+        "df": df[~df.wpp.between(150, 700)],
         "template": """
 {%- for entry in df.itertuples() %}
 {{entry.Author}}, {{entry.Title}}
