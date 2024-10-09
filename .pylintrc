@@ -25,10 +25,8 @@ disable=
         missing-timeout,
         unspecified-encoding,
         used-before-assignment,
-        use-implicit-booleaness-not-comparison-to-zero,
         consider-using-with,
         use-implicit-booleaness-not-comparison,
-        use-implicit-booleaness-not-comparison-to-string,
         wrong-import-order,
         wrong-import-position,
         # not urgent
