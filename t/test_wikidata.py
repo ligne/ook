@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 
+import reading.wikidata
 from reading.wikidata import Entity, _format_search_results, _uc_first
 
 
@@ -77,13 +78,14 @@ def test_format_search_results_no_results() -> None:
 ################################################################################
 
 
-def _load_json(qid: str):
+def _load_entity(qid: str):
     with open(f"t/data/wikidata/entities/{qid}.json") as fh:
-        return json.load(fh)["entities"][qid]
+        return Entity(json.load(fh)["entities"][qid])
 
+reading.wikidata.entity = _load_entity
 
 def test_entity() -> None:
-    entity = Entity(_load_json("Q12807"))
+    entity = _load_entity("Q12807")
     assert entity.qid == "Q12807"
     assert entity.label == "Umberto Eco"
     assert (
@@ -93,27 +95,27 @@ def test_entity() -> None:
     assert entity.gender == "male"
     assert entity.nationality == "it"
 
-    entity = Entity(_load_json("Q276032"))
+    entity = _load_entity("Q276032")
     assert entity.qid == "Q276032"
     assert entity.label == "Edith Wharton"
     assert entity.description == "American novelist, short story writer, designer"
     assert entity.gender == "female"
     assert entity.nationality == "us"
 
-    entity = Entity(_load_json("Q8018"))
+    entity = _load_entity("Q8018")
     assert entity.qid == "Q8018"
     assert entity.label == "Augustine of Hippo"
     assert entity.description == "Early Christian theologian, philosopher and Church Father"
     assert entity.gender == "male"
     assert entity.nationality == "Ancient Rome"
 
-    entity = Entity(_load_json("Q3302368"))
+    entity = _load_entity("Q3302368")
     assert entity.label == "Max de Radiguès"
     assert entity.description == "", "Empty description"
 
 
 def test_entity_collective() -> None:
-    entity = Entity(_load_json("Q2662892"))
+    entity = _load_entity("Q2662892")
     assert entity.qid == "Q2662892"
     assert entity.label == "Boileau-Narcejac"
     assert entity.description == "Team of French writers"
