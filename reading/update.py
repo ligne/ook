@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from .collection import Collection, rebuild_metadata
+from .collection import Collection
 from .compare import compare
 from .config import Config
 from .goodreads import get_books, update_books
@@ -54,9 +54,6 @@ def main(args, config: Config) -> None:
         authors = store.authors
         authors.update(pd.DataFrame(fetch_entities(authors.QID)).set_index("AuthorId"))
         store.authors = authors
-
-    # rebuild the metadata now the updates are complete.
-    store = rebuild_metadata(store, config)
 
     compare(
         new=Collection.from_store(store, config),

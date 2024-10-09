@@ -13,8 +13,6 @@ import pandas as pd
 import pandera as pa
 import yaml
 
-from reading.collection import rebuild_metadata
-from reading.config import Config
 from reading.storage import Store
 
 
@@ -393,8 +391,6 @@ def make_books(size: int) -> Store:
     store.books = make_books_table(store.ebooks, authors, books_size)
 
     config = make_config(authors, size, store)
-
-    store = rebuild_metadata(store, Config(config))
 
     return store, config
 

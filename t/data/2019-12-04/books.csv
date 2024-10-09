@@ -1,8 +1,8 @@
-,BookId,Author,AuthorId,Title,Work,Category,Series,SeriesId,Entry,Published,Language,Pages
-non-fiction/Coleman-Coding-Freedom.mobi,14891812,Gabriella Coleman,7452431,Coding Freedom: The Ethics and Aesthetics of Hacking,20545577,non-fiction,,,,2012,en,254
-non-fiction/pg14154.mobi,4184602,Edith Birkhead,425652,The Tale Of Terror: A Study Of The Gothic Fiction,1475662,non-fiction,,,,1963,,200
-novels/The_Castle_of_Wolfenbach.mobi,93195,Eliza Parsons,53468,The Castle of Wolfenbach: A German Story,1066862,novels,,,,1793,en,224
-novels/b869w.mobi,6185,Emily Brontë,4191,Wuthering Heights,1565818,novels,,,,1847,en,464
-novels/pg13765.mobi,2203202,Gaston Leroux,9057,Le mystère de la chambre jaune,181928,novels,Joseph Rouletabille,59997,1,1907,fr,288
-short-stories/Les_soirees_de_Medan.pdf,1838572,Émile Zola,4750,Les Soirées de Médan,1838632,short-stories,,,,1973,fr,290
-short-stories/pg1429-images.mobi,188087,Katherine Mansfield,45712,The Garden Party and Other Stories,1698523,short-stories,,,,1922,en,159
+,BookId,Author,AuthorId,Title,Work,Category,Series,SeriesId,Entry,Published,Pages
+non-fiction/Coleman-Coding-Freedom.mobi,14891812,Gabriella Coleman,7452431,Coding Freedom: The Ethics and Aesthetics of Hacking,20545577,non-fiction,,,,2012,254
+non-fiction/pg14154.mobi,4184602,Edith Birkhead,425652,The Tale Of Terror: A Study Of The Gothic Fiction,1475662,non-fiction,,,,1963,200
+novels/The_Castle_of_Wolfenbach.mobi,93195,Eliza Parsons,53468,The Castle of Wolfenbach: A German Story,1066862,novels,,,,1793,224
+novels/b869w.mobi,6185,Emily Brontë,4191,Wuthering Heights,1565818,novels,,,,1847,464
+novels/pg13765.mobi,2203202,Gaston Leroux,9057,Le mystère de la chambre jaune,181928,novels,Joseph Rouletabille,59997,1,1907,288
+short-stories/Les_soirees_de_Medan.pdf,1838572,Émile Zola,4750,Les Soirées de Médan,1838632,short-stories,,,,1973,290
+short-stories/pg1429-images.mobi,188087,Katherine Mansfield,45712,The Garden Party and Other Stories,1698523,short-stories,,,,1922,159

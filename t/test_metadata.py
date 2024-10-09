@@ -3,15 +3,11 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import re
 
 import pytest
 
-from reading.collection import rebuild_metadata
-from reading.config import Config
 from reading.metadata import FullExit, SaveExit, _list_book_choices, _read_choice, confirm_author
-from reading.storage import Store
 from reading.wikidata import Entity
 
 
@@ -400,30 +396,3 @@ def test_confirm_author_default_accepts(monkeypatch: pytest.MonkeyPatch) -> None
     entity = Entity(_load_json("Q12807"))
     author = confirm_author(entity)
     assert author["Nationality"] == "it"
-
-
-################################################################################
-
-
-def test_rebuild(tmp_path: Path) -> None:
-    """Test the rebuild() function."""
-    config = Config.from_file("t/data/2019-12-04/config.yml")
-    store = Store("t/data/2019-12-04/")
-
-    rebuild_metadata(store, config).save(tmp_path)
-
-    metadata_csv = tmp_path / "metadata-ebooks.csv"
-
-    assert (
-        metadata_csv.read_text()
-        == """\
-BookId,Author,AuthorId,Title,Work,Series,SeriesId,Entry,Published,Language,Pages,Gender,Nationality
-non-fiction/Coleman-Coding-Freedom.mobi,Gabriella Coleman,7452431,,20545577,,,,2012,,254,female,us
-non-fiction/pg14154.mobi,,425652,The Tale Of Terror: A Study Of The Gothic Fiction,1475662,,,,1963,,200,female,gb
-novels/The_Castle_of_Wolfenbach.mobi,Eliza Parsons,53468,The Castle of Wolfenbach: A German Story,1066862,,,,1793,,224,female,United Kingdom of Great Britain and Ireland
-novels/b869w.mobi,Emily Brontë,4191,,1565818,,,,1847,,464,female,United Kingdom of Great Britain and Ireland
-novels/pg13765.mobi,,9057,,181928,Joseph Rouletabille,59997,1,1907,,288,male,fr
-short-stories/Les_soirees_de_Medan.pdf,Émile Zola,4750,Les Soirées de Médan,1838632,,,,1973,,290,male,fr
-short-stories/pg1429-images.mobi,,45712,The Garden Party and Other Stories,1698523,,,,1922,,159,female,nz
-"""  # noqa: E501
-    )

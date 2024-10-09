@@ -8,7 +8,7 @@ from typing import Optional
 from jinja2 import Template
 import pandas as pd
 
-from .collection import Collection, _ebook_parse_title, rebuild_metadata
+from .collection import Collection, _ebook_parse_title
 from .compare import compare
 from .config import Config
 from .goodreads import fetch_book, search_title
@@ -281,8 +281,6 @@ def main(args, config: Config) -> None:
     # FIXME do this check in cmds.py
     if args.find:
         find(args.find, config)
-
-    store = rebuild_metadata(store, config)
 
     compare(
         old=Collection.from_dir(),

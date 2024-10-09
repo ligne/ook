@@ -84,14 +84,6 @@ class Store:
         partial(_getter, name="books"),
         partial(_setter, name="books"),
     )
-    ebook_metadata = property(
-        partial(_getter, name="metadata-ebooks"),
-        partial(_setter, name="metadata-ebooks"),
-    )
-    gr_metadata = property(
-        partial(_getter, name="metadata-gr"),
-        partial(_setter, name="metadata-gr"),
-    )
 
     def save(self, directory: Union[Path, str]) -> None:
         """Save the tables to $directory."""

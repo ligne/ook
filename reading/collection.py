@@ -5,83 +5,21 @@
 from __future__ import annotations
 
 import datetime as dt
+from pathlib import Path
 import re
-from typing import List, Optional, Sequence
+from typing import Optional, Sequence
 
 import attr
 import pandas as pd
 from typing_extensions import Self
 
 from .chain import Chain
-from .config import Config, df_columns, merge_preferences, metadata_prefer
+from .config import Config, merge_preferences
 from .storage import Store, load_df
 
 
 pd.set_option("display.max_rows", None)
 pd.set_option("display.width", None)
-
-
-################################################################################
-
-
-def _ebook_metadata_overlay(ebooks: pd.DataFrame, works: pd.DataFrame) -> pd.DataFrame:
-    prefer_work_cols = metadata_prefer("work")
-    prefer_book_cols = metadata_prefer("book")
-
-    # add in any missing columns, to make things easier
-    books = ebooks.reindex(columns=df_columns("metadata"))
-    # FIXME
-    books = books.drop(["Gender", "Nationality"], axis="columns")
-
-    # create an empty dataframe the right size
-    metadata = pd.DataFrame().reindex_like(books)
-
-    # fill in one set of columns
-    metadata.update(books[prefer_work_cols])
-    metadata.update(works[prefer_work_cols])
-
-    # fill in the other
-    metadata.update(works[prefer_book_cols])
-    metadata.update(books[prefer_book_cols])
-
-    return metadata[books != metadata].dropna(how="all", axis="index")
-
-
-def _author_overlay(
-    base: pd.DataFrame, authors: pd.DataFrame, author_fixes: pd.DataFrame
-) -> pd.DataFrame:
-    authors = authors.reindex(authors.index | author_fixes.index)
-    authors.update(author_fixes)
-    return base[base.AuthorId.isin(authors.index)].AuthorId.apply(
-        lambda x: authors.loc[x, ["Gender", "Nationality"]]
-    )
-
-
-def rebuild_metadata(store: Store, config: Config) -> Store:
-    """Refresh the metadata tables in $store."""
-    author_fixes = pd.DataFrame(config("authors"))
-    if not author_fixes.empty:
-        author_fixes = author_fixes.set_index("AuthorId")
-    authors = store.authors
-    # fixed_authors = authors.reindex(authors.index | author_fixes.index)
-
-    # goodreads and ebooks have to be done separately, because pandas does not
-    # like indexes containing multiple types
-
-    # ebooks
-    base = store.ebooks.reindex(columns=df_columns("metadata"))
-    metadata = base.copy()
-    metadata.update(_ebook_metadata_overlay(metadata, store.books))
-    metadata.update(_author_overlay(metadata, authors, author_fixes))
-    store.ebook_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
-
-    # goodreads
-    base = store.goodreads.reindex(columns=df_columns("metadata"))
-    metadata = base.copy()
-    metadata.update(_author_overlay(metadata, authors, author_fixes))
-    store.gr_metadata = metadata.where(base != metadata).dropna(how="all", axis="index")
-
-    return store
 
 
 ################################################################################
@@ -231,30 +169,13 @@ class Collection:
         **kwargs,
     ) -> Self:
         """Create a collection from the contents of $csv_dir."""
-
-        config = Config.from_file(f"{csv_dir}/config.yml")
-
-        gr_df = load_df("goodreads", dirname=csv_dir)
-        ebooks_df = expand_ebooks(
-            load_df("ebooks", dirname=csv_dir),
-            words_per_page=config("kindle.words_per_page"),
+        return cls.from_store(
+            store=Store(csv_dir),
+            config=Config.from_file(Path(csv_dir, "config.yml")),
+            fixes=fixes,
+            metadata=metadata,
+            **kwargs,
         )
-
-        df = pd.concat([gr_df, ebooks_df], sort=False)
-
-        # Ensure the additional columns exist in any case
-        # FIXME use reindex to expand it to give it the right columnns
-        df = df.assign(Gender=None, Nationality=None)
-
-        if metadata:
-            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-ebooks.csv"))
-            df.update(load_df("metadata", fname=f"{csv_dir}/metadata-gr.csv"))
-
-        if fixes:
-            df.update(load_df("scraped", dirname=csv_dir))
-            df.update(_process_fixes(config("fixes")))
-
-        return cls(df, **kwargs)
 
     @classmethod
     def from_store(
@@ -266,33 +187,27 @@ class Collection:
         **kwargs,
     ) -> Self:
         """Create a Collection from a Store object."""
-        bases = [
-            store.goodreads,
-            expand_ebooks(store.ebooks, config("kindle.words_per_page")),
-        ]
-        overlays: List[pd.DataFrame] = []
+        gr_df = store.goodreads
+        ebooks_df = expand_ebooks(store.ebooks, words_per_page=config("kindle.words_per_page"))
+
+        df = pd.concat([gr_df, ebooks_df], sort=False)
+
         if metadata:
-            overlays += [store.ebook_metadata, store.gr_metadata]
+            df.update(
+                ebooks_df[[]].join(store.books.drop(columns=["BookId", "Category"]), how="left")
+            )
+
+        authors = store.authors
+        if fixes and (author_fixes := config("authors")):
+            author_fixes = pd.DataFrame(author_fixes).set_index("AuthorId")
+            authors = authors.reindex(authors.index.union(author_fixes.index))
+            authors.update(author_fixes)
+        df = df.join(authors[["Gender", "Nationality"]], on="AuthorId", how="left")
+
         if fixes:
-            overlays += [store.scraped, _process_fixes(config("fixes"))]
+            df.update(store.scraped)
+            df.update(_process_fixes(config("fixes")))
 
-        return cls.assemble(bases=bases, overlays=overlays, **kwargs)
-
-    @classmethod
-    def assemble(
-        cls,
-        bases: Sequence[pd.DataFrame],
-        overlays: Sequence[pd.DataFrame],
-        **kwargs,
-    ) -> Self:
-        """Assemble a Collection from $bases and $overlays."""
-        df = pd.concat(bases, sort=False)
-
-        # FIXME use reindex to expand it to give it the right columnns
-        df = df.assign(Gender=None, Nationality=None)
-
-        for overlay in overlays:
-            df.update(overlay)
         return cls(df, **kwargs)
 
     def reset(self) -> Self:
