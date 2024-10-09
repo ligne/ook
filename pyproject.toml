@@ -17,6 +17,8 @@ filterwarnings = [
     "error::FutureWarning",
     # expected from the app
     "ignore:Duplicate works in series:UserWarning",
+    # problem in pytz
+    "ignore:invalid escape sequence:DeprecationWarning",
 ]
 
 
