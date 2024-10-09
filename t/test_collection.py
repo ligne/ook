@@ -177,7 +177,7 @@ def _stringify_df(df: pd.DataFrame) -> str:
 def test_ebook_metadata_overlay() -> None:
     store = Store("t/data/overlays/")
 
-    got = _stringify_df(_ebook_metadata_overlay(store.ebooks, store.books))
+    got = _stringify_df(_ebook_metadata_overlay(store.ebooks, store.books))  # noqa: F821
     print(got)
 
     assert (
@@ -206,7 +206,7 @@ def test_author_overlay() -> None:
     store = Store("t/data/overlays/")
 
     got = _stringify_df(
-        _author_overlay(store.goodreads, store.authors, pd.DataFrame()),
+        _author_overlay(store.goodreads, store.authors, pd.DataFrame()),  # noqa: F821
     )
     print(got)
 
@@ -238,7 +238,7 @@ def test_author_overlay_fixed() -> None:
     print(author_fixes)
 
     got = _stringify_df(
-        _author_overlay(store.goodreads, store.authors, author_fixes),
+        _author_overlay(store.goodreads, store.authors, author_fixes),  # noqa: F821
     )
     print(got)
 

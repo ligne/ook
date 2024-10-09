@@ -15,7 +15,7 @@ from typing_extensions import Self
 
 from .chain import Chain
 from .config import Config, merge_preferences
-from .storage import Store, load_df
+from .storage import Store
 
 
 pd.set_option("display.max_rows", None)

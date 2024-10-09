@@ -6,8 +6,6 @@ from __future__ import annotations
 
 import pytest
 
-from reading.collection import Collection
-
 
 def pytest_addoption(parser) -> None:
     parser.addoption("--runslow", action="store_true", default=False, help="run slow tests")
