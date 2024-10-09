@@ -429,23 +429,15 @@ def _compare(c_old: Collection, c_new: Collection) -> Iterable[Change]:
     old_indices = old.index.difference(new.index)
 
     # added
-    for index in new_indices:
-        added = new.loc[index]
-        if isinstance(added, pd.Series):
-            yield Change(None, added)
-        else:
-            yield from (Change(None, book) for _, book in added.iterrows())
+    added = new.loc[new_indices].drop_duplicates()
+    yield from (Change(None, book) for _, book in added.iterrows())
 
     # removed
-    for index in old_indices:
-        removed = old.loc[index]
-        if isinstance(removed, pd.Series):
-            yield Change(removed, None)
-        else:
-            yield from (Change(book, None) for _, book in removed.iterrows())
+    removed = old.loc[old_indices].drop_duplicates()
+    yield from (Change(book, None) for _, book in removed.iterrows())
 
     # general changes
-    for index in common_indices:
+    for index in set(common_indices):
         yield Change(old.loc[index], new.loc[index])
 
 

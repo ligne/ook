@@ -588,6 +588,28 @@ def test_compare_column_order() -> None:
     assert True, "Comparison completed ok"
 
 
+def test_added_removed() -> None:
+    """A single book being added/removed."""
+
+    styler = ChangeStyler(BookFormatter(c.df.dtypes, ValueFormats()))
+
+    c_old = Collection(c.df.loc[[12021]])
+    c_new = Collection(c.df.loc[[]])  # an empty Collection
+
+    assert [styler.render(change) for change in _compare(c_old, c_new)] == [
+        "Removed The Crow Road by Iain Banks from shelf 'pending'",
+    ]
+
+    # swap them round
+    c_old, c_new = c_new, c_old
+
+    assert [styler.render(change) for change in _compare(c_old, c_new)] == [
+        """Added The Crow Road by Iain Banks to shelf 'pending'
+  * novels
+  * 501 pages
+  * Language: en""",
+    ]
+
 def test_duplicate_work_added_removed() -> None:
     """Multiple works with the same Work ID being added/removed at the same time."""
 
