@@ -7,6 +7,7 @@ import pytest
 
 mb = pytest.importorskip("tools.make-books")
 
+mb._init_rng(1)
 
 def test__generate_authors() -> None:
     authors = mb._generate_authors(3)

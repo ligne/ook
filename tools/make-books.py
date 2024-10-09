@@ -407,6 +407,13 @@ def arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _init_rng(seed: int) -> None:
+    global faker, rng
+    faker = Faker("en")
+    faker.seed_instance(seed)
+    rng = np.random.Generator(np.random.PCG64DXSM(seed))
+
+
 if __name__ == "__main__":
     args = arg_parser().parse_args()
 
@@ -414,9 +421,7 @@ if __name__ == "__main__":
         print(f"Output: {args.output} is not a directory.")
         exit(1)
 
-    faker = Faker("en")
-    faker.seed_instance(args.seed)
-    rng = np.random.Generator(np.random.PCG64DXSM(args.seed))
+    _init_rng(args.seed)
 
     store, config = make_books(args.size)
     store.save(args.output)
