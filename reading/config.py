@@ -264,9 +264,7 @@ class Config:
         """Create from $filename."""
         try:
             with open(filename) as fh:
-                # from yaml import CSafeLoader
-                # conf = yaml.load(fh, Loader=CSafeLoader)
-                conf = yaml.safe_load(fh)
+                conf = yaml.load(fh, Loader=yaml.CSafeLoader)
         except FileNotFoundError:
             conf = {}
 
