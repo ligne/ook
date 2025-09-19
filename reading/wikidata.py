@@ -10,6 +10,7 @@ from typing import Optional
 
 import requests
 
+USER_AGENT = f"ook/0.1 (https://github.com/ligne/ook) {requests.utils.default_user_agent()}"
 
 # uppercases the first character of $s *only*
 def _uc_first(text: str) -> str:
@@ -28,6 +29,7 @@ def wd_search(term):
                 "format": "json",
                 "search": term,
             },
+            headers={"User-Agent": USER_AGENT},
         ).json()
     )
 
@@ -54,7 +56,7 @@ def entity(qid: str) -> Entity:
             j = json.load(fh)
     except FileNotFoundError:
         url = f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json"
-        r = requests.get(url)
+        r = requests.get(url, headers={"User-Agent": USER_AGENT})
         with open(fname, "wb") as fh:
             fh.write(r.content)
         j = r.json()
